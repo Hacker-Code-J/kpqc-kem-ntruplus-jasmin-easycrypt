@@ -1,0 +1,143 @@
+param int NTRUPLUS_Q = 3457;
+param int NTRUPLUS_QINV = 12929;
+param int NTRUPLUS_RSQ = 867;
+
+inline fn __mul_i16(reg u16 a b) -> reg u32
+{
+  reg u32 ad;
+  reg u32 bd;
+  reg u32 c;
+
+  ad = (32s) a;
+  bd = (32s) b;
+  c = ad * bd;
+  return c;
+}
+
+inline fn __montgomery_reduce(reg u32 a) -> reg u16
+{
+  reg u16 t;
+  reg u32 q;
+  reg u32 td;
+  reg u32 r;
+
+  q = NTRUPLUS_Q;
+  td = (32s) a;
+  td *= NTRUPLUS_QINV;
+  t = td;
+  td = (32s) t;
+  r = (32s) a;
+  td *= q;
+  r -= td;
+  r >>s= 16;
+  t = r;
+  return t;
+}
+
+#[safety =
+   { requires = is_arr_init(ap,0,8) && is_arr_init(bp,0,8)
+   , ensures = is_arr_init(rp,0,8)
+   }
+]
+#[ct = "secret × secret × secret × secret → secret"]
+#[sct="
+{ ptr: transient, val: secret } ×
+{ ptr: transient, val: secret } ×
+{ ptr: transient, val: secret } ×
+secret →
+{ ptr: public, val: secret }
+"]
+export fn jade_ntruplus_ntruplus768_amd64_ref_basemul(
+  reg mut ptr u16[4] rp,
+  reg const ptr u16[4] ap,
+  reg const ptr u16[4] bp,
+  reg u16 zeta) -> reg ptr u16[4]
+{
+  reg u16 a0;
+  reg u16 a1;
+  reg u16 a2;
+  reg u16 a3;
+  reg u16 b0;
+  reg u16 b1;
+  reg u16 b2;
+  reg u16 b3;
+  reg u16 r0;
+  reg u16 r1;
+  reg u16 r2;
+  reg u16 r3;
+  reg u32 acc;
+  reg u32 term;
+
+  _ = #init_msf();
+
+  a0 = ap[0];
+  a1 = ap[1];
+  a2 = ap[2];
+  a3 = ap[3];
+
+  b0 = bp[0];
+  b1 = bp[1];
+  b2 = bp[2];
+  b3 = bp[3];
+
+  acc = __mul_i16(a1, b3);
+  term = __mul_i16(a2, b2);
+  acc += term;
+  term = __mul_i16(a3, b1);
+  acc += term;
+  r0 = __montgomery_reduce(acc);
+
+  acc = __mul_i16(a2, b3);
+  term = __mul_i16(a3, b2);
+  acc += term;
+  r1 = __montgomery_reduce(acc);
+
+  acc = __mul_i16(a3, b3);
+  r2 = __montgomery_reduce(acc);
+
+  acc = __mul_i16(r0, zeta);
+  term = __mul_i16(a0, b0);
+  acc += term;
+  r0 = __montgomery_reduce(acc);
+
+  acc = __mul_i16(r1, zeta);
+  term = __mul_i16(a0, b1);
+  acc += term;
+  term = __mul_i16(a1, b0);
+  acc += term;
+  r1 = __montgomery_reduce(acc);
+
+  acc = __mul_i16(r2, zeta);
+  term = __mul_i16(a0, b2);
+  acc += term;
+  term = __mul_i16(a1, b1);
+  acc += term;
+  term = __mul_i16(a2, b0);
+  acc += term;
+  r2 = __montgomery_reduce(acc);
+
+  acc = __mul_i16(a0, b3);
+  term = __mul_i16(a1, b2);
+  acc += term;
+  term = __mul_i16(a2, b1);
+  acc += term;
+  term = __mul_i16(a3, b0);
+  acc += term;
+  r3 = __montgomery_reduce(acc);
+
+  acc = __mul_i16(r0, NTRUPLUS_RSQ);
+  r0 = __montgomery_reduce(acc);
+  acc = __mul_i16(r1, NTRUPLUS_RSQ);
+  r1 = __montgomery_reduce(acc);
+  acc = __mul_i16(r2, NTRUPLUS_RSQ);
+  r2 = __montgomery_reduce(acc);
+  acc = __mul_i16(r3, NTRUPLUS_RSQ);
+  r3 = __montgomery_reduce(acc);
+
+  rp[0] = r0;
+  rp[1] = r1;
+  rp[2] = r2;
+  rp[3] = r3;
+
+  return rp;
+}

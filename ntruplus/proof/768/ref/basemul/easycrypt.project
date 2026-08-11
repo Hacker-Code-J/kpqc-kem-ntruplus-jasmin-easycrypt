@@ -1,0 +1,4 @@
+[general]
+timeout = 30
+
+rdirs = extracted

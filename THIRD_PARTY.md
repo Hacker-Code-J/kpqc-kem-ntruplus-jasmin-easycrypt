@@ -1,5 +1,20 @@
 # Third-party materials
 
+## NTRU+ reference implementation
+
+- Paths: `NTRU+/LICENSE`, `NTRU+/NTRU+768`, and `NTRU+/KAT/NTRU+768`
+- Source: <https://github.com/ntruplus/ntruplus.git>
+- Source commit: `38201624477a7dbb2f46d1ae7686ae5ceee4eb80`
+- Retrieved/verified: 2026-08-11
+- Purpose: C behavior oracle and deterministic KAT baseline for the NTRU+768
+  Jasmin and EasyCrypt work
+- License: MIT; preserved in `NTRU+/LICENSE`
+
+The imported NTRU+768 implementation, KAT directory, and license byte-match
+the corresponding upstream files at the source commit. The local
+`NTRU+/NTRU+768` path corresponds to upstream
+`Reference_Implementation/NTRU+768`.
+
 ## Formosa ML-KEM
 
 - Path: `external/formosa-mlkem`
