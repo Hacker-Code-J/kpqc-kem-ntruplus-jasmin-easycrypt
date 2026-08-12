@@ -138,8 +138,42 @@ triple, and exact signed output bounds `[-4q,4q)` for the first block and
 `[-5q,5q)` for the second.
 
 This layer remains a standalone in-place array-value theorem. A later
-composition theorem will connect it with stage 1 and the remaining five
+composition theorem will connect it with stage 1 and all five standard
 radix-2 layers into a complete forward transform.
+
+## Executable forward-NTT radix-2 `step=64` layer
+
+The in-place scalar procedure at
+`ntruplus/jasmin/768/ref/ntt_radix2_64.jazz` implements the first iteration of
+the final loop in `NTRU+/NTRU+768/ntt.c::ntt`. Its six 64-pair blocks consume
+`zetas[6..11] = {1, -722, -723, -257, -1124, -867}` at bases `0`, `128`,
+`256`, `384`, `512`, and `640`. The standalone boundary accepts the widened
+output contract of the verified radix-3 layer.
+
+Run the complete `step=64` check with:
+
+```sh
+./scripts/verify-ntruplus768-ntt-radix2-64.sh
+```
+
+The check covers reproducible extraction, exact word-level correctness and
+losslessness, Jasmin safety, CT and SCT analysis, and fail-closed coupling to
+the C prefix, twiddle order, Montgomery reduction, Barrett reduction, pair
+offsets, and butterfly stores. Differential and UBSan tests cover 15 boundary
+vectors, 4096 direct `step=64` vectors, and 2048 vectors chained through the
+Jasmin stage-1 and radix-3 slices; both disjoint and in-place stage-1 caller
+shapes are exercised.
+
+The algebra layer ties the six twiddles to root exponents `16`, `112`, `208`,
+`80`, `176`, and `272`. Assuming the radix-3 contract (`[-4q,4q)` below index
+384 and `[-5q,5q)` at and above index 384), it proves the Montgomery product
+bounds, absence of signed-word wrap in every butterfly input, the two output
+congruences modulo `q = 3457`, and the centered Barrett output range
+`[-1728,1728]` for every coefficient.
+
+This layer is also a standalone in-place array-value theorem. The remaining
+`step=32`, `16`, `8`, and `4` layers, their composition with the verified
+prefix, and executable `invntt` correctness remain separate milestones.
 
 ## Verified NTRU+768 NTT root schedule
 
@@ -174,7 +208,7 @@ constants, and loop bounds with:
 This milestone still does not prove:
 
 - that upstream callers establish the signed-range preconditions for every call;
-- the five radix-2 executable layers, composition of all verified layers into
+- the remaining four radix-2 executable layers, composition of all verified layers into
   the complete forward `ntt`, or an executable `invntt` implementing the
   proved inverse schedule; or
 - key generation, encryption, or the full KEM.

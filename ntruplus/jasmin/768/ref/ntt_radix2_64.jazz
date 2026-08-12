@@ -1,0 +1,136 @@
+param int NTRUPLUS_N = 768;
+param int NTRUPLUS_Q = 3457;
+param int NTRUPLUS_QINV = 12929;
+param int NTRUPLUS_BARRETT_V = 19412;
+param int NTRUPLUS_BARRETT_BIAS = 33554432;
+param int NTRUPLUS_ZETA6 = 1;
+param int NTRUPLUS_ZETA7 = -722;
+param int NTRUPLUS_ZETA8 = -723;
+param int NTRUPLUS_ZETA9 = -257;
+param int NTRUPLUS_ZETA10 = -1124;
+param int NTRUPLUS_ZETA11 = -867;
+
+inline fn __mul_i16(reg u16 a b) -> reg u32
+{
+  reg u32 ad;
+  reg u32 bd;
+  reg u32 c;
+
+  ad = (32s) a;
+  bd = (32s) b;
+  c = ad * bd;
+  return c;
+}
+
+inline fn __montgomery_reduce(reg u32 a) -> reg u16
+{
+  reg u16 t;
+  reg u32 q;
+  reg u32 td;
+  reg u32 r;
+
+  q = NTRUPLUS_Q;
+  td = (32s) a;
+  td *= NTRUPLUS_QINV;
+  t = td;
+  td = (32s) t;
+  r = (32s) a;
+  td *= q;
+  r -= td;
+  r >>s= 16;
+  t = r;
+  return t;
+}
+
+inline fn __barrett_reduce(reg u16 a) -> reg u16
+{
+  reg u16 t;
+  reg u32 td;
+  reg u32 v;
+  reg u32 q;
+
+  v = NTRUPLUS_BARRETT_V;
+  td = (32s) a;
+  td *= v;
+  td += NTRUPLUS_BARRETT_BIAS;
+  td >>s= 26;
+  t = td;
+  q = NTRUPLUS_Q;
+  td = (32s) t;
+  td *= q;
+  t = td;
+  t = a - t;
+  return t;
+}
+
+#[safety =
+   { requires = is_arr_init(rp,0,2 * NTRUPLUS_N)
+   , ensures = is_arr_init(rp,0,2 * NTRUPLUS_N)
+   }
+]
+inline fn __radix2_64_block(
+  reg mut ptr u16[NTRUPLUS_N] rp,
+  reg u64 base,
+  reg u16 zeta) -> reg ptr u16[NTRUPLUS_N]
+{
+  reg u16 low;
+  reg u16 high;
+  reg u16 t;
+  reg u16 sum;
+  reg u16 diff;
+  reg u32 acc;
+  reg u32 wd;
+  reg u32 td;
+  reg u64 i;
+  reg u64 stop;
+
+  i = base;
+  stop = base;
+  stop += 64;
+  while (i < stop) {
+    low = rp[i];
+    high = rp[i + 64];
+    acc = __mul_i16(zeta, high);
+    t = __montgomery_reduce(acc);
+
+    wd = (32s) low;
+    td = (32s) t;
+    wd -= td;
+    diff = wd;
+    wd = (32s) low;
+    td = (32s) t;
+    wd += td;
+    sum = wd;
+
+    rp[i + 64] = __barrett_reduce(diff);
+    rp[i] = __barrett_reduce(sum);
+    i += 1;
+  }
+
+  return rp;
+}
+
+#[safety =
+   { requires = is_arr_init(rp,0,2 * NTRUPLUS_N)
+   , ensures = is_arr_init(rp,0,2 * NTRUPLUS_N)
+   }
+]
+#[ct = "secret → secret"]
+#[sct="
+{ ptr: transient, val: secret } →
+{ ptr: public, val: secret }
+"]
+export fn jade_ntruplus_ntruplus768_amd64_ref_ntt_radix2_64(
+  reg mut ptr u16[NTRUPLUS_N] rp) -> reg ptr u16[NTRUPLUS_N]
+{
+  _ = #init_msf();
+
+  rp = __radix2_64_block(rp, 0, NTRUPLUS_ZETA6);
+  rp = __radix2_64_block(rp, 128, NTRUPLUS_ZETA7);
+  rp = __radix2_64_block(rp, 256, NTRUPLUS_ZETA8);
+  rp = __radix2_64_block(rp, 384, NTRUPLUS_ZETA9);
+  rp = __radix2_64_block(rp, 512, NTRUPLUS_ZETA10);
+  rp = __radix2_64_block(rp, 640, NTRUPLUS_ZETA11);
+
+  return rp;
+}
