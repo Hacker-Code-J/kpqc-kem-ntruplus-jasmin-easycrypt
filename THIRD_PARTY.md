@@ -15,6 +15,16 @@ the corresponding upstream files at the source commit. The local
 `NTRU+/NTRU+768` path corresponds to upstream
 `Reference_Implementation/NTRU+768`.
 
+The NTT root-schedule proof also follows Section 6.2, Table 5, and Figure 22 of
+the upstream
+[`Supporting_Documentation/NTRU+.pdf`](https://github.com/ntruplus/ntruplus/blob/38201624477a7dbb2f46d1ae7686ae5ceee4eb80/Supporting_Documentation/NTRU%2B.pdf)
+at the same pinned commit.
+That document specifies `q = 3457`, the primitive 576th root `22`, the
+radix-2/radix-3 factorization rules, and the 192 terminal exponents for
+NTRU+768. The PDF is referenced as specification provenance and is not copied
+into this repository; the concrete constants and closed EasyCrypt lemmas are
+maintained locally.
+
 ## Formosa ML-KEM
 
 - Path: `external/formosa-mlkem`
@@ -34,9 +44,9 @@ Kyber, and benchmark implementations.
 `ntruplus/proof/768/ref/poly_basemul/NTRUPlus768PolyBasemulAlgebra.ec` import
 generic signed-word lemmas from `proof/eclib`, including `W16extra.ec`, and
 `common/JWord_extra.ec` from the pinned `crypto-specs` submodule. The NTRU+
-modulus, Montgomery constants, concrete twiddle schedule interpretation, input
-bounds, and quotient-ring coefficient formulas are defined and proved in this
-repository rather than inherited from the ML-KEM development.
+modulus, Montgomery constants, recursive twiddle schedule, input bounds, and
+quotient-ring coefficient formulas are defined and proved in this repository
+rather than inherited from the ML-KEM development.
 
 The root MIT license of this repository does not relicense the Formosa ML-KEM
 submodule or any of its nested dependencies. At the pinned commit, the upstream

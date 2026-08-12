@@ -3,29 +3,16 @@ from Jasmin require import JWord.
 
 require import Array4 Array96 Array768.
 require import NTRUPlus768BasemulAlgebra.
+require import NTRUPlus768NTTSchedule.
 require import NTRUPlus768PolyBasemul.
 require import NTRUPlus768PolyBasemulProof.
 require import W16extra.
 
 import IntOrder.
 
-op zetas96_coeffs : int list =
-  [223; 1138; -1059; -397; -183; 1655; 559; -1674;
-   277; 933; 1723; 437; -1514; 242; 1640; 432;
-   -1583; 696; 774; 1671; 927; 514; 512; 489;
-   297; 601; 1473; 1130; 1322; 871; 760; 1212;
-   -312; -352; 443; 943; 8; 1250; -100; 1660;
-   -31; 1206; -1341; -1247; 444; 235; 1364; -1209;
-   361; 230; 673; 582; 1409; 1501; 1401; 251;
-   1022; -1063; 1053; 1188; 417; -1391; -27; -1626;
-   1685; -315; 1408; -1248; 400; 274; -1543; 32;
-   -1550; 1531; -1367; -124; 1458; 1379; -940; -1681;
-   22; 1709; -275; 1108; 354; -1728; -968; 858;
-   1221; -218; 294; -732; -1095; 892; 1588; -779].
+op zetas96_words : W16.t list = map W16.of_int (drop 96 zetas192_coeffs).
 
-op zetas96_words : W16.t list = map W16.of_int zetas96_coeffs.
-
-op zeta_coeff (i : int) : int = nth witness zetas96_coeffs i.
+op zeta_coeff (i : int) : int = zetas192_coeff (96 + i).
 
 op in_qrange768 (p : W16.t Array768.t) : bool =
   forall k, 0 <= k < 192 => in_qrange4 (block4 p k).
@@ -43,16 +30,18 @@ op poly_basemul_qring
     let bk = block4 bp k in
     let rk = block4 rp k in
       in_qrange4 rk /\
-      coeff rk.[0] %% q = coeff0 ak bk (block_zeta_math k) %% q /\
-      coeff rk.[1] %% q = coeff1 ak bk (block_zeta_math k) %% q /\
-      coeff rk.[2] %% q = coeff2 ak bk (block_zeta_math k) %% q /\
-      coeff rk.[3] %% q = coeff3 ak bk (block_zeta_math k) %% q.
+      coeff rk.[0] %% q = coeff0 ak bk (terminal_value k) %% q /\
+      coeff rk.[1] %% q = coeff1 ak bk (terminal_value k) %% q /\
+      coeff rk.[2] %% q = coeff2 ak bk (terminal_value k) %% q /\
+      coeff rk.[3] %% q = coeff3 ak bk (terminal_value k) %% q.
 
 lemma zeta_coeff_range (i : int) :
   0 <= i < 96 => -q <= zeta_coeff i < q.
 proof.
   move=> Hi.
-  rewrite /zeta_coeff /zetas96_coeffs /q /=.
+  have Hi192 : 0 <= 96 + i < 192 by smt().
+  have := zetas192_coeff_range (96 + i) Hi192.
+  rewrite /zeta_coeff.
   smt().
 qed.
 
@@ -60,14 +49,16 @@ lemma zeta_coeff_range_strict (i : int) :
   0 <= i < 96 => -q < zeta_coeff i < q.
 proof.
   move=> Hi.
-  rewrite /zeta_coeff /zetas96_coeffs /q /=.
+  have Hi192 : 0 <= 96 + i < 192 by smt().
+  have := zetas192_coeff_range (96 + i) Hi192.
+  rewrite /zeta_coeff.
   smt().
 qed.
 
-lemma size_zetas96_coeffs :
-  size zetas96_coeffs = 96.
+lemma size_zetas96_words :
+  size zetas96_words = 96.
 proof.
-  by rewrite /zetas96_coeffs /=.
+  by rewrite /zetas96_words /zetas192_coeffs /=.
 qed.
 
 lemma zeta96E (i : int) :
@@ -76,11 +67,11 @@ lemma zeta96E (i : int) :
 proof.
   move=> Hi.
   have -> : nTRUPLUS_ZETAS96 = Array96.of_list witness zetas96_words.
-  + by rewrite /nTRUPLUS_ZETAS96 /zetas96_words /=.
+  + by rewrite /nTRUPLUS_ZETAS96 /zetas96_words /zetas192_coeffs /=.
   rewrite Array96.get_of_list 1:/# /zetas96_words.
   rewrite (nth_map witness).
-  + by rewrite size_zetas96_coeffs.
-  by rewrite /zeta_coeff.
+  + by rewrite size_zetas96_words.
+  by rewrite nth_drop 1:// 1:/# /zeta_coeff.
 qed.
 
 lemma zeta96_in_qrange (i : int) :
@@ -101,6 +92,31 @@ proof.
   rewrite zeta96E 1:/# /coeff.
   rewrite W16.of_sintK /W16.smod /=.
   by smt().
+qed.
+
+lemma zeta96_coeffE (i : int) :
+  0 <= i < 96 => coeff nTRUPLUS_ZETAS96.[i] = zeta_coeff i.
+proof.
+  move=> Hi.
+  have Hz := zeta_coeff_range_strict i Hi.
+  rewrite zeta96E 1:// /coeff W16.of_sintK /W16.smod /=.
+  move: Hz; rewrite /q; smt().
+qed.
+
+lemma zeta96_neg_coeffE (i : int) :
+  0 <= i < 96 =>
+  coeff (-nTRUPLUS_ZETAS96.[i]) = - zeta_coeff i.
+proof.
+  move=> Hi.
+  have Hz := zeta96_strict_range i Hi.
+  have Hword :
+      -W16.modulus %/ 2 < W16.to_sint nTRUPLUS_ZETAS96.[i] <
+      W16.modulus %/ 2.
+  + move: Hz; rewrite /q /coeff; smt().
+  have Hcoeff := zeta96_coeffE i Hi.
+  rewrite /coeff in Hcoeff.
+  rewrite /coeff (to_sintN nTRUPLUS_ZETAS96.[i] Hword).
+  by rewrite Hcoeff.
 qed.
 
 lemma in_qrangeN_strict (w : W16.t) :
@@ -125,6 +141,67 @@ proof.
   have Hhalf : 0 <= k %/ 2 < 96 by smt().
   apply in_qrangeN_strict.
   by rewrite zeta96_strict_range 1:/#.
+qed.
+
+lemma terminal_exp_nonneg (i : int) :
+  0 <= i < 96 => 0 <= terminal_exp i.
+proof.
+  move=> Hi.
+  have Hk : 0 <= 2 * i < 192 by smt().
+  have Hfig := figure22_index_relation (2 * i) Hk.
+  have Hrange := figure22_index_range (2 * i) Hk.
+  rewrite /terminal_exp in Hfig.
+  smt().
+qed.
+
+lemma zeta_root_shift_288 (e : int) :
+  0 <= e =>
+  (-(zeta_root ^ e %% q)) %% q = (zeta_root ^ (e + 288)) %% q.
+proof.
+  move=> He.
+  rewrite exprD_nneg 1:/# 1:/#.
+  rewrite -modzMmr zeta_order_288_value.
+  smt().
+qed.
+
+lemma block_zeta_math_terminal_value (k : int) :
+  0 <= k < 192 => block_zeta_math k = terminal_value k.
+proof.
+  move=> Hk.
+  have Hhalf : 0 <= k %/ 2 < 96 by smt().
+  have Hidx : 0 <= 96 + k %/ 2 < 192 by smt().
+  have Hdecode := zetas192_relation (96 + k %/ 2) Hidx.
+  rewrite -(terminal_exponents_suffix (k %/ 2) Hhalf) in Hdecode.
+  rewrite /decode_mont in Hdecode.
+  case (k %% 2 = 0) => Hpar.
+  + have Hfig : figure22_index k = terminal_exp (k %/ 2).
+    + have H := figure22_index_relation k Hk.
+      rewrite Hpar in H.
+      exact H.
+    rewrite /block_zeta_math /zeta_decode /block_zeta Hpar.
+    rewrite (zeta96_coeffE (k %/ 2) Hhalf) /zeta_coeff.
+    rewrite /terminal_value.
+    rewrite Hdecode.
+    by rewrite Hfig.
+  have Hfig : figure22_index k = terminal_exp (k %/ 2) + 288.
+  + have H := figure22_index_relation k Hk.
+    rewrite Hpar in H.
+    exact H.
+  rewrite /block_zeta_math /zeta_decode /block_zeta Hpar.
+  rewrite (zeta96_neg_coeffE (k %/ 2) Hhalf) /zeta_coeff.
+  have -> :
+      ((- zetas192_coeff (96 + k %/ 2)) * Rinv) %% q =
+      (- ((zetas192_coeff (96 + k %/ 2) * Rinv) %% q)) %% q.
+  + have Hmul :
+        (- zetas192_coeff (96 + k %/ 2)) * Rinv =
+        - (zetas192_coeff (96 + k %/ 2) * Rinv) by ring.
+    rewrite Hmul modzNm.
+    done.
+  rewrite /terminal_value.
+  rewrite Hdecode.
+  have Hnonneg := terminal_exp_nonneg (k %/ 2) Hhalf.
+  rewrite (zeta_root_shift_288 (terminal_exp (k %/ 2)) Hnonneg).
+  by rewrite Hfig.
 qed.
 
 lemma zeta_decode_relation (z : W16.t) :
@@ -168,6 +245,7 @@ proof.
   have Hspec := Hword k Hk.
   rewrite Hspec.
   rewrite /basemul_block_spec /in_qrange4.
+  rewrite -(block_zeta_math_terminal_value k Hk).
   have Halg := basemul_spec_algebra witness (block4 ap k) (block4 bp k)
     (block_zeta k) (block_zeta_math k) Hak Hbk Hzk
     (zeta_decode_relation (block_zeta k) Hzk).

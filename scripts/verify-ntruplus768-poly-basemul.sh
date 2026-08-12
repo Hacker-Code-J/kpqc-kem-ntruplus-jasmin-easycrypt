@@ -13,6 +13,7 @@ FORMOSA_ECLIB="$REPO_ROOT/external/formosa-mlkem/proof/eclib"
 FORMOSA_COMMON="$REPO_ROOT/external/formosa-mlkem/crypto-specs/common"
 BASEMUL_PROOF="$REPO_ROOT/ntruplus/proof/768/ref/basemul"
 BASEMUL_EXTRACTED="$BASEMUL_PROOF/extracted"
+NTT_SCHEDULE_PROOF="$REPO_ROOT/ntruplus/proof/768/ref/ntt_schedule"
 SLICE=jade_ntruplus_ntruplus768_amd64_ref_poly_basemul
 
 TMPDIR_PARENT=${TMPDIR:-/tmp}
@@ -44,7 +45,7 @@ reject_proof_holes() {
 
   if grep -ERni --include='*.ec' \
     '(^|[^[:alnum:]_])(admit|admitted|assume|axiom|sorry)([^[:alnum:]_]|$)' \
-    "$PROOF_DIR" "$BASEMUL_PROOF" >"$findings"; then
+    "$PROOF_DIR" "$BASEMUL_PROOF" "$NTT_SCHEDULE_PROOF" >"$findings"; then
     sed -n '1,120p' "$findings" >&2
     fail "EasyCrypt proof trees contain a proof-hole keyword"
   else
@@ -92,6 +93,7 @@ compile_easycrypt() {
     -server "$socket" \
     -I "$GENERATED_DIR" \
     -I "$PROOF_DIR" \
+    -I "$NTT_SCHEDULE_PROOF" \
     -I "$BASEMUL_PROOF" \
     -I "$BASEMUL_EXTRACTED" \
     -I "$FORMOSA_ECLIB" \
@@ -186,6 +188,8 @@ main() {
     fail "Formosa crypto-specs dependency is missing; initialize recursive submodules"
   [[ -f "$BASEMUL_PROOF/NTRUPlus768BasemulAlgebra.ec" ]] ||
     fail "missing dependent basemul proof tree"
+  [[ -f "$NTT_SCHEDULE_PROOF/NTRUPlus768NTTSchedule.ec" ]] ||
+    fail "missing dependent NTT schedule proof tree"
 
   mkdir -p "$asm_dir" "$generated_dir"
   GENERATED_DIR=$generated_dir

@@ -67,20 +67,49 @@ Run the complete loop check with:
 The EasyCrypt development for this slice is again split into two layers. The
 word-level proof shows exact agreement with the extracted Jasmin procedure for
 all 96 iterations. The algebra layer lifts each of the 192 output blocks into
-`Z_q[X]/(X^4-zeta_k)` under two assumptions:
+`Z_q[X]/(X^4-zeta_k)` using the shared NTRU+768 NTT schedule theorem described
+below. Its only remaining data precondition is that every input coefficient
+lies in `[-q, q)`.
 
-- every input coefficient lies in `[-q, q)`;
-- each word twiddle is interpreted via the Montgomery-decoded schedule carried
-  by the concrete `zetas[96..191]` table.
-
-Under those assumptions, every output coefficient is again in `[-q, q)`, and
+Under that assumption, every output coefficient is again in `[-q, q)`, and
 each block satisfies the expected four coefficient congruences modulo `q = 3457`.
 
-What this still does not prove:
+## Verified NTRU+768 NTT root schedule
 
-- that the concrete `zetas[96..191]` table is the intended NTT-root schedule;
+The shared EasyCrypt theory at
+`ntruplus/proof/768/ref/ntt_schedule/NTRUPlus768NTTSchedule.ec` proves that the
+explicit complete signed `zetas[192]` table and transform constants encode the
+NTRU+ specification's recursive factorization schedule. For `q = 3457`, it
+proves that `22` has exact order `576`, generates the terminal exponents from
+the initial radix-2 layer, one radix-3 layer, and five standard radix-2 layers,
+and matches all 192 Figure 22 indices. It also proves that:
+
+- every concrete table entry is the centered Montgomery encoding of the
+  corresponding power of the root;
+- the exponents represented by `zetas[96..191]`, interleaved with their
+  order-2 shifts, match the 192 terminal roots used by the `X^4-zeta_i`
+  blocks;
+- every terminal root satisfies `Y^192-Y^96+1 = 0` modulo `q`;
+- the `OMEGA`, `ZMINUSZ5INV`, `NINV`, and `2NINV` constants have their stated
+  Montgomery meanings.
+
+The parser-based verification layer ties those explicit values to
+`NTRU+/NTRU+768/ntt.c` and separately checks that the forward and reverse C
+loops consume exactly the intended table ranges.
+
+Run the schedule proof and the independent parser-based check of the C table,
+constants, and loop bounds with:
+
+```sh
+./scripts/verify-ntruplus768-ntt-schedule.sh
+```
+
+This milestone still does not prove:
+
 - that upstream callers establish the signed-range preconditions for every call;
-- the surrounding NTT, inverse NTT, key generation, encryption, or full KEM.
+- that executable Jasmin or C `ntt` and `invntt` procedures implement the
+  proved factorization and its inverse; or
+- key generation, encryption, or the full KEM.
 
 ## Formosa ML-KEM reference
 
