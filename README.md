@@ -45,9 +45,42 @@ twiddle represents the mathematical `zeta` in Montgomery form. It also proves
 that each result lies in `[-q, q)`.
 
 This does not yet prove that every caller establishes those range and twiddle
-preconditions, the full `poly_basemul` loop, or the KEM. The C/Jasmin
-correspondence also assumes distinct output and input buffers, which is how the
-current `poly_basemul` call sites use the kernel.
+preconditions or the KEM. The C/Jasmin correspondence also assumes distinct
+output and input buffers, which is how the current `poly_basemul` call sites
+use the kernel.
+
+## Full verified slice: NTRU+768 `poly_basemul`
+
+The scalar Jasmin implementation at `ntruplus/jasmin/768/ref/poly_basemul.jazz`
+matches the full 96-iteration `NTRU+/NTRU+768/poly.c::poly_basemul` loop at the
+word level. Each iteration consumes one twiddle from `zetas[96..191]` and
+applies two four-coefficient `basemul` blocks, first with `zeta` and then with
+`-zeta`, covering all 192 four-coefficient blocks in the 768-coefficient
+polynomial.
+
+Run the complete loop check with:
+
+```sh
+./scripts/verify-ntruplus768-poly-basemul.sh
+```
+
+The EasyCrypt development for this slice is again split into two layers. The
+word-level proof shows exact agreement with the extracted Jasmin procedure for
+all 96 iterations. The algebra layer lifts each of the 192 output blocks into
+`Z_q[X]/(X^4-zeta_k)` under two assumptions:
+
+- every input coefficient lies in `[-q, q)`;
+- each word twiddle is interpreted via the Montgomery-decoded schedule carried
+  by the concrete `zetas[96..191]` table.
+
+Under those assumptions, every output coefficient is again in `[-q, q)`, and
+each block satisfies the expected four coefficient congruences modulo `q = 3457`.
+
+What this still does not prove:
+
+- that the concrete `zetas[96..191]` table is the intended NTT-root schedule;
+- that upstream callers establish the signed-range preconditions for every call;
+- the surrounding NTT, inverse NTT, key generation, encryption, or full KEM.
 
 ## Formosa ML-KEM reference
 

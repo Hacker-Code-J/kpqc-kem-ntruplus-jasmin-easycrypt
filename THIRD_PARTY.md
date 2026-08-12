@@ -30,11 +30,13 @@ history remain attributable to the Formosa Crypto project. It in turn pins
 third-party repositories including `crypto-specs`, `formosa-keccak`, Jasmin,
 Kyber, and benchmark implementations.
 
-`ntruplus/proof/768/ref/basemul/NTRUPlus768BasemulAlgebra.ec` imports
-`proof/eclib/Montgomery.ec` from the Formosa tree and `common/JWord_extra.ec`
-from its pinned `crypto-specs` submodule. The NTRU+ modulus, Montgomery
-constants, input bounds, and quotient-ring coefficient formulas are defined and
-proved in this repository rather than inherited from the ML-KEM development.
+`ntruplus/proof/768/ref/basemul/NTRUPlus768BasemulAlgebra.ec` and
+`ntruplus/proof/768/ref/poly_basemul/NTRUPlus768PolyBasemulAlgebra.ec` import
+generic signed-word lemmas from `proof/eclib`, including `W16extra.ec`, and
+`common/JWord_extra.ec` from the pinned `crypto-specs` submodule. The NTRU+
+modulus, Montgomery constants, concrete twiddle schedule interpretation, input
+bounds, and quotient-ring coefficient formulas are defined and proved in this
+repository rather than inherited from the ML-KEM development.
 
 The root MIT license of this repository does not relicense the Formosa ML-KEM
 submodule or any of its nested dependencies. At the pinned commit, the upstream

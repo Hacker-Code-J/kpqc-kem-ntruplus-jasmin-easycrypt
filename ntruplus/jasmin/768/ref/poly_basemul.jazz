@@ -1,0 +1,190 @@
+param int NTRUPLUS_N = 768;
+param int NTRUPLUS_Q = 3457;
+param int NTRUPLUS_QINV = 12929;
+param int NTRUPLUS_RSQ = 867;
+
+u16[96] NTRUPLUS_ZETAS96 = {
+  223, 1138, 64477, 65139, 65353, 1655, 559, 63862,
+  277, 933, 1723, 437, 64022, 242, 1640, 432,
+  63953, 696, 774, 1671, 927, 514, 512, 489,
+  297, 601, 1473, 1130, 1322, 871, 760, 1212,
+  65224, 65184, 443, 943, 8, 1250, 65436, 1660,
+  65505, 1206, 64195, 64289, 444, 235, 1364, 64327,
+  361, 230, 673, 582, 1409, 1501, 1401, 251,
+  1022, 64473, 1053, 1188, 417, 64145, 65509, 63910,
+  1685, 65221, 1408, 64288, 400, 274, 63993, 32,
+  63986, 1531, 64169, 65412, 1458, 1379, 64596, 63855,
+  22, 1709, 65261, 1108, 354, 63808, 64568, 858,
+  1221, 65318, 294, 64804, 64441, 892, 1588, 64757
+};
+
+inline fn __mul_i16(reg u16 a b) -> reg u32
+{
+  reg u32 ad;
+  reg u32 bd;
+  reg u32 c;
+
+  ad = (32s) a;
+  bd = (32s) b;
+  c = ad * bd;
+  return c;
+}
+
+inline fn __montgomery_reduce(reg u32 a) -> reg u16
+{
+  reg u16 t;
+  reg u32 q;
+  reg u32 td;
+  reg u32 r;
+
+  q = NTRUPLUS_Q;
+  td = (32s) a;
+  td *= NTRUPLUS_QINV;
+  t = td;
+  td = (32s) t;
+  r = (32s) a;
+  td *= q;
+  r -= td;
+  r >>s= 16;
+  t = r;
+  return t;
+}
+
+#[safety =
+   { requires = is_arr_init(a,0,8) && is_arr_init(b,0,8)
+   , ensures = is_arr_init(r,0,8)
+   }
+]
+inline fn __basemul4(
+  stack u16[4] r,
+  stack u16[4] a,
+  stack u16[4] b,
+  reg u16 zeta) -> stack u16[4]
+{
+  reg u32 acc;
+  reg u32 term;
+
+  acc = __mul_i16(a[1], b[3]);
+  term = __mul_i16(a[2], b[2]);
+  acc += term;
+  term = __mul_i16(a[3], b[1]);
+  acc += term;
+  r[0] = __montgomery_reduce(acc);
+
+  acc = __mul_i16(a[2], b[3]);
+  term = __mul_i16(a[3], b[2]);
+  acc += term;
+  r[1] = __montgomery_reduce(acc);
+
+  acc = __mul_i16(a[3], b[3]);
+  r[2] = __montgomery_reduce(acc);
+
+  acc = __mul_i16(r[0], zeta);
+  term = __mul_i16(a[0], b[0]);
+  acc += term;
+  r[0] = __montgomery_reduce(acc);
+
+  acc = __mul_i16(r[1], zeta);
+  term = __mul_i16(a[0], b[1]);
+  acc += term;
+  term = __mul_i16(a[1], b[0]);
+  acc += term;
+  r[1] = __montgomery_reduce(acc);
+
+  acc = __mul_i16(r[2], zeta);
+  term = __mul_i16(a[0], b[2]);
+  acc += term;
+  term = __mul_i16(a[1], b[1]);
+  acc += term;
+  term = __mul_i16(a[2], b[0]);
+  acc += term;
+  r[2] = __montgomery_reduce(acc);
+
+  acc = __mul_i16(a[0], b[3]);
+  term = __mul_i16(a[1], b[2]);
+  acc += term;
+  term = __mul_i16(a[2], b[1]);
+  acc += term;
+  term = __mul_i16(a[3], b[0]);
+  acc += term;
+  r[3] = __montgomery_reduce(acc);
+
+  acc = __mul_i16(r[0], NTRUPLUS_RSQ);
+  r[0] = __montgomery_reduce(acc);
+  acc = __mul_i16(r[1], NTRUPLUS_RSQ);
+  r[1] = __montgomery_reduce(acc);
+  acc = __mul_i16(r[2], NTRUPLUS_RSQ);
+  r[2] = __montgomery_reduce(acc);
+  acc = __mul_i16(r[3], NTRUPLUS_RSQ);
+  r[3] = __montgomery_reduce(acc);
+
+  return r;
+}
+
+#[safety =
+   { requires = is_arr_init(ap,0,2 * NTRUPLUS_N) && is_arr_init(bp,0,2 * NTRUPLUS_N)
+   , ensures = is_arr_init(rp,0,2 * NTRUPLUS_N)
+   }
+]
+#[ct = "secret × secret × secret → secret"]
+#[sct="
+{ ptr: transient, val: secret } ×
+{ ptr: transient, val: secret } →
+{ ptr: public, val: secret }
+"]
+export fn jade_ntruplus_ntruplus768_amd64_ref_poly_basemul(
+  reg mut ptr u16[NTRUPLUS_N] rp,
+  reg const ptr u16[NTRUPLUS_N] ap,
+  reg const ptr u16[NTRUPLUS_N] bp) -> reg ptr u16[NTRUPLUS_N]
+{
+  stack u16[4] ta;
+  stack u16[4] tb;
+  stack u16[4] tr;
+  reg u16 zeta;
+  reg ptr u16[96] zetasp;
+  reg u64 i;
+  reg u64 off;
+
+  _ = #init_msf();
+
+  zetasp = NTRUPLUS_ZETAS96[0:96];
+  i = 0;
+  while (i < NTRUPLUS_N / 8) {
+    zeta = zetasp[i];
+    off = i;
+    off <<= 3;
+
+    ta[0] = ap[off];
+    ta[1] = ap[off + 1];
+    ta[2] = ap[off + 2];
+    ta[3] = ap[off + 3];
+    tb[0] = bp[off];
+    tb[1] = bp[off + 1];
+    tb[2] = bp[off + 2];
+    tb[3] = bp[off + 3];
+    tr = __basemul4(tr, ta, tb, zeta);
+    rp[off] = tr[0];
+    rp[off + 1] = tr[1];
+    rp[off + 2] = tr[2];
+    rp[off + 3] = tr[3];
+
+    off += 4;
+    ta[0] = ap[off];
+    ta[1] = ap[off + 1];
+    ta[2] = ap[off + 2];
+    ta[3] = ap[off + 3];
+    tb[0] = bp[off];
+    tb[1] = bp[off + 1];
+    tb[2] = bp[off + 2];
+    tb[3] = bp[off + 3];
+    tr = __basemul4(tr, ta, tb, -zeta);
+    rp[off] = tr[0];
+    rp[off + 1] = tr[1];
+    rp[off + 2] = tr[2];
+    rp[off + 3] = tr[3];
+
+    i += 1;
+  }
+
+  return rp;
+}
