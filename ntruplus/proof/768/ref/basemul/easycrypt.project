@@ -1,4 +1,7 @@
 [general]
 timeout = 30
 
+rdirs = .
 rdirs = extracted
+rdirs = ../../../../../external/formosa-mlkem/proof/eclib
+rdirs = ../../../../../external/formosa-mlkem/crypto-specs/common

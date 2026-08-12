@@ -8,6 +8,8 @@ JASMIN_DIR="$REPO_ROOT/ntruplus/jasmin/768/ref"
 TEST_DIR="$REPO_ROOT/tests/ntruplus768/basemul"
 PROOF_DIR="$REPO_ROOT/ntruplus/proof/768/ref/basemul"
 TRACKED_EXTRACTED="$PROOF_DIR/extracted"
+FORMOSA_ECLIB="$REPO_ROOT/external/formosa-mlkem/proof/eclib"
+FORMOSA_COMMON="$REPO_ROOT/external/formosa-mlkem/crypto-specs/common"
 JASMIN_SOURCE="$JASMIN_DIR/basemul.jazz"
 SLICE=jade_ntruplus_ntruplus768_amd64_ref_basemul
 
@@ -50,6 +52,11 @@ main() {
   require_command easycrypt
   require_command "${CC:-cc}"
 
+  [[ -f "$FORMOSA_ECLIB/Montgomery.ec" ]] ||
+    fail "Formosa proof dependency is missing; initialize recursive submodules"
+  [[ -f "$FORMOSA_COMMON/JWord_extra.ec" ]] ||
+    fail "Formosa crypto-specs dependency is missing; initialize recursive submodules"
+
   make -C "$JASMIN_DIR" OUTDIR="$WORKDIR/asm" asm safety ct sct
   make -C "$TEST_DIR" OUTDIR="$WORKDIR/test" run ubsan
 
@@ -58,14 +65,19 @@ main() {
     -o "$generated_dir/NTRUPlus768Basemul.ec" -f "$SLICE"
   compare_extraction "$generated_dir"
 
-  easycrypt compile -no-eco -I "$generated_dir" \
+  easycrypt compile -no-eco -I "$generated_dir" -I "$PROOF_DIR" \
+    -I "$FORMOSA_ECLIB" -I "$FORMOSA_COMMON" \
     "$PROOF_DIR/NTRUPlus768BasemulProof.ec"
+  easycrypt compile -no-eco -I "$generated_dir" -I "$PROOF_DIR" \
+    -I "$FORMOSA_ECLIB" -I "$FORMOSA_COMMON" \
+    "$PROOF_DIR/NTRUPlus768BasemulAlgebra.ec"
 
   printf 'PASS: NTRU+768 basemul Jasmin build and safety checks\n'
   printf 'PASS: NTRU+768 basemul CT and SCT checks\n'
   printf 'PASS: C/Jasmin differential and UBSan tests\n'
   printf 'PASS: fresh extraction matches tracked EasyCrypt model\n'
-  printf 'PASS: EasyCrypt functional-correctness proof\n'
+  printf 'PASS: EasyCrypt word-level functional-correctness proof\n'
+  printf 'PASS: EasyCrypt Z_q[X]/(X^4-zeta) bridge proof\n'
 }
 
 main "$@"

@@ -28,7 +28,7 @@ matches the defined signed-32-bit domain of
 - deterministic C/Jasmin differential testing, including UBSan;
 - reproducible `jasmin2ec` extraction; and
 - an EasyCrypt total functional-correctness proof against an explicit
-  word-level specification.
+  word-level specification, followed by a mathematical quotient-ring bridge.
 
 Run the complete slice check with:
 
@@ -36,11 +36,18 @@ Run the complete slice check with:
 ./scripts/verify-ntruplus768-basemul.sh
 ```
 
-The current EasyCrypt theorem covers exact word-level behavior of the isolated
-four-coefficient kernel. It is not yet a proof of the modular
-`Z_q[X]/(X^4-zeta)` semantics, the full polynomial multiplication, or the KEM.
-The C/Jasmin correspondence also assumes distinct output and input buffers,
-which is how the current `poly_basemul` call sites use the kernel.
+The EasyCrypt proof is split into two layers. The first covers exact word-level
+behavior of the isolated four-coefficient kernel. The second interprets signed
+words as integers and proves the four coefficient congruences for multiplication
+in `Z_q[X]/(X^4-zeta)`, with `q = 3457`. The bridge assumes every input
+coefficient and the supplied twiddle lie in `[-q, q)`, and that the supplied
+twiddle represents the mathematical `zeta` in Montgomery form. It also proves
+that each result lies in `[-q, q)`.
+
+This does not yet prove that every caller establishes those range and twiddle
+preconditions, the full `poly_basemul` loop, or the KEM. The C/Jasmin
+correspondence also assumes distinct output and input buffers, which is how the
+current `poly_basemul` call sites use the kernel.
 
 ## Formosa ML-KEM reference
 
@@ -50,10 +57,11 @@ repository is pinned at `external/formosa-mlkem` as a Git submodule. It provides
 reference Jasmin implementations and EasyCrypt proofs for ML-KEM, including
 security, specification, correctness, safety, and constant-time artifacts.
 
-The Formosa material is included as an external reference corpus. Its
-verification results apply to ML-KEM and do not establish any property of
-NTRU+. NTRU+ specifications, implementations, and proofs must be developed and
-verified separately.
+The Formosa material is included as an external reference corpus. The NTRU+768
+algebra bridge imports its generic signed-Montgomery theory and a generic word
+arithmetic-shift lemma, then instantiates and proves the NTRU+-specific
+constants, bounds, and quotient-ring semantics locally. Formosa's ML-KEM
+verification results do not establish any property of NTRU+.
 
 Clone this repository with all nested dependencies:
 

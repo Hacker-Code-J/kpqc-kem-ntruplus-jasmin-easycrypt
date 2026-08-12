@@ -22,12 +22,19 @@ the corresponding upstream files at the source commit. The local
 - Pinned commit: `475b87434506280fdfa1a1ba5da0af3787e00579`
 - Retrieved: 2026-08-11
 - Purpose: external reference for Jasmin implementation and EasyCrypt proof
-  structure; not an NTRU+ verification result
+  structure, plus imported generic signed-Montgomery and word-shift lemmas; not
+  an NTRU+ verification result
 
 This dependency is represented by a Git submodule, so its source and commit
 history remain attributable to the Formosa Crypto project. It in turn pins
 third-party repositories including `crypto-specs`, `formosa-keccak`, Jasmin,
 Kyber, and benchmark implementations.
+
+`ntruplus/proof/768/ref/basemul/NTRUPlus768BasemulAlgebra.ec` imports
+`proof/eclib/Montgomery.ec` from the Formosa tree and `common/JWord_extra.ec`
+from its pinned `crypto-specs` submodule. The NTRU+ modulus, Montgomery
+constants, input bounds, and quotient-ring coefficient formulas are defined and
+proved in this repository rather than inherited from the ML-KEM development.
 
 The root MIT license of this repository does not relicense the Formosa ML-KEM
 submodule or any of its nested dependencies. At the pinned commit, the upstream
