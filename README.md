@@ -109,6 +109,38 @@ array-value behavior; in-place pointer aliasing is covered by Jasmin's safety
 check and the machine-level differential suite rather than a separate formal
 aliasing theorem.
 
+## Executable forward-NTT radix-3 layer
+
+The in-place scalar procedure at `ntruplus/jasmin/768/ref/ntt_radix3.jazz`
+implements the second loop of `NTRU+/NTRU+768/ntt.c::ntt`. Its two 128-lane
+blocks consume `zetas[2..5] = {-682, -248, -708, 682}` and use
+`NTRUPLUS_OMEGA = -886`. The standalone boundary accepts the widened output of
+the initial split instead of duplicating the already verified stage-1 code.
+
+Run the complete radix-3 check with:
+
+```sh
+./scripts/verify-ntruplus768-ntt-radix3.sh
+```
+
+The check covers reproducible extraction, exact word-level correctness and
+losslessness, Jasmin safety, CT and SCT analysis, and fail-closed coupling to
+the C twiddle order and butterfly data flow. Differential and UBSan tests cover
+10 boundary vectors, 4096 direct radix-3 vectors, and 2048 vectors chained
+through the Jasmin stage-1 slice; the chained suite exercises both the original
+disjoint stage-1 call and its in-place caller shape.
+
+The algebra layer ties the four twiddles to root exponents `32`, `64`, `160`,
+and `320`, and ties `OMEGA` to exponent `192`. Assuming the stage-1 contract
+(`[-2q,2q)` on indices below 384 and `[-3q,3q)` on the upper half), it proves
+the Montgomery input bounds, the three radix-3 butterfly congruences for every
+triple, and exact signed output bounds `[-4q,4q)` for the first block and
+`[-5q,5q)` for the second.
+
+This layer remains a standalone in-place array-value theorem. A later
+composition theorem will connect it with stage 1 and the remaining five
+radix-2 layers into a complete forward transform.
+
 ## Verified NTRU+768 NTT root schedule
 
 The shared EasyCrypt theory at
@@ -142,9 +174,9 @@ constants, and loop bounds with:
 This milestone still does not prove:
 
 - that upstream callers establish the signed-range preconditions for every call;
-- the radix-3 and five radix-2 executable layers, their composition into the
-  complete forward `ntt`, or an executable `invntt` implementing the proved
-  inverse schedule; or
+- the five radix-2 executable layers, composition of all verified layers into
+  the complete forward `ntt`, or an executable `invntt` implementing the
+  proved inverse schedule; or
 - key generation, encryption, or the full KEM.
 
 ## Formosa ML-KEM reference
