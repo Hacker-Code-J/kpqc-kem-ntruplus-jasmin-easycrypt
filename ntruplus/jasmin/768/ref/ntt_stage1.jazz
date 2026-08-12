@@ -1,0 +1,82 @@
+param int NTRUPLUS_N = 768;
+param int NTRUPLUS_Q = 3457;
+param int NTRUPLUS_QINV = 12929;
+param int NTRUPLUS_STAGE1_ZETA = -1033;
+
+inline fn __mul_i16(reg u16 a b) -> reg u32
+{
+  reg u32 ad;
+  reg u32 bd;
+  reg u32 c;
+
+  ad = (32s) a;
+  bd = (32s) b;
+  c = ad * bd;
+  return c;
+}
+
+inline fn __montgomery_reduce(reg u32 a) -> reg u16
+{
+  reg u16 t;
+  reg u32 q;
+  reg u32 td;
+  reg u32 r;
+
+  q = NTRUPLUS_Q;
+  td = (32s) a;
+  td *= NTRUPLUS_QINV;
+  t = td;
+  td = (32s) t;
+  r = (32s) a;
+  td *= q;
+  r -= td;
+  r >>s= 16;
+  t = r;
+  return t;
+}
+
+#[safety =
+   { requires = is_arr_init(ap,0,2 * NTRUPLUS_N)
+   , ensures = is_arr_init(rp,0,2 * NTRUPLUS_N)
+   }
+]
+#[ct = "secret × secret → secret"]
+#[sct="
+{ ptr: transient, val: secret } ×
+{ ptr: transient, val: secret } →
+{ ptr: public, val: secret }
+"]
+export fn jade_ntruplus_ntruplus768_amd64_ref_ntt_stage1(
+  reg mut ptr u16[NTRUPLUS_N] rp,
+  reg const ptr u16[NTRUPLUS_N] ap) -> reg ptr u16[NTRUPLUS_N]
+{
+  reg u16 a0;
+  reg u16 a1;
+  reg u16 t;
+  reg u16 lo;
+  reg u16 hi;
+  reg u32 acc;
+  reg u64 i;
+
+  _ = #init_msf();
+
+  i = 0;
+  while (i < NTRUPLUS_N / 2) {
+    a0 = ap[i];
+    a1 = ap[i + NTRUPLUS_N / 2];
+    acc = __mul_i16(NTRUPLUS_STAGE1_ZETA, a1);
+    t = __montgomery_reduce(acc);
+
+    lo = a0;
+    lo += t;
+    hi = a0;
+    hi += a1;
+    hi -= t;
+
+    rp[i] = lo;
+    rp[i + NTRUPLUS_N / 2] = hi;
+    i += 1;
+  }
+
+  return rp;
+}

@@ -74,6 +74,41 @@ lies in `[-q, q)`.
 Under that assumption, every output coefficient is again in `[-q, q)`, and
 each block satisfies the expected four coefficient congruences modulo `q = 3457`.
 
+## First executable forward-NTT slice: initial split
+
+The scalar Jasmin procedure at `ntruplus/jasmin/768/ref/ntt_stage1.jazz`
+implements the first loop of `NTRU+/NTRU+768/ntt.c::ntt`. It consumes
+`zetas[1] = -1033` and transforms all 384 pairs `(a[i], a[i+384])`. A
+fail-closed source checker pins the C twiddle index and butterfly data flow to
+the standalone Jasmin slice, and its self-check rejects representative twiddle,
+index, and sign mutations.
+
+Run the complete initial-split check with:
+
+```sh
+./scripts/verify-ntruplus768-ntt-stage1.sh
+```
+
+The check covers reproducible `jasmin2ec` extraction, exact word-level
+functional correctness, losslessness, Jasmin safety, CT and SCT analysis, and
+C-oracle differential tests over 8 boundary and 4096 deterministic random
+vectors. The differential suite exercises both distinct buffers and the
+in-place call shape used by the reference transform.
+
+The algebra layer connects `-1033` to schedule entry 1 and therefore to the
+mathematical root `zeta_root^96`. Assuming every input coefficient is in
+`[-q, q)`, it proves the two butterfly congruences modulo `q = 3457`. It also
+proves the explicit bounds `[-2q, 2q)` for the low half and `[-3q, 3q)` for
+the high half, providing the range contract needed by the next transform
+layer.
+
+This slice is deliberately only the initial cyclotomic split. It does not yet
+include the following radix-3 layer, the five radix-2 layers, their composition
+into the complete forward transform, or `invntt`. The EasyCrypt model proves
+array-value behavior; in-place pointer aliasing is covered by Jasmin's safety
+check and the machine-level differential suite rather than a separate formal
+aliasing theorem.
+
 ## Verified NTRU+768 NTT root schedule
 
 The shared EasyCrypt theory at
@@ -107,8 +142,9 @@ constants, and loop bounds with:
 This milestone still does not prove:
 
 - that upstream callers establish the signed-range preconditions for every call;
-- that executable Jasmin or C `ntt` and `invntt` procedures implement the
-  proved factorization and its inverse; or
+- the radix-3 and five radix-2 executable layers, their composition into the
+  complete forward `ntt`, or an executable `invntt` implementing the proved
+  inverse schedule; or
 - key generation, encryption, or the full KEM.
 
 ## Formosa ML-KEM reference
@@ -120,10 +156,11 @@ reference Jasmin implementations and EasyCrypt proofs for ML-KEM, including
 security, specification, correctness, safety, and constant-time artifacts.
 
 The Formosa material is included as an external reference corpus. The NTRU+768
-algebra bridge imports its generic signed-Montgomery theory and a generic word
-arithmetic-shift lemma, then instantiates and proves the NTRU+-specific
-constants, bounds, and quotient-ring semantics locally. Formosa's ML-KEM
-verification results do not establish any property of NTRU+.
+basemul and forward-NTT algebra bridges reuse its generic signed-Montgomery
+theory and word arithmetic lemmas, then instantiate and prove the
+NTRU+-specific constants, bounds, schedule, and quotient-ring semantics
+locally. Formosa's ML-KEM verification results do not establish any property
+of NTRU+.
 
 Clone this repository with all nested dependencies:
 
