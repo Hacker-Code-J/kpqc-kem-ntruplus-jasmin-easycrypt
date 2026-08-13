@@ -171,9 +171,44 @@ bounds, absence of signed-word wrap in every butterfly input, the two output
 congruences modulo `q = 3457`, and the centered Barrett output range
 `[-1728,1728]` for every coefficient.
 
-This layer is also a standalone in-place array-value theorem. The remaining
-`step=32`, `16`, `8`, and `4` layers, their composition with the verified
-prefix, and executable `invntt` correctness remain separate milestones.
+This layer is also a standalone in-place array-value theorem. The `step=32`
+layer below consumes its centered output contract; a full composition theorem
+and the remaining `step=16`, `8`, and `4` layers remain separate milestones.
+
+## Executable forward-NTT radix-2 `step=32` layer
+
+The in-place scalar procedure at
+`ntruplus/jasmin/768/ref/ntt_radix2_32.jazz` implements the second iteration of
+the final loop in `NTRU+/NTRU+768/ntt.c::ntt`. Its twelve 32-pair blocks
+consume `zetas[12..23]` at bases `0`, `64`, ..., `704`, preserving the same
+signed multiply, Montgomery reduction, promoted butterfly, and centered
+Barrett data flow as the C implementation.
+
+Run the complete `step=32` check with:
+
+```sh
+./scripts/verify-ntruplus768-ntt-radix2-32.sh
+```
+
+The check covers reproducible extraction, exact word-level correctness and
+losslessness, Jasmin safety, CT and SCT analysis, and fail-closed coupling to
+the C prefix, twiddle order, pair offsets, helper bodies, and twelve-block call
+schedule. Differential and UBSan tests cover 16 boundary vectors, 4096 direct
+`step=32` vectors, and 2048 vectors chained through the Jasmin stage-1,
+radix-3, and `step=64` slices; both disjoint and in-place stage-1 caller shapes
+are exercised.
+
+The algebra layer ties the twelve twiddles to root exponents `8`, `152`, `56`,
+`200`, `104`, `248`, `40`, `184`, `88`, `232`, `136`, and `280`. Assuming
+exactly the centered output contract established for `step=64`, an explicit
+bridge derives this precondition from the `step=64` algebra relation. The
+layer then proves the Montgomery product bounds, absence of signed-word wrap,
+both butterfly congruences modulo `q = 3457`, and the centered Barrett output
+range `[-1728,1728]` for every coefficient.
+
+This layer remains a standalone in-place array-value theorem. The remaining
+`step=16`, `8`, and `4` layers, a composition theorem for the complete forward
+transform, and executable `invntt` correctness remain separate milestones.
 
 ## Verified NTRU+768 NTT root schedule
 
@@ -208,7 +243,7 @@ constants, and loop bounds with:
 This milestone still does not prove:
 
 - that upstream callers establish the signed-range preconditions for every call;
-- the remaining four radix-2 executable layers, composition of all verified layers into
+- the remaining three radix-2 executable layers, composition of all verified layers into
   the complete forward `ntt`, or an executable `invntt` implementing the
   proved inverse schedule; or
 - key generation, encryption, or the full KEM.

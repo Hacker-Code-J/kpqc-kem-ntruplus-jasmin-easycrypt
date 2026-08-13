@@ -1,0 +1,14 @@
+[general]
+timeout = 30
+
+rdirs = .
+rdirs = extracted
+rdirs = ../basemul
+rdirs = ../basemul/extracted
+rdirs = ../ntt_radix3
+rdirs = ../ntt_radix3/extracted
+rdirs = ../ntt_radix2_64
+rdirs = ../ntt_radix2_64/extracted
+rdirs = ../ntt_schedule
+rdirs = ../../../../../external/formosa-mlkem/proof/eclib
+rdirs = ../../../../../external/formosa-mlkem/crypto-specs/common
