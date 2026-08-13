@@ -287,8 +287,8 @@ congruences modulo `q = 3457`, and the centered Barrett output range
 `[-1728,1728]` for every coefficient.
 
 This layer remains a standalone in-place array-value theorem. The final
-`step=4` layer below consumes its centered output contract; full forward-NTT
-composition and executable `invntt` correctness remain separate milestones.
+`step=4` layer below consumes its centered output contract, and the composed
+wrapper section immediately after it closes the full forward executable.
 
 ## Executable forward-NTT radix-2 `step=4` layer
 
@@ -332,9 +332,55 @@ bounds, absence of signed-word wrap in every butterfly input, both output
 congruences modulo `q = 3457`, and the centered Barrett output range
 `[-1728,1728]` for every coefficient.
 
-This layer remains a standalone in-place array-value theorem. The remaining
-boundaries are full forward-NTT composition, executable `invntt`, and the full
-NTRU+768 KEM proof chain.
+This layer remains a standalone in-place array-value theorem. The composed
+wrapper section below discharges the full forward composition. The remaining
+boundaries are formal caller-range establishment where it is still needed,
+executable `invntt`, and the full NTRU+768 KEM proof chain.
+
+## Composed executable forward NTT
+
+The wrapper at `ntruplus/jasmin/768/ref/ntt.jazz` now exports the single
+symbol `jade_ntruplus_ntruplus768_amd64_ref_ntt`. It reuses the verified
+stage namespaces and `require` edges for `ntt_stage1.jazz`, `ntt_radix3.jazz`,
+`ntt_radix2_64.jazz`, `ntt_radix2_32.jazz`, `ntt_radix2_16.jazz`,
+`ntt_radix2_8.jazz`, and `ntt_radix2_4.jazz`, and calls them in exactly that
+seven-stage order.
+
+Collectively, the wrapper consumes exactly `zetas[1..191]`: stage 1 reads
+index `1`, radix-3 reads `2..5`, the radix-2 `step=64` layer reads `6..11`,
+`step=32` reads `12..23`, `step=16` reads `24..47`, `step=8` reads `48..95`,
+and `step=4` reads `96..191`. The checker is fail-closed on the C schedule,
+the Jasmin namespace/require reuse, the two-buffer wrapper signature, and the
+seven-call body order.
+
+Run the complete composed forward-NTT check with:
+
+```sh
+./scripts/verify-ntruplus768-ntt.sh
+```
+
+The verifier is fail-closed on tools, dependency trees, bash syntax, proof
+holes, fresh old-array-model `jasmin2ec` extraction, checker self-check,
+Jasmin build, safety, CT, and SCT analysis, differential and UBSan coverage,
+and both the word-level and algebra EasyCrypt proofs through the Why3-server
+wrapper flow. Differential and UBSan tests cover 8 boundary vectors and 4096
+deterministic random vectors for both the disjoint two-buffer call and the
+in-place caller shape used by the reference transform.
+
+The EasyCrypt word proof imports the extracted `NTRUPlus768NTT.ec` wrapper
+together with the seven previously verified stage proofs, proves exact
+functional correctness against their composed specification, and proves
+losslessness for the exported symbol. The algebra layer threads the exact
+top-level input contract `[-q, q)` coefficientwise through stage 1, radix-3,
+and the five centered radix-2 layers, yielding the forward-NTT congruence
+chain modulo `q = 3457`.
+
+This milestone does not overclaim a formal C equivalence theorem. The
+parser-based differential checker provides executable C/Jasmin evidence for
+the full wrapper, while EasyCrypt proves the Jasmin wrapper against the
+composed stage specifications and algebra bridges. The remaining boundaries
+are formal caller-range establishment where it is still needed, executable
+`invntt`, and the full NTRU+768 KEM proof chain.
 
 ## Verified NTRU+768 NTT root schedule
 
@@ -368,10 +414,9 @@ constants, and loop bounds with:
 
 This milestone still does not prove:
 
-- that upstream callers establish the signed-range preconditions for every call;
-- composition of all verified executable forward layers into the complete
-  forward `ntt`, or an executable `invntt` implementing the proved inverse
-  schedule; or
+- that upstream callers establish the signed-range preconditions for every
+  call, where that argument is not already discharged elsewhere;
+- an executable `invntt` implementing the proved inverse schedule; or
 - key generation, encryption, or the full KEM.
 
 ## Formosa ML-KEM reference
