@@ -1,0 +1,150 @@
+param int NTRUPLUS_N = 768;
+param int NTRUPLUS_Q = 3457;
+param int NTRUPLUS_QINV = 12929;
+param int NTRUPLUS_BARRETT_V = 19412;
+param int NTRUPLUS_BARRETT_BIAS = 33554432;
+param int NTRUPLUS_ZETA12 = -256;
+param int NTRUPLUS_ZETA13 = 1484;
+param int NTRUPLUS_ZETA14 = 1262;
+param int NTRUPLUS_ZETA15 = -1590;
+param int NTRUPLUS_ZETA16 = 1611;
+param int NTRUPLUS_ZETA17 = 222;
+param int NTRUPLUS_ZETA18 = 1164;
+param int NTRUPLUS_ZETA19 = -1346;
+param int NTRUPLUS_ZETA20 = 1716;
+param int NTRUPLUS_ZETA21 = -1521;
+param int NTRUPLUS_ZETA22 = -357;
+param int NTRUPLUS_ZETA23 = 395;
+
+inline fn __mul_i16(reg u16 a b) -> reg u32
+{
+  reg u32 ad;
+  reg u32 bd;
+  reg u32 c;
+
+  ad = (32s) a;
+  bd = (32s) b;
+  c = ad * bd;
+  return c;
+}
+
+inline fn __montgomery_reduce(reg u32 a) -> reg u16
+{
+  reg u16 t;
+  reg u32 q;
+  reg u32 td;
+  reg u32 r;
+
+  q = NTRUPLUS_Q;
+  td = (32s) a;
+  td *= NTRUPLUS_QINV;
+  t = td;
+  td = (32s) t;
+  r = (32s) a;
+  td *= q;
+  r -= td;
+  r >>s= 16;
+  t = r;
+  return t;
+}
+
+inline fn __barrett_reduce(reg u16 a) -> reg u16
+{
+  reg u16 t;
+  reg u32 td;
+  reg u32 v;
+  reg u32 q;
+
+  v = NTRUPLUS_BARRETT_V;
+  td = (32s) a;
+  td *= v;
+  td += NTRUPLUS_BARRETT_BIAS;
+  td >>s= 26;
+  t = td;
+  q = NTRUPLUS_Q;
+  td = (32s) t;
+  td *= q;
+  t = td;
+  t = a - t;
+  return t;
+}
+
+#[safety =
+   { requires = is_arr_init(rp,0,2 * NTRUPLUS_N)
+   , ensures = is_arr_init(rp,0,2 * NTRUPLUS_N)
+   }
+]
+inline fn __invntt_radix2_32_block(
+  reg mut ptr u16[NTRUPLUS_N] rp,
+  reg u64 base,
+  reg u16 zeta) -> reg ptr u16[NTRUPLUS_N]
+{
+  reg u16 low;
+  reg u16 high;
+  reg u16 sum;
+  reg u16 diff;
+  reg u16 prod;
+  reg u32 acc;
+  reg u64 i;
+  reg u64 stop;
+  reg u32 wd;
+  reg u32 td;
+
+  i = base;
+  stop = base;
+  stop += 32;
+  while (i < stop) {
+    low = rp[i];
+    high = rp[i + 32];
+
+    wd = (32s) low;
+    td = (32s) high;
+    wd += td;
+    sum = wd;
+
+    wd = (32s) high;
+    td = (32s) low;
+    wd -= td;
+    diff = wd;
+
+    sum = __barrett_reduce(sum);
+    acc = __mul_i16(zeta, diff);
+    prod = __montgomery_reduce(acc);
+    rp[i] = sum;
+    rp[i + 32] = prod;
+    i += 1;
+  }
+
+  return rp;
+}
+
+#[safety =
+   { requires = is_arr_init(rp,0,2 * NTRUPLUS_N)
+   , ensures = is_arr_init(rp,0,2 * NTRUPLUS_N)
+   }
+]
+#[ct = "secret → secret"]
+#[sct="
+{ ptr: transient, val: secret } →
+{ ptr: public, val: secret }
+"]
+export fn jade_ntruplus_ntruplus768_amd64_ref_invntt_radix2_32(
+  reg mut ptr u16[NTRUPLUS_N] rp) -> reg ptr u16[NTRUPLUS_N]
+{
+  _ = #init_msf();
+
+  rp = __invntt_radix2_32_block(rp, 0, NTRUPLUS_ZETA23);
+  rp = __invntt_radix2_32_block(rp, 64, NTRUPLUS_ZETA22);
+  rp = __invntt_radix2_32_block(rp, 128, NTRUPLUS_ZETA21);
+  rp = __invntt_radix2_32_block(rp, 192, NTRUPLUS_ZETA20);
+  rp = __invntt_radix2_32_block(rp, 256, NTRUPLUS_ZETA19);
+  rp = __invntt_radix2_32_block(rp, 320, NTRUPLUS_ZETA18);
+  rp = __invntt_radix2_32_block(rp, 384, NTRUPLUS_ZETA17);
+  rp = __invntt_radix2_32_block(rp, 448, NTRUPLUS_ZETA16);
+  rp = __invntt_radix2_32_block(rp, 512, NTRUPLUS_ZETA15);
+  rp = __invntt_radix2_32_block(rp, 576, NTRUPLUS_ZETA14);
+  rp = __invntt_radix2_32_block(rp, 640, NTRUPLUS_ZETA13);
+  rp = __invntt_radix2_32_block(rp, 704, NTRUPLUS_ZETA12);
+
+  return rp;
+}
