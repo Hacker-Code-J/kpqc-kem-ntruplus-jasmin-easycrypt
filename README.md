@@ -245,9 +245,50 @@ signed-word wrap in every butterfly input, both output congruences modulo
 `q = 3457`, and the centered Barrett output range `[-1728,1728]` for every
 coefficient.
 
-This layer remains a standalone in-place array-value theorem. The remaining
+This layer remains a standalone in-place array-value theorem. The downstream
 `step=8` and `step=4` layers, full forward-NTT composition, and executable
 `invntt` correctness remain separate milestones.
+
+## Executable forward-NTT radix-2 `step=8` layer
+
+The in-place scalar procedure at
+`ntruplus/jasmin/768/ref/ntt_radix2_8.jazz` implements the fourth iteration of
+the final `for (step = 64; step >= 4; step >>= 1)` loop in
+`NTRU+/NTRU+768/ntt.c::ntt`. Its 48 8-pair blocks use bases `0`, `16`, ...,
+`752` and consume exactly
+`zetas[48..95] = {1449, 837, 901, 1637, -569, -1617, -1530, 1199, 50, -830, -625, 4, 176, -156, 1257, -1507, -380, -606, 1293, 661, 1428, -1580, -565, -992, 548, -800, 64, -371, 961, 641, 87, 630, 675, -834, 205, 54, -1081, 1351, 1413, -1331, -1673, -1267, -1558, 281, -1464, -588, 1015, 436}`.
+The standalone slice preserves the same signed multiply, Montgomery reduction,
+promoted butterfly, and centered Barrett data flow as the C implementation.
+
+Run the complete `step=8` check with:
+
+```sh
+./scripts/verify-ntruplus768-ntt-radix2-8.sh
+```
+
+The check covers reproducible extraction, exact word-level correctness and
+losslessness, the indexed algebra bridge, Jasmin safety, CT and SCT analysis,
+and fail-closed coupling to the C prefix, twiddle order, pair offsets, helper
+bodies, and 48-block call schedule. Differential and UBSan tests cover 32
+boundary vectors, 4096 direct `step=8` vectors, and 2048 vectors chained
+through the Jasmin stage-1, radix-3, `step=64`, `step=32`, and `step=16`
+slices; both disjoint and in-place stage-1 caller shapes are exercised.
+
+The algebra layer ties the 48 twiddles to root exponents
+`2`, `146`, `74`, `218`, `38`, `182`, `110`, `254`, `14`, `158`, `86`, `230`,
+`50`, `194`, `122`, `266`, `26`, `170`, `98`, `242`, `62`, `206`, `134`,
+`278`, `10`, `154`, `82`, `226`, `46`, `190`, `118`, `262`, `22`, `166`,
+`94`, `238`, `58`, `202`, `130`, `274`, `34`, `178`, `106`, `250`, `70`,
+`214`, `142`, and `286`. Assuming exactly the centered output contract
+established for `step=16`, an explicit bridge derives this precondition from
+the `step=16` algebra relation. The layer proves the Montgomery product
+bounds, absence of signed-word wrap in every butterfly input, both output
+congruences modulo `q = 3457`, and the centered Barrett output range
+`[-1728,1728]` for every coefficient.
+
+This layer remains a standalone in-place array-value theorem. The remaining
+`step=4` layer, full forward-NTT composition, and executable `invntt`
+correctness remain separate milestones.
 
 ## Verified NTRU+768 NTT root schedule
 
