@@ -286,9 +286,55 @@ bounds, absence of signed-word wrap in every butterfly input, both output
 congruences modulo `q = 3457`, and the centered Barrett output range
 `[-1728,1728]` for every coefficient.
 
+This layer remains a standalone in-place array-value theorem. The final
+`step=4` layer below consumes its centered output contract; full forward-NTT
+composition and executable `invntt` correctness remain separate milestones.
+
+## Executable forward-NTT radix-2 `step=4` layer
+
+The in-place scalar procedure at
+`ntruplus/jasmin/768/ref/ntt_radix2_4.jazz` implements the final iteration of
+the `for (step = 64; step >= 4; step >>= 1)` loop in
+`NTRU+/NTRU+768/ntt.c::ntt`. Its 96 4-pair blocks cover bases `0`, `8`, ...,
+`760`, for 384 butterflies total, and consume exactly
+`zetas[96..191] = {223, 1138, -1059, -397, -183, 1655, 559, -1674, 277, 933, 1723, 437, -1514, 242, 1640, 432, -1583, 696, 774, 1671, 927, 514, 512, 489, 297, 601, 1473, 1130, 1322, 871, 760, 1212, -312, -352, 443, 943, 8, 1250, -100, 1660, -31, 1206, -1341, -1247, 444, 235, 1364, -1209, 361, 230, 673, 582, 1409, 1501, 1401, 251, 1022, -1063, 1053, 1188, 417, -1391, -27, -1626, 1685, -315, 1408, -1248, 400, 274, -1543, 32, -1550, 1531, -1367, -124, 1458, 1379, -940, -1681, 22, 1709, -275, 1108, 354, -1728, -968, 858, 1221, -218, 294, -732, -1095, 892, 1588, -779}`.
+The standalone slice preserves the same signed multiply, Montgomery reduction,
+promoted butterfly, and centered Barrett data flow as the C implementation.
+
+Run the complete `step=4` check with:
+
+```sh
+./scripts/verify-ntruplus768-ntt-radix2-4.sh
+```
+
+The check is fail-closed on tools, dependency trees, fresh old-array-model
+`jasmin2ec` extraction, checker self-check, Jasmin build, safety, CT, and SCT
+analysis, differential and chained-prefix tests, UBSan coverage, exact
+word-level correctness and losslessness, and the schedule/range/algebra bridge.
+Differential and UBSan tests cover 44 boundary vectors, 4096 direct `step=4`
+vectors, and 2048 vectors chained through the Jasmin stage-1, radix-3,
+`step=64`, `step=32`, `step=16`, and `step=8` slices; both disjoint and
+in-place stage-1 caller shapes are exercised.
+
+The algebra layer ties the 96 twiddles to the final 96 schedule exponents
+`1`, `145`, `73`, `217`, `37`, `181`, `109`, `253`, `19`, `163`, `91`, `235`,
+`55`, `199`, `127`, `271`, `7`, `151`, `79`, `223`, `43`, `187`, `115`, `259`,
+`25`, `169`, `97`, `241`, `61`, `205`, `133`, `277`, `13`, `157`, `85`, `229`,
+`49`, `193`, `121`, `265`, `31`, `175`, `103`, `247`, `67`, `211`, `139`,
+`283`, `5`, `149`, `77`, `221`, `41`, `185`, `113`, `257`, `23`, `167`, `95`,
+`239`, `59`, `203`, `131`, `275`, `11`, `155`, `83`, `227`, `47`, `191`,
+`119`, `263`, `29`, `173`, `101`, `245`, `65`, `209`, `137`, `281`, `17`,
+`161`, `89`, `233`, `53`, `197`, `125`, `269`, `35`, `179`, `107`, `251`,
+`71`, `215`, `143`, and `287`. Assuming exactly the centered output contract
+established for `step=8`, an explicit bridge derives this precondition from
+the `step=8` algebra relation. The layer then proves the Montgomery product
+bounds, absence of signed-word wrap in every butterfly input, both output
+congruences modulo `q = 3457`, and the centered Barrett output range
+`[-1728,1728]` for every coefficient.
+
 This layer remains a standalone in-place array-value theorem. The remaining
-`step=4` layer, full forward-NTT composition, and executable `invntt`
-correctness remain separate milestones.
+boundaries are full forward-NTT composition, executable `invntt`, and the full
+NTRU+768 KEM proof chain.
 
 ## Verified NTRU+768 NTT root schedule
 
@@ -323,9 +369,9 @@ constants, and loop bounds with:
 This milestone still does not prove:
 
 - that upstream callers establish the signed-range preconditions for every call;
-- the remaining three radix-2 executable layers, composition of all verified layers into
-  the complete forward `ntt`, or an executable `invntt` implementing the
-  proved inverse schedule; or
+- composition of all verified executable forward layers into the complete
+  forward `ntt`, or an executable `invntt` implementing the proved inverse
+  schedule; or
 - key generation, encryption, or the full KEM.
 
 ## Formosa ML-KEM reference
