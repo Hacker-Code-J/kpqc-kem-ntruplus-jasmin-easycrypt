@@ -379,8 +379,39 @@ This milestone does not overclaim a formal C equivalence theorem. The
 parser-based differential checker provides executable C/Jasmin evidence for
 the full wrapper, while EasyCrypt proves the Jasmin wrapper against the
 composed stage specifications and algebra bridges. The remaining boundaries
-are formal caller-range establishment where it is still needed, executable
-`invntt`, and the full NTRU+768 KEM proof chain.
+are formal caller-range establishment where it is still needed, the complete
+executable `invntt`, and the full NTRU+768 KEM proof chain.
+
+## Executable inverse-NTT radix-2 `step=4` layer
+
+The in-place scalar procedure at
+`ntruplus/jasmin/768/ref/invntt_radix2_4.jazz` implements the first iteration
+of the `for (step = 4; step <= 64; step <<= 1)` loop in
+`NTRU+/NTRU+768/ntt.c::invntt`. Its 96 four-pair blocks cover bases `0`, `8`,
+..., `760`, for 384 butterflies total. They consume the terminal forward
+twiddles in exact reverse order, from `zetas[191]` through `zetas[96]`.
+
+Run the complete inverse `step=4` check with:
+
+```sh
+./scripts/verify-ntruplus768-invntt-radix2-4.sh
+```
+
+The verifier fails closed on missing tools or dependencies, proof holes,
+source/schedule drift, stale old-array-model extraction, Jasmin build and
+safety, CT and SCT analysis, differential execution, UBSan, and the EasyCrypt
+word and algebra proofs. The word proof establishes exact array semantics and
+losslessness. Under the coefficientwise input range `[-q,q)`, the algebra
+proof shows that each low lane is the centered representative of `lo+hi`,
+each high lane is congruent to `zeta*(hi-lo)`, low outputs lie in
+`[-1728,1728]`, and high outputs remain in `[-q,q)`.
+
+This is deliberately an in-place layer over an already materialized result
+buffer. The initial `a -> r` copy in the C function belongs to the final
+two-buffer `invntt(r,a)` wrapper, where its alias behavior can be checked once.
+The inverse `step=8`, `step=16`, `step=32`, and `step=64` layers, inverse
+radix-3 layer, final cyclotomic recombination and scaling, complete wrapper,
+and full KEM proof remain separate milestones.
 
 ## Verified NTRU+768 NTT root schedule
 
@@ -416,7 +447,7 @@ This milestone still does not prove:
 
 - that upstream callers establish the signed-range preconditions for every
   call, where that argument is not already discharged elsewhere;
-- an executable `invntt` implementing the proved inverse schedule; or
+- a complete executable `invntt` implementing the proved inverse schedule; or
 - key generation, encryption, or the full KEM.
 
 ## Formosa ML-KEM reference
@@ -428,7 +459,7 @@ reference Jasmin implementations and EasyCrypt proofs for ML-KEM, including
 security, specification, correctness, safety, and constant-time artifacts.
 
 The Formosa material is included as an external reference corpus. The NTRU+768
-basemul and forward-NTT algebra bridges reuse its generic signed-Montgomery
+arithmetic and transform algebra bridges reuse its generic signed-Montgomery
 theory and word arithmetic lemmas, then instantiate and prove the
 NTRU+-specific constants, bounds, schedule, and quotient-ring semantics
 locally. Formosa's ML-KEM verification results do not establish any property
