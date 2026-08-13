@@ -1,0 +1,222 @@
+param int NTRUPLUS_N = 768;
+param int NTRUPLUS_Q = 3457;
+param int NTRUPLUS_QINV = 12929;
+param int NTRUPLUS_BARRETT_V = 19412;
+param int NTRUPLUS_BARRETT_BIAS = 33554432;
+param int NTRUPLUS_ZETA48 = 1449;
+param int NTRUPLUS_ZETA49 = 837;
+param int NTRUPLUS_ZETA50 = 901;
+param int NTRUPLUS_ZETA51 = 1637;
+param int NTRUPLUS_ZETA52 = -569;
+param int NTRUPLUS_ZETA53 = -1617;
+param int NTRUPLUS_ZETA54 = -1530;
+param int NTRUPLUS_ZETA55 = 1199;
+param int NTRUPLUS_ZETA56 = 50;
+param int NTRUPLUS_ZETA57 = -830;
+param int NTRUPLUS_ZETA58 = -625;
+param int NTRUPLUS_ZETA59 = 4;
+param int NTRUPLUS_ZETA60 = 176;
+param int NTRUPLUS_ZETA61 = -156;
+param int NTRUPLUS_ZETA62 = 1257;
+param int NTRUPLUS_ZETA63 = -1507;
+param int NTRUPLUS_ZETA64 = -380;
+param int NTRUPLUS_ZETA65 = -606;
+param int NTRUPLUS_ZETA66 = 1293;
+param int NTRUPLUS_ZETA67 = 661;
+param int NTRUPLUS_ZETA68 = 1428;
+param int NTRUPLUS_ZETA69 = -1580;
+param int NTRUPLUS_ZETA70 = -565;
+param int NTRUPLUS_ZETA71 = -992;
+param int NTRUPLUS_ZETA72 = 548;
+param int NTRUPLUS_ZETA73 = -800;
+param int NTRUPLUS_ZETA74 = 64;
+param int NTRUPLUS_ZETA75 = -371;
+param int NTRUPLUS_ZETA76 = 961;
+param int NTRUPLUS_ZETA77 = 641;
+param int NTRUPLUS_ZETA78 = 87;
+param int NTRUPLUS_ZETA79 = 630;
+param int NTRUPLUS_ZETA80 = 675;
+param int NTRUPLUS_ZETA81 = -834;
+param int NTRUPLUS_ZETA82 = 205;
+param int NTRUPLUS_ZETA83 = 54;
+param int NTRUPLUS_ZETA84 = -1081;
+param int NTRUPLUS_ZETA85 = 1351;
+param int NTRUPLUS_ZETA86 = 1413;
+param int NTRUPLUS_ZETA87 = -1331;
+param int NTRUPLUS_ZETA88 = -1673;
+param int NTRUPLUS_ZETA89 = -1267;
+param int NTRUPLUS_ZETA90 = -1558;
+param int NTRUPLUS_ZETA91 = 281;
+param int NTRUPLUS_ZETA92 = -1464;
+param int NTRUPLUS_ZETA93 = -588;
+param int NTRUPLUS_ZETA94 = 1015;
+param int NTRUPLUS_ZETA95 = 436;
+
+inline fn __mul_i16(reg u16 a b) -> reg u32
+{
+  reg u32 ad;
+  reg u32 bd;
+  reg u32 c;
+
+  ad = (32s) a;
+  bd = (32s) b;
+  c = ad * bd;
+  return c;
+}
+
+inline fn __montgomery_reduce(reg u32 a) -> reg u16
+{
+  reg u16 t;
+  reg u32 q;
+  reg u32 td;
+  reg u32 r;
+
+  q = NTRUPLUS_Q;
+  td = (32s) a;
+  td *= NTRUPLUS_QINV;
+  t = td;
+  td = (32s) t;
+  r = (32s) a;
+  td *= q;
+  r -= td;
+  r >>s= 16;
+  t = r;
+  return t;
+}
+
+inline fn __barrett_reduce(reg u16 a) -> reg u16
+{
+  reg u16 t;
+  reg u32 td;
+  reg u32 v;
+  reg u32 q;
+
+  v = NTRUPLUS_BARRETT_V;
+  td = (32s) a;
+  td *= v;
+  td += NTRUPLUS_BARRETT_BIAS;
+  td >>s= 26;
+  t = td;
+  q = NTRUPLUS_Q;
+  td = (32s) t;
+  td *= q;
+  t = td;
+  t = a - t;
+  return t;
+}
+
+#[safety =
+   { requires = is_arr_init(rp,0,2 * NTRUPLUS_N)
+   , ensures = is_arr_init(rp,0,2 * NTRUPLUS_N)
+   }
+]
+inline fn __invntt_radix2_8_block(
+  reg mut ptr u16[NTRUPLUS_N] rp,
+  reg u64 base,
+  reg u16 zeta) -> reg ptr u16[NTRUPLUS_N]
+{
+  reg u16 low;
+  reg u16 high;
+  reg u16 sum;
+  reg u16 diff;
+  reg u16 prod;
+  reg u32 acc;
+  reg u64 i;
+  reg u64 stop;
+  reg u32 wd;
+  reg u32 td;
+
+  i = base;
+  stop = base;
+  stop += 8;
+  while (i < stop) {
+    low = rp[i];
+    high = rp[i + 8];
+
+    wd = (32s) low;
+    td = (32s) high;
+    wd += td;
+    sum = wd;
+
+    wd = (32s) high;
+    td = (32s) low;
+    wd -= td;
+    diff = wd;
+
+    sum = __barrett_reduce(sum);
+    acc = __mul_i16(zeta, diff);
+    prod = __montgomery_reduce(acc);
+    rp[i] = sum;
+    rp[i + 8] = prod;
+    i += 1;
+  }
+
+  return rp;
+}
+
+#[safety =
+   { requires = is_arr_init(rp,0,2 * NTRUPLUS_N)
+   , ensures = is_arr_init(rp,0,2 * NTRUPLUS_N)
+   }
+]
+#[ct = "secret → secret"]
+#[sct="
+{ ptr: transient, val: secret } →
+{ ptr: public, val: secret }
+"]
+export fn jade_ntruplus_ntruplus768_amd64_ref_invntt_radix2_8(
+  reg mut ptr u16[NTRUPLUS_N] rp) -> reg ptr u16[NTRUPLUS_N]
+{
+  _ = #init_msf();
+
+  rp = __invntt_radix2_8_block(rp, 0, NTRUPLUS_ZETA95);
+  rp = __invntt_radix2_8_block(rp, 16, NTRUPLUS_ZETA94);
+  rp = __invntt_radix2_8_block(rp, 32, NTRUPLUS_ZETA93);
+  rp = __invntt_radix2_8_block(rp, 48, NTRUPLUS_ZETA92);
+  rp = __invntt_radix2_8_block(rp, 64, NTRUPLUS_ZETA91);
+  rp = __invntt_radix2_8_block(rp, 80, NTRUPLUS_ZETA90);
+  rp = __invntt_radix2_8_block(rp, 96, NTRUPLUS_ZETA89);
+  rp = __invntt_radix2_8_block(rp, 112, NTRUPLUS_ZETA88);
+  rp = __invntt_radix2_8_block(rp, 128, NTRUPLUS_ZETA87);
+  rp = __invntt_radix2_8_block(rp, 144, NTRUPLUS_ZETA86);
+  rp = __invntt_radix2_8_block(rp, 160, NTRUPLUS_ZETA85);
+  rp = __invntt_radix2_8_block(rp, 176, NTRUPLUS_ZETA84);
+  rp = __invntt_radix2_8_block(rp, 192, NTRUPLUS_ZETA83);
+  rp = __invntt_radix2_8_block(rp, 208, NTRUPLUS_ZETA82);
+  rp = __invntt_radix2_8_block(rp, 224, NTRUPLUS_ZETA81);
+  rp = __invntt_radix2_8_block(rp, 240, NTRUPLUS_ZETA80);
+  rp = __invntt_radix2_8_block(rp, 256, NTRUPLUS_ZETA79);
+  rp = __invntt_radix2_8_block(rp, 272, NTRUPLUS_ZETA78);
+  rp = __invntt_radix2_8_block(rp, 288, NTRUPLUS_ZETA77);
+  rp = __invntt_radix2_8_block(rp, 304, NTRUPLUS_ZETA76);
+  rp = __invntt_radix2_8_block(rp, 320, NTRUPLUS_ZETA75);
+  rp = __invntt_radix2_8_block(rp, 336, NTRUPLUS_ZETA74);
+  rp = __invntt_radix2_8_block(rp, 352, NTRUPLUS_ZETA73);
+  rp = __invntt_radix2_8_block(rp, 368, NTRUPLUS_ZETA72);
+  rp = __invntt_radix2_8_block(rp, 384, NTRUPLUS_ZETA71);
+  rp = __invntt_radix2_8_block(rp, 400, NTRUPLUS_ZETA70);
+  rp = __invntt_radix2_8_block(rp, 416, NTRUPLUS_ZETA69);
+  rp = __invntt_radix2_8_block(rp, 432, NTRUPLUS_ZETA68);
+  rp = __invntt_radix2_8_block(rp, 448, NTRUPLUS_ZETA67);
+  rp = __invntt_radix2_8_block(rp, 464, NTRUPLUS_ZETA66);
+  rp = __invntt_radix2_8_block(rp, 480, NTRUPLUS_ZETA65);
+  rp = __invntt_radix2_8_block(rp, 496, NTRUPLUS_ZETA64);
+  rp = __invntt_radix2_8_block(rp, 512, NTRUPLUS_ZETA63);
+  rp = __invntt_radix2_8_block(rp, 528, NTRUPLUS_ZETA62);
+  rp = __invntt_radix2_8_block(rp, 544, NTRUPLUS_ZETA61);
+  rp = __invntt_radix2_8_block(rp, 560, NTRUPLUS_ZETA60);
+  rp = __invntt_radix2_8_block(rp, 576, NTRUPLUS_ZETA59);
+  rp = __invntt_radix2_8_block(rp, 592, NTRUPLUS_ZETA58);
+  rp = __invntt_radix2_8_block(rp, 608, NTRUPLUS_ZETA57);
+  rp = __invntt_radix2_8_block(rp, 624, NTRUPLUS_ZETA56);
+  rp = __invntt_radix2_8_block(rp, 640, NTRUPLUS_ZETA55);
+  rp = __invntt_radix2_8_block(rp, 656, NTRUPLUS_ZETA54);
+  rp = __invntt_radix2_8_block(rp, 672, NTRUPLUS_ZETA53);
+  rp = __invntt_radix2_8_block(rp, 688, NTRUPLUS_ZETA52);
+  rp = __invntt_radix2_8_block(rp, 704, NTRUPLUS_ZETA51);
+  rp = __invntt_radix2_8_block(rp, 720, NTRUPLUS_ZETA50);
+  rp = __invntt_radix2_8_block(rp, 736, NTRUPLUS_ZETA49);
+  rp = __invntt_radix2_8_block(rp, 752, NTRUPLUS_ZETA48);
+
+  return rp;
+}

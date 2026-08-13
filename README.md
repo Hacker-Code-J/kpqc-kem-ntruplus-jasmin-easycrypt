@@ -409,9 +409,41 @@ each high lane is congruent to `zeta*(hi-lo)`, low outputs lie in
 This is deliberately an in-place layer over an already materialized result
 buffer. The initial `a -> r` copy in the C function belongs to the final
 two-buffer `invntt(r,a)` wrapper, where its alias behavior can be checked once.
-The inverse `step=8`, `step=16`, `step=32`, and `step=64` layers, inverse
-radix-3 layer, final cyclotomic recombination and scaling, complete wrapper,
-and full KEM proof remain separate milestones.
+The inverse `step=16`, `step=32`, and `step=64` layers, inverse radix-3 layer,
+final cyclotomic recombination and scaling, complete wrapper, and full KEM
+proof remain separate milestones.
+
+## Executable inverse-NTT radix-2 `step=8` layer
+
+The in-place scalar procedure at
+`ntruplus/jasmin/768/ref/invntt_radix2_8.jazz` implements the second iteration
+of the inverse radix-2 loop. Its 48 eight-pair blocks cover bases `0`, `16`,
+..., `752`, for another 384 butterflies. After `step=4` has consumed
+`zetas[191..96]`, this layer consumes `zetas[95]` through `zetas[48]` in exact
+descending order.
+
+Run the complete inverse `step=8` check with:
+
+```sh
+./scripts/verify-ntruplus768-invntt-radix2-8.sh
+```
+
+As for `step=4`, the verifier fails closed on source or schedule drift, proof
+holes, stale extraction, missing dependencies, Jasmin build and safety, CT and
+SCT analysis, differential execution, UBSan, and both EasyCrypt proof layers.
+The word proof establishes exact in-place array semantics and losslessness.
+The algebra proof links the descending twiddles to the shared 192-entry root
+schedule and shows, for coefficientwise inputs in `[-q,q)`, that low lanes are
+centered representatives of `lo+hi`, high lanes are congruent to
+`zeta*(hi-lo)`, low outputs lie in `[-1728,1728]`, and high outputs remain in
+`[-q,q)`. The preceding `step=4` algebra bounds imply this input domain for
+every coefficient, so the two inverse-layer contracts compose at their range
+boundary.
+
+This milestone still isolates one arithmetic layer. It does not include the C
+copy prelude, the later radix-2 and radix-3 layers, final recombination and
+scaling, the two-buffer wrapper, caller-range establishment, or the full KEM
+proof.
 
 ## Verified NTRU+768 NTT root schedule
 
