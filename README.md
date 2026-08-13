@@ -409,9 +409,9 @@ each high lane is congruent to `zeta*(hi-lo)`, low outputs lie in
 This is deliberately an in-place layer over an already materialized result
 buffer. The initial `a -> r` copy in the C function belongs to the final
 two-buffer `invntt(r,a)` wrapper, where its alias behavior can be checked once.
-The inverse `step=16`, `step=32`, and `step=64` layers, inverse radix-3 layer,
-final cyclotomic recombination and scaling, complete wrapper, and full KEM
-proof remain separate milestones.
+The inverse `step=32` and `step=64` layers, inverse radix-3 layer, final
+cyclotomic recombination and scaling, complete wrapper, and full KEM proof
+remain separate milestones.
 
 ## Executable inverse-NTT radix-2 `step=8` layer
 
@@ -441,9 +441,40 @@ every coefficient, so the two inverse-layer contracts compose at their range
 boundary.
 
 This milestone still isolates one arithmetic layer. It does not include the C
-copy prelude, the later radix-2 and radix-3 layers, final recombination and
-scaling, the two-buffer wrapper, caller-range establishment, or the full KEM
-proof.
+copy prelude, the inverse `step=32` and `step=64` or radix-3 layers, final
+recombination and scaling, the two-buffer wrapper, caller-range establishment,
+or the full KEM proof.
+
+## Executable inverse-NTT radix-2 `step=16` layer
+
+The in-place scalar procedure at
+`ntruplus/jasmin/768/ref/invntt_radix2_16.jazz` implements the third iteration
+of the inverse radix-2 loop. Its 24 sixteen-pair blocks cover bases `0`, `32`,
+..., `736`, for another 384 butterflies. After the preceding two layers have
+consumed `zetas[191..48]`, this layer consumes `zetas[47]` through `zetas[24]`
+in exact descending order.
+
+Run the complete inverse `step=16` check with:
+
+```sh
+./scripts/verify-ntruplus768-invntt-radix2-16.sh
+```
+
+The verifier fails closed on source and reverse-schedule drift, proof holes,
+stale extraction, missing dependencies, Jasmin build and safety, CT and SCT
+analysis, standalone and composed differential execution, UBSan, and both
+EasyCrypt proof layers. The word proof establishes exact in-place semantics
+and losslessness. For coefficientwise inputs in `[-q,q)`, the algebra proof
+shows that low lanes are centered representatives of `lo+hi`, high lanes are
+congruent to `zeta*(hi-lo)`, low outputs lie in `[-1728,1728]`, and high
+outputs remain in `[-q,q)`. An explicit bridge derives this input domain from
+the proved `step=8` algebra relation, extending the compositional range chain
+through `step=16`.
+
+This remains a single arithmetic-layer milestone. The C copy prelude, inverse
+`step=32` and `step=64`, inverse radix-3, final recombination and scaling, the
+complete two-buffer wrapper, caller-range establishment, and the full KEM
+proof remain separate work.
 
 ## Verified NTRU+768 NTT root schedule
 
