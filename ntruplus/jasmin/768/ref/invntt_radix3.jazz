@@ -1,0 +1,135 @@
+param int NTRUPLUS_N = 768;
+param int NTRUPLUS_Q = 3457;
+param int NTRUPLUS_QINV = 12929;
+param int NTRUPLUS_OMEGA = -886;
+param int NTRUPLUS_ZETA2 = -682;
+param int NTRUPLUS_ZETA3 = -248;
+param int NTRUPLUS_ZETA4 = -708;
+param int NTRUPLUS_ZETA5 = 682;
+
+inline fn __mul_i16(reg u16 a b) -> reg u32
+{
+  reg u32 ad;
+  reg u32 bd;
+  reg u32 c;
+
+  ad = (32s) a;
+  bd = (32s) b;
+  c = ad * bd;
+  return c;
+}
+
+inline fn __montgomery_reduce(reg u32 a) -> reg u16
+{
+  reg u16 t;
+  reg u32 q;
+  reg u32 td;
+  reg u32 r;
+
+  q = NTRUPLUS_Q;
+  td = (32s) a;
+  td *= NTRUPLUS_QINV;
+  t = td;
+  td = (32s) t;
+  r = (32s) a;
+  td *= q;
+  r -= td;
+  r >>s= 16;
+  t = r;
+  return t;
+}
+
+#[safety =
+   { requires = is_arr_init(rp,0,2 * NTRUPLUS_N)
+   , ensures = is_arr_init(rp,0,2 * NTRUPLUS_N)
+   }
+]
+#[ct = "secret → secret"]
+#[sct="
+{ ptr: transient, val: secret } →
+{ ptr: public, val: secret }
+"]
+export fn jade_ntruplus_ntruplus768_amd64_ref_invntt_radix3(
+  reg mut ptr u16[NTRUPLUS_N] rp) -> reg ptr u16[NTRUPLUS_N]
+{
+  reg u16 a0;
+  reg u16 a1;
+  reg u16 a2;
+  reg u16 t1;
+  reg u16 t2;
+  reg u16 t3;
+  reg u16 td;
+  reg u16 r0;
+  reg u32 acc;
+  reg u64 i;
+
+  _ = #init_msf();
+
+  i = 0;
+  while (i < 128) {
+    a0 = rp[i];
+    a1 = rp[i + 128];
+    a2 = rp[i + 256];
+
+    td = a1;
+    td -= a0;
+    acc = __mul_i16(NTRUPLUS_OMEGA, td);
+    t1 = __montgomery_reduce(acc);
+
+    td = a2;
+    td -= a0;
+    td += t1;
+    acc = __mul_i16(NTRUPLUS_ZETA4, td);
+    t2 = __montgomery_reduce(acc);
+
+    td = a2;
+    td -= a1;
+    td -= t1;
+    acc = __mul_i16(NTRUPLUS_ZETA5, td);
+    t3 = __montgomery_reduce(acc);
+
+    r0 = a0;
+    r0 += a1;
+    r0 += a2;
+
+    rp[i] = r0;
+    rp[i + 128] = t2;
+    rp[i + 256] = t3;
+    i += 1;
+  }
+
+  i = 384;
+  while (i < 512) {
+    a0 = rp[i];
+    a1 = rp[i + 128];
+    a2 = rp[i + 256];
+
+    td = a1;
+    td -= a0;
+    acc = __mul_i16(NTRUPLUS_OMEGA, td);
+    t1 = __montgomery_reduce(acc);
+
+    td = a2;
+    td -= a0;
+    td += t1;
+    acc = __mul_i16(NTRUPLUS_ZETA2, td);
+    t2 = __montgomery_reduce(acc);
+
+    td = a2;
+    td -= a1;
+    td -= t1;
+    acc = __mul_i16(NTRUPLUS_ZETA3, td);
+    t3 = __montgomery_reduce(acc);
+
+    r0 = a0;
+    r0 += a1;
+    r0 += a2;
+
+    rp[i] = r0;
+    rp[i + 128] = t2;
+    rp[i + 256] = t3;
+    i += 1;
+  }
+
+  return rp;
+}

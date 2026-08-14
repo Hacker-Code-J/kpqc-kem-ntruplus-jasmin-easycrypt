@@ -538,6 +538,41 @@ radix-3 layer, final recombination and scaling, the complete two-buffer
 wrapper, caller-range establishment, and the full KEM proof remain separate
 work.
 
+## Executable inverse-NTT radix-3 layer
+
+The in-place scalar procedure at
+`ntruplus/jasmin/768/ref/invntt_radix3.jazz` implements the final loop of
+`NTRU+/NTRU+768/ntt.c::invntt`. It performs 256 radix-3 butterflies as two
+128-lane blocks rooted at bases `0` and `384`. The C loop enters this layer
+with `k = 5`: at `start = 0` it loads `zeta2 = zetas[5] = 682` and then
+`zeta1 = zetas[4] = -708`, so the first Jasmin block is parameterized as
+`(zeta1, zeta2) = (-708, 682)`; at `start = 384` it loads
+`zeta2 = zetas[3] = -248` and then `zeta1 = zetas[2] = -682`, so the second
+block is parameterized as `(-682, -248)`. Both blocks use `OMEGA = -886`, and
+after the second block the C loop leaves this layer with `k = 1`.
+
+Run the complete inverse radix-3 check with:
+
+```sh
+./scripts/verify-ntruplus768-invntt-radix3.sh
+```
+
+The verifier is intended to fail closed on exact C/Jasmin reverse-schedule
+coupling and mutation self-checks, proof holes, stale extraction and helper
+clones, missing dependencies, Jasmin build and safety, CT and SCT analysis,
+standalone and `step=4 -> 8 -> 16 -> 32 -> 64 -> radix3` differential
+execution, UBSan, fresh extraction equality, and both EasyCrypt proof layers.
+The proof surface for this milestone is the same as the preceding inverse
+layers: exact in-place array semantics and losslessness at the word level,
+followed by the algebra bridge that consumes the proved `step=64` output range
+and discharges the final inverse radix-3 schedule.
+
+This remains a single arithmetic-layer milestone. It does not include the
+initial `a -> r` copy from the two-buffer C wrapper, the final 384-pair
+cyclotomic recombination and scaling, the complete `invntt(r, a)` wrapper,
+caller-range establishment beyond the verified layer chain, or the full KEM
+proof.
+
 ## Verified NTRU+768 NTT root schedule
 
 The shared EasyCrypt theory at
