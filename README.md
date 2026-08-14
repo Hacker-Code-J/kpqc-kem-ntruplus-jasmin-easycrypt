@@ -983,6 +983,52 @@ contents of unused `buf2[192..1151]`. SOTP decoding, reencryption, comparison,
 fallback selection, and full decapsulation/KEM correctness remain out of
 scope.
 
+## Verified NTRU+768 decapsulation `poly_sotp_decode` value seam
+
+The theories under
+`ntruplus/proof/768/ref/poly_sotp_decode/` close the next array-value boundary
+of decapsulation. For each of the 768 coefficients, the specification adds the
+corresponding bit from the upper 96-byte half of the 192-byte `hash_g` result.
+It declares failure exactly when any resulting integer is outside `{0, 1}`.
+On success, the lower 96-byte half is XORed bitwise with those sums and packed
+into the decoded 96-byte prefix; on failure, every output byte is zero.
+
+`poly_sotp_trit_sum_range` proves that the preceding `crepmod3` trit input and
+one hash bit restrict every sum to `[-1, 2]`. The success and failure lemmas
+then expose the raw decoded bytes or the fail-closed all-zero result. The
+terminal theorem `decap_terminal_poly_sotp_decode_value_flow` composes this
+specification with both existing inputs:
+
+- `m1 = inverse_invntt_crepmod3_spec(first_basemul_output)`; and
+- `buf2 = hash_g_spec(poly_tobytes_spec(r2_output))`.
+
+The Jasmin slice at `ntruplus/jasmin/768/ref/poly_sotp_decode.jazz` implements
+the same 96-by-8 scalar loop, 16-bit addition, 32-bit failure accumulation,
+one-bit normalization, and whole-message mask. The integrated verifier checks
+that the slice still extracts to an old-array procedure with the exact
+`Array96 * W32` result, builds it with safety checking, and runs both CT and
+SCT analyses. A fail-closed source checker fixes the authoritative C body and
+the ordered `poly_tobytes -> hash_g -> poly_sotp_decode` caller seam; its
+negative mutations cover changed offsets, operators, accumulator folding,
+masking, inputs, duplicates, and call reordering. Normal and UBSan C binaries
+and the Jasmin binary are compared against an independent Python oracle on 56
+total vectors covering success paths, boundary failures, and deterministic
+random inputs.
+
+Run the complete milestone with:
+
+```sh
+./scripts/verify-ntruplus768-decap-sotp-decode.sh
+```
+
+The new EasyCrypt result is deliberately value-level. Extraction, safety,
+CT/SCT analysis, and differential tests do not constitute an EasyCrypt
+functional theorem for either the Jasmin or C procedure. The milestone also
+does not model C AST semantics, pointer aliasing, partial overlap, or the
+encode/decode inverse. It stops before appending the 32-byte secret-key suffix
+and calling `hash_h`; reencryption, ciphertext comparison, fallback selection,
+and full decapsulation/KEM correctness remain out of scope.
+
 ## Verified NTRU+768 NTT root schedule
 
 The shared EasyCrypt theory at

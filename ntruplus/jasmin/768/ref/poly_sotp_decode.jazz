@@ -1,0 +1,107 @@
+param int NTRUPLUS_N = 768;
+param int NTRUPLUS_MSG_BYTES = NTRUPLUS_N / 8;
+param int NTRUPLUS_RANDOM_BYTES = NTRUPLUS_N / 4;
+
+inline fn __decode_bit(
+  reg u8 t1,
+  reg u8 t2,
+  reg u16 t3,
+  reg u32 r,
+  reg u16 coeff,
+  inline int SHIFT) -> (reg u8, reg u8, reg u16, reg u32)
+{
+  reg u16 t4;
+  reg u16 t1w;
+  reg u16 t2w;
+  reg u32 t4d;
+
+  t2w = (16u) t2;
+  t4 = t2w;
+  t4 &= 1;
+  t4 += coeff;
+  t4d = (32u) t4;
+  r |= t4d;
+
+  t1w = (16u) t1;
+  t4 ^= t1w;
+  t4 &= 1;
+  t4 <<= SHIFT;
+  t3 ^= t4;
+
+  t1 >>= 1;
+  t2 >>= 1;
+
+  return t1, t2, t3, r;
+}
+
+#[safety =
+   { requires = is_arr_init(ap,0,2 * NTRUPLUS_N) && is_arr_init(buf,0,NTRUPLUS_RANDOM_BYTES)
+   , ensures = is_arr_init(msg,0,NTRUPLUS_MSG_BYTES)
+   }
+]
+#[ct = "secret × secret × secret → secret × secret"]
+#[sct="
+{ ptr: transient, val: secret } ×
+{ ptr: transient, val: secret } ×
+{ ptr: transient, val: secret } →
+{ ptr: public, val: secret } ×
+secret
+"]
+export fn jade_ntruplus_ntruplus768_amd64_ref_poly_sotp_decode(
+  reg mut ptr u8[NTRUPLUS_MSG_BYTES] msg,
+  reg const ptr u16[NTRUPLUS_N] ap,
+  reg const ptr u8[NTRUPLUS_RANDOM_BYTES] buf) -> (reg ptr u8[NTRUPLUS_MSG_BYTES], reg u32)
+{
+  reg u64 i;
+  reg u64 off;
+  reg u8 t1;
+  reg u8 t2;
+  reg u16 t3;
+  reg u8 mask;
+  reg u32 r;
+  reg u32 norm;
+  reg u32 mask32;
+
+  _ = #init_msf();
+  i = 0;
+  r = 0;
+
+  while (i < NTRUPLUS_MSG_BYTES) {
+    off = i;
+    off <<= 3;
+
+    t1 = buf[i];
+    t2 = buf[i + NTRUPLUS_MSG_BYTES];
+    t3 = 0;
+
+    #[inline] t1, t2, t3, r = __decode_bit(t1, t2, t3, r, ap[off], 0);
+    #[inline] t1, t2, t3, r = __decode_bit(t1, t2, t3, r, ap[off + 1], 1);
+    #[inline] t1, t2, t3, r = __decode_bit(t1, t2, t3, r, ap[off + 2], 2);
+    #[inline] t1, t2, t3, r = __decode_bit(t1, t2, t3, r, ap[off + 3], 3);
+    #[inline] t1, t2, t3, r = __decode_bit(t1, t2, t3, r, ap[off + 4], 4);
+    #[inline] t1, t2, t3, r = __decode_bit(t1, t2, t3, r, ap[off + 5], 5);
+    #[inline] t1, t2, t3, r = __decode_bit(t1, t2, t3, r, ap[off + 6], 6);
+    #[inline] t1, t2, t3, r = __decode_bit(t1, t2, t3, r, ap[off + 7], 7);
+
+    msg[i] = t3;
+    i += 1;
+  }
+
+  r >>= 1;
+  norm = 0;
+  norm -= r;
+  norm >>= 31;
+  r = norm;
+
+  mask32 = r;
+  mask32 -= 1;
+  mask = (8u) mask32;
+
+  i = 0;
+  while (i < NTRUPLUS_MSG_BYTES) {
+    msg[i] &= mask;
+    i += 1;
+  }
+
+  return msg, r;
+}
