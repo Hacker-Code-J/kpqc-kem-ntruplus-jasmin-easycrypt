@@ -573,6 +573,44 @@ cyclotomic recombination and scaling, the complete `invntt(r, a)` wrapper,
 caller-range establishment beyond the verified layer chain, or the full KEM
 proof.
 
+## Executable inverse-NTT final recombination and scaling layer
+
+The in-place scalar procedure at
+`ntruplus/jasmin/768/ref/invntt_final.jazz` implements lines `270..277` of
+`NTRU+/NTRU+768/ntt.c::invntt`. It processes all 384 pairs `(i, i+384)` after
+the verified inverse radix-3 layer, using
+`NTRUPLUS_ZMINUSZ5INV = -1665`, `NTRUPLUS_NINV = -811`, and
+`NTRUPLUS_2NINV = -1622`. In the shared schedule theory these decode to the
+mathematical constants `1634`, `3439`, and `3421`, respectively: `1634`
+inverts `z - z^5`, `3439` is `(n/d)^(-1) mod q`, and `3421` is
+`2 * (n/d)^(-1) mod q`, all for `q = 3457`.
+
+Run the complete inverse final-layer check with:
+
+```sh
+./scripts/verify-ntruplus768-invntt-final.sh
+```
+
+The verifier is fail-closed on required tools and dependency trees, bash
+syntax, proof holes in the final layer and its dependent proof tree, exact
+C/Jasmin coupling and checker self-checks, fresh old-array-model `jasmin2ec`
+extraction equality, stale `Array768.ec` and `WArray1536.ec` helper clones,
+EasyCrypt word-level and algebra compilation through the Why3 server, Jasmin
+build and safety, CT and SCT analysis, and `tests/ntruplus768/invntt_final`
+`selfcheck`, `run`, and `ubsan`.
+
+The algebra layer consumes the proved `invntt_radix3` output contract. For
+`0 <= i < 128`, both members of the pair `(r[i], r[i+384])` arrive in
+`[-3q, 3q)`; for `128 <= i < 384`, both arrive in `[-q, q)`. Using the
+decoded constants `1634`, `3439`, and `3421`, it discharges the final
+recombination-and-scaling congruences and proves that every output coefficient
+returns to the signed `[-q, q)` range.
+
+This milestone still excludes the initial `a -> r` copy, the complete
+two-buffer `invntt(r, a)` wrapper, caller-range establishment beyond the
+proved inverse layer chain, a formal whole-wrapper C/Jasmin equivalence
+theorem, and the NTRU+768 KEM proof.
+
 ## Verified NTRU+768 NTT root schedule
 
 The shared EasyCrypt theory at
