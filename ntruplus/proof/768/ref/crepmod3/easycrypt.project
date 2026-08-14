@@ -1,0 +1,35 @@
+[general]
+timeout = 30
+
+rdirs = .
+rdirs = extracted
+rdirs = ../basemul
+rdirs = ../basemul/extracted
+rdirs = ../poly_basemul
+rdirs = ../poly_basemul/extracted
+rdirs = ../poly_basemul_invntt
+rdirs = ../poly_frombytes
+rdirs = ../invntt
+rdirs = ../invntt/extracted
+rdirs = ../invntt_radix2_4
+rdirs = ../invntt_radix2_4/extracted
+rdirs = ../invntt_radix2_8
+rdirs = ../invntt_radix2_8/extracted
+rdirs = ../invntt_radix2_16
+rdirs = ../invntt_radix2_16/extracted
+rdirs = ../invntt_radix2_32
+rdirs = ../invntt_radix2_32/extracted
+rdirs = ../invntt_radix2_64
+rdirs = ../invntt_radix2_64/extracted
+rdirs = ../invntt_radix3
+rdirs = ../invntt_radix3/extracted
+rdirs = ../invntt_final
+rdirs = ../invntt_final/extracted
+rdirs = ../ntt_radix2_64
+rdirs = ../ntt_radix2_64/extracted
+rdirs = ../ntt_stage1
+rdirs = ../ntt_stage1/extracted
+rdirs = ../ntt_schedule
+rdirs = ../../../../../external/formosa-mlkem/crypto-specs/arrays
+rdirs = ../../../../../external/formosa-mlkem/proof/eclib
+rdirs = ../../../../../external/formosa-mlkem/crypto-specs/common

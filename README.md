@@ -746,6 +746,50 @@ shared-memory theorem. This milestone also does not prove partial overlap, a
 formal theorem over the C AST, the following `poly_crepmod3` step, or the full
 decapsulation/KEM.
 
+## Verified NTRU+768 `poly_crepmod3` value flow
+
+The Jasmin slice at `ntruplus/jasmin/768/ref/crepmod3.jazz` mirrors the
+authoritative scalar `crepmod3` reduction and its 768-coefficient
+`poly_crepmod3` loop. Its fresh old-array extraction has a functional and
+lossless word-level proof. The algebra layer then separates two claims that
+must not be conflated:
+
+- for every 16-bit input, Jasmin and the authoritative C implementation
+  produce the same 16-bit word under the tested GCC signed-shift behavior;
+- for coefficients in the inverse-NTT output range `[-3457, 3457)`, the
+  result is one of `{-1, 0, 1}` and is congruent modulo 3 to the centered
+  modulo-`q` representative of the input.
+
+The second statement is intentionally range-qualified because `q = 3457` is
+not divisible by 3. The theorem `poly_crepmod3_spec_input_qrange` also proves
+that every output satisfies the existing forward-NTT stage-1 input premise.
+`NTRUPlus768Crepmod3DecapBridge.ec` composes that fact with the decoder,
+verified `poly_basemul` result, and mathematical `inverse_invntt_spec`, ending
+at `poly_frombytes_two_decoder_specs_decap_m1_crepmod3_value_flow`.
+
+Run the complete milestone check with:
+
+```sh
+./scripts/verify-ntruplus768-crepmod3.sh
+```
+
+The verifier regenerates and compares the EasyCrypt extraction, rejects proof
+holes in the new proof tree, compiles the word, algebra, and decapsulation
+bridge theories, and checks Jasmin safety, CT, and SCT. Its fail-closed source
+checker pins both C/Jasmin reduction sequences and the decapsulation order
+`poly_basemul(&m1, &c, &f); poly_invntt(&m1, &m1);`
+`poly_crepmod3(&m1, &m1); poly_ntt(&m2, &m1);`. Differential and UBSan runs
+cover 8 boundary vectors, 4096 deterministic random vectors, and every 16-bit
+input value, with disjoint buffers, input immutability, and exact alias.
+
+The exhaustive 16-bit test establishes word equality only; the trit and
+modulo-3 theorem remains limited to `[-q, q)`. Negative signed right shift in
+the authoritative C is implementation-defined by ISO C, so the executable
+claim is explicitly tied to the tested GCC behavior. The EasyCrypt result is
+an array-value theorem and does not model pointer identity, shared storage, or
+partial overlap. This milestone also does not claim a formal C-AST equivalence
+or full decapsulation/KEM correctness.
+
 ## Verified NTRU+768 NTT root schedule
 
 The shared EasyCrypt theory at

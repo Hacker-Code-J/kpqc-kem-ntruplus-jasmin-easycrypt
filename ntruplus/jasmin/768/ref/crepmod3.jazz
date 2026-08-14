@@ -1,0 +1,58 @@
+param int NTRUPLUS_N = 768;
+param int NTRUPLUS_Q = 3457;
+
+inline fn __crepmod3(reg u16 a) -> reg u16
+{
+  reg u16 t;
+  reg u16 mask;
+  reg u32 td;
+
+  mask = a;
+  mask >>s= 15;
+  mask &= NTRUPLUS_Q;
+  a += mask;
+  a -= (NTRUPLUS_Q + 1) / 2;
+
+  mask = a;
+  mask >>s= 15;
+  mask &= NTRUPLUS_Q;
+  a += mask;
+  a -= (NTRUPLUS_Q - 1) / 2;
+
+  td = (32s) a;
+  td *= 10923;
+  td += 16384;
+  td >>s= 15;
+  t = td;
+  t *= 3;
+  a -= t;
+
+  return a;
+}
+
+#[safety =
+   { requires = is_arr_init(ap,0,2 * NTRUPLUS_N)
+   , ensures = is_arr_init(rp,0,2 * NTRUPLUS_N)
+   }
+]
+#[ct = "secret × secret → secret"]
+#[sct="
+{ ptr: transient, val: secret } ×
+{ ptr: transient, val: secret } →
+{ ptr: public, val: secret }
+"]
+export fn jade_ntruplus_ntruplus768_amd64_ref_poly_crepmod3(
+  reg mut ptr u16[NTRUPLUS_N] rp,
+  reg const ptr u16[NTRUPLUS_N] ap) -> reg ptr u16[NTRUPLUS_N]
+{
+  reg u64 i;
+
+  _ = #init_msf();
+  i = 0;
+  while (i < NTRUPLUS_N) {
+    rp[i] = __crepmod3(ap[i]);
+    i += 1;
+  }
+
+  return rp;
+}
