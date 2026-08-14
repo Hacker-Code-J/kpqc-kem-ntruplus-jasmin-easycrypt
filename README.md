@@ -689,8 +689,8 @@ mirrors the authoritative C decoder's two 12-bit arithmetic expressions over
 an arbitrary 1152-byte input. It proves that all 768 modeled output
 coefficients are in unsigned `[0, 4096)`, hence satisfy the signed
 `[-4096, 4096)` premise of the existing `poly_basemul -> invntt` bridge. Its
-terminal theorem instantiates the verified Jasmin `poly_basemul` procedure with
-two decoder-spec outputs and establishes `poly_basemul_invntt_ready`.
+first caller theorem instantiates the verified Jasmin `poly_basemul` procedure
+with two decoder-spec outputs and establishes `poly_basemul_invntt_ready`.
 
 Run the complete range/linkage check with:
 
@@ -713,6 +713,38 @@ is about the arithmetic decoder model, while strict source checks and
 executable differential tests bind that model to the current authoritative C
 implementation. It also does not prove `poly_tobytes` round-trip correctness,
 shared-memory aliasing, or the full NTRU+768 decapsulation/KEM.
+
+## Decapsulation `m1` value-flow seam
+
+The terminal lemmas in
+`ntruplus/proof/768/ref/poly_frombytes/NTRUPlus768PolyFromBytesAlgebra.ec`
+now continue the two arbitrary decoded byte arrays through the verified
+`poly_basemul` result and the mathematical `inverse_invntt_spec`. They prove
+the complete inverse-NTT algebra contract and show that every specified final
+coefficient is centered in `[-q, q)` for `q = 3457`. This is the value-level
+counterpart of the `crypto_kem_dec` sequence
+`poly_basemul(&m1, &c, &f); poly_invntt(&m1, &m1);`.
+
+Run the combined seam check with:
+
+```sh
+./scripts/verify-ntruplus768-decap-m1.sh
+```
+
+The verifier requires and compiles both terminal lemmas without proof holes,
+runs the fail-closed checker for the ordered decapsulation calls and the exact
+`m1` alias, and reruns the complete inverse-NTT verifier. The checker also pins
+the thin `poly_invntt` wrapper to `invntt(r->coeffs, a->coeffs)` and rejects
+mutations of that forwarding path. The inverse-NTT executable suite covers
+both disjoint buffers and exact alias on boundary and deterministic-random
+inputs, normally and under UBSan.
+
+The formal statement remains an array-value composition: old-array extraction
+does not model pointer identity or shared storage. Exact alias is therefore
+bound at the source and executable-test layers, not claimed as an EasyCrypt
+shared-memory theorem. This milestone also does not prove partial overlap, a
+formal theorem over the C AST, the following `poly_crepmod3` step, or the full
+decapsulation/KEM.
 
 ## Verified NTRU+768 NTT root schedule
 

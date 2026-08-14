@@ -2,7 +2,9 @@ require import AllCore IntDiv Ring StdOrder.
 from Jasmin require import JWord JModel_x86.
 
 require import Array4 Array768 Array1152.
+require import NTRUPlus768BasemulAlgebra.
 require import NTRUPlus768PolyBasemul.
+require import NTRUPlus768PolyBasemulProof.
 require import NTRUPlus768PolyBasemulAlgebra.
 require import NTRUPlus768PolyBasemulInvNTTAlgebra.
 
@@ -181,4 +183,67 @@ proof.
   exact
     (poly_basemul_correct_invntt_ready rp0
       (poly_frombytes_spec a) (poly_frombytes_spec b) Ha Hb).
+qed.
+
+(* These terminal lemmas compose array values with inverse_invntt_spec.
+   They do not model the concrete caller's pointer identity or shared storage. *)
+lemma poly_frombytes_two_decoder_specs_inverse_invntt_spec_algebra
+    (a b : W8.t Array1152.t) (rp0 : W16.t Array768.t) :
+  phoare [NTRUPlus768PolyBasemul.M.jade_ntruplus_ntruplus768_amd64_ref_poly_basemul :
+    rp = rp0 /\
+    ap = poly_frombytes_spec a /\
+    bp = poly_frombytes_spec b ==>
+    NTRUPlus768InvNTTAlgebra.inverse_invntt_algebra res
+      (NTRUPlus768InvNTTAlgebra.inverse_invntt_spec res)] = 1%r.
+proof.
+  have Ha : in_s12range768 (poly_frombytes_spec a)
+    by exact (poly_frombytes_spec_in_s12range768 a).
+  have Hb : in_s12range768 (poly_frombytes_spec b)
+    by exact (poly_frombytes_spec_in_s12range768 b).
+  conseq poly_basemul_lossless
+    (poly_basemul_functional rp0
+      (poly_frombytes_spec a) (poly_frombytes_spec b)).
+  move=> &hr _ result; split.
+  + move=> [_ Hword].
+    split.
+    + trivial.
+    exact Hword.
+  move=> [_ Hword]; split.
+  + have Hqring := poly_basemul_word_to_qring_s12
+      (poly_frombytes_spec a) (poly_frombytes_spec b) result Ha Hb Hword.
+    exact
+      (poly_basemul_qring_inverse_invntt_spec_algebra
+        (poly_frombytes_spec a) (poly_frombytes_spec b) result Hqring).
+  exact Hword.
+qed.
+
+lemma poly_frombytes_two_decoder_specs_inverse_invntt_output_qrange
+    (a b : W8.t Array1152.t) (rp0 : W16.t Array768.t) (j : int) :
+  0 <= j < 768 =>
+  phoare [NTRUPlus768PolyBasemul.M.jade_ntruplus_ntruplus768_amd64_ref_poly_basemul :
+    rp = rp0 /\
+    ap = poly_frombytes_spec a /\
+    bp = poly_frombytes_spec b ==>
+    -q <= coeff (NTRUPlus768InvNTTAlgebra.inverse_invntt_spec res).[j] < q] = 1%r.
+proof.
+  move=> Hj.
+  have Ha : in_s12range768 (poly_frombytes_spec a)
+    by exact (poly_frombytes_spec_in_s12range768 a).
+  have Hb : in_s12range768 (poly_frombytes_spec b)
+    by exact (poly_frombytes_spec_in_s12range768 b).
+  conseq poly_basemul_lossless
+    (poly_basemul_functional rp0
+      (poly_frombytes_spec a) (poly_frombytes_spec b)).
+  move=> &hr _ result; split.
+  + move=> [_ Hword].
+    split.
+    + trivial.
+    exact Hword.
+  move=> [_ Hword]; split.
+  + have Hqring := poly_basemul_word_to_qring_s12
+      (poly_frombytes_spec a) (poly_frombytes_spec b) result Ha Hb Hword.
+    exact
+      (poly_basemul_qring_inverse_invntt_output_qrange
+        (poly_frombytes_spec a) (poly_frombytes_spec b) result j Hqring Hj).
+  exact Hword.
 qed.

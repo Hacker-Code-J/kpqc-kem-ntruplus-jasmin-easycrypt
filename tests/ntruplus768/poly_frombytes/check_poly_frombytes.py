@@ -66,6 +66,20 @@ def verify_crypto_kem_dec_text(text: str) -> None:
     )
 
 
+def verify_poly_invntt_text(text: str) -> None:
+    signature = extract_function_signature(text, "poly_invntt")
+    require(
+        signature == "void poly_invntt(poly *r, const poly *a)",
+        f"unexpected poly_invntt signature: {signature}",
+    )
+
+    body = compact(extract_function_body(text, "poly_invntt"))
+    require(
+        body == "invntt(r->coeffs, a->coeffs);",
+        "poly_invntt no longer forwards its output and input coefficient buffers directly to invntt",
+    )
+
+
 def verify_poly_frombytes_text(text: str) -> None:
     signature = extract_function_signature(text, "poly_frombytes")
     require(
@@ -106,6 +120,10 @@ def mutate_once(text: str, old: str, new: str, label: str) -> str:
 
 def run_self_check(poly_text: str, kem_text: str) -> None:
     normalized_poly = compact(poly_text)
+    poly_invntt_text = (
+        f"{extract_function_signature(normalized_poly, 'poly_invntt')} "
+        f"{{ {extract_function_body(normalized_poly, 'poly_invntt')} }}"
+    )
     poly_text = (
         f"{extract_function_signature(normalized_poly, 'poly_frombytes')} "
         f"{{ {extract_function_body(normalized_poly, 'poly_frombytes')} }}"
@@ -193,6 +211,16 @@ def run_self_check(poly_text: str, kem_text: str) -> None:
         "extra output write",
     )
     expect_rejected(
+        verify_poly_invntt_text,
+        mutate_once(
+            poly_invntt_text,
+            "invntt(r->coeffs, a->coeffs);",
+            "invntt(r->coeffs, r->coeffs);",
+            "poly_invntt input forwarding",
+        ),
+        "poly_invntt input forwarding",
+    )
+    expect_rejected(
         verify_crypto_kem_dec_text,
         mutate_once(
             kem_text,
@@ -202,10 +230,22 @@ def run_self_check(poly_text: str, kem_text: str) -> None:
         ),
         "caller seam order",
     )
+    expect_rejected(
+        verify_crypto_kem_dec_text,
+        mutate_once(
+            kem_text,
+            "poly_invntt(&m1, &m1);",
+            "poly_invntt(&m1, &c);",
+            "caller exact alias",
+        ),
+        "caller exact alias",
+    )
 
 
 def parse_args(argv: list[str]) -> argparse.Namespace:
-    parser = argparse.ArgumentParser(description="Fail-closed checker for NTRU+768 poly_frombytes in poly.c")
+    parser = argparse.ArgumentParser(
+        description="Fail-closed checker for the NTRU+768 decoded-input decapsulation seam",
+    )
     parser.add_argument("--c-source", required=True, help="path to NTRU+/NTRU+768/poly.c")
     parser.add_argument("--kem-source", required=True, help="path to NTRU+/NTRU+768/kem.c")
     parser.add_argument("--self-check", action="store_true", help="also require representative bad mutations to be rejected")
@@ -218,6 +258,7 @@ def main(argv: list[str]) -> int:
         poly_text = Path(args.c_source).read_text(encoding="utf-8")
         kem_text = Path(args.kem_source).read_text(encoding="utf-8")
         verify_poly_frombytes_text(poly_text)
+        verify_poly_invntt_text(poly_text)
         verify_crypto_kem_dec_text(kem_text)
         if args.self_check:
             run_self_check(poly_text, kem_text)
@@ -226,8 +267,8 @@ def main(argv: list[str]) -> int:
         return 1
 
     if args.self_check:
-        print("PASS: poly_frombytes checker rejected representative bad mutations")
-    print("PASS: NTRU+768 poly_frombytes source structure and crypto_kem_dec seam")
+        print("PASS: decoded-input seam checker rejected representative bad mutations")
+    print("PASS: NTRU+768 poly_frombytes/poly_invntt source structure and crypto_kem_dec seam")
     return 0
 
 
