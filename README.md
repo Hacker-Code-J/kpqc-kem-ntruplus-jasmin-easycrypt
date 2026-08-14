@@ -677,9 +677,42 @@ authoritative C `poly_basemul` against the Jasmin slice on the existing
 q-boundary/random vectors plus the new signed-12-bit boundary/random vectors;
 it does not re-run the full `invntt` wrapper or unrelated KEM checks.
 
-This milestone does not prove `poly_frombytes` linkage, a formal C-AST/Jasmin
-equivalence theorem, shared-memory aliasing for the composed `invntt` wrapper,
-or the full NTRU+768 KEM.
+That bridge milestone alone does not prove `poly_frombytes` linkage, a formal
+C-AST/Jasmin equivalence theorem, shared-memory aliasing for the composed
+`invntt` wrapper, or the full NTRU+768 KEM.
+
+## Authoritative `poly_frombytes` range bridge
+
+The proof-only decoder model at
+`ntruplus/proof/768/ref/poly_frombytes/NTRUPlus768PolyFromBytesAlgebra.ec`
+mirrors the authoritative C decoder's two 12-bit arithmetic expressions over
+an arbitrary 1152-byte input. It proves that all 768 modeled output
+coefficients are in unsigned `[0, 4096)`, hence satisfy the signed
+`[-4096, 4096)` premise of the existing `poly_basemul -> invntt` bridge. Its
+terminal theorem instantiates the verified Jasmin `poly_basemul` procedure with
+two decoder-spec outputs and establishes `poly_basemul_invntt_ready`.
+
+Run the complete range/linkage check with:
+
+```sh
+./scripts/verify-ntruplus768-poly-frombytes.sh
+```
+
+The executable side deliberately targets the authoritative C boundary. A
+fail-closed source checker pins the `poly_frombytes` signature, `N/2` loop,
+three-byte/two-coefficient indices, shifts, casts, and `0xFFF` masks. It also
+pins the decapsulation order `poly_frombytes(c/f) -> poly_basemul ->
+poly_invntt` and must reject representative mutated source forms. A separate
+differential harness compares the C decoder with a nibble-based oracle on 8
+byte-boundary patterns, 6 cross-nibble patterns, 40 isolated-triplet cases,
+and 4096 deterministic random inputs, both normally and under UBSan. The
+verifier then reruns the downstream `poly_basemul -> invntt` proof and tests.
+
+This is not a formal theorem over the C AST: the universal EasyCrypt statement
+is about the arithmetic decoder model, while strict source checks and
+executable differential tests bind that model to the current authoritative C
+implementation. It also does not prove `poly_tobytes` round-trip correctness,
+shared-memory aliasing, or the full NTRU+768 decapsulation/KEM.
 
 ## Verified NTRU+768 NTT root schedule
 
