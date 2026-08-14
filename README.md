@@ -894,8 +894,45 @@ block-product oracle.
 This remains an old-array value/procedure result. It assumes q-range `f` and
 `ginv` rather than proving sampler or inversion provenance, and it does not
 model pointer offsets, partial overlap, or shared memory. It also does not
-claim formal C-AST equivalence, the downstream `poly_tobytes(buf1, &r2)` and
-hash flow, or full decapsulation/KEM correctness.
+claim formal C-AST equivalence or hash/full-KEM correctness. The successor
+milestone below closes the immediate `poly_tobytes(buf1, &r2)` call.
+
+## Verified NTRU+768 second-product serialization
+
+The bridge at
+`ntruplus/proof/768/ref/decap_r2_tobytes/NTRUPlus768DecapR2ToBytesBridge.ec`
+extends the preceding result through the concrete call
+`poly_tobytes(buf1, &r2)`. It reuses the blockwise quotient-ring postcondition
+of the second `poly_basemul`: all 192 four-coefficient blocks place their
+outputs in `[-q, q)`, which supplies the existing verified serializer's
+768-coefficient input premise.
+
+The theorem `decap_r2_poly_tobytes_correct` applies the extracted Jasmin
+procedure theorem and returns the exact 1152-byte `poly_tobytes_spec` of `r2`.
+The companion theorem `decap_r2_serialized_value_flow` retains the full prior
+decoder, transform, subtraction, `hinv`, and second-product value flow while
+adding equality with those serialized bytes. No packing arithmetic or range
+argument is duplicated in the new bridge.
+
+Run the integrated milestone with:
+
+```sh
+./scripts/verify-ntruplus768-decap-r2-tobytes.sh
+```
+
+The verifier compiles the new terminal theory with one bounded Why3 worker,
+rejects proof holes, runs a fail-closed source checker, and reruns the complete
+predecessor verifier. The source checker binds the ordered
+`poly_sub -> poly_basemul(&r2,...) -> poly_tobytes(buf1,&r2) -> hash_g`
+sequence, exact buffer extent, and call uniqueness. Its self-check rejects
+wrong source or destination arrays, undersized output, duplicate or reordered
+serialization, and a changed `hash_g` input.
+
+`hash_g` is used only as the source-order successor marker: this milestone
+does not prove its domain-separated SHAKE256 semantics. SOTP decoding,
+reencryption, comparison, fallback selection, pointer-overlap behavior,
+formal C-AST equivalence, and full decapsulation/KEM correctness also remain
+out of scope.
 
 ## Verified NTRU+768 NTT root schedule
 
