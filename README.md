@@ -611,6 +611,44 @@ two-buffer `invntt(r, a)` wrapper, caller-range establishment beyond the
 proved inverse layer chain, a formal whole-wrapper C/Jasmin equivalence
 theorem, and the NTRU+768 KEM proof.
 
+## Composed executable inverse NTT
+
+The two-buffer procedure at `ntruplus/jasmin/768/ref/invntt.jazz` implements
+the complete `NTRU+/NTRU+768/ntt.c::invntt` schedule. It first copies all 768
+coefficients from `a` to `r`, then calls the verified inverse layers in the
+only valid order: radix-2 `step=4`, `8`, `16`, `32`, and `64`, radix-3, and
+the final 384-pair recombination and scaling layer.
+
+Run the complete wrapper check with:
+
+```sh
+./scripts/verify-ntruplus768-invntt.sh
+```
+
+The verifier is fail-closed on required tools and proof dependencies, proof
+holes, exact C/Jasmin source coupling and checker mutation self-tests, fresh
+old-array-model extraction equality, EasyCrypt word-level and whole-chain
+algebra compilation, Jasmin build and safety, CT and SCT analysis, and the
+full differential and UBSan suites. The executable tests compare the wrapper
+with the authoritative C function on boundary cases and 4096 deterministic
+random inputs. They cover both disjoint buffers and the exact `r == a` alias
+used by the KEM, and they check that a disjoint source buffer is unchanged.
+
+The EasyCrypt wrapper theorem is deliberately value-level: after the proved
+copy loop, its result depends only on the initial `a` array and equals the
+nested composition of all seven verified stage specifications. Assuming every
+input coefficient is in signed `[-q, q)`, the algebra theorem reuses the
+stage-to-stage range and congruence bridges and proves that every final
+coefficient is again in `[-q, q)`. The old-array extraction has separate value
+arguments rather than a shared memory model, so it does not prove concrete
+pointer identity or overlap behavior.
+
+Supported concrete layouts are disjoint buffers and exact alias. Partial
+overlap is intentionally excluded because the forward copy can overwrite
+source coefficients that have not yet been read. This milestone also does not
+claim a formal C-AST/Jasmin equivalence theorem, prove that every external
+caller establishes the signed input range, or prove the complete NTRU+768 KEM.
+
 ## Verified NTRU+768 NTT root schedule
 
 The shared EasyCrypt theory at
@@ -645,7 +683,7 @@ This milestone still does not prove:
 
 - that upstream callers establish the signed-range preconditions for every
   call, where that argument is not already discharged elsewhere;
-- a complete executable `invntt` implementing the proved inverse schedule; or
+- a shared-memory proof of the executable `invntt` pointer-overlap behavior; or
 - key generation, encryption, or the full KEM.
 
 ## Formosa ML-KEM reference

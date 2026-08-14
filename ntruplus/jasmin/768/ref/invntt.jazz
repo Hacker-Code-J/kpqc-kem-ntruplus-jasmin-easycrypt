@@ -1,0 +1,83 @@
+param int NTRUPLUS_N = 768;
+
+namespace Radix2_4 {
+  require "invntt_radix2_4.jazz"
+}
+
+namespace Radix2_8 {
+  require "invntt_radix2_8.jazz"
+}
+
+namespace Radix2_16 {
+  require "invntt_radix2_16.jazz"
+}
+
+namespace Radix2_32 {
+  require "invntt_radix2_32.jazz"
+}
+
+namespace Radix2_64 {
+  require "invntt_radix2_64.jazz"
+}
+
+namespace Radix3 {
+  require "invntt_radix3.jazz"
+}
+
+namespace Final {
+  require "invntt_final.jazz"
+}
+
+#[safety =
+   { requires = is_arr_init(ap,0,2 * NTRUPLUS_N)
+   , ensures = is_arr_init(rp,0,2 * NTRUPLUS_N)
+   }
+]
+#[ct = "secret × secret → secret"]
+#[sct="
+{ ptr: transient, val: secret } ×
+{ ptr: transient, val: secret } →
+{ ptr: public, val: secret }
+"]
+fn __invntt_copy(
+  reg mut ptr u16[NTRUPLUS_N] rp,
+  reg const ptr u16[NTRUPLUS_N] ap) -> reg ptr u16[NTRUPLUS_N]
+{
+  reg u64 i;
+
+  _ = #init_msf();
+  i = 0;
+  while (i < NTRUPLUS_N) {
+    rp[i] = ap[i];
+    i += 1;
+  }
+
+  return rp;
+}
+
+#[safety =
+   { requires = is_arr_init(ap,0,2 * NTRUPLUS_N)
+   , ensures = is_arr_init(rp,0,2 * NTRUPLUS_N)
+   }
+]
+#[ct = "secret × secret → secret"]
+#[sct="
+{ ptr: transient, val: secret } ×
+{ ptr: transient, val: secret } →
+{ ptr: public, val: secret }
+"]
+export fn jade_ntruplus_ntruplus768_amd64_ref_invntt(
+  reg mut ptr u16[NTRUPLUS_N] rp,
+  reg const ptr u16[NTRUPLUS_N] ap) -> reg ptr u16[NTRUPLUS_N]
+{
+  rp = __invntt_copy(rp, ap);
+  rp = Radix2_4::jade_ntruplus_ntruplus768_amd64_ref_invntt_radix2_4(rp);
+  rp = Radix2_8::jade_ntruplus_ntruplus768_amd64_ref_invntt_radix2_8(rp);
+  rp = Radix2_16::jade_ntruplus_ntruplus768_amd64_ref_invntt_radix2_16(rp);
+  rp = Radix2_32::jade_ntruplus_ntruplus768_amd64_ref_invntt_radix2_32(rp);
+  rp = Radix2_64::jade_ntruplus_ntruplus768_amd64_ref_invntt_radix2_64(rp);
+  rp = Radix3::jade_ntruplus_ntruplus768_amd64_ref_invntt_radix3(rp);
+  rp = Final::jade_ntruplus_ntruplus768_amd64_ref_invntt_final(rp);
+
+  return rp;
+}
