@@ -934,6 +934,55 @@ reencryption, comparison, fallback selection, pointer-overlap behavior,
 formal C-AST equivalence, and full decapsulation/KEM correctness also remain
 out of scope.
 
+## Verified NTRU+768 decapsulation `hash_g` specification seam
+
+The bridge at
+`ntruplus/proof/768/ref/decap_hash_g/NTRUPlus768DecapHashGBridge.ec`
+extends the serialized second-product value flow to the 192-byte value
+
+```text
+SHAKE256(0x01 || poly_tobytes_spec(r2), 192).
+```
+
+It reuses the byte-level FIPS202 specification from `Keccak1600_Spec.ec`.
+The input lemmas `hash_g_input_size`, `hash_g_input_domain`, and
+`hash_g_input_payload` establish an exact 1153-byte input whose first byte is
+`0x01` and whose remaining 1152 bytes are the preceding serializer output.
+`hash_g_output_list_size` and `hash_g_spec_to_list` retain exactly the first
+192 SHAKE256 output bytes in an `Array192` value.
+
+The abstract EasyCrypt procedure `HashG.hash_g` calls the already-proved
+`Keccak1600Bytes.shake256`; `hash_g_abstract_correct` proves probability-one
+agreement with `hash_g_spec`. The terminal theorems
+`decap_r2_hash_g_value_flow` and
+`decap_hash_g_correct` connect that specification to the exact
+`poly_tobytes_spec(r2)` established by the preceding milestone. This is an
+FIPS202 specification/procedure theorem, not a procedure theorem for the
+repository's C implementation.
+
+Run the integrated milestone with:
+
+```sh
+./scripts/verify-ntruplus768-decap-hash-g.sh
+```
+
+The verifier compiles the new theory with one bounded Why3 worker, rejects
+proof holes, and reruns the complete predecessor verifier. A fail-closed
+source checker binds `HASH_G_INBYTES = 1152`, `HASH_G_OUTBYTES = 192`, the
+exact C wrapper body `0x01 || msg`, and the ordered decapsulation seam
+`poly_tobytes -> hash_g -> poly_sotp_decode`. Its self-check rejects changed
+parameters, domain byte, copy offset or length, SHAKE lengths, call arguments,
+duplicates, and reordering.
+
+The C `hash_g` plus its bundled FIPS202 implementation is additionally tested
+on 39 boundary and deterministic vectors against Python `hashlib.shake_256`,
+both normally and with UBSan. These are independent differential tests, not a
+formal C semantics proof. In particular, this milestone does not establish
+C/Jasmin equivalence, allocation-failure behavior, pointer aliasing, or the
+contents of unused `buf2[192..1151]`. SOTP decoding, reencryption, comparison,
+fallback selection, and full decapsulation/KEM correctness remain out of
+scope.
+
 ## Verified NTRU+768 NTT root schedule
 
 The shared EasyCrypt theory at
