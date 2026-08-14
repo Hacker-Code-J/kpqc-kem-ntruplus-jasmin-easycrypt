@@ -790,6 +790,55 @@ an array-value theorem and does not model pointer identity, shared storage, or
 partial overlap. This milestone also does not claim a formal C-AST equivalence
 or full decapsulation/KEM correctness.
 
+## Verified NTRU+768 forward-NTT ciphertext subtraction seam
+
+The Jasmin slice at `ntruplus/jasmin/768/ref/poly_sub.jazz` mirrors the
+authoritative 768-coefficient `poly_sub` loop. Its old-array extraction has
+functional and lossless word-level proofs for subtraction modulo `2^16`.
+The range-qualified algebra layer then connects the two inputs that occur in
+decapsulation:
+
+- a `poly_frombytes` ciphertext coefficient is in `[0, 4096)`;
+- the verified full forward NTT produces a centered coefficient in
+  `[-3457, 3457)`;
+- their exact signed difference is therefore in `[-3456, 7552]` and is
+  congruent modulo `q = 3457` to ciphertext minus forward-NTT output.
+
+`NTRUPlus768PolySubDecapBridge.ec` composes the existing decoded
+`poly_basemul -> inverse_invntt_spec -> poly_crepmod3` value flow with
+`forward_ntt_spec` and the subtraction specification. Its terminal theorem,
+`poly_frombytes_two_decoder_specs_decap_ciphertext_sub_value_flow`, starts
+from two arbitrary decoder byte arrays and follows the array values through
+the subtraction that corresponds to `poly_sub(&c, &c, &m2)`.
+
+Run the complete milestone check with:
+
+```sh
+./scripts/verify-ntruplus768-poly-sub.sh
+```
+
+The verifier regenerates and compares the EasyCrypt extraction, rejects proof
+holes, compiles the word, range, congruence, and decapsulation bridge theories,
+and checks Jasmin safety, CT, and SCT. Its fail-closed checker binds the scalar
+C/Jasmin loops, the thin `poly_ntt` wrapper, and the ordered decapsulation
+calls through the exact `c` alias. Differential and UBSan tests cover disjoint
+buffers, input immutability, exact output/input alias, boundary and
+deterministic-random vectors, and the complete decapsulation coefficient
+envelope.
+
+Within that decapsulation envelope, the signed subtraction fits in `int16_t`,
+so the C assignment represents the exact mathematical difference. Tests over
+representative unrestricted 16-bit words establish agreement with the tested
+GCC wraparound behavior only; out-of-range conversion to `int16_t` is
+implementation-defined by ISO C, while the EasyCrypt word theorem is modulo
+`2^16`.
+
+The result can reach `7552`, so it does not establish the existing
+`[-4096, 4096)` input premise for the following `poly_basemul`. This milestone
+therefore stops at ciphertext subtraction and does not claim downstream
+`poly_basemul` readiness, partial-overlap or shared-memory semantics, a formal
+C-AST equivalence, or full decapsulation/KEM correctness.
+
 ## Verified NTRU+768 NTT root schedule
 
 The shared EasyCrypt theory at
