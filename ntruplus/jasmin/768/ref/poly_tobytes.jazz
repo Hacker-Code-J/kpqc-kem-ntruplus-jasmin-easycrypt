@@ -1,0 +1,62 @@
+param int NTRUPLUS_N = 768;
+param int NTRUPLUS_Q = 3457;
+param int NTRUPLUS_POLYBYTES = 1152;
+
+#[safety =
+   { requires = is_arr_init(ap,0,2 * NTRUPLUS_N)
+   , ensures = is_arr_init(rp,0,NTRUPLUS_POLYBYTES)
+   }
+]
+#[ct = "secret × secret → secret"]
+#[sct="
+{ ptr: transient, val: secret } ×
+{ ptr: transient, val: secret } →
+{ ptr: public, val: secret }
+"]
+export fn jade_ntruplus_ntruplus768_amd64_ref_poly_tobytes(
+  reg mut ptr u8[NTRUPLUS_POLYBYTES] rp,
+  reg const ptr u16[NTRUPLUS_N] ap) -> reg ptr u8[NTRUPLUS_POLYBYTES]
+{
+  reg u64 i;
+  reg u64 off;
+  reg u16 t0;
+  reg u16 t1;
+  reg u16 t;
+  reg u16 mask;
+
+  _ = #init_msf();
+  i = 0;
+  while (i < NTRUPLUS_N / 2) {
+    off = i;
+    off <<= 1;
+    t0 = ap[2 * i];
+    mask = t0;
+    mask >>s= 15;
+    mask &= NTRUPLUS_Q;
+    t0 += mask;
+
+    t1 = ap[2 * i + 1];
+    mask = t1;
+    mask >>s= 15;
+    mask &= NTRUPLUS_Q;
+    t1 += mask;
+
+    off += i;
+    rp[off] = t0;
+
+    t = t0;
+    t >>= 8;
+    mask = t1;
+    mask <<= 4;
+    t |= mask;
+    rp[off + 1] = t;
+
+    t = t1;
+    t >>= 4;
+    rp[off + 2] = t;
+
+    i += 1;
+  }
+
+  return rp;
+}

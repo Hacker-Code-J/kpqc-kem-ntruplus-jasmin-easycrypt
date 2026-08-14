@@ -39,6 +39,14 @@ require_command() {
   command -v "$1" >/dev/null 2>&1 || fail "missing required command: $1"
 }
 
+require_lemma() {
+  local file=$1
+  local lemma=$2
+
+  grep -Eq "^lemma[[:space:]]+$lemma([[:space:](]|$)" "$file" ||
+    fail "missing required EasyCrypt lemma: $lemma"
+}
+
 reject_proof_holes() {
   local findings="$WORKDIR/proof-holes.txt"
   local status
@@ -191,6 +199,13 @@ main() {
   [[ -f "$NTT_SCHEDULE_PROOF/NTRUPlus768NTTSchedule.ec" ]] ||
     fail "missing dependent NTT schedule proof tree"
 
+  require_lemma "$BASEMUL_PROOF/NTRUPlus768BasemulAlgebra.ec" \
+    basemul_spec_algebra_asym
+  require_lemma "$PROOF_DIR/NTRUPlus768PolyBasemulAlgebra.ec" \
+    poly_basemul_word_to_qring_asym
+  require_lemma "$PROOF_DIR/NTRUPlus768PolyBasemulAlgebra.ec" \
+    poly_basemul_correct_qring_asym
+
   mkdir -p "$asm_dir" "$generated_dir"
   GENERATED_DIR=$generated_dir
 
@@ -217,6 +232,7 @@ main() {
   printf 'PASS: NTRU+768 poly_basemul fresh extraction matches tracked EasyCrypt model\n'
   printf 'PASS: NTRU+768 poly_basemul EasyCrypt word-level functional proof\n'
   printf 'PASS: NTRU+768 poly_basemul EasyCrypt blockwise quotient-ring bridge\n'
+  printf 'PASS: NTRU+768 poly_basemul asymmetric-first/canonical-second quotient-ring bridge\n'
 }
 
 main "$@"

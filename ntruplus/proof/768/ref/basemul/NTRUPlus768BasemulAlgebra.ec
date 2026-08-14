@@ -39,6 +39,20 @@ op in_s12range4 (a : W16.t Array4.t) : bool =
   in_s12range a.[0] /\ in_s12range a.[1] /\
   in_s12range a.[2] /\ in_s12range a.[3].
 
+op asym_bound_hi : int = 7552.
+
+op in_asymrange (w : W16.t) : bool = -(q - 1) <= coeff w <= asym_bound_hi.
+
+op in_asymrange4 (a : W16.t Array4.t) : bool =
+  in_asymrange a.[0] /\ in_asymrange a.[1] /\
+  in_asymrange a.[2] /\ in_asymrange a.[3].
+
+op in_canonical_range (w : W16.t) : bool = 0 <= coeff w < q.
+
+op in_canonical_range4 (a : W16.t Array4.t) : bool =
+  in_canonical_range a.[0] /\ in_canonical_range a.[1] /\
+  in_canonical_range a.[2] /\ in_canonical_range a.[3].
+
 op zeta_mont_relation (z : W16.t) (zeta_math : int) : bool =
   -q <= zeta_math < q /\
   coeff z %% q = (zeta_math * (R %% q)) %% q.
@@ -256,10 +270,40 @@ proof.
   exact (qrange_in_s12range a.[3] Ha3).
 qed.
 
+lemma canonical_in_qrange (w : W16.t) :
+  in_canonical_range w => in_qrange w.
+proof.
+  rewrite /in_canonical_range /in_qrange.
+  smt().
+qed.
+
+lemma canonical4_in_qrange4 (a : W16.t Array4.t) :
+  in_canonical_range4 a => in_qrange4 a.
+proof.
+  rewrite /in_canonical_range4 /in_qrange4.
+  move=> [Ha0 [Ha1 [Ha2 Ha3]]].
+  split; first exact (canonical_in_qrange a.[0] Ha0).
+  split; first exact (canonical_in_qrange a.[1] Ha1).
+  split; first exact (canonical_in_qrange a.[2] Ha2).
+  exact (canonical_in_qrange a.[3] Ha3).
+qed.
+
 lemma s12range_norm (x : int) :
   -s12_bound <= x < s12_bound => `|x| <= s12_bound.
 proof.
   move=> Hx; rewrite ler_norml; smt().
+qed.
+
+lemma asymrange_norm (x : int) :
+  -(q - 1) <= x <= asym_bound_hi => `|x| <= asym_bound_hi.
+proof.
+  move=> Hx; rewrite /asym_bound_hi ler_norml /q; smt().
+qed.
+
+lemma canonical_range_norm (x : int) :
+  0 <= x < q => `|x| <= q - 1.
+proof.
+  move=> Hx; rewrite ler_norml /q; smt().
 qed.
 
 lemma s12range_product_norm (x y : int) :
@@ -286,6 +330,19 @@ proof.
   exact (qrange_norm y Hy).
 qed.
 
+lemma asym_canonical_product_norm (x y : int) :
+  -(q - 1) <= x <= asym_bound_hi =>
+  0 <= y < q =>
+  `|x * y| <= asym_bound_hi * (q - 1).
+proof.
+  move=> Hx Hy; rewrite normrM.
+  apply ler_pmul.
+  + exact (normr_ge0 x).
+  + exact (normr_ge0 y).
+  + exact (asymrange_norm x Hx).
+  exact (canonical_range_norm y Hy).
+qed.
+
 lemma product_bound x y :
   -q <= x < q => -q <= y < q =>
   -R %/ 2 * q <= x * y < R %/ 2 * q.
@@ -309,6 +366,20 @@ proof.
   have Hp := s12range_product_norm x y Hx Hy.
   have Hlim : s12_bound * s12_bound < R %/ 2 * q.
   + rewrite /s12_bound R_halfE /q.
+    smt().
+  have Habs : `|x * y| < R %/ 2 * q by smt().
+  move: Habs; rewrite ltr_norml; smt().
+qed.
+
+lemma asym_canonical_product_bound x y :
+  -(q - 1) <= x <= asym_bound_hi =>
+  0 <= y < q =>
+  -R %/ 2 * q <= x * y < R %/ 2 * q.
+proof.
+  move=> Hx Hy.
+  have Hp := asym_canonical_product_norm x y Hx Hy.
+  have Hlim : asym_bound_hi * (q - 1) < R %/ 2 * q.
+  + rewrite /asym_bound_hi R_halfE /q.
     smt().
   have Habs : `|x * y| < R %/ 2 * q by smt().
   move: Habs; rewrite ltr_norml; smt().
@@ -346,6 +417,26 @@ proof.
     `|x0 * y0 + x1 * y1| <= 2 * s12_bound * s12_bound by smt().
   have Hlim : 2 * s12_bound * s12_bound < R %/ 2 * q.
   + rewrite /s12_bound R_halfE /q.
+    smt().
+  have Habs : `|x0 * y0 + x1 * y1| < R %/ 2 * q by smt().
+  move: Habs; rewrite ltr_norml; smt().
+qed.
+
+lemma asym_canonical_product_sum2_bound x0 x1 y0 y1 :
+  -(q - 1) <= x0 <= asym_bound_hi =>
+  -(q - 1) <= x1 <= asym_bound_hi =>
+  0 <= y0 < q =>
+  0 <= y1 < q =>
+  -R %/ 2 * q <= x0 * y0 + x1 * y1 < R %/ 2 * q.
+proof.
+  move=> Hx0 Hx1 Hy0 Hy1.
+  have Hp0 := asym_canonical_product_norm x0 y0 Hx0 Hy0.
+  have Hp1 := asym_canonical_product_norm x1 y1 Hx1 Hy1.
+  have Htri := lez_norm_add (x0 * y0) (x1 * y1).
+  have Hsum :
+    `|x0 * y0 + x1 * y1| <= 2 * asym_bound_hi * (q - 1) by smt().
+  have Hlim : 2 * asym_bound_hi * (q - 1) < R %/ 2 * q.
+  + rewrite /asym_bound_hi R_halfE /q.
     smt().
   have Habs : `|x0 * y0 + x1 * y1| < R %/ 2 * q by smt().
   move: Habs; rewrite ltr_norml; smt().
@@ -391,6 +482,31 @@ proof.
     `|x0 * y0 + x1 * y1 + x2 * y2| <= 3 * s12_bound * s12_bound by smt().
   have Hlim : 3 * s12_bound * s12_bound < R %/ 2 * q.
   + rewrite /s12_bound R_halfE /q.
+    smt().
+  have Habs : `|x0 * y0 + x1 * y1 + x2 * y2| < R %/ 2 * q by smt().
+  move: Habs; rewrite ltr_norml; smt().
+qed.
+
+lemma asym_canonical_product_sum3_bound x0 x1 x2 y0 y1 y2 :
+  -(q - 1) <= x0 <= asym_bound_hi =>
+  -(q - 1) <= x1 <= asym_bound_hi =>
+  -(q - 1) <= x2 <= asym_bound_hi =>
+  0 <= y0 < q =>
+  0 <= y1 < q =>
+  0 <= y2 < q =>
+  -R %/ 2 * q <= x0 * y0 + x1 * y1 + x2 * y2 < R %/ 2 * q.
+proof.
+  move=> Hx0 Hx1 Hx2 Hy0 Hy1 Hy2.
+  have Hp0 := asym_canonical_product_norm x0 y0 Hx0 Hy0.
+  have Hp1 := asym_canonical_product_norm x1 y1 Hx1 Hy1.
+  have Hp2 := asym_canonical_product_norm x2 y2 Hx2 Hy2.
+  have Htri0 := lez_norm_add (x0 * y0) (x1 * y1).
+  have Htri1 := lez_norm_add (x0 * y0 + x1 * y1) (x2 * y2).
+  have Hsum :
+    `|x0 * y0 + x1 * y1 + x2 * y2| <=
+    3 * asym_bound_hi * (q - 1) by smt().
+  have Hlim : 3 * asym_bound_hi * (q - 1) < R %/ 2 * q.
+  + rewrite /asym_bound_hi R_halfE /q.
     smt().
   have Habs : `|x0 * y0 + x1 * y1 + x2 * y2| < R %/ 2 * q by smt().
   move: Habs; rewrite ltr_norml; smt().
@@ -449,6 +565,114 @@ proof.
     4 * s12_bound * s12_bound by smt().
   have Hlim : 4 * s12_bound * s12_bound < R %/ 2 * q.
   + rewrite /s12_bound R_halfE /q.
+    smt().
+  have Habs :
+    `|x0 * y0 + x1 * y1 + x2 * y2 + x3 * y3| < R %/ 2 * q by smt().
+  move: Habs; rewrite ltr_norml; smt().
+qed.
+
+lemma asym_canonical_product_sum4_bound x0 x1 x2 x3 y0 y1 y2 y3 :
+  -(q - 1) <= x0 <= asym_bound_hi =>
+  -(q - 1) <= x1 <= asym_bound_hi =>
+  -(q - 1) <= x2 <= asym_bound_hi =>
+  -(q - 1) <= x3 <= asym_bound_hi =>
+  0 <= y0 < q =>
+  0 <= y1 < q =>
+  0 <= y2 < q =>
+  0 <= y3 < q =>
+  -R %/ 2 * q <=
+    x0 * y0 + x1 * y1 + x2 * y2 + x3 * y3 < R %/ 2 * q.
+proof.
+  move=> Hx0 Hx1 Hx2 Hx3 Hy0 Hy1 Hy2 Hy3.
+  have Hp0 := asym_canonical_product_norm x0 y0 Hx0 Hy0.
+  have Hp1 := asym_canonical_product_norm x1 y1 Hx1 Hy1.
+  have Hp2 := asym_canonical_product_norm x2 y2 Hx2 Hy2.
+  have Hp3 := asym_canonical_product_norm x3 y3 Hx3 Hy3.
+  have Htri0 := lez_norm_add (x0 * y0) (x1 * y1).
+  have Htri1 := lez_norm_add (x0 * y0 + x1 * y1) (x2 * y2).
+  have Htri2 := lez_norm_add
+    (x0 * y0 + x1 * y1 + x2 * y2) (x3 * y3).
+  have Hsum :
+    `|x0 * y0 + x1 * y1 + x2 * y2 + x3 * y3| <=
+    4 * asym_bound_hi * (q - 1) by smt().
+  have Hlim : 4 * asym_bound_hi * (q - 1) < R %/ 2 * q.
+  + rewrite /asym_bound_hi R_halfE /q.
+    smt().
+  have Habs :
+    `|x0 * y0 + x1 * y1 + x2 * y2 + x3 * y3| < R %/ 2 * q by smt().
+  move: Habs; rewrite ltr_norml; smt().
+qed.
+
+lemma qrange_asym_canonical_sum2_bound x0 y0 x1 y1 :
+  -q <= x0 < q =>
+  -q <= y0 < q =>
+  -(q - 1) <= x1 <= asym_bound_hi =>
+  0 <= y1 < q =>
+  -R %/ 2 * q <= x0 * y0 + x1 * y1 < R %/ 2 * q.
+proof.
+  move=> Hx0 Hy0 Hx1 Hy1.
+  have Hp0 := qrange_product_norm x0 y0 Hx0 Hy0.
+  have Hp1 := asym_canonical_product_norm x1 y1 Hx1 Hy1.
+  have Htri := lez_norm_add (x0 * y0) (x1 * y1).
+  have Hsum :
+    `|x0 * y0 + x1 * y1| <= q * q + asym_bound_hi * (q - 1) by smt().
+  have Hlim : q * q + asym_bound_hi * (q - 1) < R %/ 2 * q.
+  + rewrite /asym_bound_hi R_halfE /q.
+    smt().
+  have Habs : `|x0 * y0 + x1 * y1| < R %/ 2 * q by smt().
+  move: Habs; rewrite ltr_norml; smt().
+qed.
+
+lemma qrange_asym_canonical_sum3_bound x0 y0 x1 x2 y1 y2 :
+  -q <= x0 < q =>
+  -q <= y0 < q =>
+  -(q - 1) <= x1 <= asym_bound_hi =>
+  -(q - 1) <= x2 <= asym_bound_hi =>
+  0 <= y1 < q =>
+  0 <= y2 < q =>
+  -R %/ 2 * q <= x0 * y0 + x1 * y1 + x2 * y2 < R %/ 2 * q.
+proof.
+  move=> Hx0 Hy0 Hx1 Hx2 Hy1 Hy2.
+  have Hp0 := qrange_product_norm x0 y0 Hx0 Hy0.
+  have Hp1 := asym_canonical_product_norm x1 y1 Hx1 Hy1.
+  have Hp2 := asym_canonical_product_norm x2 y2 Hx2 Hy2.
+  have Htri0 := lez_norm_add (x0 * y0) (x1 * y1).
+  have Htri1 := lez_norm_add (x0 * y0 + x1 * y1) (x2 * y2).
+  have Hsum :
+    `|x0 * y0 + x1 * y1 + x2 * y2| <=
+    q * q + 2 * asym_bound_hi * (q - 1) by smt().
+  have Hlim : q * q + 2 * asym_bound_hi * (q - 1) < R %/ 2 * q.
+  + rewrite /asym_bound_hi R_halfE /q.
+    smt().
+  have Habs : `|x0 * y0 + x1 * y1 + x2 * y2| < R %/ 2 * q by smt().
+  move: Habs; rewrite ltr_norml; smt().
+qed.
+
+lemma qrange_asym_canonical_sum4_bound x0 y0 x1 x2 x3 y1 y2 y3 :
+  -q <= x0 < q =>
+  -q <= y0 < q =>
+  -(q - 1) <= x1 <= asym_bound_hi =>
+  -(q - 1) <= x2 <= asym_bound_hi =>
+  -(q - 1) <= x3 <= asym_bound_hi =>
+  0 <= y1 < q =>
+  0 <= y2 < q =>
+  0 <= y3 < q =>
+  -R %/ 2 * q <= x0 * y0 + x1 * y1 + x2 * y2 + x3 * y3 < R %/ 2 * q.
+proof.
+  move=> Hx0 Hy0 Hx1 Hx2 Hx3 Hy1 Hy2 Hy3.
+  have Hp0 := qrange_product_norm x0 y0 Hx0 Hy0.
+  have Hp1 := asym_canonical_product_norm x1 y1 Hx1 Hy1.
+  have Hp2 := asym_canonical_product_norm x2 y2 Hx2 Hy2.
+  have Hp3 := asym_canonical_product_norm x3 y3 Hx3 Hy3.
+  have Htri0 := lez_norm_add (x0 * y0) (x1 * y1).
+  have Htri1 := lez_norm_add (x0 * y0 + x1 * y1) (x2 * y2).
+  have Htri2 := lez_norm_add
+    (x0 * y0 + x1 * y1 + x2 * y2) (x3 * y3).
+  have Hsum :
+    `|x0 * y0 + x1 * y1 + x2 * y2 + x3 * y3| <=
+    q * q + 3 * asym_bound_hi * (q - 1) by smt().
+  have Hlim : q * q + 3 * asym_bound_hi * (q - 1) < R %/ 2 * q.
+  + rewrite /asym_bound_hi R_halfE /q.
     smt().
   have Habs :
     `|x0 * y0 + x1 * y1 + x2 * y2 + x3 * y3| < R %/ 2 * q by smt().
@@ -649,6 +873,307 @@ proof.
   + apply montgomery_reduce_of_int.
     rewrite /r3_expr.
     exact (s12_product_sum4_bound
+      (coeff a.[0]) (coeff a.[1]) (coeff a.[2]) (coeff a.[3])
+      (coeff b.[3]) (coeff b.[2]) (coeff b.[1]) (coeff b.[0])
+      Ha0 Ha1 Ha2 Ha3 Hb3 Hb2 Hb1 Hb0).
+  have [Hr0b Hr0c] := Hr0.
+  have [Hr1b Hr1c] := Hr1.
+  have [Hr2b Hr2c] := Hr2.
+  have [Hr3b Hr3c] := Hr3.
+  pose r0w := montgomery_reduce (W32.of_int (r0_expr t0w z a b)).
+  pose r1w := montgomery_reduce (W32.of_int (r1_expr t1w z a b)).
+  pose r2w := montgomery_reduce (W32.of_int (r2_expr t2w z a b)).
+  pose r3w := montgomery_reduce (W32.of_int (r3_expr a b)).
+  have Hr0wb : -q <= coeff r0w < q by rewrite /r0w; exact Hr0b.
+  have Hr1wb : -q <= coeff r1w < q by rewrite /r1w; exact Hr1b.
+  have Hr2wb : -q <= coeff r2w < q by rewrite /r2w; exact Hr2b.
+  have Hr3wb : -q <= coeff r3w < q by rewrite /r3w; exact Hr3b.
+  have Hr0wc : coeff r0w %% q = (r0_expr t0w z a b * Rinv) %% q
+    by rewrite /r0w; exact Hr0c.
+  have Hr1wc : coeff r1w %% q = (r1_expr t1w z a b * Rinv) %% q
+    by rewrite /r1w; exact Hr1c.
+  have Hr2wc : coeff r2w %% q = (r2_expr t2w z a b * Rinv) %% q
+    by rewrite /r2w; exact Hr2c.
+  have Hr3wc : coeff r3w %% q = (r3_expr a b * Rinv) %% q
+    by rewrite /r3w; exact Hr3c.
+  have R0eq :
+    montgomery_reduce
+      (mul_i16 t0w z + mul_i16 a.[0] b.[0]) = r0w.
+    by rewrite /r0w /r0_expr !mul_i16E !W32.of_intD'.
+  have R1eq :
+    montgomery_reduce
+      (mul_i16 t1w z + mul_i16 a.[0] b.[1] + mul_i16 a.[1] b.[0]) = r1w.
+    by rewrite /r1w /r1_expr !mul_i16E !W32.of_intD'.
+  have R2eq :
+    montgomery_reduce
+      (mul_i16 t2w z + mul_i16 a.[0] b.[2] + mul_i16 a.[1] b.[1] +
+       mul_i16 a.[2] b.[0]) = r2w.
+    by rewrite /r2w /r2_expr !mul_i16E !W32.of_intD'.
+  have R3eq :
+    montgomery_reduce
+      (mul_i16 a.[0] b.[3] + mul_i16 a.[1] b.[2] +
+       mul_i16 a.[2] b.[1] + mul_i16 a.[3] b.[0]) = r3w.
+    by rewrite /r3w /r3_expr !mul_i16E !W32.of_intD'.
+  have H867 : -q <= 867 < q by rewrite /q.
+  have Ho0 :
+    -q <= coeff (montgomery_reduce (W32.of_int (coeff r0w * 867))) < q /\
+    coeff (montgomery_reduce (W32.of_int (coeff r0w * 867))) %% q =
+      (coeff r0w * 867 * Rinv) %% q.
+  + apply montgomery_reduce_of_int.
+    exact (product_bound (coeff r0w) 867 Hr0wb H867).
+  have Ho1 :
+    -q <= coeff (montgomery_reduce (W32.of_int (coeff r1w * 867))) < q /\
+    coeff (montgomery_reduce (W32.of_int (coeff r1w * 867))) %% q =
+      (coeff r1w * 867 * Rinv) %% q.
+  + apply montgomery_reduce_of_int.
+    exact (product_bound (coeff r1w) 867 Hr1wb H867).
+  have Ho2 :
+    -q <= coeff (montgomery_reduce (W32.of_int (coeff r2w * 867))) < q /\
+    coeff (montgomery_reduce (W32.of_int (coeff r2w * 867))) %% q =
+      (coeff r2w * 867 * Rinv) %% q.
+  + apply montgomery_reduce_of_int.
+    exact (product_bound (coeff r2w) 867 Hr2wb H867).
+  have Ho3 :
+    -q <= coeff (montgomery_reduce (W32.of_int (coeff r3w * 867))) < q /\
+    coeff (montgomery_reduce (W32.of_int (coeff r3w * 867))) %% q =
+      (coeff r3w * 867 * Rinv) %% q.
+  + apply montgomery_reduce_of_int.
+    exact (product_bound (coeff r3w) 867 Hr3wb H867).
+  pose o0w := montgomery_reduce (W32.of_int (coeff r0w * 867)).
+  pose o1w := montgomery_reduce (W32.of_int (coeff r1w * 867)).
+  pose o2w := montgomery_reduce (W32.of_int (coeff r2w * 867)).
+  pose o3w := montgomery_reduce (W32.of_int (coeff r3w * 867)).
+  have [Ho0b Ho0c] := Ho0.
+  have [Ho1b Ho1c] := Ho1.
+  have [Ho2b Ho2c] := Ho2.
+  have [Ho3b Ho3c] := Ho3.
+  have Ho0wb : in_qrange o0w by rewrite /in_qrange /o0w; exact Ho0b.
+  have Ho1wb : in_qrange o1w by rewrite /in_qrange /o1w; exact Ho1b.
+  have Ho2wb : in_qrange o2w by rewrite /in_qrange /o2w; exact Ho2b.
+  have Ho3wb : in_qrange o3w by rewrite /in_qrange /o3w; exact Ho3b.
+  have Ho0wc : coeff o0w %% q = (coeff r0w * 867 * Rinv) %% q
+    by rewrite /o0w; exact Ho0c.
+  have Ho1wc : coeff o1w %% q = (coeff r1w * 867 * Rinv) %% q
+    by rewrite /o1w; exact Ho1c.
+  have Ho2wc : coeff o2w %% q = (coeff r2w * 867 * Rinv) %% q
+    by rewrite /o2w; exact Ho2c.
+  have Ho3wc : coeff o3w %% q = (coeff r3w * 867 * Rinv) %% q
+    by rewrite /o3w; exact Ho3c.
+  have O0eq :
+    montgomery_reduce (mul_i16 r0w (W16.of_int 867)) = o0w.
+    by rewrite /o0w mul_i16E /coeff W16.of_sintK /W16.smod /=.
+  have O1eq :
+    montgomery_reduce (mul_i16 r1w (W16.of_int 867)) = o1w.
+    by rewrite /o1w mul_i16E /coeff W16.of_sintK /W16.smod /=.
+  have O2eq :
+    montgomery_reduce (mul_i16 r2w (W16.of_int 867)) = o2w.
+    by rewrite /o2w mul_i16E /coeff W16.of_sintK /W16.smod /=.
+  have O3eq :
+    montgomery_reduce (mul_i16 r3w (W16.of_int 867)) = o3w.
+    by rewrite /o3w mul_i16E /coeff W16.of_sintK /W16.smod /=.
+  have HzR := zeta_mont_Rinv z zeta_math Hzeta.
+  have Hout0 := double_montgomery_congr
+    (coeff o0w) (coeff r0w) (r0_expr t0w z a b) Ho0wc Hr0wc.
+  have Hout1 := double_montgomery_congr
+    (coeff o1w) (coeff r1w) (r1_expr t1w z a b) Ho1wc Hr1wc.
+  have Hout2 := double_montgomery_congr
+    (coeff o2w) (coeff r2w) (r2_expr t2w z a b) Ho2wc Hr2wc.
+  have Hout3 := double_montgomery_congr
+    (coeff o3w) (coeff r3w) (r3_expr a b) Ho3wc Hr3wc.
+  have Htz0 := montgomery_zeta_congr
+    (coeff t0w) (t0_expr a b) (coeff z) zeta_math Ht0wc HzR.
+  have Htz1 := montgomery_zeta_congr
+    (coeff t1w) (t1_expr a b) (coeff z) zeta_math Ht1wc HzR.
+  have Htz2 := montgomery_zeta_congr
+    (coeff t2w) (t2_expr a b) (coeff z) zeta_math Ht2wc HzR.
+  have Hpoly0 :
+    r0_expr t0w z a b %% q = coeff0 a b zeta_math %% q.
+  + rewrite /r0_expr /coeff0.
+    rewrite -modzDml Htz0 modzDml /t0_expr.
+    have Hring0 :
+      (coeff a.[1] * coeff b.[3] + coeff a.[2] * coeff b.[2] +
+       coeff a.[3] * coeff b.[1]) * zeta_math +
+        coeff a.[0] * coeff b.[0] =
+      coeff a.[0] * coeff b.[0] +
+        zeta_math *
+          (coeff a.[1] * coeff b.[3] + coeff a.[2] * coeff b.[2] +
+           coeff a.[3] * coeff b.[1])
+      by ring.
+    rewrite Hring0.
+    done.
+  have Hpoly1 :
+    r1_expr t1w z a b %% q = coeff1 a b zeta_math %% q.
+  + rewrite /r1_expr /coeff1.
+    rewrite (_ :
+      coeff t1w * coeff z + coeff a.[0] * coeff b.[1] +
+        coeff a.[1] * coeff b.[0] =
+      coeff t1w * coeff z +
+        (coeff a.[0] * coeff b.[1] + coeff a.[1] * coeff b.[0])).
+    + ring.
+    rewrite -modzDml Htz1 modzDml /t1_expr.
+    have Hring1 :
+      (coeff a.[2] * coeff b.[3] + coeff a.[3] * coeff b.[2]) *
+          zeta_math +
+        (coeff a.[0] * coeff b.[1] + coeff a.[1] * coeff b.[0]) =
+      coeff a.[0] * coeff b.[1] + coeff a.[1] * coeff b.[0] +
+        zeta_math *
+          (coeff a.[2] * coeff b.[3] + coeff a.[3] * coeff b.[2])
+      by ring.
+    rewrite Hring1.
+    done.
+  have Hpoly2 :
+    r2_expr t2w z a b %% q = coeff2 a b zeta_math %% q.
+  + rewrite /r2_expr /coeff2.
+    rewrite (_ :
+      coeff t2w * coeff z + coeff a.[0] * coeff b.[2] +
+        coeff a.[1] * coeff b.[1] + coeff a.[2] * coeff b.[0] =
+      coeff t2w * coeff z +
+        (coeff a.[0] * coeff b.[2] + coeff a.[1] * coeff b.[1] +
+         coeff a.[2] * coeff b.[0])).
+    + ring.
+    rewrite -modzDml Htz2 modzDml /t2_expr.
+    have Hring2 :
+      coeff a.[3] * coeff b.[3] * zeta_math +
+        (coeff a.[0] * coeff b.[2] + coeff a.[1] * coeff b.[1] +
+         coeff a.[2] * coeff b.[0]) =
+      coeff a.[0] * coeff b.[2] + coeff a.[1] * coeff b.[1] +
+        coeff a.[2] * coeff b.[0] +
+        zeta_math * (coeff a.[3] * coeff b.[3])
+      by ring.
+    rewrite Hring2.
+    done.
+  have Hpoly3 :
+    r3_expr a b %% q = coeff3 a b zeta_math %% q
+    by rewrite /r3_expr /coeff3.
+  have Hmod1 :
+    coeff o1w %% q = coeff1 a b zeta_math %% q
+    by rewrite Hout1 Hpoly1.
+  have Hmod0 :
+    coeff o0w %% q = coeff0 a b zeta_math %% q
+    by rewrite Hout0 Hpoly0.
+  have Hmod2 :
+    coeff o2w %% q = coeff2 a b zeta_math %% q
+    by rewrite Hout2 Hpoly2.
+  have Hmod3 :
+    coeff o3w %% q = coeff3 a b zeta_math %% q
+    by rewrite Hout3 Hpoly3.
+  rewrite /basemul_spec /=.
+  rewrite T0eq T1eq T2eq R0eq R1eq R2eq R3eq O0eq O1eq O2eq O3eq.
+  split; first exact Ho0wb.
+  split; first exact Ho1wb.
+  split; first exact Ho2wb.
+  split; first exact Ho3wb.
+  split; first exact Hmod0.
+  split; first exact Hmod1.
+  split; first exact Hmod2.
+  exact Hmod3.
+qed.
+
+lemma basemul_spec_algebra_asym
+  (out a b : W16.t Array4.t) (z : W16.t) (zeta_math : int) :
+  in_asymrange4 a =>
+  in_canonical_range4 b =>
+  in_qrange z =>
+  zeta_mont_relation z zeta_math =>
+  let c = basemul_spec out a b z in
+    in_qrange c.[0] /\ in_qrange c.[1] /\
+    in_qrange c.[2] /\ in_qrange c.[3] /\
+    coeff c.[0] %% q = coeff0 a b zeta_math %% q /\
+    coeff c.[1] %% q = coeff1 a b zeta_math %% q /\
+    coeff c.[2] %% q = coeff2 a b zeta_math %% q /\
+    coeff c.[3] %% q = coeff3 a b zeta_math %% q.
+proof.
+  move=> Ha Hb Hz Hzeta.
+  move: Ha Hb => [Ha0 [Ha1 [Ha2 Ha3]]] [Hb0 [Hb1 [Hb2 Hb3]]].
+  have Ht0 :
+    -q <= coeff (montgomery_reduce (W32.of_int (t0_expr a b))) < q /\
+    coeff (montgomery_reduce (W32.of_int (t0_expr a b))) %% q =
+      (t0_expr a b * Rinv) %% q.
+  + apply montgomery_reduce_of_int.
+    rewrite /t0_expr.
+    exact (asym_canonical_product_sum3_bound
+      (coeff a.[1]) (coeff a.[2]) (coeff a.[3])
+      (coeff b.[3]) (coeff b.[2]) (coeff b.[1])
+      Ha1 Ha2 Ha3 Hb3 Hb2 Hb1).
+  have Ht1 :
+    -q <= coeff (montgomery_reduce (W32.of_int (t1_expr a b))) < q /\
+    coeff (montgomery_reduce (W32.of_int (t1_expr a b))) %% q =
+      (t1_expr a b * Rinv) %% q.
+  + apply montgomery_reduce_of_int.
+    rewrite /t1_expr.
+    exact (asym_canonical_product_sum2_bound
+      (coeff a.[2]) (coeff a.[3])
+      (coeff b.[3]) (coeff b.[2])
+      Ha2 Ha3 Hb3 Hb2).
+  have Ht2 :
+    -q <= coeff (montgomery_reduce (W32.of_int (t2_expr a b))) < q /\
+    coeff (montgomery_reduce (W32.of_int (t2_expr a b))) %% q =
+      (t2_expr a b * Rinv) %% q.
+  + apply montgomery_reduce_of_int.
+    rewrite /t2_expr.
+    exact (asym_canonical_product_bound (coeff a.[3]) (coeff b.[3]) Ha3 Hb3).
+  have [Ht0b Ht0c] := Ht0.
+  have [Ht1b Ht1c] := Ht1.
+  have [Ht2b Ht2c] := Ht2.
+  pose t0w := montgomery_reduce (W32.of_int (t0_expr a b)).
+  pose t1w := montgomery_reduce (W32.of_int (t1_expr a b)).
+  pose t2w := montgomery_reduce (W32.of_int (t2_expr a b)).
+  have Ht0wb : -q <= coeff t0w < q by rewrite /t0w; exact Ht0b.
+  have Ht1wb : -q <= coeff t1w < q by rewrite /t1w; exact Ht1b.
+  have Ht2wb : -q <= coeff t2w < q by rewrite /t2w; exact Ht2b.
+  have Ht0wc : coeff t0w %% q = (t0_expr a b * Rinv) %% q
+    by rewrite /t0w; exact Ht0c.
+  have Ht1wc : coeff t1w %% q = (t1_expr a b * Rinv) %% q
+    by rewrite /t1w; exact Ht1c.
+  have Ht2wc : coeff t2w %% q = (t2_expr a b * Rinv) %% q
+    by rewrite /t2w; exact Ht2c.
+  have T0eq :
+    montgomery_reduce
+      (mul_i16 a.[1] b.[3] + mul_i16 a.[2] b.[2] + mul_i16 a.[3] b.[1]) = t0w.
+    by rewrite /t0w /t0_expr !mul_i16E !W32.of_intD'.
+  have T1eq :
+    montgomery_reduce
+      (mul_i16 a.[2] b.[3] + mul_i16 a.[3] b.[2]) = t1w.
+    by rewrite /t1w /t1_expr !mul_i16E !W32.of_intD'.
+  have T2eq :
+    montgomery_reduce (mul_i16 a.[3] b.[3]) = t2w.
+    by rewrite /t2w /t2_expr mul_i16E.
+  have Hr0 :
+    -q <= coeff (montgomery_reduce (W32.of_int (r0_expr t0w z a b))) < q /\
+    coeff (montgomery_reduce (W32.of_int (r0_expr t0w z a b))) %% q =
+      (r0_expr t0w z a b * Rinv) %% q.
+  + apply montgomery_reduce_of_int.
+    rewrite /r0_expr.
+    exact (qrange_asym_canonical_sum2_bound
+      (coeff t0w) (coeff z) (coeff a.[0]) (coeff b.[0])
+      Ht0wb Hz Ha0 Hb0).
+  have Hr1 :
+    -q <= coeff (montgomery_reduce (W32.of_int (r1_expr t1w z a b))) < q /\
+    coeff (montgomery_reduce (W32.of_int (r1_expr t1w z a b))) %% q =
+      (r1_expr t1w z a b * Rinv) %% q.
+  + apply montgomery_reduce_of_int.
+    rewrite /r1_expr.
+    exact (qrange_asym_canonical_sum3_bound
+      (coeff t1w) (coeff z) (coeff a.[0]) (coeff a.[1])
+      (coeff b.[1]) (coeff b.[0])
+      Ht1wb Hz Ha0 Ha1 Hb1 Hb0).
+  have Hr2 :
+    -q <= coeff (montgomery_reduce (W32.of_int (r2_expr t2w z a b))) < q /\
+    coeff (montgomery_reduce (W32.of_int (r2_expr t2w z a b))) %% q =
+      (r2_expr t2w z a b * Rinv) %% q.
+  + apply montgomery_reduce_of_int.
+    rewrite /r2_expr.
+    exact (qrange_asym_canonical_sum4_bound
+      (coeff t2w) (coeff z) (coeff a.[0]) (coeff a.[1]) (coeff a.[2])
+      (coeff b.[2]) (coeff b.[1]) (coeff b.[0])
+      Ht2wb Hz Ha0 Ha1 Ha2 Hb2 Hb1 Hb0).
+  have Hr3 :
+    -q <= coeff (montgomery_reduce (W32.of_int (r3_expr a b))) < q /\
+    coeff (montgomery_reduce (W32.of_int (r3_expr a b))) %% q =
+      (r3_expr a b * Rinv) %% q.
+  + apply montgomery_reduce_of_int.
+    rewrite /r3_expr.
+    exact (asym_canonical_product_sum4_bound
       (coeff a.[0]) (coeff a.[1]) (coeff a.[2]) (coeff a.[3])
       (coeff b.[3]) (coeff b.[2]) (coeff b.[1]) (coeff b.[0])
       Ha0 Ha1 Ha2 Ha3 Hb3 Hb2 Hb1 Hb0).

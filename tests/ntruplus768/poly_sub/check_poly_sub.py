@@ -136,6 +136,10 @@ def verify_c_text(poly_text: str, kem_text: str) -> None:
         kem_body.count("poly_sub(&c, &c, &m2);") == 1,
         "crypto_kem_dec() must contain exactly one poly_sub(&c, &c, &m2) call",
     )
+    require(
+        kem_body.count("poly_basemul(&r2, &c, &hinv);") == 1,
+        "crypto_kem_dec() must contain exactly one poly_basemul(&r2, &c, &hinv) call",
+    )
 
 
 def verify_jasmin_text(text: str) -> None:
@@ -234,6 +238,19 @@ def run_self_check(poly_text: str, kem_text: str) -> None:
     )
     require(reordered_kem != kem_text, "could not construct caller reorder mutation")
     expect_rejected(verify_c_text, poly_text, reordered_kem, label="caller reordered poly_ntt/poly_sub")
+
+    duplicated_basemul = kem_text.replace(
+        "    poly_basemul(&r2, &c, &hinv);\n",
+        "    poly_basemul(&r2, &c, &hinv);\n    poly_basemul(&r2, &c, &hinv);\n",
+        1,
+    )
+    require(duplicated_basemul != kem_text, "could not construct duplicate second-basemul mutation")
+    expect_rejected(
+        verify_c_text,
+        poly_text,
+        duplicated_basemul,
+        label="caller duplicated second poly_basemul",
+    )
 
     mutated_jasmin = EXPECTED_JASMIN_TEMPLATE.replace("t -= bp[i];", "t += bp[i];", 1)
     require(mutated_jasmin != EXPECTED_JASMIN_TEMPLATE, "could not construct Jasmin operator mutation")

@@ -68,11 +68,11 @@ The EasyCrypt development for this slice is again split into two layers. The
 word-level proof shows exact agreement with the extracted Jasmin procedure for
 all 96 iterations. The algebra layer lifts each of the 192 output blocks into
 `Z_q[X]/(X^4-zeta_k)` using the shared NTRU+768 NTT schedule theorem described
-below. Its only remaining data precondition is that every input coefficient
-lies in `[-q, q)`.
-
-Under that assumption, every output coefficient is again in `[-q, q)`, and
-each block satisfies the expected four coefficient congruences modulo `q = 3457`.
+below. It provides both the original symmetric theorem, with both inputs in
+`[-q, q)`, and an asymmetric theorem for a first input in `[-3456, 7552]` and
+a second input in canonical `[0, q)`. Under either theorem's premises, every
+output coefficient is again in `[-q, q)`, and each block satisfies the expected
+four coefficient congruences modulo `q = 3457`.
 
 ## First executable forward-NTT slice: initial split
 
@@ -833,11 +833,69 @@ GCC wraparound behavior only; out-of-range conversion to `int16_t` is
 implementation-defined by ISO C, while the EasyCrypt word theorem is modulo
 `2^16`.
 
-The result can reach `7552`, so it does not establish the existing
-`[-4096, 4096)` input premise for the following `poly_basemul`. This milestone
-therefore stops at ciphertext subtraction and does not claim downstream
-`poly_basemul` readiness, partial-overlap or shared-memory semantics, a formal
-C-AST equivalence, or full decapsulation/KEM correctness.
+The result can reach `7552`, so it does not establish the older symmetric
+`[-4096, 4096)` input premise for the following `poly_basemul`. This standalone
+milestone stops at ciphertext subtraction. The next milestone closes the
+concrete call for a range-valid serialized `hinv` with a dedicated asymmetric
+theorem; it does not turn arbitrary secret-key bytes into a valid second input.
+
+## Verified NTRU+768 range-valid `hinv` second decapsulation product
+
+The decapsulation bridge at
+`ntruplus/proof/768/ref/decap_r2/NTRUPlus768DecapR2Bridge.ec` extends the value
+flow through the concrete call `poly_basemul(&r2, &c, &hinv)`. It combines
+three independently checked facts:
+
+- the subtraction result supplied as `c` lies in `[-3456, 7552]`;
+- a key-generation `poly_basemul` result from q-range `f` and `ginv` inputs is
+  itself q-range and is therefore a valid `poly_tobytes` input;
+- `poly_frombytes(poly_tobytes(hinv))` is the canonical representative in
+  `[0, q)`, coefficientwise congruent to the original `hinv` modulo `q`.
+
+The `poly_tobytes` Jasmin slice has functional, lossless, and probability-one
+procedure proofs. Its algebra theory proves exact canonical round-trip through
+the existing decoder specification. The bridge explicitly equates the two
+decoder specifications used by those proof trees, rather than relying on an
+implicit identification of their duplicate arithmetic definitions.
+
+The asymmetric `basemul` proof is needed for the second product. Its largest
+four-product envelope for a range-valid canonical `hinv` is
+`4 * 7552 * 3456 = 104398848`, below the signed Montgomery reduction limit
+`32768 * 3457 = 113278976`. An arbitrary 12-bit decoder output could instead
+reach `4 * 7552 * 4095 = 123701760`, which exceeds that limit. Consequently,
+the terminal result is deliberately a range-qualified serialized-`hinv`
+theorem, not a theorem for arbitrary secret-key bytes or a proof that `hinv`
+is an inverse.
+
+The procedure and composition results are kept as two small theorems:
+`poly_frombytes_two_decoder_specs_keygen_hinv_decap_r2_poly_basemul_correct`
+proves that the verified Jasmin call returns the second quotient-ring product,
+and `poly_frombytes_two_decoder_specs_keygen_hinv_decap_r2_value_flow` composes
+that product with the preceding decoder, inverse NTT, `crepmod3`, forward NTT,
+and ciphertext subtraction facts. The key-generation theorem
+`keygen_hinv_poly_basemul_roundtrip_provenance` supplies the range-valid
+serialized `hinv` premise from q-range `f` and `ginv` inputs.
+
+Run the integrated milestone check with:
+
+```sh
+./scripts/verify-ntruplus768-decap-r2.sh
+```
+
+The verifier compiles the terminal EasyCrypt bridge with a bounded single
+Why3 worker, rejects proof holes, and reruns the complete `poly_tobytes`,
+`poly_basemul`, and `poly_sub` verifiers. Their fail-closed source checks bind
+the key-generation serialization, decapsulation deserialization, exact `c`
+alias, and ordered second `poly_basemul` call. Differential and UBSan coverage
+includes 5 wide boundary and 4096 deterministic wide random multiplication
+cases, input immutability, output q-range, and an independent modulo-`q`
+block-product oracle.
+
+This remains an old-array value/procedure result. It assumes q-range `f` and
+`ginv` rather than proving sampler or inversion provenance, and it does not
+model pointer offsets, partial overlap, or shared memory. It also does not
+claim formal C-AST equivalence, the downstream `poly_tobytes(buf1, &r2)` and
+hash flow, or full decapsulation/KEM correctness.
 
 ## Verified NTRU+768 NTT root schedule
 
