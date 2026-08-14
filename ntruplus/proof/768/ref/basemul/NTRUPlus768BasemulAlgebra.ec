@@ -31,6 +31,14 @@ op in_qrange (w : W16.t) : bool = -q <= coeff w < q.
 op in_qrange4 (a : W16.t Array4.t) : bool =
   in_qrange a.[0] /\ in_qrange a.[1] /\ in_qrange a.[2] /\ in_qrange a.[3].
 
+op s12_bound : int = 2^12.
+
+op in_s12range (w : W16.t) : bool = -s12_bound <= coeff w < s12_bound.
+
+op in_s12range4 (a : W16.t Array4.t) : bool =
+  in_s12range a.[0] /\ in_s12range a.[1] /\
+  in_s12range a.[2] /\ in_s12range a.[3].
+
 op zeta_mont_relation (z : W16.t) (zeta_math : int) : bool =
   -q <= zeta_math < q /\
   coeff z %% q = (zeta_math * (R %% q)) %% q.
@@ -230,6 +238,43 @@ proof.
   move=> Hx; rewrite ler_norml; smt().
 qed.
 
+lemma qrange_in_s12range (w : W16.t) :
+  in_qrange w => in_s12range w.
+proof.
+  rewrite /in_qrange /in_s12range /s12_bound /q.
+  smt().
+qed.
+
+lemma qrange4_in_s12range4 (a : W16.t Array4.t) :
+  in_qrange4 a => in_s12range4 a.
+proof.
+  rewrite /in_qrange4 /in_s12range4.
+  move=> [Ha0 [Ha1 [Ha2 Ha3]]].
+  split; first exact (qrange_in_s12range a.[0] Ha0).
+  split; first exact (qrange_in_s12range a.[1] Ha1).
+  split; first exact (qrange_in_s12range a.[2] Ha2).
+  exact (qrange_in_s12range a.[3] Ha3).
+qed.
+
+lemma s12range_norm (x : int) :
+  -s12_bound <= x < s12_bound => `|x| <= s12_bound.
+proof.
+  move=> Hx; rewrite ler_norml; smt().
+qed.
+
+lemma s12range_product_norm (x y : int) :
+  -s12_bound <= x < s12_bound =>
+  -s12_bound <= y < s12_bound =>
+  `|x * y| <= s12_bound * s12_bound.
+proof.
+  move=> Hx Hy; rewrite normrM.
+  apply ler_pmul.
+  + exact (normr_ge0 x).
+  + exact (normr_ge0 y).
+  + exact (s12range_norm x Hx).
+  exact (s12range_norm y Hy).
+qed.
+
 lemma qrange_product_norm (x y : int) :
   -q <= x < q => -q <= y < q => `|x * y| <= q * q.
 proof.
@@ -256,6 +301,19 @@ proof.
   move: Habs; rewrite ltr_norml; smt().
 qed.
 
+lemma s12_product_bound x y :
+  -s12_bound <= x < s12_bound => -s12_bound <= y < s12_bound =>
+  -R %/ 2 * q <= x * y < R %/ 2 * q.
+proof.
+  move=> Hx Hy.
+  have Hp := s12range_product_norm x y Hx Hy.
+  have Hlim : s12_bound * s12_bound < R %/ 2 * q.
+  + rewrite /s12_bound R_halfE /q.
+    smt().
+  have Habs : `|x * y| < R %/ 2 * q by smt().
+  move: Habs; rewrite ltr_norml; smt().
+qed.
+
 lemma product_sum2_bound x0 x1 y0 y1 :
   -q <= x0 < q => -q <= x1 < q =>
   -q <= y0 < q => -q <= y1 < q =>
@@ -270,6 +328,24 @@ proof.
   + rewrite (ltr_pmul2r q).
     + by rewrite /q.
     rewrite R_halfE /q.
+    smt().
+  have Habs : `|x0 * y0 + x1 * y1| < R %/ 2 * q by smt().
+  move: Habs; rewrite ltr_norml; smt().
+qed.
+
+lemma s12_product_sum2_bound x0 x1 y0 y1 :
+  -s12_bound <= x0 < s12_bound => -s12_bound <= x1 < s12_bound =>
+  -s12_bound <= y0 < s12_bound => -s12_bound <= y1 < s12_bound =>
+  -R %/ 2 * q <= x0 * y0 + x1 * y1 < R %/ 2 * q.
+proof.
+  move=> Hx0 Hx1 Hy0 Hy1.
+  have Hp0 := s12range_product_norm x0 y0 Hx0 Hy0.
+  have Hp1 := s12range_product_norm x1 y1 Hx1 Hy1.
+  have Htri := lez_norm_add (x0 * y0) (x1 * y1).
+  have Hsum :
+    `|x0 * y0 + x1 * y1| <= 2 * s12_bound * s12_bound by smt().
+  have Hlim : 2 * s12_bound * s12_bound < R %/ 2 * q.
+  + rewrite /s12_bound R_halfE /q.
     smt().
   have Habs : `|x0 * y0 + x1 * y1| < R %/ 2 * q by smt().
   move: Habs; rewrite ltr_norml; smt().
@@ -296,6 +372,30 @@ proof.
   move: Habs; rewrite ltr_norml; smt().
 qed.
 
+lemma s12_product_sum3_bound x0 x1 x2 y0 y1 y2 :
+  -s12_bound <= x0 < s12_bound =>
+  -s12_bound <= x1 < s12_bound =>
+  -s12_bound <= x2 < s12_bound =>
+  -s12_bound <= y0 < s12_bound =>
+  -s12_bound <= y1 < s12_bound =>
+  -s12_bound <= y2 < s12_bound =>
+  -R %/ 2 * q <= x0 * y0 + x1 * y1 + x2 * y2 < R %/ 2 * q.
+proof.
+  move=> Hx0 Hx1 Hx2 Hy0 Hy1 Hy2.
+  have Hp0 := s12range_product_norm x0 y0 Hx0 Hy0.
+  have Hp1 := s12range_product_norm x1 y1 Hx1 Hy1.
+  have Hp2 := s12range_product_norm x2 y2 Hx2 Hy2.
+  have Htri0 := lez_norm_add (x0 * y0) (x1 * y1).
+  have Htri1 := lez_norm_add (x0 * y0 + x1 * y1) (x2 * y2).
+  have Hsum :
+    `|x0 * y0 + x1 * y1 + x2 * y2| <= 3 * s12_bound * s12_bound by smt().
+  have Hlim : 3 * s12_bound * s12_bound < R %/ 2 * q.
+  + rewrite /s12_bound R_halfE /q.
+    smt().
+  have Habs : `|x0 * y0 + x1 * y1 + x2 * y2| < R %/ 2 * q by smt().
+  move: Habs; rewrite ltr_norml; smt().
+qed.
+
 lemma product_sum4_bound x0 x1 x2 x3 y0 y1 y2 y3 :
   -q <= x0 < q => -q <= x1 < q => -q <= x2 < q => -q <= x3 < q =>
   -q <= y0 < q => -q <= y1 < q => -q <= y2 < q => -q <= y3 < q =>
@@ -317,6 +417,38 @@ proof.
   + rewrite (ltr_pmul2r q).
     + by rewrite /q.
     rewrite R_halfE /q.
+    smt().
+  have Habs :
+    `|x0 * y0 + x1 * y1 + x2 * y2 + x3 * y3| < R %/ 2 * q by smt().
+  move: Habs; rewrite ltr_norml; smt().
+qed.
+
+lemma s12_product_sum4_bound x0 x1 x2 x3 y0 y1 y2 y3 :
+  -s12_bound <= x0 < s12_bound =>
+  -s12_bound <= x1 < s12_bound =>
+  -s12_bound <= x2 < s12_bound =>
+  -s12_bound <= x3 < s12_bound =>
+  -s12_bound <= y0 < s12_bound =>
+  -s12_bound <= y1 < s12_bound =>
+  -s12_bound <= y2 < s12_bound =>
+  -s12_bound <= y3 < s12_bound =>
+  -R %/ 2 * q <=
+    x0 * y0 + x1 * y1 + x2 * y2 + x3 * y3 < R %/ 2 * q.
+proof.
+  move=> Hx0 Hx1 Hx2 Hx3 Hy0 Hy1 Hy2 Hy3.
+  have Hp0 := s12range_product_norm x0 y0 Hx0 Hy0.
+  have Hp1 := s12range_product_norm x1 y1 Hx1 Hy1.
+  have Hp2 := s12range_product_norm x2 y2 Hx2 Hy2.
+  have Hp3 := s12range_product_norm x3 y3 Hx3 Hy3.
+  have Htri0 := lez_norm_add (x0 * y0) (x1 * y1).
+  have Htri1 := lez_norm_add (x0 * y0 + x1 * y1) (x2 * y2).
+  have Htri2 := lez_norm_add
+    (x0 * y0 + x1 * y1 + x2 * y2) (x3 * y3).
+  have Hsum :
+    `|x0 * y0 + x1 * y1 + x2 * y2 + x3 * y3| <=
+    4 * s12_bound * s12_bound by smt().
+  have Hlim : 4 * s12_bound * s12_bound < R %/ 2 * q.
+  + rewrite /s12_bound R_halfE /q.
     smt().
   have Habs :
     `|x0 * y0 + x1 * y1 + x2 * y2 + x3 * y3| < R %/ 2 * q by smt().
@@ -404,10 +536,10 @@ proof.
   done.
 qed.
 
-lemma basemul_spec_algebra
+lemma basemul_spec_algebra_s12
   (out a b : W16.t Array4.t) (z : W16.t) (zeta_math : int) :
-  in_qrange4 a =>
-  in_qrange4 b =>
+  in_s12range4 a =>
+  in_s12range4 b =>
   in_qrange z =>
   zeta_mont_relation z zeta_math =>
   let c = basemul_spec out a b z in
@@ -426,7 +558,7 @@ proof.
       (t0_expr a b * Rinv) %% q.
   + apply montgomery_reduce_of_int.
     rewrite /t0_expr.
-    exact (product_sum3_bound
+    exact (s12_product_sum3_bound
       (coeff a.[1]) (coeff a.[2]) (coeff a.[3])
       (coeff b.[3]) (coeff b.[2]) (coeff b.[1])
       Ha1 Ha2 Ha3 Hb3 Hb2 Hb1).
@@ -436,7 +568,7 @@ proof.
       (t1_expr a b * Rinv) %% q.
   + apply montgomery_reduce_of_int.
     rewrite /t1_expr.
-    exact (product_sum2_bound
+    exact (s12_product_sum2_bound
       (coeff a.[2]) (coeff a.[3])
       (coeff b.[3]) (coeff b.[2])
       Ha2 Ha3 Hb3 Hb2).
@@ -446,7 +578,7 @@ proof.
       (t2_expr a b * Rinv) %% q.
   + apply montgomery_reduce_of_int.
     rewrite /t2_expr.
-    exact (product_bound (coeff a.[3]) (coeff b.[3]) Ha3 Hb3).
+    exact (s12_product_bound (coeff a.[3]) (coeff b.[3]) Ha3 Hb3).
   have [Ht0b Ht0c] := Ht0.
   have [Ht1b Ht1c] := Ht1.
   have [Ht2b Ht2c] := Ht2.
@@ -456,6 +588,14 @@ proof.
   have Ht0wb : -q <= coeff t0w < q by rewrite /t0w; exact Ht0b.
   have Ht1wb : -q <= coeff t1w < q by rewrite /t1w; exact Ht1b.
   have Ht2wb : -q <= coeff t2w < q by rewrite /t2w; exact Ht2b.
+  have Ht0ws12 : -s12_bound <= coeff t0w < s12_bound.
+  + exact (qrange_in_s12range t0w Ht0wb).
+  have Ht1ws12 : -s12_bound <= coeff t1w < s12_bound.
+  + exact (qrange_in_s12range t1w Ht1wb).
+  have Ht2ws12 : -s12_bound <= coeff t2w < s12_bound.
+  + exact (qrange_in_s12range t2w Ht2wb).
+  have Hzs12 : -s12_bound <= coeff z < s12_bound.
+  + exact (qrange_in_s12range z Hz).
   have Ht0wc : coeff t0w %% q = (t0_expr a b * Rinv) %% q
     by rewrite /t0w; exact Ht0c.
   have Ht1wc : coeff t1w %% q = (t1_expr a b * Rinv) %% q
@@ -479,36 +619,36 @@ proof.
       (r0_expr t0w z a b * Rinv) %% q.
   + apply montgomery_reduce_of_int.
     rewrite /r0_expr.
-    exact (product_sum2_bound
+    exact (s12_product_sum2_bound
       (coeff t0w) (coeff a.[0]) (coeff z) (coeff b.[0])
-      Ht0wb Ha0 Hz Hb0).
+      Ht0ws12 Ha0 Hzs12 Hb0).
   have Hr1 :
     -q <= coeff (montgomery_reduce (W32.of_int (r1_expr t1w z a b))) < q /\
     coeff (montgomery_reduce (W32.of_int (r1_expr t1w z a b))) %% q =
       (r1_expr t1w z a b * Rinv) %% q.
   + apply montgomery_reduce_of_int.
     rewrite /r1_expr.
-    exact (product_sum3_bound
+    exact (s12_product_sum3_bound
       (coeff t1w) (coeff a.[0]) (coeff a.[1])
       (coeff z) (coeff b.[1]) (coeff b.[0])
-      Ht1wb Ha0 Ha1 Hz Hb1 Hb0).
+      Ht1ws12 Ha0 Ha1 Hzs12 Hb1 Hb0).
   have Hr2 :
     -q <= coeff (montgomery_reduce (W32.of_int (r2_expr t2w z a b))) < q /\
     coeff (montgomery_reduce (W32.of_int (r2_expr t2w z a b))) %% q =
       (r2_expr t2w z a b * Rinv) %% q.
   + apply montgomery_reduce_of_int.
     rewrite /r2_expr.
-    exact (product_sum4_bound
+    exact (s12_product_sum4_bound
       (coeff t2w) (coeff a.[0]) (coeff a.[1]) (coeff a.[2])
       (coeff z) (coeff b.[2]) (coeff b.[1]) (coeff b.[0])
-      Ht2wb Ha0 Ha1 Ha2 Hz Hb2 Hb1 Hb0).
+      Ht2ws12 Ha0 Ha1 Ha2 Hzs12 Hb2 Hb1 Hb0).
   have Hr3 :
     -q <= coeff (montgomery_reduce (W32.of_int (r3_expr a b))) < q /\
     coeff (montgomery_reduce (W32.of_int (r3_expr a b))) %% q =
       (r3_expr a b * Rinv) %% q.
   + apply montgomery_reduce_of_int.
     rewrite /r3_expr.
-    exact (product_sum4_bound
+    exact (s12_product_sum4_bound
       (coeff a.[0]) (coeff a.[1]) (coeff a.[2]) (coeff a.[3])
       (coeff b.[3]) (coeff b.[2]) (coeff b.[1]) (coeff b.[0])
       Ha0 Ha1 Ha2 Ha3 Hb3 Hb2 Hb1 Hb0).
@@ -703,4 +843,25 @@ proof.
   split; first exact Hmod1.
   split; first exact Hmod2.
   exact Hmod3.
+qed.
+
+lemma basemul_spec_algebra
+  (out a b : W16.t Array4.t) (z : W16.t) (zeta_math : int) :
+  in_qrange4 a =>
+  in_qrange4 b =>
+  in_qrange z =>
+  zeta_mont_relation z zeta_math =>
+  let c = basemul_spec out a b z in
+    in_qrange c.[0] /\ in_qrange c.[1] /\
+    in_qrange c.[2] /\ in_qrange c.[3] /\
+    coeff c.[0] %% q = coeff0 a b zeta_math %% q /\
+    coeff c.[1] %% q = coeff1 a b zeta_math %% q /\
+    coeff c.[2] %% q = coeff2 a b zeta_math %% q /\
+    coeff c.[3] %% q = coeff3 a b zeta_math %% q.
+proof.
+  move=> Ha Hb Hz Hzeta.
+  exact (basemul_spec_algebra_s12 out a b z zeta_math
+    (qrange4_in_s12range4 a Ha)
+    (qrange4_in_s12range4 b Hb)
+    Hz Hzeta).
 qed.

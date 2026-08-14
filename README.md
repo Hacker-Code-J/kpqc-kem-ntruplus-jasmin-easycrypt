@@ -649,6 +649,38 @@ source coefficients that have not yet been read. This milestone also does not
 claim a formal C-AST/Jasmin equivalence theorem, prove that every external
 caller establishes the signed input range, or prove the complete NTRU+768 KEM.
 
+## Independent `poly_basemul -> invntt` bridge
+
+The signed-12-bit bridge theory at
+`ntruplus/proof/768/ref/poly_basemul_invntt/NTRUPlus768PolyBasemulInvNTTAlgebra.ec`
+connects the strengthened `poly_basemul` contract to the composed `invntt`
+input shape. For coefficientwise `poly_basemul` inputs in signed
+`[-4096, 4096)`, the strengthened algebra layer still establishes the blockwise
+`poly_basemul_qring` postcondition, so every `poly_basemul` output coefficient
+is already in the centered `[-q, q)` range with `q = 3457`. The bridge then
+discharges the exact `invntt` range precondition and reuses the composed
+inverse-NTT algebra theorem to show that the resulting `invntt` output
+coefficients are again in `[-q, q)`.
+
+Run the independent bridge check with:
+
+```sh
+./scripts/verify-ntruplus768-poly-basemul-invntt.sh
+```
+
+This verifier is intentionally narrow. It syntax-checks itself, rejects proof
+holes in the bridge and dependent proof trees, compiles only the new bridge
+theory with fresh `easycrypt -no-eco` state through a private Why3 server, and
+runs the modified `tests/ntruplus768/poly_basemul/poly_basemul_diff.c`
+differential plus UBSan suite. The executable coverage exercises the
+authoritative C `poly_basemul` against the Jasmin slice on the existing
+q-boundary/random vectors plus the new signed-12-bit boundary/random vectors;
+it does not re-run the full `invntt` wrapper or unrelated KEM checks.
+
+This milestone does not prove `poly_frombytes` linkage, a formal C-AST/Jasmin
+equivalence theorem, shared-memory aliasing for the composed `invntt` wrapper,
+or the full NTRU+768 KEM.
+
 ## Verified NTRU+768 NTT root schedule
 
 The shared EasyCrypt theory at

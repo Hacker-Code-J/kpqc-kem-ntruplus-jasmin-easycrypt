@@ -6,6 +6,8 @@
 
 #define NTRUPLUS_N 768
 #define NTRUPLUS_Q 3457
+#define SIGNED12_MIN (-4096)
+#define SIGNED12_MAX 4095
 
 extern void jade_ntruplus_ntruplus768_amd64_ref_poly_basemul(
     int16_t r[NTRUPLUS_N], const int16_t a[NTRUPLUS_N], const int16_t b[NTRUPLUS_N]);
@@ -71,6 +73,40 @@ static int16_t sample_mod_q(uint32_t *state)
     return (int16_t)((int32_t)(next_u32(state) % (2 * NTRUPLUS_Q + 1)) - NTRUPLUS_Q);
 }
 
+static int16_t sample_signed12(uint32_t *state)
+{
+    return (int16_t)((int32_t)(next_u32(state) & 0x1fffu) + SIGNED12_MIN);
+}
+
+static void check_output_range(const char *impl,
+                               const char *tag,
+                               size_t idx,
+                               size_t coeff_idx,
+                               int16_t value,
+                               const int16_t a[NTRUPLUS_N],
+                               const int16_t b[NTRUPLUS_N])
+{
+    if (value < -NTRUPLUS_Q || value >= NTRUPLUS_Q) {
+        fprintf(stderr,
+                "%s out-of-range in %s[%zu] at coeff %zu: value=%d expected in [%d,%d)\n",
+                impl,
+                tag,
+                idx,
+                coeff_idx,
+                value,
+                -NTRUPLUS_Q,
+                NTRUPLUS_Q);
+        fprintf(stderr,
+                "a[%zu]=%d b[%zu]=%d block=%zu\n",
+                coeff_idx,
+                a[coeff_idx],
+                coeff_idx,
+                b[coeff_idx],
+                coeff_idx / 8);
+        exit(1);
+    }
+}
+
 static void check_case(const char *tag,
                        size_t idx,
                        const int16_t a[NTRUPLUS_N],
@@ -83,6 +119,8 @@ static void check_case(const char *tag,
     jade_ntruplus_ntruplus768_amd64_ref_poly_basemul(jasmin, a, b);
 
     for (size_t i = 0; i < NTRUPLUS_N; ++i) {
+        check_output_range("ref", tag, idx, i, ref[i], a, b);
+        check_output_range("jasmin", tag, idx, i, jasmin[i], a, b);
         if (ref[i] != jasmin[i]) {
             fprintf(stderr,
                     "mismatch in %s[%zu] at coeff %zu: ref=%d jasmin=%d\n",
@@ -146,6 +184,20 @@ static void run_boundary_cases(void)
     check_case("boundary", 7, a, b);
 }
 
+static void run_signed12_boundary_cases(void)
+{
+    int16_t a[NTRUPLUS_N];
+    int16_t b[NTRUPLUS_N];
+
+    fill_constant(a, SIGNED12_MIN);
+    fill_constant(b, SIGNED12_MAX);
+    check_case("signed12-boundary", 0, a, b);
+
+    fill_alternating(a, SIGNED12_MIN, SIGNED12_MAX);
+    fill_alternating(b, SIGNED12_MAX, SIGNED12_MIN);
+    check_case("signed12-boundary", 1, a, b);
+}
+
 static void run_random_cases(void)
 {
     uint32_t state = 0x8f37c129u;
@@ -162,14 +214,33 @@ static void run_random_cases(void)
 
         check_case("random", i, a, b);
     }
+}
 
-    printf("poly_basemul differential passed: 8 signed-boundary + %zu random signed-domain cases\n",
-           random_cases);
+static void run_signed12_random_cases(void)
+{
+    uint32_t state = 0xa4e1276bu;
+    const size_t random_cases = 1024;
+
+    for (size_t i = 0; i < random_cases; ++i) {
+        int16_t a[NTRUPLUS_N];
+        int16_t b[NTRUPLUS_N];
+
+        for (size_t j = 0; j < NTRUPLUS_N; ++j) {
+            a[j] = sample_signed12(&state);
+            b[j] = sample_signed12(&state);
+        }
+
+        check_case("signed12-random", i, a, b);
+    }
 }
 
 int main(void)
 {
     run_boundary_cases();
     run_random_cases();
+    run_signed12_boundary_cases();
+    run_signed12_random_cases();
+    printf("poly_basemul differential passed: 8 q-boundary + 4096 random signed-domain + "
+           "2 signed12-boundary + 1024 random signed12-domain cases\n");
     return 0;
 }

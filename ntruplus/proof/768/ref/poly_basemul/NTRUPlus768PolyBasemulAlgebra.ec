@@ -17,6 +17,9 @@ op zeta_coeff (i : int) : int = zetas192_coeff (96 + i).
 op in_qrange768 (p : W16.t Array768.t) : bool =
   forall k, 0 <= k < 192 => in_qrange4 (block4 p k).
 
+op in_s12range768 (p : W16.t Array768.t) : bool =
+  forall k, 0 <= k < 192 => in_s12range4 (block4 p k).
+
 op zeta_decode (z : W16.t) : int =
   (coeff z * Rinv) %% q.
 
@@ -228,6 +231,44 @@ proof.
   exact (Hp k Hk).
 qed.
 
+lemma in_qrange768_in_s12range768 (p : W16.t Array768.t) :
+  in_qrange768 p => in_s12range768 p.
+proof.
+  move=> Hp k Hk.
+  exact (qrange4_in_s12range4 (block4 p k) (Hp k Hk)).
+qed.
+
+lemma in_s12range768_block4 (p : W16.t Array768.t) (k : int) :
+  in_s12range768 p => 0 <= k < 192 => in_s12range4 (block4 p k).
+proof.
+  move=> Hp Hk.
+  exact (Hp k Hk).
+qed.
+
+lemma poly_basemul_word_to_qring_s12
+    (ap bp rp : W16.t Array768.t) :
+  in_s12range768 ap =>
+  in_s12range768 bp =>
+  is_poly_basemul ap bp rp 192 =>
+  poly_basemul_qring ap bp rp 192.
+proof.
+  move=> Hap Hbp Hword k Hk.
+  have Hak : in_s12range4 (block4 ap k).
+  + exact (in_s12range768_block4 ap k Hap Hk).
+  have Hbk : in_s12range4 (block4 bp k).
+  + exact (in_s12range768_block4 bp k Hbp Hk).
+  have Hzk : in_qrange (block_zeta k).
+  + exact (block_zeta_in_qrange k Hk).
+  have Hspec := Hword k Hk.
+  rewrite Hspec.
+  rewrite /basemul_block_spec /in_qrange4.
+  rewrite -(block_zeta_math_terminal_value k Hk).
+  have Halg := basemul_spec_algebra_s12 witness (block4 ap k) (block4 bp k)
+    (block_zeta k) (block_zeta_math k) Hak Hbk Hzk
+    (zeta_decode_relation (block_zeta k) Hzk).
+  move: Halg; smt().
+qed.
+
 lemma poly_basemul_word_to_qring
     (ap bp rp : W16.t Array768.t) :
   in_qrange768 ap =>
@@ -235,27 +276,17 @@ lemma poly_basemul_word_to_qring
   is_poly_basemul ap bp rp 192 =>
   poly_basemul_qring ap bp rp 192.
 proof.
-  move=> Hap Hbp Hword k Hk.
-  have Hak : in_qrange4 (block4 ap k).
-  + exact (in_qrange768_block4 ap k Hap Hk).
-  have Hbk : in_qrange4 (block4 bp k).
-  + exact (in_qrange768_block4 bp k Hbp Hk).
-  have Hzk : in_qrange (block_zeta k).
-  + exact (block_zeta_in_qrange k Hk).
-  have Hspec := Hword k Hk.
-  rewrite Hspec.
-  rewrite /basemul_block_spec /in_qrange4.
-  rewrite -(block_zeta_math_terminal_value k Hk).
-  have Halg := basemul_spec_algebra witness (block4 ap k) (block4 bp k)
-    (block_zeta k) (block_zeta_math k) Hak Hbk Hzk
-    (zeta_decode_relation (block_zeta k) Hzk).
-  move: Halg; smt().
+  move=> Hap Hbp Hword.
+  exact (poly_basemul_word_to_qring_s12 ap bp rp
+    (in_qrange768_in_s12range768 ap Hap)
+    (in_qrange768_in_s12range768 bp Hbp)
+    Hword).
 qed.
 
-lemma poly_basemul_correct_qring
+lemma poly_basemul_correct_qring_s12
     (rp0 ap0 bp0 : W16.t Array768.t) :
-  in_qrange768 ap0 =>
-  in_qrange768 bp0 =>
+  in_s12range768 ap0 =>
+  in_s12range768 bp0 =>
   phoare [NTRUPlus768PolyBasemul.M.jade_ntruplus_ntruplus768_amd64_ref_poly_basemul :
     rp = rp0 /\ ap = ap0 /\ bp = bp0 ==>
     poly_basemul_qring ap0 bp0 res 192] = 1%r.
@@ -268,6 +299,20 @@ proof.
     + trivial.
     exact Hword.
   move=> [_ Hword]; split.
-  + exact (poly_basemul_word_to_qring ap0 bp0 result Hap Hbp Hword).
+  + exact (poly_basemul_word_to_qring_s12 ap0 bp0 result Hap Hbp Hword).
   exact Hword.
+qed.
+
+lemma poly_basemul_correct_qring
+    (rp0 ap0 bp0 : W16.t Array768.t) :
+  in_qrange768 ap0 =>
+  in_qrange768 bp0 =>
+  phoare [NTRUPlus768PolyBasemul.M.jade_ntruplus_ntruplus768_amd64_ref_poly_basemul :
+    rp = rp0 /\ ap = ap0 /\ bp = bp0 ==>
+    poly_basemul_qring ap0 bp0 res 192] = 1%r.
+proof.
+  move=> Hap Hbp.
+  exact (poly_basemul_correct_qring_s12 rp0 ap0 bp0
+    (in_qrange768_in_s12range768 ap0 Hap)
+    (in_qrange768_in_s12range768 bp0 Hbp)).
 qed.
