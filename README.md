@@ -1029,6 +1029,52 @@ encode/decode inverse. It stops before appending the 32-byte secret-key suffix
 and calling `hash_h`; reencryption, ciphertext comparison, fallback selection,
 and full decapsulation/KEM correctness remain out of scope.
 
+## Verified NTRU+768 decapsulation `hash_h` value seam
+
+The theory under `ntruplus/proof/768/ref/decap_hash_h/` extends the decoded
+message-prefix boundary through the next domain-separated hash. It constructs
+the exact 128-byte payload
+
+```text
+decoded message prefix (96 bytes) || secret-key suffix (32 bytes)
+```
+
+and specifies `hash_h` as the first 224 bytes of
+`SHAKE256(0x02 || payload)`. Array-size, domain-byte, payload, output-size, and
+array/list conversion lemmas pin that value representation. An abstract
+EasyCrypt procedure invokes the existing FIPS202 byte-level `shake256`
+procedure, with deterministic Hoare, losslessness, and probability-one
+correctness results.
+
+The terminal decapsulation theorem composes this specification with
+`decap_terminal_poly_sotp_decode_value_flow`. Its 32-byte suffix is an explicit
+arbitrary theorem parameter: the current proof tree does not yet formalize
+`hash_f(pk)` during key generation or the secret-key memory layout. Separately,
+the fail-closed lemma proves that when SOTP decoding fails, the hashed message
+prefix is the all-zero 96-byte value while the same suffix is retained.
+
+A fail-closed source checker anchors the value seam to the current C sources.
+It fixes the key-generation write and decapsulation read at
+`sk + 2 * NTRUPLUS_POLYBYTES`, the 32-byte append loop, the exact
+`poly_sotp_decode -> hash_h -> poly_cbd1` order, the `0x02` wrapper domain, and
+the 128-byte input and 224-byte output formulas. Negative mutations exercise
+all of those offsets, lengths, arguments, call counts, and orderings. Normal
+and UBSan builds of the C wrapper are compared on deterministic boundary and
+random vectors with Python's independent SHAKE256 implementation.
+
+Run the complete milestone and all predecessor regressions with:
+
+```sh
+./scripts/verify-ntruplus768-decap-hash-h.sh
+```
+
+The source checker and differential tests are not a formal C-semantics or
+binary-equivalence proof. In particular, this milestone does not establish
+pointer/alias behavior, allocation-failure behavior in the bundled FIPS202 C
+code, the formal provenance of the suffix as `hash_f(pk)`, or the later
+`poly_cbd1`, reencryption, ciphertext comparison, fail-mask/fallback behavior,
+and full decapsulation/KEM correctness.
+
 ## Verified NTRU+768 NTT root schedule
 
 The shared EasyCrypt theory at
