@@ -1282,6 +1282,58 @@ also stops before composing the earlier SOTP-decode failure with `fail |=`,
 before proving the shared-secret mask/fallback selection, and before full
 decapsulation/KEM correctness.
 
+## Verified NTRU+768 decapsulation failure-flag composition seam
+
+The theories under `ntruplus/proof/768/ref/decap_fail/` compose the two
+normalized failure sources at the exact caller boundary
+
+```c
+fail = poly_sotp_decode(msg, &m1, buf2);
+/* ... r1 reconstruction and serialization ... */
+fail |= verify(buf1, buf2, NTRUPLUS_POLYBYTES);
+```
+
+The existing SOTP algebra exposes the decode failure as a Boolean, while the
+verified byte comparison returns a `W64` zero or one. The standalone fail
+theory encodes the decode result as a stored `W8` byte, zero-extends it to
+`W64`, ORs it with the comparison result, and truncates the promoted result
+back to `W8`. Because both inputs are proved to be in `{0,1}`, the conversion
+is lossless and agrees with Boolean OR. Hoare, losslessness, and probability-1
+theorems establish
+
+```text
+final_fail = 0  <=>  decode succeeded and buf1 = buf2
+final_fail = 1  <=>  decode failed or     buf1 <> buf2
+```
+
+The bridge keeps the decode and comparison producer trees behind typed
+predicates, and explicitly records `compare_failed = (buf1 <> buf2)`. This
+preserves the memory-bounded proof structure used by the preceding comparison
+milestone while carrying the exact serialized-array equality into the final
+failure byte.
+
+The fail-closed source checker fixes the `int8_t fail` declaration, initial
+decode assignment, later OR update, 1152-byte comparison length, argument
+order, and ordering between r1 serialization, comparison, and the following
+shared-secret loop. Its self-check rejects 10 representative parameter,
+type, operator, buffer, order, length, and duplicate-call mutations. A driver
+includes the production `verify` helper and executes the same 0/1
+`int8_t` OR assignment on 32 vectors, covering all four truth-table cases plus
+boundary, multiple, and deterministic generated mismatches. Normal and UBSan
+runs check the independent Boolean oracle, result ranges, determinism, and
+input immutability.
+
+Run this milestone together with the focused decode and comparison frontiers:
+
+```sh
+./scripts/verify-ntruplus768-decap-fail.sh
+```
+
+The promoted `W64` model is justified only for the proved 0/1 operands; it is
+not a general theorem about C integer promotions or a C/binary-equivalence
+claim. This milestone stops before the signed `~(-fail)` shared-secret mask,
+fallback selection, and full decapsulation/KEM correctness.
+
 ## Verified NTRU+768 NTT root schedule
 
 The shared EasyCrypt theory at

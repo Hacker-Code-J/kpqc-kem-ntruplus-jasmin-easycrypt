@@ -1,0 +1,9 @@
+[general]
+timeout = 5
+
+rdirs = Jasmin:../../../../../external/formosa-mlkem/jasmin/eclib
+
+rdirs = .
+rdirs = ../../../../../external/formosa-mlkem/crypto-specs/arrays
+rdirs = ../../../../../external/formosa-mlkem/crypto-specs/common
+rdirs = ../../../../../external/formosa-mlkem/proof/eclib
