@@ -1183,6 +1183,54 @@ C/Jasmin binary equivalence, the `poly_tobytes` procedure call itself,
 reencryption comparison, fail-mask/fallback selection, or full
 decapsulation/KEM correctness.
 
+## Verified NTRU+768 decapsulation `r1` NTT-to-`poly_tobytes` seam
+
+The theory under `ntruplus/proof/768/ref/decap_r1_tobytes/` closes the next
+decapsulation boundary by reusing the proved `r1_post` value from
+`decap_r1_ntt` and feeding it directly into the standalone `poly_tobytes`
+specification and Jasmin procedure theorem. Its value-flow predicate fixes
+
+```text
+r1_pre  = poly_cbd1_spec(buf3[32..223])
+r1_post = ntt_spec(r1_pre)
+buf2    = poly_tobytes_spec(r1_post)
+```
+
+while retaining the same typed 224-byte predecessor predicate. The bridge
+discharges the `poly_tobytes` precondition entirely from the predecessor
+`decap_r1_ntt_poly_tobytes_ready` theorem, then proves both the algebraic byte
+specification and the exact old-array Jasmin procedure result with probability
+1 for `poly_tobytes(buf2, &r1)`.
+
+Runtime coverage pins the concrete decapsulation caller seam to
+`hash_h -> poly_cbd1 -> in-place poly_ntt -> poly_tobytes -> verify`. The new
+fail-closed checker rejects changed `buf2` extent, serialization source or
+destination, reordered `poly_ntt`/`poly_tobytes`/`verify` calls, duplicate
+serialization, and altered verify arguments. The milestone verifier also
+reruns the predecessor `decap_r1_ntt` regression and the standalone
+`poly_tobytes` proof/test suite so the composed seam stays aligned with both
+upstream proofs.
+
+The combined differential driver rebuilds all 768 CBD coefficients from the
+192-byte tail with an independent Python oracle, checks them against the C
+sampler, runs the production C `poly_ntt` in place, matches its output against
+the verified Jasmin NTT, and then compares `poly_tobytes(buf2,&r1)` against
+both independent byte packing and the verified Jasmin `poly_tobytes` slice.
+The run also checks input immutability where applicable, repeated-run
+determinism, and UBSan across 61 boundary and deterministic-random vectors.
+
+Run the complete milestone with:
+
+```sh
+./scripts/verify-ntruplus768-decap-r1-tobytes.sh
+```
+
+This proof remains Keccak-free and stops at the exact serialized `buf2` bytes
+before verify semantics. It does not prove the boolean result of `verify`,
+fail-mask propagation, fallback shared-secret selection, reencryption
+comparison, pointer aliasing, C/Jasmin binary equivalence, or full
+decapsulation/KEM correctness.
+
 ## Verified NTRU+768 NTT root schedule
 
 The shared EasyCrypt theory at
