@@ -1231,6 +1231,57 @@ fail-mask propagation, fallback shared-secret selection, reencryption
 comparison, pointer aliasing, C/Jasmin binary equivalence, or full
 decapsulation/KEM correctness.
 
+## Verified NTRU+768 decapsulation serialized-byte comparison seam
+
+The theories under `ntruplus/proof/768/ref/decap_verify/` close the next
+decapsulation boundary by assigning an exact array-value meaning to
+`verify(buf1, buf2, NTRUPLUS_POLYBYTES)`. The standalone specification is
+
+```text
+verify_spec(buf1, buf2) = 0  when buf1 = buf2
+verify_spec(buf1, buf2) = 1  otherwise
+```
+
+and the procedure model follows the C helper's concrete word shape: a
+`W8` accumulator starts at zero, OR-reduces all 1152 bytewise XORs, is
+zero-extended to `W64`, negated modulo `2^64`, and logically shifted right by
+63. The loop invariant proves that the accumulator is zero exactly when every
+processed byte agrees. The resulting Hoare and probability-1 theorems prove
+that the procedure returns only zero or one, returns zero exactly for equal
+arrays, and returns one exactly when some indexed byte differs.
+
+The comparison bridge accepts typed
+`W8.t Array1152.t -> bool` predicates for the two established serialization
+frontiers. These predicates are instantiated by callers with closures over
+the existing `decap_r2_tobytes_value_flow` and
+`decap_r1_tobytes_value_flow` results. Keeping the frontiers parameterized is
+intentional: directly importing both complete arithmetic proof trees in one
+fresh EasyCrypt process exhausts the practical host-memory path. The milestone
+verifier therefore checks the exact `buf1` and `buf2` value equations and runs
+both predecessor bridge proofs and focused caller tests independently.
+
+A fail-closed source checker pins the exact C helper body and the concrete
+`poly_tobytes(buf2, &r1) -> fail |= verify(buf1, buf2, 1152)` call seam. Its
+self-check rejects 12 representative mutations covering the parameter,
+signature, accumulator initialization, loop bound, XOR/OR reduction, return
+normalization, argument order, length, failure accumulation, call order, and
+duplicate comparison. A driver includes the production `kem.c` helper
+directly and compares it against array equality on 31 equal, boundary-mismatch,
+sparse, multiple-mismatch, and deterministic generated pairs, normally and
+under UBSan; it also checks the 0/1 range, determinism, and input immutability.
+
+Run the complete milestone with both serialization-frontier regressions using:
+
+```sh
+./scripts/verify-ntruplus768-decap-verify.sh
+```
+
+The EasyCrypt procedure is a fixed-array model of the source algorithm, not a
+formal C pointer, binary-equivalence, or constant-time theorem. This milestone
+also stops before composing the earlier SOTP-decode failure with `fail |=`,
+before proving the shared-secret mask/fallback selection, and before full
+decapsulation/KEM correctness.
+
 ## Verified NTRU+768 NTT root schedule
 
 The shared EasyCrypt theory at
