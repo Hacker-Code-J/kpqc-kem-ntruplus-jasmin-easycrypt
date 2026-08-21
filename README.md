@@ -1135,6 +1135,54 @@ stops before composing the concrete `poly_ntt` procedure, reencryption,
 ciphertext comparison, fail-mask/fallback selection, and full
 decapsulation/KEM correctness.
 
+## Verified NTRU+768 decapsulation `r1` forward-NTT value seam
+
+The theory under `ntruplus/proof/768/ref/decap_r1_ntt/` extends the lightweight
+decapsulation chain from the sampled polynomial to the verified composed
+forward NTT. Its value-flow predicate fixes
+
+```text
+r1_pre  = poly_cbd1_spec(buf3[32..223])
+r1_post = ntt_spec(r1_pre)
+```
+
+while retaining the typed predecessor predicate over the same 224-byte
+`buf3_prefix`. The bridge reuses `poly_cbd1_spec_input_qrange` to discharge the
+NTT precondition, derives the complete staged NTT algebra, and proves every
+output coefficient lies in the centered interval `[-q, q)`. Consequently,
+`r1_post` satisfies the exact input-range predicate required by the existing
+`poly_tobytes` proof.
+
+The procedure results specialize the already-proved old-array Jasmin NTT with
+equal input and output array values, matching the value shape of
+`poly_ntt(&r1, &r1)`. This does not turn the old-array model into a formal C
+pointer-alias or shared-memory theorem. Runtime coverage checks that boundary
+directly: a fail-closed source checker fixes the exact `poly_ntt` forwarding
+body and the concrete
+`hash_h -> poly_cbd1 -> in-place poly_ntt -> poly_tobytes` order. Negative
+mutations cover changed parameters, prototypes, buffers, alias shape,
+destinations, duplicates, and call reordering.
+
+The combined differential driver derives all 768 CBD coefficients independently
+and checks them again with Python, runs the production C `poly_ntt` in place,
+and compares every transformed coefficient against both disjoint and in-place
+executions of the verified Jasmin NTT. It also checks the centered output bound,
+input immutability where applicable, the following serialization, repeated-run
+determinism, and UBSan on 61 boundary and deterministic random vectors.
+
+Run the complete milestone with the full composed-NTT regression and the
+focused CBD/hash predecessor regression using:
+
+```sh
+./scripts/verify-ntruplus768-decap-r1-ntt.sh
+```
+
+The new proof remains Keccak-free and parameterized by the established
+predecessor value predicate. It does not prove concrete C pointer aliasing,
+C/Jasmin binary equivalence, the `poly_tobytes` procedure call itself,
+reencryption comparison, fail-mask/fallback selection, or full
+decapsulation/KEM correctness.
+
 ## Verified NTRU+768 NTT root schedule
 
 The shared EasyCrypt theory at
