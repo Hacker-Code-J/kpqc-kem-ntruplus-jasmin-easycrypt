@@ -1075,6 +1075,66 @@ code, the formal provenance of the suffix as `hash_f(pk)`, or the later
 `poly_cbd1`, reencryption, ciphertext comparison, fail-mask/fallback behavior,
 and full decapsulation/KEM correctness.
 
+## Verified NTRU+768 decapsulation `poly_cbd1` value seam
+
+The theories under `ntruplus/proof/768/ref/decap_poly_cbd1/` extend the
+decapsulation value chain through the deterministic centered-binomial sampler.
+They take the already-specified 192-byte tail of `hash_h`—that is,
+`buf3[32..223]`—and define each output coefficient `k = 8*i + j` as
+
+```text
+bit(buf3[32 + i], j) - bit(buf3[32 + 96 + i], j)
+```
+
+for `0 <= i < 96` and `0 <= j < 8`. The bit operation reuses the same
+byte-to-integer definition as the preceding SOTP proof. Range lemmas prove
+that every resulting coefficient is in `{-1, 0, 1}` and therefore satisfies
+the exact input-range condition required by the existing NTT algebra.
+
+The terminal theorem `decap_terminal_poly_cbd1_value_flow` is parameterized by
+the established predecessor predicate and preserves the same 224-byte
+`buf3_prefix`. It can therefore be instantiated with the existing
+`decap_hash_h` value flow without importing the monolithic Keccak procedure
+theory into this downstream proof. The separate congruence lemma
+`poly_cbd1_preserves_hash_output_equality` transports the predecessor's
+fail-closed hash-output equality through the tail projection and deterministic
+sampler.
+
+A fail-closed source checker fixes the authoritative `poly_cbd1` prototype,
+the two 96-byte halves, the 96-by-8 loop bounds, coefficient indexing,
+head-minus-tail subtraction, right shifts, and the concrete
+`hash_h -> poly_cbd1(buf3 + NTRUPLUS_SSBYTES) -> poly_ntt` caller order.
+Negative mutations exercise those constraints. A direct C driver is compared
+with an independent Python bit-sampler on 44 boundary and deterministic random
+vectors, both normally and with UBSan; it also checks that the 192-byte input
+is not modified.
+
+Run the complete focused milestone, including the new proof and tests plus the
+predecessor `hash_h` source and differential regressions, with:
+
+```sh
+./scripts/verify-ntruplus768-decap-poly-cbd1.sh
+```
+
+On a machine with enough memory to load the concrete Keccak theory and the
+entire arithmetic chain simultaneously, replay every predecessor EasyCrypt
+proof as well with:
+
+```sh
+NTRUPLUS768_FULL_PREDECESSOR=1 \
+  ./scripts/verify-ntruplus768-decap-poly-cbd1.sh
+```
+
+This is an array-value proof supported by source-shape and differential tests,
+not a formal theorem about C execution, pointers, aliasing, or C/Jasmin
+equivalence. The new file deliberately uses a Keccak-free, parameterized
+predecessor boundary; the concrete SHAKE256 theorem remains in the separately
+verified `decap_hash_h` milestone. It does not strengthen the existing
+assumption about the formal `hash_f` provenance of the 32-byte suffix, and it
+stops before composing the concrete `poly_ntt` procedure, reencryption,
+ciphertext comparison, fail-mask/fallback selection, and full
+decapsulation/KEM correctness.
+
 ## Verified NTRU+768 NTT root schedule
 
 The shared EasyCrypt theory at
