@@ -148,6 +148,24 @@ op decap_hash_h_value_flow
   payload = hash_h_payload msg suffix /\
   buf3_prefix = hash_h_spec msg suffix.
 
+lemma decap_hash_h_value_flow_ss_source
+    (ciphertext first_ap first_bp first_basemul_output hinv r2_output :
+      W16.t Array768.t)
+    (buf1 : W8.t Array1152.t)
+    (buf2 : W8.t Array192.t)
+    (msg : W8.t Array96.t) (fail_flag : bool)
+    (suffix : W8.t Array32.t)
+    (payload : W8.t Array128.t)
+    (buf3_prefix : W8.t Array224.t) :
+  decap_hash_h_value_flow
+    ciphertext first_ap first_bp first_basemul_output hinv r2_output
+    buf1 buf2 msg fail_flag suffix payload buf3_prefix =>
+  Array32.init (fun i => buf3_prefix.[i]) = hash_h_ss_spec msg suffix.
+proof.
+  move=> [_ [_ ->]].
+  by rewrite /hash_h_ss_spec.
+qed.
+
 (* This terminal theorem composes array values only. In particular, suffix is
    arbitrary: no formal hash_f/key-layout provenance, C/Jasmin equivalence,
    pointer-alias model, poly_cbd1, reencryption, comparison, fallback, or

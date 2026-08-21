@@ -98,6 +98,24 @@ proof.
   exact (decap_fail_spec_range decode_failed compare_failed).
 qed.
 
+lemma decap_fail_value_flow_combined_fail
+    (decode_frontier : bool -> W8.t -> bool)
+    (compare_frontier :
+      W8.t Array1152.t -> W8.t Array1152.t -> bool -> W64.t -> bool)
+    (decode_failed compare_failed : bool)
+    (decode_fail_byte : W8.t)
+    (buf1 buf2 : W8.t Array1152.t)
+    (compare_result : W64.t)
+    (final_fail : W8.t) :
+  decap_fail_value_flow
+    decode_frontier compare_frontier decode_failed compare_failed
+    decode_fail_byte buf1 buf2 compare_result final_fail =>
+  final_fail = fail_byte (decode_failed \/ compare_failed).
+proof.
+  move=> [_ [_ [_ [_ [_ ->]]]]].
+  by rewrite /decap_fail_spec_bool.
+qed.
+
 lemma decap_fail_value_flow_zero_iff
     (decode_frontier : bool -> W8.t -> bool)
     (compare_frontier :

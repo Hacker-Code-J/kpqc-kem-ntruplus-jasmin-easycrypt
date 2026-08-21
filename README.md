@@ -1334,6 +1334,70 @@ not a general theorem about C integer promotions or a C/binary-equivalence
 claim. This milestone stops before the signed `~(-fail)` shared-secret mask,
 fallback selection, and full decapsulation/KEM correctness.
 
+## Verified NTRU+768 decapsulation shared-secret mask seam
+
+The theories under `ntruplus/proof/768/ref/decap_mask/` extend the normalized
+failure byte through the exact final shared-secret loop
+
+```c
+fail |= verify(buf1, buf2, NTRUPLUS_POLYBYTES);
+
+for (size_t i = 0; i < NTRUPLUS_SSBYTES; i++)
+    ss[i] = buf3[i] & ~(-fail);
+
+return fail;
+```
+
+The word-level model shadows the target C promotion shape at 32 bits. It
+sign-extends the stored `int8_t fail` with `MOVSX_u32s8`, applies unary
+negation and `invw`, zero-extends each `uint8_t` source byte, performs the
+bitwise AND, and truncates the stored result back to `W8`. Reusing the
+preceding proof's `fail_byte` definition keeps the only reachable inputs at
+zero and one. The resulting mask is therefore all ones on success and zero on
+failure, so the fixed 32-iteration procedure proves
+
+```text
+ss = if failed then [0; ...; 0] else buf3[0..31].
+```
+
+The `hash_h` bridge now exports the projection from its verified 224-byte
+output to `hash_h_ss_spec`, the first 32 bytes consumed by this loop. The mask
+bridge keeps that shared-secret source and the final failure producer behind
+separate typed predicates. This carries both established frontiers into one
+Array32 selection theorem without loading the full Keccak, decode, and
+reencryption proof trees together.
+
+The fail-closed source checker fixes `NTRUPLUS_SSBYTES == 32`, the `int8_t`
+failure type, the exact mask loop and assignment, and the
+contiguous `verify -> mask -> return fail` tail. Its self-check rejects twelve
+representative parameter, type, operator, bound, source, destination, index,
+ordering, and return mutations. A target-ABI driver asserts 8-bit bytes,
+32-bit two's-complement `int`, then runs the exact promoted expression and
+return on 56 deterministic boundary and generated vectors. Normal and UBSan
+runs check copy-on-success, zero-on-failure, return preservation, input
+immutability, and determinism.
+
+Run the mask proof together with its `hash_h` source and final-failure
+predecessor regressions:
+
+```sh
+./scripts/verify-ntruplus768-decap-mask.sh
+```
+
+By default this compiles the lightweight typed 224-to-32 projection and runs
+the focused `hash_h` source/runtime regression, avoiding a second copy of the
+full Keccak proof tree in memory. On a host with sufficient memory, set
+`NTRUPLUS768_FULL_HASH_H=1` to recompile the complete `hash_h` bridge during
+the same run; its dedicated verifier remains
+`./scripts/verify-ntruplus768-decap-hash-h.sh`.
+
+The W32 formula is a target-width shadow justified for the proved 0/1 inputs,
+not a formal ISO C integer-representation theorem. The EasyCrypt procedure is
+an array-value model and does not prove C pointer/alias behavior, binary
+equivalence, or the following C `int` return conversion. The source and runtime
+checks cover the concrete return seam, but API-level shared-secret agreement
+and full decapsulation/KEM correctness remain out of scope.
+
 ## Verified NTRU+768 NTT root schedule
 
 The shared EasyCrypt theory at
