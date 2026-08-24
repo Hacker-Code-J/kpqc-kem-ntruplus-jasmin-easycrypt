@@ -1,0 +1,15 @@
+[general]
+timeout = 5
+
+rdirs = Jasmin:../../../../../external/formosa-mlkem/jasmin/eclib
+idirs = JazzEC:../../../../../external/formosa-mlkem/crypto-specs/arrays
+rdirs = CryptoSpecs:../../../../../external/formosa-mlkem/crypto-specs/fips202
+rdirs = CryptoSpecs:../../../../../external/formosa-mlkem/crypto-specs/fips202/properties
+
+rdirs = .
+rdirs = ../keygen_hash_f
+rdirs = ../../../../../external/formosa-mlkem/crypto-specs/arrays
+rdirs = ../../../../../external/formosa-mlkem/crypto-specs/common
+rdirs = ../../../../../external/formosa-mlkem/proof/eclib
+rdirs = ../../../../../external/formosa-mlkem/crypto-specs/fips202
+rdirs = ../../../../../external/formosa-mlkem/crypto-specs/fips202/properties

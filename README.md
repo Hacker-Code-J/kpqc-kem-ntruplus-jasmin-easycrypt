@@ -1517,9 +1517,73 @@ Run this milestone and the complete terminal predecessor chain with
 
 The split layout is a value surrogate whose exact flat offsets are anchored by
 source and runtime checks; it is not a C heap/pointer or binary-equivalence
-theorem. Full keypair/decapsulation procedure equivalence, encapsulation's
-separate `hash_f(..., pk)` call, API shared-secret agreement, and full-KEM
-correctness remain out of scope.
+theorem. For this keygen-to-decap milestone alone, encapsulation's separate
+`hash_f(..., pk)` call was still an open obligation. The following milestone
+discharges that suffix-only obligation; full procedure equivalence, API
+shared-secret agreement, and full-KEM correctness remain out of scope.
+
+## Verified NTRU+768 encapsulation `hash_f` suffix agreement
+
+The theories under `ntruplus/proof/768/ref/encap_hash_f_agreement/` connect the
+encapsulation source seam
+
+```c
+/* crypto_kem_enc_derand */
+hash_f(msg + NTRUPLUS_N / 8, pk);
+hash_h(buf1, msg);
+```
+
+to the already verified keygen store and decapsulation copy. For one public
+key `pk`, the concrete agreement theorem fixes all three suffixes to
+
+```text
+hash_f_spec(pk) = SHAKE256(0x00 || pk[0..1151], 32).
+```
+
+The lightweight theory keeps the encapsulation and decapsulation message
+prefixes as two independent `Array96` values. It reuses the existing
+`Array96 + Array32 -> Array128` payload constructor and split secret-key
+projection to prove, for every `0 <= i < 32`,
+
+```text
+keygen sk suffix[i]
+  = encapsulation msg[96 + i]
+  = decapsulation msg[96 + i]
+  = hash_f_spec(pk)[i].
+```
+
+It also exposes fixed-array suffix projection equality for downstream proofs.
+No equality between the two 96-byte prefixes is assumed or concluded, and the
+public key is not identified with any decapsulation polynomial buffer. The
+lightweight file imports neither Keccak nor the `hash_h`/terminal proof trees;
+a separate concrete adapter imports the prior standalone `hash_f` proof and
+instantiates the shared suffix as `hash_f_spec(pk)`.
+
+The fail-closed source checker fixes the exact keygen store, encapsulation
+destination offset 96 and public-key source, immediate `hash_f`-before-`hash_h`
+order, decapsulation copy from secret-key offset 2304, the 0x00 domain byte,
+and all input/output lengths. Its self-check rejects seventeen representative
+parameter, domain, length, signature, call-target, pointer, offset, ordering,
+copy-length, and duplicate-call mutations.
+
+Runtime checks reuse the prior 31-vector production `hash_f` differential
+suite and add 28 three-layout vectors. Normal and UBSan builds confirm that
+the keygen secret-key tail, encapsulation message tail, and decapsulation
+message tail all equal Python's independent SHAKE256 oracle. They also check
+public-key immutability, preservation of `sk[0..2303]`, preservation and
+independence of both message prefixes, and deterministic repeatability.
+
+Run this milestone and its full keygen/terminal predecessor chain with
+
+```sh
+./scripts/verify-ntruplus768-encap-hash-f-agreement.sh
+```
+
+This is a typed suffix-value theorem with source/runtime offset anchors, not a
+flat C memory, pointer, binary, or full `crypto_kem_enc_derand`/`crypto_kem_dec`
+procedure-equivalence theorem. Equality of the first 96 message bytes, full
+128-byte `hash_h` input equality, shared-secret agreement, API agreement, and
+full-KEM correctness remain separate obligations.
 
 ## Verified NTRU+768 NTT root schedule
 
