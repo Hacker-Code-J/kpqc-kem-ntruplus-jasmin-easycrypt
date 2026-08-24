@@ -1023,11 +1023,12 @@ Run the complete milestone with:
 
 The new EasyCrypt result is deliberately value-level. Extraction, safety,
 CT/SCT analysis, and differential tests do not constitute an EasyCrypt
-functional theorem for either the Jasmin or C procedure. The milestone also
-does not model C AST semantics, pointer aliasing, partial overlap, or the
-encode/decode inverse. It stops before appending the 32-byte secret-key suffix
-and calling `hash_h`; reencryption, ciphertext comparison, fallback selection,
-and full decapsulation/KEM correctness remain out of scope.
+functional theorem for either the Jasmin or C procedure. For this decode-only
+milestone, C AST semantics, pointer aliasing, partial overlap, and the
+encode/decode inverse remained out of scope. The later verified
+`poly_sotp_encode`/`poly_sotp_decode` round-trip milestone discharges that
+same-pad value-level inverse; reencryption, ciphertext comparison, fallback
+selection, and full decapsulation/KEM correctness remain separate obligations.
 
 ## Verified NTRU+768 decapsulation `hash_h` value seam
 
@@ -1584,6 +1585,63 @@ flat C memory, pointer, binary, or full `crypto_kem_enc_derand`/`crypto_kem_dec`
 procedure-equivalence theorem. Equality of the first 96 message bytes, full
 128-byte `hash_h` input equality, shared-secret agreement, API agreement, and
 full-KEM correctness remain separate obligations.
+
+## Verified NTRU+768 `poly_sotp` encode/decode round trip
+
+The theories under `ntruplus/proof/768/ref/poly_sotp_roundtrip/` formalize the
+previously missing value-level inverse between `poly_sotp_encode` and the
+existing `poly_sotp_decode_spec`. The authoritative encoder constructs
+
+```text
+encode_input(msg, pad)
+  = (pad[0..95] XOR msg[0..95]) || pad[96..191]
+
+poly_sotp_encode_spec(msg, pad)
+  = poly_cbd1_spec(encode_input(msg, pad)).
+```
+
+The proof reuses the established CBD1 coefficient layout. For every message
+byte `i` and bit `j`, the encoded coefficient is the XORed head bit minus the
+tail bit. Decoding with the same `pad` adds that tail bit back, so every sum is
+exactly zero or one, the failure predicate is false, and XORing with the
+original pad head bit reconstructs the message bit. Byte reconstruction then
+closes the main theorem
+
+```text
+poly_sotp_decode_spec(poly_sotp_encode_spec(msg, pad), pad)
+  = (msg, false).
+```
+
+The fail-closed source checker fixes the exact C temporary-buffer loops,
+`buf[i] ^ msg[i]`, the unchanged tail half, the `poly_cbd1(r, tmp)` call, and
+the encapsulation caller order
+
+```text
+poly_tobytes -> hash_g -> poly_sotp_encode -> poly_ntt.
+```
+
+Its self-check rejects twelve representative parameter, signature, operator,
+offset, length, input-source, ordering, and duplicate-call mutations.
+
+Runtime checks cover 55 fixed, boundary, LCG, and deterministic-random
+message/pad pairs. The driver independently checks all 768 encoded
+coefficients against `(pad XOR msg)_bit - pad_tail_bit`, then runs production C
+decode in normal and UBSan builds. A third build feeds the same production C
+encoding to the existing Jasmin decode slice. All paths require `fail = 0`,
+exact recovery of the 96-byte message, input and encoded-polynomial
+immutability across decode, and deterministic repeatability.
+
+Run this milestone, CBD1, and the latest complete predecessor chain with
+
+```sh
+./scripts/verify-ntruplus768-poly-sotp-roundtrip.sh
+```
+
+This theorem assumes the identical `Array192` pad at encode and decode. It
+does not prove that encapsulation and decapsulation derive the same `hash_g`
+pad, nor does it provide formal C/Jasmin procedure equivalence, NTT/ciphertext
+or key correctness, recovery of `r`, full `hash_h` input/shared-secret
+agreement, API agreement, or full-KEM correctness.
 
 ## Verified NTRU+768 NTT root schedule
 
