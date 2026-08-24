@@ -1771,6 +1771,77 @@ or full-KEM correctness.  The no-wrap obligation is essential: `q = 3457` is
 not divisible by three, so quotient-ring congruence alone cannot preserve the
 mod-3 value selected by centered reduction.
 
+## Verified NTRU+768 conditional base-inverse algebra and executable seam
+
+The theories under `ntruplus/proof/768/ref/baseinv/` formalize the quartic
+algebra behind `baseinv` without treating the C return code as an axiom.  For
+
+```text
+A(X) = a0 + a1*X + a2*X^2 + a3*X^3  in Z_q[X]/(X^4-z),
+```
+
+they define
+
+```text
+u = a0^2 + z*(a2^2 - 2*a1*a3)
+v = a1^2 + z*a3^2 - 2*a0*a2
+D = u^2 - z*v^2
+
+n0 =  a0*u + z*a2*v
+n1 = -(a1*u + z*a3*v)
+n2 =  a2*u + a0*v
+n3 = -(a3*u + a1*v).
+```
+
+Direct ring proofs establish `A*(n0,n1,n2,n3) = (D,0,0,0)`.  Given an
+explicit integer witness `dinv` satisfying `D*dinv = 1 (mod q)`, the algebra
+constructs canonical 16-bit representatives of `ni*dinv`, proves all four
+outputs are in `[-q,q)`, and proves their terminal-ring product with `A` is
+exactly `(1,0,0,0)` modulo `q = 3457`.
+
+The companion bridge lifts this contract over all 192 terminal blocks using
+the already verified `terminal_value` schedule.  Its logical
+`poly_baseinv_success` predicate implies both q-range output and the existing
+`poly_basemul_qring input inverse ntt_block_identity 192` relation.  This is
+a reusable implication for the next keygen milestone; it is not a theorem
+that the current C `poly_baseinv` return value satisfies the predicate.
+
+The fail-closed source checker fixes the Montgomery constants, reduction and
+`fqmul` helpers, the complete `fqinv` addition chain, the scalar `baseinv`
+body, and the `poly_baseinv` `+zetas[96+i]`/`-zetas[96+i]` schedule including
+early failure, all-768-coefficient zeroing, and success returns.  It also pins
+the `genf_derand` and `geng_derand` caller boundary.  Its self-check rejects
+24 representative parameter, ABI, constant, arithmetic, exponent-chain,
+branch, zeta, loop, zeroing, return, and caller mutations.
+
+Executable checks use ordinary Python modulo-`q` linear algebra rather than
+the production `basemul` as their oracle.  They parse the production zeta
+table, independently build every quartic multiplication matrix, compare the
+determinant success decision, solve for the inverse, and verify multiplication
+to `(1,0,0,0)`.  Coverage comprises 24 scalar cases and 17 complete
+768-coefficient polynomials: three guaranteed successes, three failures with
+zero blocks at the first, middle, and last positions, five random q-range
+inputs, and six keygen-shaped CBD1/triple/NTT inputs.  Failure must yield
+exactly 768 zeros; success must produce q-range block inverses.  Normal and
+UBSan builds also check input immutability and determinism.
+
+A test-only wrapper exposes the otherwise static production `fqinv` and
+checks all 3456 nonzero field residues exhaustively.  Zero is observed but is
+not assigned an inverse contract.  The integrated verifier also replays the
+complete `poly_basemul` and keygen-sampler/NTT predecessors, the functional
+test, and the 100-vector KAT:
+
+```sh
+./scripts/verify-ntruplus768-baseinv.sh
+```
+
+This milestone does not prove formal C/Jasmin equivalence for `fqinv`,
+`baseinv`, or `poly_baseinv`; that C return zero supplies the EasyCrypt
+determinant witness; universal C intermediate bounds; keygen retry/success
+distribution; `h*f = g`; serialization provenance; high-level NTT/InvNTT
+ring semantics; no-wrap/noise correctness; `m1 = encoded_m`; `r2 = r`; or
+full-KEM correctness.
+
 ## Verified NTRU+768 NTT root schedule
 
 The shared EasyCrypt theory at
