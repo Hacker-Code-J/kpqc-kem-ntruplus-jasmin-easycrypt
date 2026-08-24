@@ -1456,6 +1456,71 @@ equivalence, encapsulation/decapsulation shared-secret agreement, or full-KEM
 correctness. Formal `hash_f`/secret-key-layout provenance for `suffix` also
 remains a separate obligation.
 
+## Verified NTRU+768 keygen `hash_f` suffix provenance
+
+The theories under `ntruplus/proof/768/ref/keygen_hash_f/` discharge the
+previously arbitrary terminal suffix through the two concrete source seams
+
+```c
+/* crypto_kem_keypair_derand */
+hash_f(sk + 2 * NTRUPLUS_POLYBYTES, pk);
+
+/* crypto_kem_dec */
+for (size_t i = 0; i < NTRUPLUS_SYMBYTES; i++)
+    msg[i + NTRUPLUS_N / 8] = sk[i + 2 * NTRUPLUS_POLYBYTES];
+```
+
+The standalone FIPS202 theory specifies
+
+```text
+hash_f_spec(pk) = SHAKE256(0x00 || pk[0..1151], 32).
+```
+
+Its `HashF.hash_f` procedure has Hoare, losslessness, and probability-1
+theorems. A separate concrete adapter instantiates the lightweight frontier as
+`suffix = hash_f_spec(pk)`, so the layout proof does not leave the provenance
+as an unconstrained assumption.
+
+Because the shared array library has `Array2304` and `Array32` but no
+`Array2336`, the secret key is represented by a split
+`Array2304 × Array32` value. The layout accessor proves that indices
+2304 through 2335 select the suffix, and the decapsulation payload theorem
+proves
+
+```text
+sk_suffix       = hash_f_spec(pk)
+msg[96..127]    = sk_suffix
+decap hash_h suffix = hash_f_spec(pk).
+```
+
+The terminal-facing closure conjoins `hash_f_frontier pk suffix` with the
+existing-shaped `hash_h_frontier decode_failed buf1 msg suffix buf3`. The
+public key and decapsulation `buf1` remain independent values; only the exact
+same suffix is shared. This lightweight bridge imports neither Keccak nor the
+terminal proof tree, while a separate concrete file connects it to the
+standalone `hash_f_spec`.
+
+The fail-closed source checker fixes the 0x00 domain byte, 1152-byte payload,
+32-byte output, keygen offset 2304, decapsulation destination 96, copy length,
+order before `hash_h`, and uniqueness. Its self-check rejects fifteen
+representative parameter, domain, length, signature, offset, argument,
+ordering, and duplicate-write mutations. Production C differential tests
+cover 31 `hash_f` vectors and 28 key-layout/copy vectors in normal and UBSan
+builds. They also check input immutability, preservation of `sk[0..2303]` and
+`msg[0..95]`, and deterministic equality of the stored and copied suffix.
+
+Run this milestone and the complete terminal predecessor chain with
+
+```sh
+./scripts/verify-ntruplus768-keygen-hash-f.sh
+```
+
+The split layout is a value surrogate whose exact flat offsets are anchored by
+source and runtime checks; it is not a C heap/pointer or binary-equivalence
+theorem. Full keypair/decapsulation procedure equivalence, encapsulation's
+separate `hash_f(..., pk)` call, API shared-secret agreement, and full-KEM
+correctness remain out of scope.
+
 ## Verified NTRU+768 NTT root schedule
 
 The shared EasyCrypt theory at
