@@ -1643,6 +1643,75 @@ pad, nor does it provide formal C/Jasmin procedure equivalence, NTT/ciphertext
 or key correctness, recovery of `r`, full `hash_h` input/shared-secret
 agreement, API agreement, or full-KEM correctness.
 
+## Verified NTRU+768 encapsulation `poly_basemul_add` q-ring seam
+
+The theories under `ntruplus/proof/768/ref/encap_poly_basemul_add/` formalize
+the next concrete prerequisite for valid-ciphertext recovery. They connect the
+already verified SOTP encoder to the encapsulation arithmetic
+
+```c
+poly_ntt(&m, &m);
+poly_frombytes(&h, pk);
+poly_basemul_add(&c, &h, &r, &m);
+poly_tobytes(ct, &c);
+```
+
+without assuming the still-unproved valid-key or decapsulation conclusion.
+The bridge defines
+
+```text
+encoded_m = poly_sotp_encode_spec(msg, pad)
+m_ntt     = forward_ntt_spec(encoded_m)
+c         = h * r_ntt + m_ntt                 (in the terminal q-ring).
+```
+
+The CBD1-based `encoded_m` is proved to be a trit polynomial satisfying the
+forward-NTT input range. The established forward-NTT algebra then gives the
+exact centered `[-1728,1728]` bound used for the addend. Given an existing
+`poly_basemul_qring h r_ntt product` relation, the new algebra constructs a
+centered representative of `product + m_ntt`, proves it remains in
+`[-q,q)`, and proves every one of the 192 four-coefficient blocks equals the
+terminal basemul product plus the corresponding message coefficient modulo
+`q = 3457`. The public-key polynomial is the existing
+`poly_frombytes_spec(pk)` value.
+
+This is deliberately a q-ring value theorem. A centered canonical
+representative is sufficient for the later serialization/decoding seam; it
+is not a claim that every raw 16-bit word equals the current C output word.
+
+The fail-closed source checker fixes the complete scalar `basemul_add` body,
+including all four final `c[i] * R + product[i] * RSQ` reductions, the
+`poly_basemul_add` two-call loop over `+zetas[96+i]` and `-zetas[96+i]`, and
+the exact encapsulation order
+
+```text
+poly_frombytes(pk) -> poly_basemul_add(h,r,m) -> poly_tobytes(ct).
+```
+
+Its self-check rejects sixteen representative parameter, signature,
+operator, addend, zeta, offset, call-order, output-target, and duplicate-call
+mutations.
+
+Runtime checks cover 22 full 768-coefficient triples. The `h` and `r_ntt`
+inputs span the formal `[-q,q)` range, while `m_ntt` spans its exact centered
+forward-NTT range. An independent Python oracle parses the production zeta
+table and checks every output coefficient against the four-lane terminal-ring
+formula plus `m_ntt`, modulo `q`. Normal and UBSan builds also check output
+range, input immutability, determinism, and the separate production relation
+`poly_basemul_add(h,r,m) = poly_basemul(h,r) + m (mod q)`.
+
+Run this milestone, the complete `poly_basemul` proof, and the latest
+SOTP/terminal predecessor chain with
+
+```sh
+./scripts/verify-ntruplus768-encap-poly-basemul-add.sh
+```
+
+This milestone does not prove formal C procedure or exact raw-word
+equivalence, key-generation sampler/inverse provenance, `h*f = g`, valid-key
+`m1 = encoded_m`, `r2 = r`, encapsulation/decapsulation pad equality,
+shared-secret/API agreement, or full-KEM correctness.
+
 ## Verified NTRU+768 NTT root schedule
 
 The shared EasyCrypt theory at
