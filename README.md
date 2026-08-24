@@ -1398,6 +1398,64 @@ equivalence, or the following C `int` return conversion. The source and runtime
 checks cover the concrete return seam, but API-level shared-secret agreement
 and full decapsulation/KEM correctness remain out of scope.
 
+## Verified NTRU+768 correlated decapsulation terminal value flow
+
+The theories under `ntruplus/proof/768/ref/decap_terminal/` package the three
+established terminal frontiers into one correlated result for
+
+```c
+fail |= verify(buf1, buf2, NTRUPLUS_POLYBYTES);
+for (size_t i = 0; i < NTRUPLUS_SSBYTES; i++)
+    ss[i] = buf3[i] & ~(-fail);
+return fail;
+```
+
+The generic terminal predicate contains the exact `decap_fail` flow, the
+224-to-32 `hash_h` source projection, the normalized mask flow, and the
+returned W8 failure byte. A correlated wrapper exposes `decode_failed`,
+`buf1`, `msg`, the still-arbitrary `suffix`, and the 224-byte `buf3` output as
+parameters of one hash-frontier closure while sharing `decode_failed`, `buf1`,
+and `buf2` with the failure flow. When instantiated with the established
+`hash_h` closure, the top-level outcome therefore preserves relationships that
+would be lost if the predecessors were represented by unrelated bare
+Booleans.
+
+For the correlated value flow, EasyCrypt proves
+
+```text
+returned_fail = 0  <=>  decode succeeded and buf1 = buf2
+returned_fail = 1  <=>  decode failed    or  buf1 <> buf2
+
+ss_source = buf3[0..31]
+ss = if decode failed or buf1 <> buf2 then zero32 else ss_source
+```
+
+The `DecapTerminal.finish` procedure is a thin wrapper over the verified
+`DecapMask.mask_ss` procedure. It returns the pair `(ss, failv)` and has Hoare,
+losslessness, and probability-1 theorems. This closes the terminal W8 value
+model without treating the pair as the concrete C ABI return.
+
+The terminal integration suite reuses the committed fail-closed `decap_fail`
+and `decap_mask` source checkers. Its driver calls the production `verify`
+helper exactly once, performs the exact `int8_t` OR update, 32 mask stores,
+and failure return. Thirty-two deterministic vectors cover all four
+decode-failure/equality truth-table branches, boundary and multiple
+mismatches, and generated data. Normal and UBSan runs check return range,
+copy-on-success, zero-on-failure, input immutability, and determinism.
+
+Run the terminal theorem and all predecessor regressions with
+
+```sh
+./scripts/verify-ntruplus768-decap-terminal.sh
+```
+
+The terminal bridge remains Keccak- and arithmetic-tree-free through typed
+closures. It does not prove the concrete C `int` return conversion, C
+memory/pointer or binary equivalence, a single full `crypto_kem_dec` procedure
+equivalence, encapsulation/decapsulation shared-secret agreement, or full-KEM
+correctness. Formal `hash_f`/secret-key-layout provenance for `suffix` also
+remains a separate obligation.
+
 ## Verified NTRU+768 NTT root schedule
 
 The shared EasyCrypt theory at
