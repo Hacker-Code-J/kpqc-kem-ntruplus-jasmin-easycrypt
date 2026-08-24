@@ -1712,6 +1712,65 @@ equivalence, key-generation sampler/inverse provenance, `h*f = g`, valid-key
 `m1 = encoded_m`, `r2 = r`, encapsulation/decapsulation pad equality,
 shared-secret/API agreement, or full-KEM correctness.
 
+## Verified NTRU+768 keygen sampler shaping and mod-3 provenance
+
+The theories under `ntruplus/proof/768/ref/keygen_sampler/` establish the
+first valid-key prerequisite without assuming an inverse.  For arbitrary
+192-byte sampler inputs, they reuse the verified CBD1 value specification and
+model the exact coefficient-domain preprocessing performed by
+`genf_derand` and `geng_derand`:
+
+```text
+F = poly_cbd1_spec(fbuf)       f_pre = 3*F + 1
+G = poly_cbd1_spec(gbuf)       g_pre = 3*G
+```
+
+Here `+1` applies only to coefficient zero.  Since every CBD1 coefficient is
+in `{-1,0,1}`, the proof establishes `f_pre[0]` in `[-2,4]`, every other
+`f_pre` coefficient in `[-3,3]`, and every `g_pre` coefficient in `[-3,3]`.
+It also proves the exact coefficient-domain residues
+
+```text
+f_pre[0] = 1 (mod 3),   f_pre[j] = 0 (mod 3) for j > 0,
+g_pre[j] = 0 (mod 3) for every j.
+```
+
+Those small bounds discharge the existing forward-NTT input premise.  The
+typed bridge then composes both values with `forward_ntt_spec`, proves the
+complete forward-NTT algebra contracts, and establishes the centered output
+shape used by the terminal block arithmetic.  It intentionally does not
+claim that the NTT output has a coefficientwise mod-3 interpretation.
+
+The fail-closed source checker fixes `N=768`, `q=3457`, the relevant public
+ABIs, the exact 768-coefficient `poly_triple` loop, and both keygen call
+sequences through the `poly_baseinv` boundary:
+
+```text
+genf: CBD1 -> triple -> coefficient-zero +1 -> NTT -> poly_baseinv
+geng: CBD1 -> triple                       -> NTT -> poly_baseinv
+```
+
+Its self-check rejects 18 representative parameter, ABI, loop, factor,
+index, destination, constant-adjustment, transform, and inverse-call
+mutations.  Normal and UBSan runs cover 22 full 768-coefficient sampler
+inputs, independently reconstruct every CBD1 bit difference, and check exact
+tripling, the f/g bounds and residues, disjoint-input immutability, exact
+alias behavior, deterministic NTT agreement, and the verified NTT output
+range.
+
+Run this milestone with its complete CBD1 and forward-NTT predecessors using:
+
+```sh
+./scripts/verify-ntruplus768-keygen-sampler.sh
+```
+
+This milestone stops before proving `poly_baseinv`.  It therefore does not
+claim `finv` or `ginv` provenance, `h*f = g`, an NTT/InvNTT high-level ring
+homomorphism, a centered-noise/no-q-wrap theorem, `m1 = encoded_m`, `r2 = r`,
+or full-KEM correctness.  The no-wrap obligation is essential: `q = 3457` is
+not divisible by three, so quotient-ring congruence alone cannot preserve the
+mod-3 value selected by centered reduction.
+
 ## Verified NTRU+768 NTT root schedule
 
 The shared EasyCrypt theory at
