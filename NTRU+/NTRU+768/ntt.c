@@ -309,7 +309,7 @@ int baseinv(int16_t r[4], const int16_t a[4], const int16_t zeta)
 	r[2] = montgomery_reduce(a[2]*t0 + a[0]*t1); // R^-2
 	r[3] = montgomery_reduce(a[1]*t1 + a[3]*t0); // R^-2
 
-	t3 = fqinv(t3); // R^5
+	t3 = fqinv(t3); // R^3
 
 	r[0] =  montgomery_reduce(r[0]*t3); // R^0
 	r[1] = -montgomery_reduce(r[1]*t3); // R^0

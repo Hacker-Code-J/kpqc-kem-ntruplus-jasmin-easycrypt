@@ -1842,6 +1842,61 @@ distribution; `h*f = g`; serialization provenance; high-level NTT/InvNTT
 ring semantics; no-wrap/noise correctness; `m1 = encoded_m`; `r2 = r`; or
 full-KEM correctness.
 
+## Verified NTRU+768 finite-field inversion chain
+
+The theories under `ntruplus/proof/768/ref/fqinv/` remove the finite-field
+assumption that remained behind the conditional base-inverse algebra.  They
+first prove directly from the divisor definition that `q = 3457` is prime,
+then instantiate EasyCrypt's prime-field library without an axiom.  Fermat's
+law is consequently available as checked field algebra, yielding
+
+```text
+a != 0 (mod q)  =>  a * a^3455 = 1 (mod q)
+Rinv != 0       =>  Rinv^3456 = 1 (mod q).
+```
+
+The word-level specification uses the already verified signed 16-bit
+multiply and Montgomery reduction model for every `fqmul`.  Its trace mirrors
+all 17 calls in the production addition chain and records the following
+`(a exponent, Rinv exponent)` states:
+
+```text
+(2,1), (4,3), (8,7), (16,15), (10,9), (26,25),
+(52,51), (53,52), (63,62), (106,105), (212,211),
+(424,423), (848,847), (1696,1695), (3392,3391),
+(3455,3454), (3455,3456).
+```
+
+Every step proves both preservation of the signed q-range and the exact
+Montgomery congruence.  For every nonzero q-range input, every output `r`
+satisfying this exact trace is q-range and satisfies `a*r = 1 (mod q)`.  The
+scale corollary is explicit: if the input encodes a determinant as
+`a = D*Rinv^3`, then the trace output encodes `D^-1*R^3`, equivalently
+`D*(r*Rinv^3) = 1`.  This also corrects the stale `R^5` annotation in
+`NTRU+/NTRU+768/ntt.c`; `R^5` describes the addition-chain value before its
+final `fqmul(NTRUPLUS_RINV, ...)`, not the returned value.
+
+A mathematical bridge now instantiates the earlier explicit determinant
+witness with `D^3455` whenever `D` is nonzero, so the conditional quartic
+specification yields a block inverse without a user-supplied field axiom.
+The executable anchor remains independent: the fail-closed source checker
+pins the exact production chain, while normal and UBSan runs check all 3456
+nonzero field residues.  The integrated verifier also replays the complete
+conditional `baseinv` and predecessor regression chain:
+
+```sh
+./scripts/verify-ntruplus768-fqinv.sh
+```
+
+This milestone specifies the exact word trace but does not prove that the C
+or Jasmin procedure realizes that relation.  It also does not prove that the
+current C `baseinv` intermediate `t3` realizes the determinant encoding, that
+return zero supplies the EasyCrypt witness, a contract for `fqinv(0)`,
+universal C intermediate safety, keygen retry/success distribution,
+`h*f = g`, serialization provenance, high-level NTT/InvNTT ring semantics,
+no-wrap/noise correctness, `m1 = encoded_m`, `r2 = r`, or full-KEM
+correctness.
+
 ## Verified NTRU+768 NTT root schedule
 
 The shared EasyCrypt theory at

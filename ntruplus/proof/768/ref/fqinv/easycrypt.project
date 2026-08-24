@@ -1,0 +1,9 @@
+[general]
+timeout = 30
+
+rdirs = .
+rdirs = ../basemul
+rdirs = ../basemul/extracted
+rdirs = ../baseinv
+rdirs = ../../../../../external/formosa-mlkem/proof/eclib
+rdirs = ../../../../../external/formosa-mlkem/crypto-specs/common
