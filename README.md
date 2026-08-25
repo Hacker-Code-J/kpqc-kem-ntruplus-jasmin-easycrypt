@@ -1918,15 +1918,17 @@ The verified `fqinv` trace turns the nonzero `state[5]` encoding into the matchi
 inverse scale.  Four final reductions therefore establish the existing
 `inverse_coeff_relation`, and hence the existing quartic block-inverse
 theorem.  The odd output coefficients undo the two deliberately negated
-pre-numerators.  Because the reusable Montgomery theorem currently permits
-the boundary representative `-q`, the final block's strict q-range remains
-an explicit premise instead of being inferred from residue equality.
+pre-numerators.  The strengthened Montgomery theorem excludes the boundary
+representative `-q` for every reduction under the verified input bound.
+Consequently all 14 trace states lie strictly between `-q` and `q`, and the
+final signed-output q-range is now derived internally rather than assumed by
+the block-inverse theorem.
 
 Every reduction input in this scalar trace is bounded by `4*q^2`; in
 particular it fits both the Montgomery precondition and the production
-`int32_t` arithmetic range.  On the failure side the sound direction is
-explicit: a raw zero determinant word implies that the mathematical
-determinant is zero modulo `q`.
+`int32_t` arithmetic range.  Strict reduction range also closes the failure
+criterion in both directions: the mathematical determinant is zero modulo
+`q` exactly when the raw determinant word `state[5]` is zero.
 
 The integrated verifier compiles the new theory, checks its scope and
 required lemmas, and replays the exhaustive `fqinv` and conditional
@@ -1936,12 +1938,11 @@ required lemmas, and replays the exhaustive `fqinv` and conditional
 ./scripts/verify-ntruplus768-baseinv-word.sh
 ```
 
-This milestone does not prove the converse from a zero residue to raw
-`state[5] == 0`; a formal C/Jasmin realization of the pure word trace; the current
-C `baseinv` return-code contract; full `poly_baseinv` correctness; keygen
-retry/success distribution; `h*f = g`; serialization provenance; high-level
-NTT/InvNTT ring semantics; no-wrap/noise correctness; `m1 = encoded_m`;
-`r2 = r`; or full-KEM correctness.
+This milestone does not prove a formal C/Jasmin realization of the pure word
+trace; the current C `baseinv` return-code contract; full `poly_baseinv`
+correctness; keygen retry/success distribution; `h*f = g`; serialization
+provenance; high-level NTT/InvNTT ring semantics; no-wrap/noise correctness;
+`m1 = encoded_m`; `r2 = r`; or full-KEM correctness.
 
 ## Verified NTRU+768 NTT root schedule
 

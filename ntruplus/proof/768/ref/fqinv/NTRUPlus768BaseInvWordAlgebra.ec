@@ -12,8 +12,8 @@ import Ring.IntID IntOrder.
 (* Scope: pure relational word specification for the scalar baseinv trace,
    matching the seam-checked C arithmetic schedule.  This file has no formal C/Jasmin procedure equivalence
    and no current return-code theorem;
-   proves only the sound direction raw trace5 zero -> determinant residue zero
-   (not the converse), and the final strict q-range is an explicit premise. *)
+   proves the raw trace5 zero criterion exactly at the word state and derives
+   the final output q-range internally. *)
 
 op mred_word_spec (x : int) : W16.t =
   NTRUPlus768BasemulProof.montgomery_reduce (W32.of_int x).
@@ -78,6 +78,20 @@ lemma mred_word_spec_algebra (x : int) :
   coeff (mred_word_spec x) %% q = (x * Rinv) %% q.
 proof.
   by rewrite /mred_word_spec; apply montgomery_reduce_of_int.
+qed.
+
+lemma mred_word_spec_strict_range (x : int) :
+  -R %/ 2 * q <= x < R %/ 2 * q =>
+  -q < coeff (mred_word_spec x) < q.
+proof.
+  by rewrite /mred_word_spec; apply montgomery_reduce_of_int_strict.
+qed.
+
+lemma mred_word_spec_zero_mod_iff_zero (x : int) :
+  -R %/ 2 * q <= x < R %/ 2 * q =>
+  (coeff (mred_word_spec x) %% q = 0) <=> mred_word_spec x = W16.zero.
+proof.
+  by rewrite /mred_word_spec; apply montgomery_reduce_of_int_zero_iff.
 qed.
 
 lemma add_mod_q_congr (x y x' y' : int) :
@@ -189,6 +203,15 @@ proof.
     move: Hw; rewrite /q; smt().
   rewrite /signed_word /coeff.
   exact (W16.to_sintK_small (-coeff w) Hsmall).
+qed.
+
+lemma signed_word_in_qrange_strict (w : W16.t) :
+  -q < coeff w < q => in_qrange (signed_word w).
+proof.
+  move=> Hw.
+  have Hrange : in_qrange w by move: Hw; smt().
+  rewrite /in_qrange (signed_word_coeff w Hrange).
+  move: Hw; smt().
 qed.
 
 lemma baseinv_trace0
@@ -518,6 +541,75 @@ proof.
   exact Hmul.
 qed.
 
+lemma trace5_residue_zero_iff_zero
+    (a : W16.t Array4.t) (zeta_word : W16.t) (z : int) (state : int -> W16.t) :
+  in_qrange4 a =>
+  in_qrange zeta_word =>
+  zeta_mont_relation zeta_word z =>
+  (forall i, 0 <= i < 10 =>
+    state i = mred_word_spec (baseinv_trace_expr a zeta_word state i)) =>
+  (coeff (state 5) %% q = 0) <=> state 5 = W16.zero.
+proof.
+  move=> Ha Hzeta_w Hzeta Hstate.
+  have [Hs2b _] := baseinv_trace2 a zeta_word z state Ha Hzeta_w Hzeta Hstate.
+  have [Hs3b _] := baseinv_trace3 a zeta_word z state Ha Hzeta_w Hzeta Hstate.
+  have [Hs4b _] := baseinv_trace4 a zeta_word z state Ha Hzeta_w Hzeta Hstate.
+  have Hstate5 := Hstate 5.
+  have -> :
+    state 5 = mred_word_spec
+      (coeff (state 2) * coeff (state 2) - coeff (state 3) * coeff (state 4))
+    by apply Hstate5; smt().
+  have Hs2range : -q <= coeff (state 2) < q by rewrite /in_qrange in Hs2b.
+  have Hs3range : -q <= coeff (state 3) < q by rewrite /in_qrange in Hs3b.
+  have Hs4range : -q <= coeff (state 4) < q by rewrite /in_qrange in Hs4b.
+  exact (mred_word_spec_zero_mod_iff_zero
+    (coeff (state 2) * coeff (state 2) - coeff (state 3) * coeff (state 4))
+    (square_minus_product_bound
+      (coeff (state 2)) (coeff (state 3)) (coeff (state 4))
+      Hs2range Hs3range Hs4range)).
+qed.
+
+lemma determinant_zero_forces_trace5_zero
+    (a : W16.t Array4.t) (zeta_word : W16.t) (z : int) (state : int -> W16.t) :
+  in_qrange4 a =>
+  in_qrange zeta_word =>
+  zeta_mont_relation zeta_word z =>
+  (forall i, 0 <= i < 10 =>
+    state i = mred_word_spec (baseinv_trace_expr a zeta_word state i)) =>
+  inverse_determinant a z %% q = 0 =>
+  state 5 = W16.zero.
+proof.
+  move=> Ha Hzeta_w Hzeta Hstate Hdet0.
+  have [_ Hs5c] := baseinv_trace5 a zeta_word z state Ha Hzeta_w Hzeta Hstate.
+  have Hmod0 : coeff (state 5) %% q = 0.
+  + have Hscaled := mul_mod_q_congr
+      (inverse_determinant a z) (exp Rinv 3)
+      0 (exp Rinv 3) Hdet0 _.
+    - done.
+    rewrite Hs5c Hscaled.
+    done.
+  rewrite -(trace5_residue_zero_iff_zero
+    a zeta_word z state Ha Hzeta_w Hzeta Hstate).
+  exact Hmod0.
+qed.
+
+lemma determinant_zero_iff_trace5_zero
+    (a : W16.t Array4.t) (zeta_word : W16.t) (z : int) (state : int -> W16.t) :
+  in_qrange4 a =>
+  in_qrange zeta_word =>
+  zeta_mont_relation zeta_word z =>
+  (forall i, 0 <= i < 10 =>
+    state i = mred_word_spec (baseinv_trace_expr a zeta_word state i)) =>
+  (inverse_determinant a z %% q = 0) <=> state 5 = W16.zero.
+proof.
+  move=> Ha Hzeta_w Hzeta Hstate.
+  split.
+  + apply (determinant_zero_forces_trace5_zero
+      a zeta_word z state Ha Hzeta_w Hzeta Hstate).
+  apply (trace5_zero_implies_determinant_zero
+    a zeta_word z state Ha Hzeta_w Hzeta Hstate).
+qed.
+
 lemma determinant_nonzero_implies_trace5_nonzero
     (a : W16.t Array4.t) (zeta_word : W16.t) (z : int) (state : int -> W16.t) :
   in_qrange4 a =>
@@ -795,6 +887,269 @@ proof.
   exact Hc9.
 qed.
 
+lemma fqinv_word_spec_output_range_generic
+    (a output : W16.t) (state : int -> W16.t)
+    (p r : int -> int) (pout rout : int) :
+  in_qrange a =>
+  (forall i, 0 <= i < 16 =>
+    fqmul_word_spec
+      (fqinv_word_left a state i)
+      (fqinv_word_right a state i) = state i) =>
+  fqmul_word_spec fq_rinv_word (state 15) = output =>
+  fqinv_exponent_relations p r pout rout =>
+  in_qrange output.
+proof.
+  move=> Ha Hsteps Houtput Hexps.
+  have Hfacts :
+      in_qrange output /\ power_relation a output pout rout.
+  + exact (fqinv_word_spec_power_relation_generic
+      a output state p r pout rout Ha Hsteps Houtput Hexps).
+  move: Hfacts => [Hrange _].
+  exact Hrange.
+qed.
+
+lemma fqinv_word_spec_output_range
+    (a output : W16.t) (state : int -> W16.t) :
+  in_qrange a =>
+  (forall i, 0 <= i < 16 =>
+    fqmul_word_spec
+      (fqinv_word_left a state i)
+      (fqinv_word_right a state i) = state i) =>
+  fqmul_word_spec fq_rinv_word (state 15) = output =>
+  in_qrange output.
+proof.
+  move=> Ha Hsteps Houtput.
+  exact (fqinv_word_spec_output_range_generic
+    a output state fqinv_pe fqinv_re peinv reinv
+    Ha Hsteps Houtput fqinv_exponent_schedule).
+qed.
+
+lemma baseinv_word_trace_strict_ranges
+    (a : W16.t Array4.t) (zeta_word invword : W16.t) (z : int)
+    (state fq_state : int -> W16.t) :
+  in_qrange4 a =>
+  in_qrange zeta_word =>
+  zeta_mont_relation zeta_word z =>
+  (forall i, 0 <= i < 14 =>
+    state i = mred_word_spec
+      (baseinv_full_trace_expr a zeta_word invword state i)) =>
+  (forall i, 0 <= i < 16 =>
+    fqmul_word_spec
+      (fqinv_word_left (state 5) fq_state i)
+      (fqinv_word_right (state 5) fq_state i) = fq_state i) =>
+  fqmul_word_spec fq_rinv_word (fq_state 15) = invword =>
+  forall i, 0 <= i < 14 => -q < coeff (state i) < q.
+proof.
+  move=> Ha Hzeta_w Hzeta Htrace.
+  have Hstate :
+      forall j, 0 <= j < 10 =>
+        state j = mred_word_spec (baseinv_trace_expr a zeta_word state j).
+  + move=> j Hj.
+    have Hj14 : 0 <= j < 14 by smt().
+    have H := Htrace j Hj14.
+    rewrite /baseinv_full_trace_expr in H.
+    by smt().
+  have [Ha0 [Ha1 [Ha2 Ha3]]] := Ha.
+  have [Hs0b _] := baseinv_trace0 a zeta_word state Ha Hstate.
+  have [Hs1b _] := baseinv_trace1 a zeta_word state Ha Hstate.
+  have [Hs2b _] := baseinv_trace2 a zeta_word z state Ha Hzeta_w Hzeta Hstate.
+  have [Hs3b _] := baseinv_trace3 a zeta_word z state Ha Hzeta_w Hzeta Hstate.
+  have [Hs4b _] := baseinv_trace4 a zeta_word z state Ha Hzeta_w Hzeta Hstate.
+  have [Hs5b _] := baseinv_trace5 a zeta_word z state Ha Hzeta_w Hzeta Hstate.
+  have [Hs6b [_ [Hs7b [_ [Hs8b [_ [Hs9b _]]]]]]] :=
+    baseinv_trace6789 a zeta_word z state Ha Hzeta_w Hzeta Hstate.
+  have Hs0range : -q <= coeff (state 0) < q by rewrite /in_qrange in Hs0b.
+  have Hs1range : -q <= coeff (state 1) < q by rewrite /in_qrange in Hs1b.
+  have Hs2range : -q <= coeff (state 2) < q by rewrite /in_qrange in Hs2b.
+  have Hs3range : -q <= coeff (state 3) < q by rewrite /in_qrange in Hs3b.
+  have Hs4range : -q <= coeff (state 4) < q by rewrite /in_qrange in Hs4b.
+  have Hs6range : -q <= coeff (state 6) < q by rewrite /in_qrange in Hs6b.
+  have Hs7range : -q <= coeff (state 7) < q by rewrite /in_qrange in Hs7b.
+  have Hs8range : -q <= coeff (state 8) < q by rewrite /in_qrange in Hs8b.
+  have Hs9range : -q <= coeff (state 9) < q by rewrite /in_qrange in Hs9b.
+  have H0 : -q < coeff (state 0) < q.
+  + have H0idx : 0 <= 0 < 10 by smt().
+    have H0eq := Hstate 0 H0idx.
+    rewrite H0eq.
+    exact (mred_word_spec_strict_range
+      (coeff a.[2] * coeff a.[2] - 2 * coeff a.[1] * coeff a.[3])
+      (square_minus_double_product_bound
+        (coeff a.[2]) (coeff a.[1]) (coeff a.[3]) Ha2 Ha1 Ha3)).
+  have H1 : -q < coeff (state 1) < q.
+  + have H1idx : 0 <= 1 < 10 by smt().
+    have H1eq := Hstate 1 H1idx.
+    rewrite H1eq.
+    exact (mred_word_spec_strict_range
+      (coeff a.[3] * coeff a.[3])
+      (product_bound (coeff a.[3]) (coeff a.[3]) Ha3 Ha3)).
+  have H2 : -q < coeff (state 2) < q.
+  + have H2idx : 0 <= 2 < 10 by smt().
+    have H2eq := Hstate 2 H2idx.
+    rewrite H2eq.
+    exact (mred_word_spec_strict_range
+      (coeff a.[0] * coeff a.[0] + coeff (state 0) * coeff zeta_word)
+      (square_plus_product_bound
+        (coeff a.[0]) (coeff (state 0)) (coeff zeta_word)
+        Ha0 Hs0range Hzeta_w)).
+  have H3 : -q < coeff (state 3) < q.
+  + have H3idx : 0 <= 3 < 10 by smt().
+    have H3eq := Hstate 3 H3idx.
+    rewrite H3eq.
+    exact (mred_word_spec_strict_range
+      (coeff a.[1] * coeff a.[1] + coeff (state 1) * coeff zeta_word -
+       2 * coeff a.[0] * coeff a.[2])
+      (square_plus_product_minus_double_product_bound
+        (coeff a.[1]) (coeff (state 1)) (coeff zeta_word)
+        (coeff a.[0]) (coeff a.[2])
+        Ha1 Hs1range Hzeta_w Ha0 Ha2)).
+  have H4 : -q < coeff (state 4) < q.
+  + have H4idx : 0 <= 4 < 10 by smt().
+    have H4eq := Hstate 4 H4idx.
+    rewrite H4eq.
+    exact (mred_word_spec_strict_range
+      (coeff (state 3) * coeff zeta_word)
+      (product_bound (coeff (state 3)) (coeff zeta_word) Hs3range Hzeta_w)).
+  have H5 : -q < coeff (state 5) < q.
+  + have H5idx : 0 <= 5 < 10 by smt().
+    have H5eq := Hstate 5 H5idx.
+    rewrite H5eq.
+    exact (mred_word_spec_strict_range
+      (coeff (state 2) * coeff (state 2) - coeff (state 3) * coeff (state 4))
+      (square_minus_product_bound
+        (coeff (state 2)) (coeff (state 3)) (coeff (state 4))
+        Hs2range Hs3range Hs4range)).
+  have H6 : -q < coeff (state 6) < q.
+  + have H6idx : 0 <= 6 < 14 by smt().
+    have H6eq := Htrace 6 H6idx.
+    rewrite /baseinv_full_trace_expr in H6eq.
+    rewrite H6eq.
+    exact (mred_word_spec_strict_range
+      (coeff a.[0] * coeff (state 2) + coeff a.[2] * coeff (state 4))
+      (product_sum2_bound
+        (coeff a.[0]) (coeff a.[2]) (coeff (state 2)) (coeff (state 4))
+        Ha0 Ha2 Hs2range Hs4range)).
+  have H7 : -q < coeff (state 7) < q.
+  + have H7idx : 0 <= 7 < 14 by smt().
+    have H7eq := Htrace 7 H7idx.
+    rewrite /baseinv_full_trace_expr in H7eq.
+    rewrite H7eq.
+    exact (mred_word_spec_strict_range
+      (coeff a.[3] * coeff (state 4) + coeff a.[1] * coeff (state 2))
+      (product_sum2_bound
+        (coeff a.[3]) (coeff a.[1]) (coeff (state 4)) (coeff (state 2))
+        Ha3 Ha1 Hs4range Hs2range)).
+  have H8 : -q < coeff (state 8) < q.
+  + have H8idx : 0 <= 8 < 14 by smt().
+    have H8eq := Htrace 8 H8idx.
+    rewrite /baseinv_full_trace_expr in H8eq.
+    rewrite H8eq.
+    exact (mred_word_spec_strict_range
+      (coeff a.[2] * coeff (state 2) + coeff a.[0] * coeff (state 3))
+      (product_sum2_bound
+        (coeff a.[2]) (coeff a.[0]) (coeff (state 2)) (coeff (state 3))
+        Ha2 Ha0 Hs2range Hs3range)).
+  have H9 : -q < coeff (state 9) < q.
+  + have H9idx : 0 <= 9 < 14 by smt().
+    have H9eq := Htrace 9 H9idx.
+    rewrite /baseinv_full_trace_expr in H9eq.
+    rewrite H9eq.
+    exact (mred_word_spec_strict_range
+      (coeff a.[1] * coeff (state 3) + coeff a.[3] * coeff (state 2))
+      (product_sum2_bound
+        (coeff a.[1]) (coeff a.[3]) (coeff (state 3)) (coeff (state 2))
+        Ha1 Ha3 Hs3range Hs2range)).
+  move=> Hfq Hfqout i Hi.
+  have Hinvb := fqinv_word_spec_output_range
+    (state 5) invword fq_state Hs5b Hfq Hfqout.
+  have Hinvrange : -q <= coeff invword < q by rewrite /in_qrange in Hinvb.
+  have H10 : -q < coeff (state 10) < q.
+  + have H10idx : 0 <= 10 < 14 by smt().
+    have H10eq := Htrace 10 H10idx.
+    rewrite /baseinv_full_trace_expr in H10eq.
+    rewrite /baseinv_final_mul_expr H10eq.
+    exact (mred_word_spec_strict_range
+      (coeff (state 6) * coeff invword)
+      (product_bound (coeff (state 6)) (coeff invword) Hs6range Hinvrange)).
+  have H11 : -q < coeff (state 11) < q.
+  + have H11idx : 0 <= 11 < 14 by smt().
+    have H11eq := Htrace 11 H11idx.
+    rewrite /baseinv_full_trace_expr in H11eq.
+    rewrite /baseinv_final_mul_expr H11eq.
+    exact (mred_word_spec_strict_range
+      (coeff (state 7) * coeff invword)
+      (product_bound (coeff (state 7)) (coeff invword) Hs7range Hinvrange)).
+  have H12 : -q < coeff (state 12) < q.
+  + have H12idx : 0 <= 12 < 14 by smt().
+    have H12eq := Htrace 12 H12idx.
+    rewrite /baseinv_full_trace_expr in H12eq.
+    rewrite /baseinv_final_mul_expr H12eq.
+    exact (mred_word_spec_strict_range
+      (coeff (state 8) * coeff invword)
+      (product_bound (coeff (state 8)) (coeff invword) Hs8range Hinvrange)).
+  have H13 : -q < coeff (state 13) < q.
+  + have H13idx : 0 <= 13 < 14 by smt().
+    have H13eq := Htrace 13 H13idx.
+    rewrite /baseinv_full_trace_expr in H13eq.
+    rewrite /baseinv_final_mul_expr H13eq.
+    exact (mred_word_spec_strict_range
+      (coeff (state 9) * coeff invword)
+      (product_bound (coeff (state 9)) (coeff invword) Hs9range Hinvrange)).
+  case (i = 0) => [->|Hi0]; first exact H0.
+  case (i = 1) => [->|Hi1]; first exact H1.
+  case (i = 2) => [->|Hi2]; first exact H2.
+  case (i = 3) => [->|Hi3]; first exact H3.
+  case (i = 4) => [->|Hi4]; first exact H4.
+  case (i = 5) => [->|Hi5]; first exact H5.
+  case (i = 6) => [->|Hi6]; first exact H6.
+  case (i = 7) => [->|Hi7]; first exact H7.
+  case (i = 8) => [->|Hi8]; first exact H8.
+  case (i = 9) => [->|Hi9]; first exact H9.
+  case (i = 10) => [->|Hi10]; first exact H10.
+  case (i = 11) => [->|Hi11]; first exact H11.
+  case (i = 12) => [->|Hi12]; first exact H12.
+  have -> : i = 13 by smt().
+  exact H13.
+qed.
+
+lemma baseinv_signed_output_qrange
+    (a : W16.t Array4.t) (zeta_word invword : W16.t) (z : int)
+    (state fq_state : int -> W16.t) :
+  in_qrange4 a =>
+  in_qrange zeta_word =>
+  zeta_mont_relation zeta_word z =>
+  (forall i, 0 <= i < 14 =>
+    state i = mred_word_spec
+      (baseinv_full_trace_expr a zeta_word invword state i)) =>
+  (forall i, 0 <= i < 16 =>
+    fqmul_word_spec
+      (fqinv_word_left (state 5) fq_state i)
+      (fqinv_word_right (state 5) fq_state i) = fq_state i) =>
+  fqmul_word_spec fq_rinv_word (fq_state 15) = invword =>
+  in_qrange4 (baseinv_signed_output state).
+proof.
+  move=> Ha Hzeta_w Hzeta Htrace Hfq Hfqout.
+  have H10f := baseinv_word_trace_strict_ranges
+    a zeta_word invword z state fq_state Ha Hzeta_w Hzeta Htrace Hfq Hfqout 10.
+  have H11f := baseinv_word_trace_strict_ranges
+    a zeta_word invword z state fq_state Ha Hzeta_w Hzeta Htrace Hfq Hfqout 11.
+  have H12f := baseinv_word_trace_strict_ranges
+    a zeta_word invword z state fq_state Ha Hzeta_w Hzeta Htrace Hfq Hfqout 12.
+  have H13f := baseinv_word_trace_strict_ranges
+    a zeta_word invword z state fq_state Ha Hzeta_w Hzeta Htrace Hfq Hfqout 13.
+  have H10 : -q < coeff (state 10) < q by apply H10f; smt().
+  have H11 : -q < coeff (state 11) < q by apply H11f; smt().
+  have H12 : -q < coeff (state 12) < q by apply H12f; smt().
+  have H13 : -q < coeff (state 13) < q by apply H13f; smt().
+  rewrite /in_qrange4 /baseinv_signed_output !Array4.initiE 1..4:/# /=.
+  split.
+  + move: H10; smt().
+  split.
+  + exact (signed_word_in_qrange_strict (state 11) H11).
+  split.
+  + move: H12; smt().
+  exact (signed_word_in_qrange_strict (state 13) H13).
+qed.
+
 lemma signed_word_mod (w : W16.t) :
   in_qrange w =>
   coeff (signed_word w) %% q = (-coeff w) %% q.
@@ -896,43 +1251,6 @@ proof. by rewrite /peinv. qed.
 
 lemma reinv_value : reinv = 3456.
 proof. by rewrite /reinv. qed.
-
-lemma fqinv_word_spec_output_range_generic
-    (a output : W16.t) (state : int -> W16.t)
-    (p r : int -> int) (pout rout : int) :
-  in_qrange a =>
-  (forall i, 0 <= i < 16 =>
-    fqmul_word_spec
-      (fqinv_word_left a state i)
-      (fqinv_word_right a state i) = state i) =>
-  fqmul_word_spec fq_rinv_word (state 15) = output =>
-  fqinv_exponent_relations p r pout rout =>
-  in_qrange output.
-proof.
-  move=> Ha Hsteps Houtput Hexps.
-  have Hfacts :
-      in_qrange output /\ power_relation a output pout rout.
-  + exact (fqinv_word_spec_power_relation_generic
-      a output state p r pout rout Ha Hsteps Houtput Hexps).
-  move: Hfacts => [Hrange _].
-  exact Hrange.
-qed.
-
-lemma fqinv_word_spec_output_range
-    (a output : W16.t) (state : int -> W16.t) :
-  in_qrange a =>
-  (forall i, 0 <= i < 16 =>
-    fqmul_word_spec
-      (fqinv_word_left a state i)
-      (fqinv_word_right a state i) = state i) =>
-  fqmul_word_spec fq_rinv_word (state 15) = output =>
-  in_qrange output.
-proof.
-  move=> Ha Hsteps Houtput.
-  exact (fqinv_word_spec_output_range_generic
-    a output state fqinv_pe fqinv_re peinv reinv
-    Ha Hsteps Houtput fqinv_exponent_schedule).
-qed.
 
 lemma fqinv_word_spec_power_relation_only_generic
     (a output : W16.t) (state : int -> W16.t)
@@ -1152,13 +1470,15 @@ lemma baseinv_word_trace_inverse_relation
       (fqinv_word_left (state 5) fq_state i)
       (fqinv_word_right (state 5) fq_state i) = fq_state i) =>
   fqmul_word_spec fq_rinv_word (fq_state 15) = invword =>
-  in_qrange4 (baseinv_signed_output state) =>
   inverse_determinant a z %% q <> 0 =>
   inverse_coeff_relation
     a (baseinv_signed_output state) z
     (coeff invword * exp Rinv 3).
 proof.
-  move=> Ha Hzeta_w Hzeta Htrace Hfq Hfqout Hsigned Hdet.
+  move=> Ha Hzeta_w Hzeta Htrace Hfq Hfqout Hdet.
+  have Hsigned := baseinv_signed_output_qrange
+    a zeta_word invword z state fq_state
+    Ha Hzeta_w Hzeta Htrace Hfq Hfqout.
   have [H0 [H1 [H2 [H3 _]]]] :=
     baseinv_word_trace_output_congruences
       a zeta_word invword z state fq_state
@@ -1185,11 +1505,10 @@ lemma baseinv_word_trace_block_inverse
       (fqinv_word_left (state 5) fq_state i)
       (fqinv_word_right (state 5) fq_state i) = fq_state i) =>
   fqmul_word_spec fq_rinv_word (fq_state 15) = invword =>
-  in_qrange4 (baseinv_signed_output state) =>
   inverse_determinant a z %% q <> 0 =>
   block_inverse_qring a (baseinv_signed_output state) z.
 proof.
-  move=> Ha Hzeta_w Hzeta Htrace Hfq Hfqout Hsigned Hdet.
+  move=> Ha Hzeta_w Hzeta Htrace Hfq Hfqout Hdet.
   have [_ [_ [_ [_ Hwit]]]] :=
     baseinv_word_trace_output_congruences
       a zeta_word invword z state fq_state
@@ -1199,5 +1518,5 @@ proof.
     Hwit
     (baseinv_word_trace_inverse_relation
       a zeta_word invword z state fq_state
-      Ha Hzeta_w Hzeta Htrace Hfq Hfqout Hsigned Hdet)).
+      Ha Hzeta_w Hzeta Htrace Hfq Hfqout Hdet)).
 qed.

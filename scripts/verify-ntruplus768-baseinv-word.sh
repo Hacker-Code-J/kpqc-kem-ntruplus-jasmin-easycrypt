@@ -6,6 +6,7 @@ SCRIPT_DIR=$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)
 REPO_ROOT=$(cd -- "$SCRIPT_DIR/.." && pwd)
 PROOF_DIR="$REPO_ROOT/ntruplus/proof/768/ref/fqinv"
 WORD_PROOF="$PROOF_DIR/NTRUPlus768BaseInvWordAlgebra.ec"
+BASEMUL_ALGEBRA="$REPO_ROOT/ntruplus/proof/768/ref/basemul/NTRUPlus768BasemulAlgebra.ec"
 FQINV_VERIFIER="$SCRIPT_DIR/verify-ntruplus768-fqinv.sh"
 BASEINV_TEST_DIR="$REPO_ROOT/tests/ntruplus768/baseinv"
 BASEINV_SOURCE="$REPO_ROOT/NTRU+/NTRU+768/ntt.c"
@@ -47,6 +48,18 @@ require_pattern() {
   grep -Eq "$pattern" "$file" || fail "missing required $label"
 }
 
+reject_lemma_pattern() {
+  local file=$1
+  local lemma=$2
+  local pattern=$3
+  local label=$4
+
+  if sed -n "/^lemma[[:space:]]\+$lemma/,/^proof\./p" "$file" |
+      grep -Eq "$pattern"; then
+    fail "unexpected $label in EasyCrypt lemma: $lemma"
+  fi
+}
+
 reject_proof_holes() {
   local findings="$WORKDIR/proof-holes.txt"
   local status
@@ -64,11 +77,11 @@ reject_proof_holes() {
 
 reject_overclaims() {
   local findings="$WORKDIR/overclaims.txt"
-  local pattern='^lemma[[:space:]]+.*(c_baseinv|jasmin_baseinv|baseinv_return|poly_baseinv|keygen|decap_m1|decap_r2|m1_recovery|r2_recovery|no_wrap|determinant_zero_implies_trace5_zero|trace5_zero_iff|trace5_iff)'
+  local pattern='^lemma[[:space:]]+.*(c_baseinv|jasmin_baseinv|baseinv_return|poly_baseinv|keygen|decap_m1|decap_r2|m1_recovery|r2_recovery|no_wrap)'
 
   if grep -En "$pattern" "$WORD_PROOF" >"$findings"; then
     sed -n '1,120p' "$findings" >&2
-    fail "baseinv word proof contains a C/Jasmin, return-code, converse, or downstream overclaim"
+    fail "baseinv word proof contains a C/Jasmin, return-code, or downstream overclaim"
   fi
 }
 
@@ -86,8 +99,10 @@ main() {
   require_command bash
   require_command easycrypt
   require_command grep
+  require_command sed
 
   require_file "$WORD_PROOF"
+  require_file "$BASEMUL_ALGEBRA"
   require_file "$PROOF_DIR/Makefile"
   require_file "$PROOF_DIR/easycrypt.project"
   require_file "$BASEINV_TEST_DIR/Makefile"
@@ -107,15 +122,19 @@ main() {
   require_pattern "$WORD_PROOF" \
     'return-code theorem' 'return-code scope disclaimer'
   require_pattern "$WORD_PROOF" \
-    'not the converse' 'one-way failure scope disclaimer'
+    'raw trace5 zero criterion exactly' 'exact trace5-zero scope disclaimer'
   require_pattern "$WORD_PROOF" \
-    'strict q-range.*explicit premise' 'explicit final q-range premise disclaimer'
+    'final output q-range internally' 'derived final q-range scope disclaimer'
   require_pattern "$WORD_PROOF" \
     '4 \* q \* q < R %/ 2 \* q' 'four-q-squared Montgomery bound'
   require_pattern "$WORD_PROOF" \
     'inverse_determinant a z \* exp Rinv 3' 'R^-3 determinant encoding'
 
   require_lemma "$WORD_PROOF" mred_word_spec_algebra
+  require_lemma "$BASEMUL_ALGEBRA" montgomery_reduce_of_int_strict
+  require_lemma "$BASEMUL_ALGEBRA" montgomery_reduce_of_int_zero_iff
+  require_lemma "$WORD_PROOF" mred_word_spec_strict_range
+  require_lemma "$WORD_PROOF" mred_word_spec_zero_mod_iff_zero
   require_lemma "$WORD_PROOF" square_minus_double_product_bound
   require_lemma "$WORD_PROOF" square_plus_product_minus_double_product_bound
   require_lemma "$WORD_PROOF" baseinv_trace0
@@ -126,20 +145,31 @@ main() {
   require_lemma "$WORD_PROOF" baseinv_trace5
   require_lemma "$WORD_PROOF" determinant_nonzero_implies_trace5_nonzero
   require_lemma "$WORD_PROOF" trace5_zero_implies_determinant_zero
+  require_lemma "$WORD_PROOF" trace5_residue_zero_iff_zero
+  require_lemma "$WORD_PROOF" determinant_zero_forces_trace5_zero
+  require_lemma "$WORD_PROOF" determinant_zero_iff_trace5_zero
   require_lemma "$WORD_PROOF" baseinv_trace6789
+  require_lemma "$WORD_PROOF" baseinv_word_trace_strict_ranges
+  require_lemma "$WORD_PROOF" baseinv_signed_output_qrange
   require_lemma "$WORD_PROOF" baseinv_word_trace_inverse_relation
   require_lemma "$WORD_PROOF" baseinv_word_trace_block_inverse
+  reject_lemma_pattern "$WORD_PROOF" baseinv_word_trace_inverse_relation \
+    'in_qrange4 \(baseinv_signed_output state\) =>' 'explicit output-range premise'
+  reject_lemma_pattern "$WORD_PROOF" baseinv_word_trace_block_inverse \
+    'in_qrange4 \(baseinv_signed_output state\) =>' 'explicit output-range premise'
 
   compile_easycrypt_target
   "$FQINV_VERIFIER"
 
   printf 'PASS: exact pure 14-reduction scalar baseinv word trace and Montgomery scale accounting\n'
   printf 'PASS: every scalar reduction input is bounded by 4*q^2 and fits its verified precondition\n'
-  printf 'PASS: raw determinant-word zero implies mathematical determinant zero modulo q\n'
-  printf 'PASS: nonzero determinant plus the exact fqinv trace yields the quartic block inverse\n'
+  printf 'PASS: every reduction output lies strictly between -q and q\n'
+  printf 'PASS: determinant residue zero is equivalent to the raw determinant word being zero\n'
+  printf 'PASS: final signed-output q-range is derived internally\n'
+  printf 'PASS: nonzero determinant plus the exact fqinv trace yields the quartic block inverse without an output-range premise\n'
   printf 'PASS: exhaustive fqinv, conditional baseinv, UBSan, functional, and KAT predecessors\n'
   printf '%s\n' \
-    'SCOPE: pure relational word specification matching the seam-checked scalar source body, with final strict q-range explicit; no formal C/Jasmin baseinv realization, no current C return-code theorem, no converse from determinant residue zero to raw trace5 zero, no full poly_baseinv correctness, keygen retry/success distribution, h*f=g, serialization provenance, NTT/InvNTT high-level ring semantics, no-wrap/noise theorem, m1/r2 recovery, or full-KEM proof'
+    'SCOPE: pure relational word specification matching the seam-checked scalar source body, with strict reduction ranges, exact determinant-word zero criterion, and internally derived signed-output q-range; no formal C/Jasmin baseinv realization, no current C return-code theorem, no full poly_baseinv correctness, keygen retry/success distribution, h*f=g, serialization provenance, NTT/InvNTT high-level ring semantics, no-wrap/noise theorem, m1/r2 recovery, or full-KEM proof'
 }
 
 main "$@"

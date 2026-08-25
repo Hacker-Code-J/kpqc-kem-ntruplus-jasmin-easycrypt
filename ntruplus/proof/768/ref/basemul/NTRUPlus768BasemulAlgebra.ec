@@ -746,6 +746,75 @@ proof.
   by split.
 qed.
 
+lemma montgomery_reduce_of_int_strict (a : int) :
+  -R %/ 2 * q <= a < R %/ 2 * q =>
+  -q < coeff (montgomery_reduce (W32.of_int a)) < q.
+proof.
+  move=> Ha.
+  have [Hbnd _] := montgomery_reduce_of_int a Ha.
+  pose s := NTRUPlusMontgomery.smod (a * qinv) R.
+  have Hsmall : W32.to_sint (W32.of_int a) = a.
+  + apply W32.to_sintK_small.
+    move: Ha.
+    rewrite /R /q /=.
+    smt().
+  have Hsmod : -R %/ 2 <= s < R %/ 2.
+  + rewrite /s.
+    exact (NTRUPlusMontgomery.smod_bnd (a * qinv) R _ _).
+    - by rewrite /R.
+    by rewrite /R.
+  have Hneq : coeff (montgomery_reduce (W32.of_int a)) <> -q.
+  + rewrite /coeff montgomery_reduce_exact Hsmall.
+    rewrite /NTRUPlusMontgomery.SREDC /= NTRUPlusMontgomery.smod_div.
+    have Hinner : -R * R %/ 2 <= a - s * q < R * R %/ 2
+      by rewrite /R /=; smt(ler_lt_sub ltr_add).
+    rewrite (NTRUPlusMontgomery.smod_small (a - s * q)); first exact Hinner.
+    rewrite (NTRUPlusMontgomery.smod_sq (a - s * q)).
+    rewrite (NTRUPlusMontgomery.smod_small ((a - s * q) %/ R)); first by smt().
+    move=> Heq.
+    have Hsqmod : (s * q) %% R = a %% R.
+    + rewrite /s -modzMmr NTRUPlusMontgomery.smod_congr modzMmr.
+      rewrite (_ : (a * qinv) * q = a * (qinv * q)); first by ring.
+      rewrite -modzMml NTRUPlusMontgomery.qqinv modzMml /=.
+      done.
+    have Hdiv : R %| a - s * q.
+    + apply dvdz_eq.
+      rewrite (_ : a - s * q = a + (-(s * q))); first by ring.
+      rewrite -modzDml -modzNm Hsqmod modzNm.
+      done.
+    have Hnum : a - s * q = -q * R.
+    + have := divzK Hdiv.
+      rewrite Heq.
+      smt().
+    move: Ha Hsmod Hnum.
+    rewrite /R /q /=.
+    smt().
+  move: Hbnd Hneq.
+  smt().
+qed.
+
+lemma montgomery_reduce_of_int_zero_iff (a : int) :
+  -R %/ 2 * q <= a < R %/ 2 * q =>
+  (coeff (montgomery_reduce (W32.of_int a)) %% q = 0) <=>
+  montgomery_reduce (W32.of_int a) = W16.zero.
+proof.
+  move=> Ha.
+  split.
+  + move=> Hmod.
+    have Hstrict := montgomery_reduce_of_int_strict a Ha.
+    have Hcoeff0 : coeff (montgomery_reduce (W32.of_int a)) = 0.
+    + move: Hstrict Hmod.
+      rewrite /q.
+      smt(edivzP).
+    have -> : montgomery_reduce (W32.of_int a) =
+        W16.of_int (coeff (montgomery_reduce (W32.of_int a))).
+    + by rewrite /coeff W16.of_sintK.
+    by rewrite Hcoeff0.
+  move=> ->.
+  rewrite /coeff /= /W16.to_sint /=.
+  done.
+qed.
+
 lemma zeta_mont_Rinv (z : W16.t) (zeta_math : int) :
   zeta_mont_relation z zeta_math =>
   (coeff z * Rinv) %% q = zeta_math %% q.
