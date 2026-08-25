@@ -1973,6 +1973,51 @@ correctness; keygen retry/success distribution; `h*f = g`; serialization
 provenance; high-level NTT/InvNTT ring semantics; no-wrap/noise correctness;
 `m1 = encoded_m`; `r2 = r`; or full-KEM correctness.
 
+## Verified NTRU+768 scalar `baseinv` Jasmin realization
+
+The scalar implementation at `ntruplus/jasmin/768/ref/baseinv.jazz` realizes
+the exact 14-reduction word trace above.  Its proof-facing
+`__baseinv_core` loads all four input coefficients before any output write,
+computes the determinant word, and returns the exact pair `(output,status)`:
+
+```text
+status = 1  <=>  determinant = 0 (mod q), and output is unchanged
+status = 0  <=>  determinant != 0 (mod q), and output is a quartic inverse
+```
+
+Fresh `jasmin2ec` extraction is compared byte-for-byte with the tracked
+`NTRUPlus768BaseInv.ec`.  EasyCrypt proves the helper procedures, pretrace,
+success path, complete functional result, losslessness, and probability-one
+contract.  On success, the result satisfies both the existing coefficient
+inverse relation and the quartic block-inverse theorem; on failure, the
+original output array is preserved exactly.
+
+The exported Jasmin wrapper follows the usual mutable-pointer convention:
+the source-level return includes the updated pointer and status, while the C
+caller observes the scalar status result.  A fail-closed checker fixes the
+production C helpers and complete `baseinv` body together with the Jasmin
+helpers, determinant branch, signed stores, wrapper, and lack of CT/SCT
+annotations; its self-check rejects 20 representative mutations.  Normal and
+UBSan differential runs compare status and output for 12 fixed plus 20,000
+deterministic random q-range cases.  They also require input immutability,
+failure-output preservation, exact Jasmin in-place alias behavior,
+success-output strict q-range, both branch outcomes, and an independently
+evaluated quartic inverse identity.
+
+Run the integrated proof, safety, executable, and predecessor suite with:
+
+```sh
+./scripts/verify-ntruplus768-baseinv-jasmin.sh
+```
+
+This routine branches on the secret-derived determinant word, so this
+milestone deliberately makes no constant-time or speculative-constant-time
+claim and does not run `jasmin-ct`.  It also does not provide formal production
+C semantics or a formal C/Jasmin program equivalence, full `poly_baseinv`
+correctness, keygen retry/success distribution, `h*f = g`, serialization
+provenance, high-level NTT/InvNTT ring semantics, no-wrap/noise correctness,
+`m1 = encoded_m`, `r2 = r`, or full-KEM correctness.
+
 ## Verified NTRU+768 NTT root schedule
 
 The shared EasyCrypt theory at
