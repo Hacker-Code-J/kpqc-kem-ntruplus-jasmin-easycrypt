@@ -1,0 +1,82 @@
+param int NTRUPLUS_Q = 3457;
+param int NTRUPLUS_QINV = 12929;
+param int NTRUPLUS_RINV = -682;
+
+inline fn __mul_i16(reg u16 a b) -> reg u32
+{
+  reg u32 ad;
+  reg u32 bd;
+  reg u32 c;
+
+  ad = (32s) a;
+  bd = (32s) b;
+  c = ad * bd;
+  return c;
+}
+
+inline fn __montgomery_reduce(reg u32 a) -> reg u16
+{
+  reg u16 t;
+  reg u32 q;
+  reg u32 td;
+  reg u32 r;
+
+  q = NTRUPLUS_Q;
+  td = (32s) a;
+  td *= NTRUPLUS_QINV;
+  t = td;
+  td = (32s) t;
+  r = (32s) a;
+  td *= q;
+  r -= td;
+  r >>s= 16;
+  t = r;
+  return t;
+}
+
+inline fn __fqmul(reg u16 a b) -> reg u16
+{
+  reg u32 c;
+  reg u16 r;
+
+  c = __mul_i16(a, b);
+  r = __montgomery_reduce(c);
+  return r;
+}
+
+#[safety = { requires = true, ensures = true }]
+#[ct = "secret → secret"]
+#[sct = "secret → secret"]
+export fn jade_ntruplus_ntruplus768_amd64_ref_fqinv(
+  reg u16 a) -> reg u16
+{
+  reg u16 t1;
+  reg u16 t2;
+  reg u16 t3;
+
+  _ = #init_msf();
+
+  t1 = __fqmul(a, a);
+  t2 = __fqmul(t1, t1);
+  t2 = __fqmul(t2, t2);
+  t3 = __fqmul(t2, t2);
+
+  t1 = __fqmul(t1, t2);
+
+  t2 = __fqmul(t1, t3);
+  t2 = __fqmul(t2, t2);
+  t2 = __fqmul(t2, a);
+
+  t1 = __fqmul(t1, t2);
+
+  t2 = __fqmul(t2, t2);
+  t2 = __fqmul(t2, t2);
+  t2 = __fqmul(t2, t2);
+  t2 = __fqmul(t2, t2);
+  t2 = __fqmul(t2, t2);
+  t2 = __fqmul(t2, t2);
+  t2 = __fqmul(t2, t1);
+
+  t2 = __fqmul(NTRUPLUS_RINV, t2);
+  return t2;
+}

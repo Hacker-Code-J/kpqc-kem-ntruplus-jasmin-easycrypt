@@ -1888,14 +1888,43 @@ conditional `baseinv` and predecessor regression chain:
 ./scripts/verify-ntruplus768-fqinv.sh
 ```
 
-This milestone specifies the exact word trace but does not prove that the C
-or Jasmin procedure realizes that relation.  It also does not prove that the
-current C `baseinv` intermediate `t3` realizes the determinant encoding, that
-return zero supplies the EasyCrypt witness, a contract for `fqinv(0)`,
-universal C intermediate safety, keygen retry/success distribution,
-`h*f = g`, serialization provenance, high-level NTT/InvNTT ring semantics,
-no-wrap/noise correctness, `m1 = encoded_m`, `r2 = r`, or full-KEM
-correctness.
+This mathematical layer specifies the exact word trace independently of a
+procedure.  The separate Jasmin-realization milestone below closes the
+extracted-procedure side, but does not give production C semantics or a formal
+C/Jasmin program equivalence.
+
+## Verified NTRU+768 `fqinv` Jasmin realization
+
+The scalar implementation at `ntruplus/jasmin/768/ref/fqinv.jazz` mirrors the
+production 17-call addition chain and its final `NTRUPLUS_RINV` multiplication.
+Fresh `jasmin2ec` extraction is checked byte-for-byte against the tracked
+`NTRUPlus768FqInv.ec` model.  The EasyCrypt proof establishes that the
+extracted procedure returns the existing exact word specification for every
+16-bit input word and that this concrete specification satisfies the verified
+power relation.  These theorems combine with the existing nonzero inverse
+lemma: for a nonzero q-range input, the resulting exact specification is
+q-range and satisfies the multiplicative-inverse equation modulo `q`.
+
+The source seam independently fixes the production C constants, Montgomery
+helper, `fqmul`, and addition-chain schedule together with the Jasmin helpers,
+ABI, and schedule; its self-check rejects 17 representative mutations.  Normal
+and UBSan differential runs compare production C and Jasmin on all 65,536
+input words, while all 3,456 nonzero residues are additionally checked for
+strict q-range output and the inverse equation.  The verifier also checks
+Jasmin safety, CT, SCT, fresh extraction, the extracted functional/power
+theorems, the existing word-spec inverse theorem, and the complete earlier
+finite-field/base-inverse regression chain:
+
+```sh
+./scripts/verify-ntruplus768-fqinv-jasmin.sh
+```
+
+This milestone does not provide formal production C semantics or a formal
+C/Jasmin program equivalence, an inverse contract for `fqinv(0)`, a Jasmin
+`baseinv`/`poly_baseinv` realization, the current C `baseinv` return-code
+theorem, keygen retry/success distribution, `h*f = g`, serialization
+provenance, high-level NTT/InvNTT ring semantics, no-wrap/noise correctness,
+`m1 = encoded_m`, `r2 = r`, or full-KEM correctness.
 
 ## Verified NTRU+768 scalar base-inverse word trace
 
