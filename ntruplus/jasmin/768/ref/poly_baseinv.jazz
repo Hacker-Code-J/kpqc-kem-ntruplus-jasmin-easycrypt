@@ -1,0 +1,179 @@
+param int NTRUPLUS_N = 768;
+
+u16[96] NTRUPLUS_ZETAS96 = {
+  223, 1138, 64477, 65139, 65353, 1655, 559, 63862,
+  277, 933, 1723, 437, 64022, 242, 1640, 432,
+  63953, 696, 774, 1671, 927, 514, 512, 489,
+  297, 601, 1473, 1130, 1322, 871, 760, 1212,
+  65224, 65184, 443, 943, 8, 1250, 65436, 1660,
+  65505, 1206, 64195, 64289, 444, 235, 1364, 64327,
+  361, 230, 673, 582, 1409, 1501, 1401, 251,
+  1022, 64473, 1053, 1188, 417, 64145, 65509, 63910,
+  1685, 65221, 1408, 64288, 400, 274, 63993, 32,
+  63986, 1531, 64169, 65412, 1458, 1379, 64596, 63855,
+  22, 1709, 65261, 1108, 354, 63808, 64568, 858,
+  1221, 65318, 294, 64804, 64441, 892, 1588, 64757
+};
+
+namespace BaseInv {
+  require "baseinv.jazz"
+}
+
+fn __poly_baseinv_block(
+  reg mut ptr u16[4] tr,
+  reg const ptr u16[4] ta,
+  reg u16 zeta) -> reg ptr u16[4], reg u64
+{
+  reg u16 t0;
+  reg u16 t1;
+  reg u16 t2;
+  reg u16 t3;
+  reg u16 r0;
+  reg u16 r1;
+  reg u16 r2;
+  reg u16 r3;
+  reg u64 status;
+
+  t0, t1, t2, t3 =
+    BaseInv::__baseinv_pretrace(ta[0], ta[1], ta[2], ta[3], zeta);
+  if (t3 == 0) {
+    status = 1;
+  } else {
+    r0, r1, r2, r3 =
+      BaseInv::__baseinv_success(ta[0], ta[1], ta[2], ta[3], t0, t1, t2, t3);
+    r1 = -r1;
+    r3 = -r3;
+    tr[0] = r0;
+    tr[1] = r1;
+    tr[2] = r2;
+    tr[3] = r3;
+    status = 0;
+  }
+
+  return tr, status;
+}
+
+#[safety = { requires = is_arr_init(ap,0,2 * NTRUPLUS_N), ensures = true }]
+fn __poly_baseinv_apply(
+  reg mut ptr u16[NTRUPLUS_N] rp,
+  reg const ptr u16[NTRUPLUS_N] ap,
+  reg u64 block,
+  reg u16 zeta) -> reg ptr u16[NTRUPLUS_N], reg u64
+{
+  stack u16[4] ta;
+  stack u16[4] tr;
+  reg mut ptr u16[4] trp;
+  reg u64 off;
+  reg u64 status;
+
+  tr[0] = 0;
+  tr[1] = 0;
+  tr[2] = 0;
+  tr[3] = 0;
+  trp = tr[0:4];
+
+  off = block;
+  off <<= 2;
+  ta[0] = ap[off];
+  ta[1] = ap[off + 1];
+  ta[2] = ap[off + 2];
+  ta[3] = ap[off + 3];
+  trp, status = __poly_baseinv_block(trp, ta, zeta);
+
+  if (status == 0) {
+    rp[off] = trp[0];
+    rp[off + 1] = trp[1];
+    rp[off + 2] = trp[2];
+    rp[off + 3] = trp[3];
+  }
+
+  return rp, status;
+}
+
+#[safety = { requires = is_arr_init(ap,0,2 * NTRUPLUS_N), ensures = true }]
+fn __poly_baseinv_pair(
+  reg mut ptr u16[NTRUPLUS_N] rp,
+  reg const ptr u16[NTRUPLUS_N] ap,
+  reg u64 i,
+  reg u16 zeta) -> reg ptr u16[NTRUPLUS_N], reg u64
+{
+  reg u64 block;
+  reg u64 status;
+
+  block = i;
+  block <<= 1;
+  rp, status = __poly_baseinv_apply(rp, ap, block, zeta);
+  if (status != 1) {
+    block += 1;
+    zeta = -zeta;
+    rp, status = __poly_baseinv_apply(rp, ap, block, zeta);
+  }
+
+  return rp, status;
+}
+
+inline fn __poly_baseinv_zero(
+  reg mut ptr u16[NTRUPLUS_N] rp) -> reg ptr u16[NTRUPLUS_N]
+{
+  reg u64 j;
+
+  j = 0;
+  while (j < NTRUPLUS_N) {
+    rp[j] = 0;
+    j += 1;
+  }
+
+  return rp;
+}
+
+#[safety =
+   { requires = is_arr_init(ap,0,2 * NTRUPLUS_N)
+   , ensures = is_arr_init(rp,0,2 * NTRUPLUS_N)
+   }
+]
+fn __poly_baseinv_core(
+  reg mut ptr u16[NTRUPLUS_N] rp,
+  reg const ptr u16[NTRUPLUS_N] ap) -> reg ptr u16[NTRUPLUS_N], reg u64
+{
+  reg ptr u16[96] zetasp;
+  reg u16 zeta;
+  reg u64 i;
+  reg u64 status;
+
+  _ = #init_msf();
+
+  i = 0;
+  status = 0;
+  zetasp = NTRUPLUS_ZETAS96[0:96];
+  while (i < NTRUPLUS_N / 8) {
+    zeta = zetasp[i];
+    rp, status = __poly_baseinv_pair(rp, ap, i, zeta);
+    if (status == 1) {
+      i = NTRUPLUS_N / 8;
+    } else {
+      i += 1;
+      status = 0;
+    }
+  }
+
+  if (status == 1) {
+    rp = __poly_baseinv_zero(rp);
+  }
+
+  return rp, status;
+}
+
+#[safety =
+   { requires = is_arr_init(ap,0,2 * NTRUPLUS_N)
+   , ensures = is_arr_init(rp,0,2 * NTRUPLUS_N)
+   }
+]
+export fn jade_ntruplus_ntruplus768_amd64_ref_poly_baseinv(
+  reg mut ptr u16[NTRUPLUS_N] rp,
+  reg const ptr u16[NTRUPLUS_N] ap) -> (reg ptr u16[NTRUPLUS_N], reg u64)
+{
+  reg u64 status;
+
+  rp, status = __poly_baseinv_core(rp, ap);
+  return rp, status;
+}

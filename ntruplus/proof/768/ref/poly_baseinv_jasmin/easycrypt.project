@@ -1,0 +1,18 @@
+[general]
+timeout = 30
+
+rdirs = .
+rdirs = extracted
+rdirs = ../baseinv_jasmin
+rdirs = ../baseinv_jasmin/extracted
+rdirs = ../baseinv
+rdirs = ../fqinv
+rdirs = ../fqinv_jasmin
+rdirs = ../fqinv_jasmin/extracted
+rdirs = ../poly_basemul
+rdirs = ../poly_basemul/extracted
+rdirs = ../basemul
+rdirs = ../basemul/extracted
+rdirs = ../ntt_schedule
+rdirs = ../../../../../external/formosa-mlkem/proof/eclib
+rdirs = ../../../../../external/formosa-mlkem/crypto-specs/common

@@ -2018,6 +2018,40 @@ correctness, keygen retry/success distribution, `h*f = g`, serialization
 provenance, high-level NTT/InvNTT ring semantics, no-wrap/noise correctness,
 `m1 = encoded_m`, `r2 = r`, or full-KEM correctness.
 
+## Verified NTRU+768 poly_baseinv Jasmin realization
+
+The theories under `ntruplus/proof/768/ref/poly_baseinv_jasmin/` now cover the
+full 192-block Jasmin `poly_baseinv` wrapper.  The proof models the helper as a
+96-step pair fold over `+zetas[96+i]` and `-zetas[96+i]`, proves the exact
+return contract for the extracted `__poly_baseinv_core`, and reuses the earlier
+bridge to show that an all-success exact run implies the existing
+`poly_baseinv_success` predicate.  On failure, the proved contract is
+fail-closed: the exported result array is all-zero.
+
+The executable seam for this milestone is intentionally narrower than a formal
+C/Jasmin equivalence proof.  A fail-closed checker pins the exact 96-entry
+table, helper bodies, pair schedule, failure zeroization, mutable-pointer/status
+export ABI, and the required `jasminc -auto-spill-all` build contract.  Normal
+and UBSan differential runs compare the Jasmin export against the production C
+`poly_baseinv` on 17 fixed and 32 deterministic random full-polynomial cases.
+They also require disjoint-input immutability, strict q-range success outputs,
+independent blockwise inverse checks, alias-success equality, and alias-failure
+zeroization.
+
+Run the integrated proof, build, checker, differential, and predecessor chain
+with:
+
+```sh
+./scripts/verify-ntruplus768-poly-baseinv-jasmin.sh
+```
+
+As with scalar `baseinv`, this source branches on a secret-derived determinant,
+so this milestone makes no CT or SCT claim and does not run `jasmin-ct`.  It
+also does not prove formal production C semantics or full C/Jasmin program
+equivalence, keygen retry/success distribution, `h*f = g`, serialization
+provenance, high-level NTT/InvNTT ring semantics, no-wrap/noise correctness,
+`m1 = encoded_m`, `r2 = r`, or full-KEM correctness.
+
 ## Verified NTRU+768 NTT root schedule
 
 The shared EasyCrypt theory at
