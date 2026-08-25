@@ -1897,6 +1897,52 @@ universal C intermediate safety, keygen retry/success distribution,
 no-wrap/noise correctness, `m1 = encoded_m`, `r2 = r`, or full-KEM
 correctness.
 
+## Verified NTRU+768 scalar base-inverse word trace
+
+The scalar `baseinv` bridge under `ntruplus/proof/768/ref/fqinv/` now models
+the exact 14 Montgomery-reduction states pinned by the production-source
+checker.  For q-range input coefficients and the production zeta encoding,
+the intermediate states have the following meanings modulo `q`:
+
+```text
+state[0] = (a2^2 - 2*a1*a3) * Rinv
+state[1] = a3^2 * Rinv
+state[2] = u * Rinv
+state[3] = v * Rinv
+state[4] = zeta*v * Rinv
+state[5] = determinant * Rinv^3
+state[6..9] = (numerator0, -numerator1, numerator2, -numerator3) * Rinv^2
+```
+
+The verified `fqinv` trace turns the nonzero `state[5]` encoding into the matching
+inverse scale.  Four final reductions therefore establish the existing
+`inverse_coeff_relation`, and hence the existing quartic block-inverse
+theorem.  The odd output coefficients undo the two deliberately negated
+pre-numerators.  Because the reusable Montgomery theorem currently permits
+the boundary representative `-q`, the final block's strict q-range remains
+an explicit premise instead of being inferred from residue equality.
+
+Every reduction input in this scalar trace is bounded by `4*q^2`; in
+particular it fits both the Montgomery precondition and the production
+`int32_t` arithmetic range.  On the failure side the sound direction is
+explicit: a raw zero determinant word implies that the mathematical
+determinant is zero modulo `q`.
+
+The integrated verifier compiles the new theory, checks its scope and
+required lemmas, and replays the exhaustive `fqinv` and conditional
+`baseinv` predecessor suite:
+
+```sh
+./scripts/verify-ntruplus768-baseinv-word.sh
+```
+
+This milestone does not prove the converse from a zero residue to raw
+`state[5] == 0`; a formal C/Jasmin realization of the pure word trace; the current
+C `baseinv` return-code contract; full `poly_baseinv` correctness; keygen
+retry/success distribution; `h*f = g`; serialization provenance; high-level
+NTT/InvNTT ring semantics; no-wrap/noise correctness; `m1 = encoded_m`;
+`r2 = r`; or full-KEM correctness.
+
 ## Verified NTRU+768 NTT root schedule
 
 The shared EasyCrypt theory at
