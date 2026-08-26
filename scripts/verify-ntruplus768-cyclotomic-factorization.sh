@@ -56,7 +56,7 @@ compile_easycrypt_via_makefile() {
   local easycrypt_bin
 
   easycrypt_bin=$(command -v easycrypt)
-  if ! make -C "$PROOF_DIR" check EASYCRYPT="$easycrypt_bin"; then
+  if ! make -C "$PROOF_DIR" factorization EASYCRYPT="$easycrypt_bin"; then
     fail "EasyCrypt cyclotomic factorization proof failed"
   fi
 }

@@ -2283,6 +2283,50 @@ preservation, or the full KEM.  Those are the remaining links from this
 factorization theorem to the headline
 `InvNTT(Basemul(NTT(a), NTT(b))) = a*b` result.
 
+## Verified NTRU+768 terminal quotient-ring multiplication semantics
+
+The EasyCrypt theory at
+`ntruplus/proof/768/ref/ring_semantics/NTRUPlus768EvaluationSemantics.ec`
+gives each four-coefficient terminal block a concrete polynomial meaning over
+`F_3457`.  It defines the local quotient relation
+
+```text
+p == q (mod X^4 - terminal_root(k))
+```
+
+by an explicit polynomial witness and proves that it is reflexive, symmetric,
+transitive, and preserved by addition and multiplication.  The global
+factorization theorem is then used to prove, for every `0 <= k < 192`, that
+`X^4-terminal_root(k)` divides `X^768-X^384+1`.
+
+The main implementation-facing theorem lifts the previously verified
+`poly_basemul_qring` coefficient contract.  If `rp` is the verified blockwise
+result for `ap` and `bp`, then every terminal block satisfies
+
+```text
+block_poly(block4(rp, k))
+  == block_poly(block4(ap, k)) * block_poly(block4(bp, k))
+     (mod X^4 - terminal_root(k)).
+```
+
+The proof exposes the exact quotient witness: the degree-4, degree-5, and
+degree-6 convolution tail.  Thus the verified word-level coefficient formulas
+are now connected to polynomial multiplication in all 192 local quotient
+rings, rather than merely described as four modular integer equalities.
+
+Run the complete dependency chain, including fresh `poly_basemul` extraction,
+Jasmin build/safety/constant-time checks, the cyclotomic factorization, and the
+new EasyCrypt semantics proof with:
+
+```sh
+./scripts/verify-ntruplus768-evaluation-semantics.sh
+```
+
+This milestone does not yet define or prove the executable forward NTT as the
+corresponding evaluation map.  Pairwise coprimality, a Chinese-remainder
+isomorphism, executable NTT/InvNTT cancellation, and the final composed
+`InvNTT(Basemul(NTT(a), NTT(b))) = a*b` theorem remain future links.
+
 ## Formosa ML-KEM reference
 
 The official
