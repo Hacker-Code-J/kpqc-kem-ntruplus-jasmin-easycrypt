@@ -2241,6 +2241,48 @@ This milestone still does not prove:
 - a shared-memory proof of the executable `invntt` pointer-overlap behavior; or
 - key generation, encryption, or the full KEM.
 
+## Verified NTRU+768 cyclotomic quartic factorization
+
+The finite-field polynomial theory at
+`ntruplus/proof/768/ref/ring_semantics/NTRUPlus768CyclotomicFactorization.ec`
+lifts the verified mixed-radix root schedule into the first high-level ring
+semantics theorem.  Rather than expanding 192 factors as a computation, it
+proves reusable radix-3 and radix-2 product invariants and follows the exact
+`roots_after_*` split tree already tied to the implementation table.
+
+For the concrete field `F_3457`, the theory proves the scheduled identity
+
+```text
+product(e in Figure22) (A - 22^e) = A^192 - A^96 + 1
+```
+
+for every field polynomial `A`.  It then identifies the exponent-table view
+with the implementation-facing `terminal_value(k)` view and instantiates
+`A = X^4`, yielding the explicit theorem
+
+```text
+product(k = 0..191) (X^4 - terminal_value(k))
+  = X^768 - X^384 + 1.
+```
+
+The proof also establishes that the 192 Figure 22 exponents are unique.  The
+factorization is therefore no longer an informal interpretation of the
+terminal four-coefficient blocks: each block modulus used by `poly_basemul`
+is now a proved factor of the global NTRU+768 cyclotomic modulus.
+
+Run the factorization proof together with its table/parser predecessor using:
+
+```sh
+./scripts/verify-ntruplus768-cyclotomic-factorization.sh
+```
+
+This milestone does not yet prove pairwise coprimality of the quartic factors,
+a Chinese-remainder isomorphism, that the composed executable NTT implements
+the corresponding evaluation map, NTT/InvNTT cancellation, multiplication
+preservation, or the full KEM.  Those are the remaining links from this
+factorization theorem to the headline
+`InvNTT(Basemul(NTT(a), NTT(b))) = a*b` result.
+
 ## Formosa ML-KEM reference
 
 The official
