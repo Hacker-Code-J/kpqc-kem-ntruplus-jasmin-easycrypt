@@ -2368,10 +2368,61 @@ Run the complete predecessor chain and the terminal-representation proof with:
 ./scripts/verify-ntruplus768-terminal-representation.sh
 ```
 
-The next missing link is to prove that the executable forward NTT produces a
-terminal representation of its input polynomial.  Injectivity/CRT, executable
-inverse-transform semantics, cancellation, and the final composed theorem are
-still not claimed here.
+The remaining forward-transform link is to carry a polynomial representation
+invariant through every executable NTT layer until the terminal representation
+is reached.  Injectivity/CRT, executable inverse-transform semantics,
+cancellation, and the final composed theorem are still not claimed here.
+
+## Verified NTRU+768 forward NTT stage-1 polynomial split
+
+The EasyCrypt theory at
+`ntruplus/proof/768/ref/ring_semantics/NTRUPlus768ForwardNTTStage1Semantics.ec`
+starts that forward-transform invariant at the executable first layer.  It
+interprets an array segment as a bounded finite-field polynomial and
+reconstructs the 768-coefficient input as two 384-coefficient halves:
+
+```text
+input_poly(a) = low(a) + X^384 * high(a).
+```
+
+It defines a reusable polynomial congruence modulo
+`X^m - zeta^e`, proves that this relation is an additive and multiplicative
+congruence, and connects the first schedule roots to their exact field values:
+
+```text
+stage1_root       = zeta^96,
+1 - stage1_root   = zeta^480.
+```
+
+The corresponding two degree-384 factor moduli are proved to multiply to
+`X^768-X^384+1`.  From the existing coefficient-level `stage1_algebra`
+contract, the new theory then proves:
+
+```text
+segment_poly(output,   0, 384)
+  == input_poly(input)  (mod X^384 - zeta^96)
+
+segment_poly(output, 384, 384)
+  == input_poly(input)  (mod X^384 - zeta^480).
+```
+
+The result is provided both for the pure `stage1_spec` and as a probability-one
+`phoare` theorem for the extracted Jasmin
+`jade_ntruplus_ntruplus768_amd64_ref_ntt_stage1` procedure.  This is the first
+executable forward-NTT layer with an explicit polynomial factor semantics,
+rather than only range and coefficient congruence formulas.
+
+Run the complete predecessor chain, fresh stage1 extraction and Jasmin checks,
+and the new semantics proof with:
+
+```sh
+./scripts/verify-ntruplus768-forward-ntt-stage1-semantics.sh
+```
+
+The next semantic refinement is the radix-3 layer, which must split each
+degree-384 representative into three degree-128 representatives following
+`roots_after_radix3`.  The later radix-2 layers and the final
+`terminal_represents` theorem remain outside this milestone.
 
 ## Formosa ML-KEM reference
 
