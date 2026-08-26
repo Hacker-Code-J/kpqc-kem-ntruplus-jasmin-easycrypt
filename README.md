@@ -2278,9 +2278,9 @@ Run the factorization proof together with its table/parser predecessor using:
 
 This milestone does not yet prove pairwise coprimality of the quartic factors,
 a Chinese-remainder isomorphism, that the composed executable NTT implements
-the corresponding evaluation map, NTT/InvNTT cancellation, multiplication
-preservation, or the full KEM.  Those are the remaining links from this
-factorization theorem to the headline
+the corresponding evaluation map, NTT/InvNTT cancellation, the composed
+executable multiplication theorem, or the full KEM.  Those are the remaining
+links from this factorization theorem to the headline
 `InvNTT(Basemul(NTT(a), NTT(b))) = a*b` result.
 
 ## Verified NTRU+768 terminal quotient-ring multiplication semantics
@@ -2326,6 +2326,52 @@ This milestone does not yet define or prove the executable forward NTT as the
 corresponding evaluation map.  Pairwise coprimality, a Chinese-remainder
 isomorphism, executable NTT/InvNTT cancellation, and the final composed
 `InvNTT(Basemul(NTT(a), NTT(b))) = a*b` theorem remain future links.
+
+## Verified NTRU+768 terminal representation multiplication preservation
+
+The EasyCrypt theory at
+`ntruplus/proof/768/ref/ring_semantics/NTRUPlus768TerminalRepresentation.ec`
+packages the 192 local quotient statements into one relational representation
+of a global polynomial:
+
+```text
+terminal_represents(a, p)
+  = for every k in 0..191,
+      block_poly(block4(a, k)) == p (mod X^4 - terminal_root(k)).
+```
+
+The theory separately defines congruence modulo the global polynomial
+`X^768-X^384+1`.  Using the proved quartic factorization, it establishes that
+global congruence implies congruence in every terminal quotient.  Consequently
+`terminal_represents(a, p)` is independent of the chosen representative of the
+global polynomial class; this does not require pairwise coprimality or assume a
+Chinese-remainder isomorphism.
+
+The main theorem composes those facts with the verified blockwise contract:
+
+```text
+terminal_represents(ap, p)                 ->
+terminal_represents(bp, q)                 ->
+poly_basemul_qring(ap, bp, rp, 192)        ->
+terminal_represents(rp, p * q).
+```
+
+This is the first global multiplication-preservation statement above the 192
+individual terminal blocks.  It proves that a verified `poly_basemul` result
+represents the product whenever its inputs represent the operands, while
+remaining deliberately agnostic about how the input representations were
+computed.
+
+Run the complete predecessor chain and the terminal-representation proof with:
+
+```sh
+./scripts/verify-ntruplus768-terminal-representation.sh
+```
+
+The next missing link is to prove that the executable forward NTT produces a
+terminal representation of its input polynomial.  Injectivity/CRT, executable
+inverse-transform semantics, cancellation, and the final composed theorem are
+still not claimed here.
 
 ## Formosa ML-KEM reference
 
