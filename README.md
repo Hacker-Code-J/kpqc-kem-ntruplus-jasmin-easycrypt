@@ -2135,6 +2135,53 @@ public/secret-key serialization and hash provenance, an aggregate CT/SCT
 claim, and full-KEM correctness.  The next boundary is the concrete
 `poly_tobytes(pk, &h)` public-key serialization value flow.
 
+## Verified NTRU+768 keygen public-key serialization provenance
+
+The theory under `ntruplus/proof/768/ref/keygen_public_key/` closes that next
+proof-facing boundary by extending the verified `keygen_keypair_ntt_relation`
+across the extracted Jasmin serialization call corresponding to the production
+source seam
+
+```c
+poly_basemul(&h, g, finv);
+poly_basemul(&hinv, f, ginv);
+poly_tobytes(pk, &h);
+```
+
+The bridge defines `pk = poly_tobytes_spec(h)` and decodes it with the
+authoritative `poly_frombytes_spec`.  It proves the two decoder views agree,
+the decoded polynomial is exactly the canonical `poly_tobytes` image of `h`,
+every decoded coefficient lies in `[0, q)`, and the decoded coefficients
+remain equal to `h` modulo `q`.  A dedicated congruence lift then transports
+the prior quotient-ring identity across that coefficientwise mod-`q`
+replacement, yielding `decoded_h * f = g` on all 192 terminal blocks.
+
+At the procedure boundary, the Hoare and probability-1 theorems for the exact
+Jasmin `jade_ntruplus_ntruplus768_amd64_ref_poly_tobytes` export establish its
+exact byte result under the keygen relation.  A separate pure composition
+lemma lifts that procedure result to the complete serialization relation, and
+sampled-keygen specializations expose the same boundary without introducing a
+production-C-equivalence claim.  The fail-closed source checker fixes the exact
+keypair prefix, the three Jasmin export slices, and the test Makefile topology;
+its self-check rejects 10 representative mutations.  Normal and UBSan runs
+each cover 31 deterministic successful keypairs, compare authoritative C,
+Jasmin, and an independent byte-packing oracle for `pk`, preserve all
+serialization inputs, confirm canonical decoding, and independently check
+`decoded_h * f = g` modulo `q`.
+
+Run the proof, executable checks, and predecessor chains with:
+
+```sh
+./scripts/verify-ntruplus768-keygen-public-key.sh
+```
+
+This milestone deliberately excludes random retry termination or success
+probability, formal production-C semantics or C/Jasmin program equivalence,
+high-level NTT/InvNTT ring homomorphism, secret-key serialization, hash
+provenance, an aggregate CT/SCT claim, and full-KEM correctness.  The next
+boundary is connecting the concrete public key bytes to the existing keygen
+`hash_f` suffix provenance.
+
 ## Verified NTRU+768 NTT root schedule
 
 The shared EasyCrypt theory at
