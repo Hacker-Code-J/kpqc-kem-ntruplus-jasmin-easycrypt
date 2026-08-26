@@ -2083,6 +2083,58 @@ probability, formal production-C semantics or C/Jasmin program equivalence,
 the keypair identities such as `h*f = g`, serialization provenance, any CT or
 SCT claim for determinant-driven early failure, and full-KEM correctness.
 
+## Verified NTRU+768 keygen `h` quotient-ring algebra
+
+The theory under `ntruplus/proof/768/ref/keygen_h/` closes the next
+pre-serialization key-generation boundary.  It combines the successful
+`finv`/`ginv` contracts with the existing verified Jasmin `poly_basemul`
+contract for the two calls in `crypto_kem_keypair_derand`:
+
+```c
+poly_basemul(&h, g, finv);
+poly_basemul(&hinv, f, ginv);
+```
+
+The new algebra proves commutativity and the required reassociation inside
+each terminal four-coefficient quotient ring.  It then lifts inverse
+cancellation across all 192 terminal blocks.  Consequently, the combined
+`keygen_keypair_ntt_relation` records both product provenance statements and
+the two keypair identities
+
+```text
+h * f = g
+hinv * g = f
+```
+
+as `poly_basemul_qring` relations.  These are NTT terminal-block statements;
+they do not assume or claim a new high-level NTT/InvNTT ring-homomorphism
+theorem.  Separate readiness lemmas show that the sampled `f`/`g` values and
+their successful inverses meet the verified Jasmin `poly_basemul` q-range
+preconditions.  The proof-only `KeygenHComposition.derive_products` wrapper
+then executes the two exact verified Jasmin calls in production order; its
+Hoare theorem lifts their word-level results to the complete sampled-keygen
+NTT relation.  The wrapper does not model production retry control flow.
+
+The fail-closed source checker fixes the exact order and arguments of the two
+keypair multiplication calls and both Jasmin exports, and rejects 15
+representative mutations.  Normal and UBSan tests each cover 31 deterministic
+successful `f`/`g` pairs, compare production C with the verified Jasmin
+`poly_baseinv` and `poly_basemul` exports, preserve every input, enforce
+q-range outputs, and independently check both identities coefficientwise
+modulo `q`.
+
+Run the proof, executable checks, and predecessor chains with:
+
+```sh
+./scripts/verify-ntruplus768-keygen-h.sh
+```
+
+This milestone deliberately excludes random retry termination or success
+probability, formal production-C semantics or C/Jasmin program equivalence,
+public/secret-key serialization and hash provenance, an aggregate CT/SCT
+claim, and full-KEM correctness.  The next boundary is the concrete
+`poly_tobytes(pk, &h)` public-key serialization value flow.
+
 ## Verified NTRU+768 NTT root schedule
 
 The shared EasyCrypt theory at
