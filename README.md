@@ -2052,6 +2052,37 @@ equivalence, keygen retry/success distribution, `h*f = g`, serialization
 provenance, high-level NTT/InvNTT ring semantics, no-wrap/noise correctness,
 `m1 = encoded_m`, `r2 = r`, or full-KEM correctness.
 
+## Verified NTRU+768 keygen inverse provenance
+
+The theory under `ntruplus/proof/768/ref/keygen_inverse/` composes the verified
+keygen sampler/forward-NTT values with the extracted Jasmin `poly_baseinv`
+contract.  It proves that both `keygen_f_ntt_spec` and `keygen_g_ntt_spec`
+satisfy the full-polynomial q-range precondition.  For either input, status
+zero yields the existing `poly_baseinv_success` predicate, a q-range inverse,
+and the 192-block terminal identity product.  Status one carries an exact
+failed-block witness and a fully zero inverse output.
+
+The executable boundary keeps the production C `genf_derand` and
+`geng_derand` pipelines fixed at `SHAKE256 -> CBD1 -> triple -> (+1 for f) ->
+NTT -> poly_baseinv`, including direct propagation of the inversion status.
+Normal and UBSan runs exercise 23 deterministic f inputs and 23 deterministic
+g inputs against both production C and the Jasmin export.  They check input
+immutability, C/Jasmin agreement, strict q-range and an independent blockwise
+inverse identity on success, full zeroization on failure, and both status
+branches independently for the f and g lanes.  The fail-closed checker rejects
+representative pipeline, ABI, argument-order, and compiler-contract mutations.
+
+Run the integrated proof, executable checks, and predecessor chains with:
+
+```sh
+./scripts/verify-ntruplus768-keygen-inverse.sh
+```
+
+This milestone deliberately stops before random retry termination or success
+probability, formal production-C semantics or C/Jasmin program equivalence,
+the keypair identities such as `h*f = g`, serialization provenance, any CT or
+SCT claim for determinant-driven early failure, and full-KEM correctness.
+
 ## Verified NTRU+768 NTT root schedule
 
 The shared EasyCrypt theory at
