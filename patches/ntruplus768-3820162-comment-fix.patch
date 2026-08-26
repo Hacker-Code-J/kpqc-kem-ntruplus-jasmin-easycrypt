@@ -1,0 +1,6 @@
+diff --git a/Reference_Implementation/NTRU+768/ntt.c b/Reference_Implementation/NTRU+768/ntt.c
+--- a/Reference_Implementation/NTRU+768/ntt.c
++++ b/Reference_Implementation/NTRU+768/ntt.c
+@@ -312 +312 @@ int baseinv(int16_t r[4], const int16_t a[4], const int16_t zeta)
+-	t3 = fqinv(t3); // R^5
++	t3 = fqinv(t3); // R^3

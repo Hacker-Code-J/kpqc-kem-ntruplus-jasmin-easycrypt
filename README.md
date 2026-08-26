@@ -6,9 +6,12 @@ EasyCrypt artifacts for NTRU+.
 ## NTRU+768 baseline
 
 The imported NTRU+768 C reference implementation and KAT are rooted at
-`NTRU+/NTRU+768` and `NTRU+/KAT/NTRU+768`. They byte-match the corresponding
-trees at upstream NTRU+ commit
+`NTRU+/NTRU+768` and `NTRU+/KAT/NTRU+768`. They match the corresponding trees
+at upstream NTRU+ commit
 [`38201624477a7dbb2f46d1ae7686ae5ceee4eb80`](https://github.com/ntruplus/ntruplus/commit/38201624477a7dbb2f46d1ae7686ae5ceee4eb80).
+The reference tree additionally carries one tracked comment-only correction
+at `patches/ntruplus768-3820162-comment-fix.patch`; executable C and KAT bytes
+otherwise match that commit.
 
 Build the reference KEM, run its functional test, regenerate the deterministic
 KAT, and compare it byte-for-byte with the imported response file:
@@ -16,6 +19,25 @@ KAT, and compare it byte-for-byte with the imported response file:
 ```sh
 ./scripts/verify-ntruplus768-baseline.sh
 ```
+
+For the paper target, this verified baseline is frozen separately from the
+audited official migration target
+[`3991b2ae08d6f0008d37e41b8aceaaab27b4ec89`](https://github.com/ntruplus/ntruplus/commit/3991b2ae08d6f0008d37e41b8aceaaab27b4ec89).
+The candidate preserves the KAT but changes canonical decoding, malformed-input
+control flow, in-place transform APIs, reduction placement, the `fqinv` trace,
+and cleanup behavior. Reproduce the source/KAT and bounded checker impact
+audits with:
+
+```sh
+./scripts/audit-ntruplus768-upstream.sh
+./scripts/audit-ntruplus768-checker-impact.sh
+```
+
+The full decision, measured compatibility matrix, proof reuse map, and pin
+exit criteria are in
+[`docs/ntruplus768-upstream-migration.md`](docs/ntruplus768-upstream-migration.md).
+Until those exit criteria pass, the repository makes no verification claim
+about the candidate commit.
 
 ## First verified slice: NTRU+768 `basemul`
 

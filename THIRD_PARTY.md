@@ -10,10 +10,12 @@
   Jasmin and EasyCrypt work
 - License: MIT; preserved in `NTRU+/LICENSE`
 
-The imported NTRU+768 implementation, KAT directory, and license byte-match
-the corresponding upstream files at the source commit. The local
-`NTRU+/NTRU+768` path corresponds to upstream
-`Reference_Implementation/NTRU+768`.
+The imported NTRU+768 KAT directory and license byte-match the corresponding
+upstream files at the source commit. The local `NTRU+/NTRU+768` path
+corresponds to upstream `Reference_Implementation/NTRU+768` plus the tracked
+`patches/ntruplus768-3820162-comment-fix.patch`. That patch changes only the
+Montgomery-domain comment on `baseinv`'s `fqinv(t3)` result from `R^5` to
+`R^3`; it does not alter executable C.
 
 The NTT root-schedule proof also follows Section 6.2, Table 5, and Figure 22 of
 the upstream
@@ -24,6 +26,23 @@ radix-2/radix-3 factorization rules, and the 192 terminal exponents for
 NTRU+768. The PDF is referenced as specification provenance and is not copied
 into this repository; the concrete constants and closed EasyCrypt lemmas are
 maintained locally.
+
+### Audited migration target
+
+The official upstream commit
+`3991b2ae08d6f0008d37e41b8aceaaab27b4ec89` was audited on 2026-08-26 and was
+the upstream `HEAD`/`main` at that time. It is an immutable migration target,
+not the source currently imported or verified here. It preserves the
+NTRU+768 KAT but changes 15 reference files, including canonical decoding and
+malformed-input behavior, one-buffer transform APIs, reduction placement, the
+`fqinv` trace, and secret-state cleanup.
+
+The paper remains explicitly scoped to the verified source commit above while
+the migration is pursued separately. Run
+`scripts/audit-ntruplus768-upstream.sh` and
+`scripts/audit-ntruplus768-checker-impact.sh` to reproduce the compatibility
+evidence. See `docs/ntruplus768-upstream-migration.md` for the measured impact,
+proof reuse map, and required conditions before changing the imported pin.
 
 ## Formosa ML-KEM
 

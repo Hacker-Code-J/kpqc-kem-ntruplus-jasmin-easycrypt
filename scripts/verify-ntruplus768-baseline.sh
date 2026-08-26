@@ -4,8 +4,8 @@ set -euo pipefail
 
 SCRIPT_DIR=$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)
 REPO_ROOT=$(cd -- "$SCRIPT_DIR/.." && pwd)
-SRC_DIR="$REPO_ROOT/NTRU+/NTRU+768"
-EXPECTED_RSP="$REPO_ROOT/NTRU+/KAT/NTRU+768/PQCkemKAT_2336.rsp"
+SRC_DIR=${NTRUPLUS768_SRC_DIR:-"$REPO_ROOT/NTRU+/NTRU+768"}
+EXPECTED_RSP=${NTRUPLUS768_EXPECTED_RSP:-"$REPO_ROOT/NTRU+/KAT/NTRU+768/PQCkemKAT_2336.rsp"}
 
 CC=${CC:-gcc}
 TMPDIR_PARENT=${TMPDIR:-/tmp}
@@ -100,7 +100,7 @@ compare_rsp() {
     printf '%s\n' "--- rsp diff (first 40 lines) ---" >&2
     diff -u "$EXPECTED_RSP" "$generated" | sed -n '1,40p' >&2 || true
     printf '%s\n' '--------------------------------' >&2
-    fail "generated KAT differs from NTRU+/KAT/NTRU+768/PQCkemKAT_2336.rsp"
+    fail "generated KAT differs from $EXPECTED_RSP"
   fi
 }
 
