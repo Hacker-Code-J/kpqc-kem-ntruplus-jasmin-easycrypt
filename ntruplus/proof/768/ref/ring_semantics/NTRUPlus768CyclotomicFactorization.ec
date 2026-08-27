@@ -85,6 +85,21 @@ proof.
   by move=> <-.
 qed.
 
+lemma zeta_doubleE (e : int) :
+  exp zeta_field (2 * e) = exp (exp zeta_field e) 2.
+proof.
+  rewrite [2 * e]mulrC.
+  exact (CycloFqField.exprM zeta_field e 2).
+qed.
+
+lemma poly_zeta_doubleE (e : int) :
+  polyC (exp zeta_field (2 * e)) =
+  polyC (exp zeta_field e) * polyC (exp zeta_field e).
+proof.
+  rewrite zeta_doubleE CycloFqField.expr2.
+  exact (polyCM (exp zeta_field e) (exp zeta_field e)).
+qed.
+
 lemma zeta96E : exp zeta_field 96 = incyclocoeff 2735.
 proof.
   rewrite zeta_field_expE 1://.

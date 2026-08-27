@@ -2419,10 +2419,48 @@ and the new semantics proof with:
 ./scripts/verify-ntruplus768-forward-ntt-stage1-semantics.sh
 ```
 
-The next semantic refinement is the radix-3 layer, which must split each
-degree-384 representative into three degree-128 representatives following
-`roots_after_radix3`.  The later radix-2 layers and the final
-`terminal_represents` theorem remain outside this milestone.
+## Verified NTRU+768 forward NTT radix-3 polynomial refinement
+
+The EasyCrypt theory at
+`ntruplus/proof/768/ref/ring_semantics/NTRUPlus768ForwardNTTRadix3Semantics.ec`
+continues the executable transform invariant through the mixed-radix layer.
+It proves that the two degree-384 stage-1 moduli split exactly as follows:
+
+```text
+X^384 - zeta^96
+  = (X^128 - zeta^32)(X^128 - zeta^224)(X^128 - zeta^416)
+
+X^384 - zeta^480
+  = (X^128 - zeta^160)(X^128 - zeta^352)(X^128 - zeta^544).
+```
+
+The proof derives the six child evaluations from the implemented radix-3
+butterflies, including the nontrivial omega-weighted branches, rather than
+assuming a transform specification.  It then composes those local quotient
+facts with the already verified stage-1 semantics to obtain:
+
+```text
+segment bases:  0, 128, 256, 384, 512, 640
+root exponents: 32, 224, 416, 160, 352, 544
+segment length: 128
+```
+
+Every listed segment represents the original input polynomial modulo its
+corresponding degree-128 factor.  The result is proved for the pure
+`radix3_spec`, as a functional `hoare` theorem for the extracted Jasmin
+procedure, and as a probability-one `phoare` theorem using the existing
+losslessness proof.
+
+Run the complete predecessor chain, radix-3 implementation checks, and the
+new semantics proof with:
+
+```sh
+./scripts/verify-ntruplus768-forward-ntt-radix3-semantics.sh
+```
+
+The next semantic refinement is the first radix-2 layer.  The remaining
+radix-2 layers and the final `terminal_represents` theorem remain outside this
+milestone.
 
 ## Formosa ML-KEM reference
 
