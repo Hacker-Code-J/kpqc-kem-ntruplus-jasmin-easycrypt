@@ -2532,9 +2532,52 @@ new semantics proof with:
 ./scripts/verify-ntruplus768-forward-ntt-radix2-32-semantics.sh
 ```
 
-The next semantic refinement is the `step=16` radix-2 layer.  The remaining
-`step=16`, `8`, and `4` layers and the final `terminal_represents` theorem
-remain outside this milestone.
+## Verified NTRU+768 forward NTT radix-2 `step=16` polynomial refinement
+
+The EasyCrypt theory at
+`ntruplus/proof/768/ref/ring_semantics/NTRUPlus768ForwardNTTRadix2_16Semantics.ec`
+continues the polynomial invariant through the third binary layer.  It proves
+
+```text
+X^32 - zeta^(2r)
+  = (X^16 - zeta^r)(X^16 - zeta^(r+288))
+```
+
+and connects the indexed `step=16` implementation to a generic pair of
+left/right segment-evaluation lemmas.  Applying those lemmas to the 24
+degree-32 parents yields the following 48 representations:
+
+```text
+segment bases:    0,  16,  32,  48,  64,  80,  96, 112,
+                128, 144, 160, 176, 192, 208, 224, 240,
+                256, 272, 288, 304, 320, 336, 352, 368,
+                384, 400, 416, 432, 448, 464, 480, 496,
+                512, 528, 544, 560, 576, 592, 608, 624,
+                640, 656, 672, 688, 704, 720, 736, 752
+root exponents:   4, 292, 148, 436,  76, 364, 220, 508,
+                 28, 316, 172, 460, 100, 388, 244, 532,
+                 52, 340, 196, 484, 124, 412, 268, 556,
+                 20, 308, 164, 452,  92, 380, 236, 524,
+                 44, 332, 188, 476, 116, 404, 260, 548,
+                 68, 356, 212, 500, 140, 428, 284, 572
+segment length: 16
+```
+
+Every segment represents the original input polynomial modulo its
+corresponding degree-16 factor.  The result supplies pure specification,
+functional `hoare`, and probability-one `phoare` endpoints for the extracted
+Jasmin procedure.
+
+Run the complete predecessor chain, `step=16` implementation checks, and the
+new semantics proof with:
+
+```sh
+./scripts/verify-ntruplus768-forward-ntt-radix2-16-semantics.sh
+```
+
+The next semantic refinement is the `step=8` radix-2 layer.  The remaining
+`step=8` and `4` layers and the final `terminal_represents` theorem remain
+outside this milestone.
 
 ## Formosa ML-KEM reference
 
