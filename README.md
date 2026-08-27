@@ -2458,9 +2458,46 @@ new semantics proof with:
 ./scripts/verify-ntruplus768-forward-ntt-radix3-semantics.sh
 ```
 
-The next semantic refinement is the first radix-2 layer.  The remaining
-radix-2 layers and the final `terminal_represents` theorem remain outside this
-milestone.
+## Verified NTRU+768 forward NTT radix-2 `step=64` polynomial refinement
+
+The EasyCrypt theory at
+`ntruplus/proof/768/ref/ring_semantics/NTRUPlus768ForwardNTTRadix2_64Semantics.ec`
+continues the polynomial invariant through the first binary layer after
+radix-3.  It proves the generic factor law
+
+```text
+X^128 - zeta^(2r)
+  = (X^64 - zeta^r)(X^64 - zeta^(r+288))
+```
+
+and connects the two implemented butterfly outputs `lo + hi*root` and
+`lo - hi*root` to those two child evaluations.  Applying that result to all
+six 128-coefficient parents yields the following twelve representations:
+
+```text
+segment bases:  0,  64, 128, 192, 256, 320,
+              384, 448, 512, 576, 640, 704
+root exponents: 16, 304, 112, 400, 208, 496,
+                80, 368, 176, 464, 272, 560
+segment length: 64
+```
+
+Every segment represents the original input polynomial modulo its
+corresponding degree-64 factor.  The proof composes the committed radix-3
+semantics with the existing `radix2_64_algebra` contract, and supplies pure
+specification, functional `hoare`, and probability-one `phoare` endpoints for
+the extracted Jasmin procedure.
+
+Run the complete predecessor chain, `step=64` implementation checks, and the
+new semantics proof with:
+
+```sh
+./scripts/verify-ntruplus768-forward-ntt-radix2-64-semantics.sh
+```
+
+The next semantic refinement is the `step=32` radix-2 layer.  The remaining
+`step=16`, `8`, and `4` layers and the final `terminal_represents` theorem
+remain outside this milestone.
 
 ## Formosa ML-KEM reference
 
