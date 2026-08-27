@@ -2719,8 +2719,42 @@ and the top-level terminal-semantics proof with:
 ./scripts/verify-ntruplus768-forward-ntt-semantics.sh
 ```
 
-The inverse transform semantics and the complete NTRU+768 KEM proof remain
-separate work.
+## Verified NTRU+768 inverse radix2_4 ring semantics
+
+The EasyCrypt algebraic layer at
+`ntruplus/proof/768/ref/ring_semantics/NTRUPlus768InverseNTTRadix2_4Recombination.ec`
+and its executable endpoints at
+`ntruplus/proof/768/ref/ring_semantics/NTRUPlus768InverseNTTRadix2_4Semantics.ec`
+establish the first inverse-transform polynomial milestone directly from the
+already proved terminal representation.  Instead of appealing to a global CRT,
+the proof takes the two quartic residues carried by each adjacent terminal
+block pair, rewrites the reverse twiddle schedule as the complementary exponent
+`288 - terminal_exp(b)`, and proves an explicit local recombination identity:
+for every `0 <= b < 96`, the produced degree-8 segment is congruent to
+`p + p` modulo the parent factor `X^8 - zeta^(2 * terminal_exp(b))`.
+
+This yields a pure semantic statement
+
+```text
+forall b, 0 <= b < 96 =>
+  factor_eqm 8 (2 * terminal_exp b)
+    (p + p)
+    (segment_poly output (8 * b) 8)
+```
+
+from `terminal_represents input p` plus the verified
+`invntt_radix2_4_algebra input output` contract, and lifts the same invariant
+to the executable Jasmin procedure through functional `hoare` and
+probability-one `phoare` endpoints under the existing qrange input
+precondition.
+
+Run the terminal-representation dependency, the inverse radix2_4
+implementation proof, and the new inverse-first-layer ring semantics proof
+with:
+
+```sh
+./scripts/verify-ntruplus768-invntt-radix2-4-semantics.sh
+```
 
 ## Formosa ML-KEM reference
 
