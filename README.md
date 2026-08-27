@@ -2756,6 +2756,41 @@ with:
 ./scripts/verify-ntruplus768-invntt-radix2-4-semantics.sh
 ```
 
+## Verified NTRU+768 inverse radix2_8 ring semantics
+
+The next algebraic layer at
+`ntruplus/proof/768/ref/ring_semantics/NTRUPlus768InverseNTTRadix2_8Recombination.ec`
+and its executable endpoints at
+`ntruplus/proof/768/ref/ring_semantics/NTRUPlus768InverseNTTRadix2_8Semantics.ec`
+extend the inverse polynomial invariant through the second binary layer.  For
+each `0 <= b < 48`, the proof selects degree-8 children `2*b` and `2*b+1`,
+shows that their exponents differ by `288`, and pairs the left exponent with
+the reverse `zetas[95-b]` exponent.  The same explicit local interpolation
+identity then reconstructs one degree-16 parent without invoking a global CRT.
+
+The resulting invariant is
+
+```text
+forall b, 0 <= b < 48 =>
+  factor_eqm 16 (4 * terminal_exp (2 * b))
+    ((p + p) + (p + p))
+    (segment_poly output (16 * b) 16)
+```
+
+Thus this layer consumes `invntt_radix2_4_semantics p input` and doubles its
+tracked representative from `2p` to `4p`.  The pure spec, functional `hoare`,
+and probability-one `phoare` endpoints connect the invariant to the verified
+Jasmin `invntt_radix2_8` procedure under its existing coefficientwise input
+shape.  Later inverse layers and the final factor-192 cancellation remain
+separate milestones.
+
+Run the complete predecessor semantics, the inverse radix2_8 implementation
+proof, and this second inverse ring-semantics layer with:
+
+```sh
+./scripts/verify-ntruplus768-invntt-radix2-8-semantics.sh
+```
+
 ## Formosa ML-KEM reference
 
 The official
