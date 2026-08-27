@@ -2575,9 +2575,70 @@ new semantics proof with:
 ./scripts/verify-ntruplus768-forward-ntt-radix2-16-semantics.sh
 ```
 
-The next semantic refinement is the `step=8` radix-2 layer.  The remaining
-`step=8` and `4` layers and the final `terminal_represents` theorem remain
-outside this milestone.
+## Verified NTRU+768 forward NTT radix-2 `step=8` polynomial refinement
+
+The EasyCrypt theory at
+`ntruplus/proof/768/ref/ring_semantics/NTRUPlus768ForwardNTTRadix2_8Semantics.ec`
+continues the invariant through the fourth binary layer.  Its generic bridge
+proves
+
+```text
+X^16 - zeta^(2r)
+  = (X^8 - zeta^r)(X^8 - zeta^(r+288))
+```
+
+and applies this identity to an arbitrary block index `b` in `[0,48)`.
+The theorem extracts the corresponding degree-16 parent from the preceding
+flat specification, proves the indexed `zetas[48+b]` schedule lookup, and
+establishes both child representations at bases `16b` and `16b+8`.  This
+quantified interface covers all 96 children without duplicating 96
+near-identical proof branches and is directly reusable by the final
+`step=4` refinement.
+
+The resulting base/exponent mapping is:
+
+```text
+segment bases:    0,   8,  16,  24,  32,  40,  48,  56,
+                 64,  72,  80,  88,  96, 104, 112, 120,
+                128, 136, 144, 152, 160, 168, 176, 184,
+                192, 200, 208, 216, 224, 232, 240, 248,
+                256, 264, 272, 280, 288, 296, 304, 312,
+                320, 328, 336, 344, 352, 360, 368, 376,
+                384, 392, 400, 408, 416, 424, 432, 440,
+                448, 456, 464, 472, 480, 488, 496, 504,
+                512, 520, 528, 536, 544, 552, 560, 568,
+                576, 584, 592, 600, 608, 616, 624, 632,
+                640, 648, 656, 664, 672, 680, 688, 696,
+                704, 712, 720, 728, 736, 744, 752, 760
+root exponents:   2, 290, 146, 434,  74, 362, 218, 506,
+                 38, 326, 182, 470, 110, 398, 254, 542,
+                 14, 302, 158, 446,  86, 374, 230, 518,
+                 50, 338, 194, 482, 122, 410, 266, 554,
+                 26, 314, 170, 458,  98, 386, 242, 530,
+                 62, 350, 206, 494, 134, 422, 278, 566,
+                 10, 298, 154, 442,  82, 370, 226, 514,
+                 46, 334, 190, 478, 118, 406, 262, 550,
+                 22, 310, 166, 454,  94, 382, 238, 526,
+                 58, 346, 202, 490, 130, 418, 274, 562,
+                 34, 322, 178, 466, 106, 394, 250, 538,
+                 70, 358, 214, 502, 142, 430, 286, 574
+segment length: 8
+```
+
+Every segment represents the original input polynomial modulo its
+corresponding degree-8 factor.  The result supplies pure specification,
+functional `hoare`, and probability-one `phoare` endpoints for the extracted
+Jasmin procedure.
+
+Run the complete predecessor chain, `step=8` implementation checks, and the
+new semantics proof with:
+
+```sh
+./scripts/verify-ntruplus768-forward-ntt-radix2-8-semantics.sh
+```
+
+The next semantic refinement is the final `step=4` radix-2 layer.  That layer
+and the closing `terminal_represents` theorem remain outside this milestone.
 
 ## Formosa ML-KEM reference
 
