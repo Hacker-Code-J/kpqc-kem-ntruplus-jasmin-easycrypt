@@ -2495,7 +2495,44 @@ new semantics proof with:
 ./scripts/verify-ntruplus768-forward-ntt-radix2-64-semantics.sh
 ```
 
-The next semantic refinement is the `step=32` radix-2 layer.  The remaining
+## Verified NTRU+768 forward NTT radix-2 `step=32` polynomial refinement
+
+The EasyCrypt theory at
+`ntruplus/proof/768/ref/ring_semantics/NTRUPlus768ForwardNTTRadix2_32Semantics.ec`
+continues the polynomial invariant through the second binary layer.  It proves
+the next generic factor law
+
+```text
+X^64 - zeta^(2r)
+  = (X^32 - zeta^r)(X^32 - zeta^(r+288))
+```
+
+and connects every implemented `step=32` butterfly to the two degree-32 child
+evaluations.  Applying the refinement to all twelve degree-64 parents yields:
+
+```text
+segment bases:    0,  32,  64,  96, 128, 160, 192, 224,
+                256, 288, 320, 352, 384, 416, 448, 480,
+                512, 544, 576, 608, 640, 672, 704, 736
+root exponents:   8, 296, 152, 440,  56, 344, 200, 488,
+                104, 392, 248, 536,  40, 328, 184, 472,
+                 88, 376, 232, 520, 136, 424, 280, 568
+segment length: 32
+```
+
+Every segment represents the original input polynomial modulo its
+corresponding degree-32 factor.  As in the preceding layer, the result is
+available for the pure specification, as a functional `hoare` theorem, and as
+a probability-one `phoare` theorem for the extracted Jasmin procedure.
+
+Run the complete predecessor chain, `step=32` implementation checks, and the
+new semantics proof with:
+
+```sh
+./scripts/verify-ntruplus768-forward-ntt-radix2-32-semantics.sh
+```
+
+The next semantic refinement is the `step=16` radix-2 layer.  The remaining
 `step=16`, `8`, and `4` layers and the final `terminal_represents` theorem
 remain outside this milestone.
 
