@@ -2637,8 +2637,57 @@ new semantics proof with:
 ./scripts/verify-ntruplus768-forward-ntt-radix2-8-semantics.sh
 ```
 
-The next semantic refinement is the final `step=4` radix-2 layer.  That layer
-and the closing `terminal_represents` theorem remain outside this milestone.
+## Verified NTRU+768 forward NTT radix-2 `step=4` polynomial refinement
+
+The EasyCrypt theory at
+`ntruplus/proof/768/ref/ring_semantics/NTRUPlus768ForwardNTTRadix2_4Semantics.ec`
+completes the layerwise polynomial refinement.  Its generic factor bridge
+proves
+
+```text
+X^8 - zeta^(2r)
+  = (X^4 - zeta^r)(X^4 - zeta^(r+288))
+```
+
+for all 96 degree-8 parents.  Rather than enumerate 96 parent cases, the proof
+selects the quantified `step=8` parent with `p %/ 2` and `p %% 2`.  A
+single list identity proves that the selected parent exponent is exactly
+twice `zetas192_exponents[96+p]`.
+
+The complete terminal mapping is expressed by:
+
+```text
+0 <= p < 96:
+  parent base/exponent: 8p,   2 * terminal_exp(p)
+  left child:          8p,       terminal_exp(p)
+  right child:         8p+4,     terminal_exp(p) + 288
+
+0 <= k < 192:
+  terminal block base: 4k
+  terminal exponent:   figure22_index(k)
+```
+
+Thus the final 192 four-coefficient segments coincide with the existing
+`block_poly (block4 output k)` view.  The theory converts each
+`factor_eqm 4 (figure22_index k)` obligation into `eqm4 k` and proves
+
+```text
+terminal_represents output (input_poly original)
+```
+
+for the pure specification and for the executable Jasmin procedure through
+functional `hoare` and probability-one `phoare` endpoints.
+
+Run the complete predecessor chain, `step=4` implementation checks, final
+quartic refinement, and terminal-representation proof with:
+
+```sh
+./scripts/verify-ntruplus768-forward-ntt-radix2-4-semantics.sh
+```
+
+The remaining forward-transform milestone is a single theorem composing these
+layer endpoints through the exported `ntt.jazz` wrapper.  The inverse
+transform semantics and the complete NTRU+768 KEM proof remain separate work.
 
 ## Formosa ML-KEM reference
 
