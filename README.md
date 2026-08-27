@@ -2685,9 +2685,42 @@ quartic refinement, and terminal-representation proof with:
 ./scripts/verify-ntruplus768-forward-ntt-radix2-4-semantics.sh
 ```
 
-The remaining forward-transform milestone is a single theorem composing these
-layer endpoints through the exported `ntt.jazz` wrapper.  The inverse
-transform semantics and the complete NTRU+768 KEM proof remain separate work.
+## Verified NTRU+768 forward NTT composed terminal semantics
+
+The EasyCrypt theory at
+`ntruplus/proof/768/ref/ring_semantics/NTRUPlus768ForwardNTTSemantics.ec`
+closes the remaining forward-transform gap by composing the already proved
+layer contracts through the exported
+`NTRUPlus768NTT.M.jade_ntruplus_ntruplus768_amd64_ref_ntt` wrapper.  Rather
+than re-proving the layer semantics from scratch, it starts from the existing
+`forward_ntt_algebra` chain in `NTRUPlus768NTTAlgebra.ec`, converts each
+algebra conjunct back into its corresponding stage/radix semantic invariant,
+and then reuses the final
+`radix2_4_algebra_refines_terminal_representation` endpoint.
+
+This yields a direct top-level theorem that the composed `forward_ntt_spec`
+already satisfies
+
+```text
+terminal_represents (forward_ntt_spec input) (input_poly input)
+```
+
+under the established
+`NTRUPlus768NTTStage1Algebra.input_qrange` precondition, and lifts the same
+statement to the executable Jasmin wrapper via functional `hoare` and
+probability-one `phoare` endpoints.  The forward transform now has an
+end-to-end polynomial-semantics theorem all the way from the exported NTT
+entrypoint to the terminal quartic representation.
+
+Run the complete predecessor chain, the composed NTT implementation checks,
+and the top-level terminal-semantics proof with:
+
+```sh
+./scripts/verify-ntruplus768-forward-ntt-semantics.sh
+```
+
+The inverse transform semantics and the complete NTRU+768 KEM proof remain
+separate work.
 
 ## Formosa ML-KEM reference
 

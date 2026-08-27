@@ -11,11 +11,14 @@ FORWARD_RADIX2_32_THEORY := NTRUPlus768ForwardNTTRadix2_32Semantics.ec
 FORWARD_RADIX2_16_THEORY := NTRUPlus768ForwardNTTRadix2_16Semantics.ec
 FORWARD_RADIX2_8_THEORY := NTRUPlus768ForwardNTTRadix2_8Semantics.ec
 FORWARD_RADIX2_4_THEORY := NTRUPlus768ForwardNTTRadix2_4Semantics.ec
+FORWARD_NTT_THEORY := NTRUPlus768ForwardNTTSemantics.ec
 FORMOSA_ECLIB := ../../../../../external/formosa-mlkem/proof/eclib
 FORMOSA_COMMON := ../../../../../external/formosa-mlkem/crypto-specs/common
 BASEMUL_DIR := ../basemul
 BASEMUL_EXTRACTED_DIR := ../basemul/extracted
 FQINV_DIR := ../fqinv
+NTT_DIR := ../ntt
+NTT_EXTRACTED_DIR := ../ntt/extracted
 NTT_SCHEDULE_DIR := ../ntt_schedule
 POLY_BASEMUL_DIR := ../poly_basemul
 POLY_BASEMUL_EXTRACTED_DIR := ../poly_basemul/extracted
@@ -34,6 +37,7 @@ NTT_RADIX2_8_EXTRACTED_DIR := ../ntt_radix2_8/extracted
 NTT_RADIX2_4_DIR := ../ntt_radix2_4
 NTT_RADIX2_4_EXTRACTED_DIR := ../ntt_radix2_4/extracted
 EASYCRYPT_INCLUDES := -I . -I $(FQINV_DIR) -I $(NTT_SCHEDULE_DIR) \
+	-I $(NTT_DIR) -I $(NTT_EXTRACTED_DIR) \
 	-I $(BASEMUL_DIR) -I $(BASEMUL_EXTRACTED_DIR) \
 	-I $(POLY_BASEMUL_DIR) -I $(POLY_BASEMUL_EXTRACTED_DIR) \
 	-I $(NTT_STAGE1_DIR) -I $(NTT_STAGE1_EXTRACTED_DIR) \
@@ -45,11 +49,11 @@ EASYCRYPT_INCLUDES := -I . -I $(FQINV_DIR) -I $(NTT_SCHEDULE_DIR) \
 	-I $(NTT_RADIX2_4_DIR) -I $(NTT_RADIX2_4_EXTRACTED_DIR) \
 	-I $(FORMOSA_ECLIB) -I $(FORMOSA_COMMON)
 
-.PHONY: all check factorization evaluation representation forward-stage1 forward-radix3 forward-radix2-64 forward-radix2-32 forward-radix2-16 forward-radix2-8 forward-radix2-4
+.PHONY: all check factorization evaluation representation forward-stage1 forward-radix3 forward-radix2-64 forward-radix2-32 forward-radix2-16 forward-radix2-8 forward-radix2-4 forward-ntt
 
 all: check
 
-check: factorization evaluation representation forward-stage1 forward-radix3 forward-radix2-64 forward-radix2-32 forward-radix2-16 forward-radix2-8 forward-radix2-4
+check: factorization evaluation representation forward-stage1 forward-radix3 forward-radix2-64 forward-radix2-32 forward-radix2-16 forward-radix2-8 forward-radix2-4 forward-ntt
 
 factorization:
 	$(EASYCRYPT) compile -no-eco $(EASYCRYPT_INCLUDES) $(FACTORIZATION_THEORY)
@@ -80,3 +84,6 @@ forward-radix2-8:
 
 forward-radix2-4:
 	$(EASYCRYPT) compile -no-eco $(EASYCRYPT_INCLUDES) $(FORWARD_RADIX2_4_THEORY)
+
+forward-ntt:
+	$(EASYCRYPT) compile -no-eco $(EASYCRYPT_INCLUDES) $(FORWARD_NTT_THEORY)
