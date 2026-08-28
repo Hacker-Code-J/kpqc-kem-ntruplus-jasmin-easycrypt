@@ -745,10 +745,44 @@ Rebuild the complete forward and inverse semantic dependency chains with:
 ```
 
 The semantic rebuild is intentionally separate from the existing forward and
-inverse implementation verifiers. The result is an old-array value theorem;
+inverse implementation verifiers. That round-trip result is an old-array
+value theorem;
 it does not claim a shared-memory alias theorem, formal production-C
 semantics, or the final composed
 `InvNTT(Basemul(NTT(a), NTT(b))) = a*b` theorem.
+
+## Composed NTT/Basemul/InvNTT polynomial product semantics
+
+The headline multiplication theory composes the verified forward transform,
+terminal block multiplication, and inverse transform without introducing a
+new array-level multiplication specification. For q-range inputs `a` and `b`,
+it proves that both `forward_ntt_spec` results satisfy the exact input range of
+`poly_basemul`. Any array satisfying the existing word-level relation
+
+```text
+is_poly_basemul (forward_ntt_spec a) (forward_ntt_spec b) product_ntt 192
+```
+
+therefore satisfies `poly_basemul_qring`, represents
+`input_poly a * input_poly b`, and is a valid input to the composed inverse
+specification. The resulting theorem is
+
+```text
+eqm_global (input_poly a * input_poly b)
+  (input_poly (inverse_invntt_spec product_ntt)).
+```
+
+Rebuild the complete headline semantic dependency chain with:
+
+```sh
+./scripts/verify-ntruplus768-ntt-basemul-invntt-semantics.sh
+```
+
+The command is intentionally semantic-only; the forward NTT, `poly_basemul`,
+and inverse NTT implementation verifiers remain independent top-level checks.
+This is a spec-level old-array composition, not a synthetic exported combined
+procedure, formal production-C semantics theorem, shared-memory theorem, or
+full-KEM correctness proof.
 
 ## Independent `poly_basemul -> invntt` bridge
 
