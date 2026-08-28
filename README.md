@@ -643,6 +643,12 @@ Run the complete inverse final-layer check with:
 ./scripts/verify-ntruplus768-invntt-final.sh
 ```
 
+Recheck only the polynomial-semantics bridge for this layer with:
+
+```sh
+./scripts/verify-ntruplus768-invntt-final-semantics.sh
+```
+
 The verifier is fail-closed on required tools and dependency trees, bash
 syntax, proof holes in the final layer and its dependent proof tree, exact
 C/Jasmin coupling and checker self-checks, fresh old-array-model `jasmin2ec`
@@ -657,6 +663,13 @@ The algebra layer consumes the proved `invntt_radix3` output contract. For
 decoded constants `1634`, `3439`, and `3421`, it discharges the final
 recombination-and-scaling congruences and proves that every output coefficient
 returns to the signed `[-q, q)` range.
+
+At the ring-semantics level, this layer starts from the two degree-384
+residues proved for inverse radix-3, namely the `96p` representatives at root
+exponents `96` and `480`. The final bridge combines those two factors,
+cancels the residual factor `96`, and establishes the global statement
+`eqm_global p (input_poly output)`. The semantics command above is intentionally
+separate from the full implementation verifier.
 
 This milestone still excludes the initial `a -> r` copy, the complete
 two-buffer `invntt(r, a)` wrapper, caller-range establishment beyond the

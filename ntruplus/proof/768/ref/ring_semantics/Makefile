@@ -25,6 +25,9 @@ INVERSE_RADIX2_64_THEORY := NTRUPlus768InverseNTTRadix2_64Semantics.ec
 INVERSE_RADIX3_RECOMBINATION_THEORY := NTRUPlus768InverseNTTRadix3Recombination.ec
 INVERSE_RADIX3_INTERPOLATION_THEORY := NTRUPlus768InverseNTTRadix3Interpolation.ec
 INVERSE_RADIX3_THEORY := NTRUPlus768InverseNTTRadix3Semantics.ec
+INVERSE_FINAL_RECOMBINATION_THEORY := NTRUPlus768InverseNTTFinalRecombination.ec
+INVERSE_FINAL_INTERPOLATION_THEORY := NTRUPlus768InverseNTTFinalInterpolation.ec
+INVERSE_FINAL_THEORY := NTRUPlus768InverseNTTFinalSemantics.ec
 FORMOSA_ECLIB := ../../../../../external/formosa-mlkem/proof/eclib
 FORMOSA_COMMON := ../../../../../external/formosa-mlkem/crypto-specs/common
 BASEMUL_DIR := ../basemul
@@ -61,6 +64,8 @@ INVNTT_RADIX2_64_DIR := ../invntt_radix2_64
 INVNTT_RADIX2_64_EXTRACTED_DIR := ../invntt_radix2_64/extracted
 INVNTT_RADIX3_DIR := ../invntt_radix3
 INVNTT_RADIX3_EXTRACTED_DIR := ../invntt_radix3/extracted
+INVNTT_FINAL_DIR := ../invntt_final
+INVNTT_FINAL_EXTRACTED_DIR := ../invntt_final/extracted
 EASYCRYPT_INCLUDES := -I . -I $(FQINV_DIR) -I $(NTT_SCHEDULE_DIR) \
 	-I $(NTT_DIR) -I $(NTT_EXTRACTED_DIR) \
 	-I $(BASEMUL_DIR) -I $(BASEMUL_EXTRACTED_DIR) \
@@ -78,13 +83,14 @@ EASYCRYPT_INCLUDES := -I . -I $(FQINV_DIR) -I $(NTT_SCHEDULE_DIR) \
 	-I $(INVNTT_RADIX2_32_DIR) -I $(INVNTT_RADIX2_32_EXTRACTED_DIR) \
 	-I $(INVNTT_RADIX2_64_DIR) -I $(INVNTT_RADIX2_64_EXTRACTED_DIR) \
 	-I $(INVNTT_RADIX3_DIR) -I $(INVNTT_RADIX3_EXTRACTED_DIR) \
+	-I $(INVNTT_FINAL_DIR) -I $(INVNTT_FINAL_EXTRACTED_DIR) \
 	-I $(FORMOSA_ECLIB) -I $(FORMOSA_COMMON)
 
-.PHONY: all check factorization evaluation representation forward-stage1 forward-radix3 forward-radix2-64 forward-radix2-32 forward-radix2-16 forward-radix2-8 forward-radix2-4 forward-ntt inverse-radix2-4-recombination inverse-radix2-4-semantics inverse-radix2-4 inverse-radix2-8-recombination inverse-radix2-8-semantics inverse-radix2-8 inverse-radix2-16-recombination inverse-radix2-16-semantics inverse-radix2-16 inverse-radix2-32-recombination inverse-radix2-32-semantics inverse-radix2-32 inverse-radix2-64-recombination inverse-radix2-64-semantics inverse-radix2-64 inverse-radix3-recombination inverse-radix3-interpolation inverse-radix3-semantics inverse-radix3
+.PHONY: all check factorization evaluation representation forward-stage1 forward-radix3 forward-radix2-64 forward-radix2-32 forward-radix2-16 forward-radix2-8 forward-radix2-4 forward-ntt inverse-radix2-4-recombination inverse-radix2-4-semantics inverse-radix2-4 inverse-radix2-8-recombination inverse-radix2-8-semantics inverse-radix2-8 inverse-radix2-16-recombination inverse-radix2-16-semantics inverse-radix2-16 inverse-radix2-32-recombination inverse-radix2-32-semantics inverse-radix2-32 inverse-radix2-64-recombination inverse-radix2-64-semantics inverse-radix2-64 inverse-radix3-recombination inverse-radix3-interpolation inverse-radix3-semantics inverse-radix3 inverse-final-recombination inverse-final-interpolation inverse-final-semantics inverse-final
 
 all: check
 
-check: factorization evaluation representation forward-stage1 forward-radix3 forward-radix2-64 forward-radix2-32 forward-radix2-16 forward-radix2-8 forward-radix2-4 forward-ntt inverse-radix2-4 inverse-radix2-8 inverse-radix2-16 inverse-radix2-32 inverse-radix2-64 inverse-radix3
+check: factorization evaluation representation forward-stage1 forward-radix3 forward-radix2-64 forward-radix2-32 forward-radix2-16 forward-radix2-8 forward-radix2-4 forward-ntt inverse-radix2-4 inverse-radix2-8 inverse-radix2-16 inverse-radix2-32 inverse-radix2-64 inverse-radix3 inverse-final
 
 factorization:
 	$(EASYCRYPT) compile -no-eco $(EASYCRYPT_INCLUDES) $(FACTORIZATION_THEORY)
@@ -169,3 +175,14 @@ inverse-radix3-semantics: inverse-radix3-interpolation
 	$(EASYCRYPT) compile $(EASYCRYPT_INCLUDES) $(INVERSE_RADIX3_THEORY)
 
 inverse-radix3: inverse-radix3-semantics
+
+inverse-final-recombination: inverse-radix3
+	$(EASYCRYPT) compile $(EASYCRYPT_INCLUDES) $(INVERSE_FINAL_RECOMBINATION_THEORY)
+
+inverse-final-interpolation: inverse-final-recombination
+	$(EASYCRYPT) compile $(EASYCRYPT_INCLUDES) $(INVERSE_FINAL_INTERPOLATION_THEORY)
+
+inverse-final-semantics: inverse-final-interpolation
+	$(EASYCRYPT) compile $(EASYCRYPT_INCLUDES) $(INVERSE_FINAL_THEORY)
+
+inverse-final: inverse-final-semantics
