@@ -714,6 +714,42 @@ source coefficients that have not yet been read. This milestone also does not
 claim a formal C-AST/Jasmin equivalence theorem, prove that every external
 caller establishes the signed input range, or prove the complete NTRU+768 KEM.
 
+## Composed inverse NTT polynomial semantics and round trip
+
+The top-level inverse semantics theory carries the terminal polynomial
+representation through the exported two-buffer `invntt` wrapper. It reuses
+the proved `a -> r` copy, the wrapper's seven-stage algebra contract, and the
+layerwise inverse semantic refinements to establish
+
+```text
+terminal_represents input p  /\  input in [-q, q)
+  -> eqm_global p (input_poly (inverse_invntt_spec input)).
+```
+
+The functional `hoare` and probability-one `phoare` endpoints state the same
+global congruence for the extracted Jasmin wrapper. The companion round-trip
+theory uses two established composed-forward facts: its output represents the
+original input polynomial and is already centered in `[-q, q)`. Those facts
+discharge the inverse preconditions and yield the paper-facing cancellation
+statement
+
+```text
+eqm_global (input_poly a)
+  (input_poly (inverse_invntt_spec (forward_ntt_spec a))).
+```
+
+Rebuild the complete forward and inverse semantic dependency chains with:
+
+```sh
+./scripts/verify-ntruplus768-ntt-invntt-roundtrip-semantics.sh
+```
+
+The semantic rebuild is intentionally separate from the existing forward and
+inverse implementation verifiers. The result is an old-array value theorem;
+it does not claim a shared-memory alias theorem, formal production-C
+semantics, or the final composed
+`InvNTT(Basemul(NTT(a), NTT(b))) = a*b` theorem.
+
 ## Independent `poly_basemul -> invntt` bridge
 
 The signed-12-bit bridge theory at
@@ -2824,7 +2860,7 @@ Thus this layer consumes `invntt_radix2_4_semantics p input` and doubles its
 tracked representative from `2p` to `4p`.  The pure spec, functional `hoare`,
 and probability-one `phoare` endpoints connect the invariant to the verified
 Jasmin `invntt_radix2_8` procedure under its existing coefficientwise input
-shape.  Later inverse layers and the final factor-192 cancellation remain
+shape.  Later inverse layers and the final factor-96 cancellation remain
 separate milestones.
 
 Run the complete predecessor semantics, the inverse radix2_8 implementation
@@ -2861,7 +2897,7 @@ Equivalently, this layer consumes the proved inverse radix2_8 invariant for
 functional `hoare`, and probability-one `phoare` endpoints connect that
 invariant to the verified Jasmin `invntt_radix2_16` implementation under its
 existing coefficientwise `[-q, q)` input-shape premise. Later inverse layers
-and the final factor-192 cancellation remain separate milestones.
+and the final factor-96 cancellation remain separate milestones.
 
 Run the inverse radix2_16 implementation proof, then recompile the step4,
 step8, and step16 semantic chain with the separate top-level commands:
@@ -2899,7 +2935,7 @@ Equivalently, this layer consumes the proved inverse radix2_16 invariant for
 functional `hoare`, and probability-one `phoare` endpoints connect that
 invariant to the verified Jasmin `invntt_radix2_32` implementation under its
 existing coefficientwise `[-q, q)` input-shape premise. Later inverse layers
-and the final factor-192 cancellation remain separate milestones.
+and the final factor-96 cancellation remain separate milestones.
 
 Run the inverse radix2_32 implementation proof, then recompile the step4,
 step8, step16, and step32 semantic chain with the separate top-level commands:
