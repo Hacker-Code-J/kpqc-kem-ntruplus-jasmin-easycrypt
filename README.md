@@ -2791,6 +2791,43 @@ proof, and this second inverse ring-semantics layer with:
 ./scripts/verify-ntruplus768-invntt-radix2-8-semantics.sh
 ```
 
+## Verified NTRU+768 inverse radix2_16 ring semantics
+
+The third inverse ring-semantics layer at
+`ntruplus/proof/768/ref/ring_semantics/NTRUPlus768InverseNTTRadix2_16Recombination.ec`
+and
+`ntruplus/proof/768/ref/ring_semantics/NTRUPlus768InverseNTTRadix2_16Semantics.ec`
+extends the same local reconstruction argument through the next binary layer.
+For each `0 <= b < 24`, it takes the adjacent degree-16 children `2*b` and
+`2*b+1`, proves that their exponents are
+`4 * terminal_exp(4 * b)` and `4 * terminal_exp(4 * b) + 288`, rewrites the
+reverse `zetas[47-b]` twiddle as the complementary exponent, and reconstructs
+one degree-32 parent without appealing to a global CRT.
+
+The resulting invariant is
+
+```text
+forall b, 0 <= b < 24 =>
+  factor_eqm 32 (8 * terminal_exp (4 * b))
+    (((p + p) + (p + p)) + ((p + p) + (p + p)))
+    (segment_poly output (32 * b) 32)
+```
+
+Equivalently, this layer consumes the proved inverse radix2_8 invariant for
+`4p` and doubles the tracked representative once more to `8p`. The pure spec,
+functional `hoare`, and probability-one `phoare` endpoints connect that
+invariant to the verified Jasmin `invntt_radix2_16` implementation under its
+existing coefficientwise `[-q, q)` input-shape premise. Later inverse layers
+and the final factor-192 cancellation remain separate milestones.
+
+Run the inverse radix2_16 implementation proof, then recompile the step4,
+step8, and step16 semantic chain with the separate top-level commands:
+
+```sh
+./scripts/verify-ntruplus768-invntt-radix2-16.sh
+./scripts/verify-ntruplus768-invntt-radix2-16-semantics.sh
+```
+
 ## Formosa ML-KEM reference
 
 The official

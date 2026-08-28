@@ -16,6 +16,8 @@ INVERSE_RADIX2_4_RECOMBINATION_THEORY := NTRUPlus768InverseNTTRadix2_4Recombinat
 INVERSE_RADIX2_4_THEORY := NTRUPlus768InverseNTTRadix2_4Semantics.ec
 INVERSE_RADIX2_8_RECOMBINATION_THEORY := NTRUPlus768InverseNTTRadix2_8Recombination.ec
 INVERSE_RADIX2_8_THEORY := NTRUPlus768InverseNTTRadix2_8Semantics.ec
+INVERSE_RADIX2_16_RECOMBINATION_THEORY := NTRUPlus768InverseNTTRadix2_16Recombination.ec
+INVERSE_RADIX2_16_THEORY := NTRUPlus768InverseNTTRadix2_16Semantics.ec
 FORMOSA_ECLIB := ../../../../../external/formosa-mlkem/proof/eclib
 FORMOSA_COMMON := ../../../../../external/formosa-mlkem/crypto-specs/common
 BASEMUL_DIR := ../basemul
@@ -44,6 +46,8 @@ INVNTT_RADIX2_4_DIR := ../invntt_radix2_4
 INVNTT_RADIX2_4_EXTRACTED_DIR := ../invntt_radix2_4/extracted
 INVNTT_RADIX2_8_DIR := ../invntt_radix2_8
 INVNTT_RADIX2_8_EXTRACTED_DIR := ../invntt_radix2_8/extracted
+INVNTT_RADIX2_16_DIR := ../invntt_radix2_16
+INVNTT_RADIX2_16_EXTRACTED_DIR := ../invntt_radix2_16/extracted
 EASYCRYPT_INCLUDES := -I . -I $(FQINV_DIR) -I $(NTT_SCHEDULE_DIR) \
 	-I $(NTT_DIR) -I $(NTT_EXTRACTED_DIR) \
 	-I $(BASEMUL_DIR) -I $(BASEMUL_EXTRACTED_DIR) \
@@ -57,13 +61,14 @@ EASYCRYPT_INCLUDES := -I . -I $(FQINV_DIR) -I $(NTT_SCHEDULE_DIR) \
 	-I $(NTT_RADIX2_4_DIR) -I $(NTT_RADIX2_4_EXTRACTED_DIR) \
 	-I $(INVNTT_RADIX2_4_DIR) -I $(INVNTT_RADIX2_4_EXTRACTED_DIR) \
 	-I $(INVNTT_RADIX2_8_DIR) -I $(INVNTT_RADIX2_8_EXTRACTED_DIR) \
+	-I $(INVNTT_RADIX2_16_DIR) -I $(INVNTT_RADIX2_16_EXTRACTED_DIR) \
 	-I $(FORMOSA_ECLIB) -I $(FORMOSA_COMMON)
 
-.PHONY: all check factorization evaluation representation forward-stage1 forward-radix3 forward-radix2-64 forward-radix2-32 forward-radix2-16 forward-radix2-8 forward-radix2-4 forward-ntt inverse-radix2-4-recombination inverse-radix2-4-semantics inverse-radix2-4 inverse-radix2-8-recombination inverse-radix2-8-semantics inverse-radix2-8
+.PHONY: all check factorization evaluation representation forward-stage1 forward-radix3 forward-radix2-64 forward-radix2-32 forward-radix2-16 forward-radix2-8 forward-radix2-4 forward-ntt inverse-radix2-4-recombination inverse-radix2-4-semantics inverse-radix2-4 inverse-radix2-8-recombination inverse-radix2-8-semantics inverse-radix2-8 inverse-radix2-16-recombination inverse-radix2-16-semantics inverse-radix2-16
 
 all: check
 
-check: factorization evaluation representation forward-stage1 forward-radix3 forward-radix2-64 forward-radix2-32 forward-radix2-16 forward-radix2-8 forward-radix2-4 forward-ntt inverse-radix2-4 inverse-radix2-8
+check: factorization evaluation representation forward-stage1 forward-radix3 forward-radix2-64 forward-radix2-32 forward-radix2-16 forward-radix2-8 forward-radix2-4 forward-ntt inverse-radix2-4 inverse-radix2-8 inverse-radix2-16
 
 factorization:
 	$(EASYCRYPT) compile -no-eco $(EASYCRYPT_INCLUDES) $(FACTORIZATION_THEORY)
@@ -113,3 +118,11 @@ inverse-radix2-8-semantics: inverse-radix2-8-recombination
 	$(EASYCRYPT) compile $(EASYCRYPT_INCLUDES) $(INVERSE_RADIX2_8_THEORY)
 
 inverse-radix2-8: inverse-radix2-8-semantics
+
+inverse-radix2-16-recombination: inverse-radix2-8
+	$(EASYCRYPT) compile $(EASYCRYPT_INCLUDES) $(INVERSE_RADIX2_16_RECOMBINATION_THEORY)
+
+inverse-radix2-16-semantics: inverse-radix2-16-recombination
+	$(EASYCRYPT) compile $(EASYCRYPT_INCLUDES) $(INVERSE_RADIX2_16_THEORY)
+
+inverse-radix2-16: inverse-radix2-16-semantics
