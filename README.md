@@ -544,6 +544,12 @@ Run the complete inverse `step=64` check with:
 ./scripts/verify-ntruplus768-invntt-radix2-64.sh
 ```
 
+Recheck only the polynomial-semantics bridge for this layer with:
+
+```sh
+./scripts/verify-ntruplus768-invntt-radix2-64-semantics.sh
+```
+
 The verifier fails closed on source and reverse-schedule drift, proof holes,
 stale extraction, missing dependencies, Jasmin build and safety, CT and SCT
 analysis, standalone and `step=4 -> 8 -> 16 -> 32 -> 64` differential
@@ -554,6 +560,16 @@ of `lo+hi`, high lanes are congruent to `zeta*(hi-lo)`, low outputs lie in
 `[-1728,1728]`, and high outputs remain in `[-q,q)`. An explicit bridge derives
 this input domain from the proved `step=32` algebra relation, extending the
 compositional range chain through `step=64`.
+
+At the ring-semantics level, this layer starts from the 12 degree-64 residues
+proved for inverse `step=32`, namely
+`factor_eqm 64 (16 * terminal_exp (8 * j)) (16p) ...` for `0 <= j < 12`.
+It then pairs children `(2b, 2b+1)` with reverse twiddles `zetas[11..6]`,
+uses the identities
+`radix2_64_schedule_exp b = 16 * terminal_exp (16 * b)` and
+`16 * terminal_exp (16 * b + 8) = 16 * terminal_exp (16 * b) + 288`,
+and reconstructs 6 degree-128 residues satisfying
+`factor_eqm 128 (32 * terminal_exp (16 * b)) (32p) ...`.
 
 This remains a single arithmetic-layer milestone. The C copy prelude, inverse
 radix-3 layer, final recombination and scaling, the complete two-buffer
