@@ -595,6 +595,12 @@ Run the complete inverse radix-3 check with:
 ./scripts/verify-ntruplus768-invntt-radix3.sh
 ```
 
+Recheck only the polynomial-semantics bridge for this layer with:
+
+```sh
+./scripts/verify-ntruplus768-invntt-radix3-semantics.sh
+```
+
 The verifier is intended to fail closed on exact C/Jasmin reverse-schedule
 coupling and mutation self-checks, proof holes, stale extraction and helper
 clones, missing dependencies, Jasmin build and safety, CT and SCT analysis,
@@ -604,6 +610,14 @@ The proof surface for this milestone is the same as the preceding inverse
 layers: exact in-place array semantics and losslessness at the word level,
 followed by the algebra bridge that consumes the proved `step=64` output range
 and discharges the final inverse radix-3 schedule.
+
+At the ring-semantics level, this layer starts from the 6 degree-128 residues
+proved for inverse `step=64`, namely
+`factor_eqm 128 (32 * terminal_exp (16 * b)) (32p) ...` for `0 <= b < 6`.
+The radix-3 bridge then recombines those six children into two degree-384
+parents at array offsets `0` and `384`, with root exponents `96` and `480`.
+The two output blocks satisfy the expected `96p` residues while keeping the
+semantics command separate from the full implementation verifier above.
 
 This remains a single arithmetic-layer milestone. It does not include the
 initial `a -> r` copy from the two-buffer C wrapper, the final 384-pair
