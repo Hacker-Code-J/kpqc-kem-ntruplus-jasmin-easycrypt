@@ -746,8 +746,7 @@ Rebuild the complete forward and inverse semantic dependency chains with:
 
 The semantic rebuild is intentionally separate from the existing forward and
 inverse implementation verifiers. That round-trip result is an old-array
-value theorem;
-it does not claim a shared-memory alias theorem, formal production-C
+value theorem; it does not claim a shared-memory alias theorem, formal production-C
 semantics, or the final composed
 `InvNTT(Basemul(NTT(a), NTT(b))) = a*b` theorem.
 
@@ -783,6 +782,45 @@ and inverse NTT implementation verifiers remain independent top-level checks.
 This is a spec-level old-array composition, not a synthetic exported combined
 procedure, formal production-C semantics theorem, shared-memory theorem, or
 full-KEM correctness proof.
+
+## Valid-key decapsulation `m1` polynomial identity
+
+The next KEM-facing semantics theory combines the established key, ciphertext,
+and decapsulation multiplication relations. Given terminal representations of
+`h`, `f`, `g`, `r`, and the encoded message together with
+
+```text
+h * f = g
+c = h * r + m
+product_ntt = c * f
+```
+
+in all 192 terminal quotient rings, it proves that `product_ntt` represents
+
+```text
+G * R + M * F.
+```
+
+The proof first lifts `poly_basemul_add_qring` into a reusable terminal
+representation theorem for `H*R+M`. It then performs
+`(H*R+M)*F = (H*F)*R+M*F = G*R+M*F` separately in each quartic factor and
+applies the composed inverse semantics, yielding
+
+```text
+eqm_global (G * R + M * F)
+  (input_poly (inverse_invntt_spec product_ntt)).
+```
+
+Rebuild the complete semantic dependency chain with:
+
+```sh
+./scripts/verify-ntruplus768-valid-key-decap-m1-semantics.sh
+```
+
+No global CRT injectivity is assumed. This theorem deliberately stops before
+secret-key byte provenance and the centered-noise/no-q-wrap argument needed
+to turn `F = 1+3F'` and `G = 3G'` into the exact post-`poly_crepmod3`
+conclusion `m1 = encoded_m`.
 
 ## Independent `poly_basemul -> invntt` bridge
 

@@ -31,6 +31,7 @@ INVERSE_FINAL_THEORY := NTRUPlus768InverseNTTFinalSemantics.ec
 INVERSE_NTT_THEORY := NTRUPlus768InverseNTTSemantics.ec
 NTT_INVNTT_ROUNDTRIP_THEORY := NTRUPlus768NTTRoundtripSemantics.ec
 NTT_BASEMUL_INVNTT_THEORY := NTRUPlus768NTTBasemulInvNTTSemantics.ec
+VALID_KEY_DECAP_M1_THEORY := NTRUPlus768ValidKeyDecapM1Semantics.ec
 FORMOSA_ECLIB := ../../../../../external/formosa-mlkem/proof/eclib
 FORMOSA_COMMON := ../../../../../external/formosa-mlkem/crypto-specs/common
 BASEMUL_DIR := ../basemul
@@ -42,6 +43,7 @@ NTT_SCHEDULE_DIR := ../ntt_schedule
 POLY_BASEMUL_DIR := ../poly_basemul
 POLY_BASEMUL_EXTRACTED_DIR := ../poly_basemul/extracted
 POLY_BASEMUL_INVNTT_DIR := ../poly_basemul_invntt
+ENCAP_POLY_BASEMUL_ADD_DIR := ../encap_poly_basemul_add
 NTT_STAGE1_DIR := ../ntt_stage1
 NTT_STAGE1_EXTRACTED_DIR := ../ntt_stage1/extracted
 NTT_RADIX3_DIR := ../ntt_radix3
@@ -77,6 +79,7 @@ EASYCRYPT_INCLUDES := -I . -I $(FQINV_DIR) -I $(NTT_SCHEDULE_DIR) \
 	-I $(BASEMUL_DIR) -I $(BASEMUL_EXTRACTED_DIR) \
 	-I $(POLY_BASEMUL_DIR) -I $(POLY_BASEMUL_EXTRACTED_DIR) \
 	-I $(POLY_BASEMUL_INVNTT_DIR) \
+	-I $(ENCAP_POLY_BASEMUL_ADD_DIR) \
 	-I $(NTT_STAGE1_DIR) -I $(NTT_STAGE1_EXTRACTED_DIR) \
 	-I $(NTT_RADIX3_DIR) -I $(NTT_RADIX3_EXTRACTED_DIR) \
 	-I $(NTT_RADIX2_64_DIR) -I $(NTT_RADIX2_64_EXTRACTED_DIR) \
@@ -94,11 +97,11 @@ EASYCRYPT_INCLUDES := -I . -I $(FQINV_DIR) -I $(NTT_SCHEDULE_DIR) \
 	-I $(INVNTT_DIR) -I $(INVNTT_EXTRACTED_DIR) \
 	-I $(FORMOSA_ECLIB) -I $(FORMOSA_COMMON)
 
-.PHONY: all check factorization evaluation representation forward-stage1 forward-radix3 forward-radix2-64 forward-radix2-32 forward-radix2-16 forward-radix2-8 forward-radix2-4 forward-ntt inverse-radix2-4-recombination inverse-radix2-4-semantics inverse-radix2-4 inverse-radix2-8-recombination inverse-radix2-8-semantics inverse-radix2-8 inverse-radix2-16-recombination inverse-radix2-16-semantics inverse-radix2-16 inverse-radix2-32-recombination inverse-radix2-32-semantics inverse-radix2-32 inverse-radix2-64-recombination inverse-radix2-64-semantics inverse-radix2-64 inverse-radix3-recombination inverse-radix3-interpolation inverse-radix3-semantics inverse-radix3 inverse-final-recombination inverse-final-interpolation inverse-final-semantics inverse-final inverse-ntt ntt-invntt-roundtrip ntt-basemul-invntt
+.PHONY: all check factorization evaluation representation forward-stage1 forward-radix3 forward-radix2-64 forward-radix2-32 forward-radix2-16 forward-radix2-8 forward-radix2-4 forward-ntt inverse-radix2-4-recombination inverse-radix2-4-semantics inverse-radix2-4 inverse-radix2-8-recombination inverse-radix2-8-semantics inverse-radix2-8 inverse-radix2-16-recombination inverse-radix2-16-semantics inverse-radix2-16 inverse-radix2-32-recombination inverse-radix2-32-semantics inverse-radix2-32 inverse-radix2-64-recombination inverse-radix2-64-semantics inverse-radix2-64 inverse-radix3-recombination inverse-radix3-interpolation inverse-radix3-semantics inverse-radix3 inverse-final-recombination inverse-final-interpolation inverse-final-semantics inverse-final inverse-ntt ntt-invntt-roundtrip ntt-basemul-invntt valid-key-decap-m1
 
 all: check
 
-check: factorization evaluation representation forward-stage1 forward-radix3 forward-radix2-64 forward-radix2-32 forward-radix2-16 forward-radix2-8 forward-radix2-4 forward-ntt inverse-radix2-4 inverse-radix2-8 inverse-radix2-16 inverse-radix2-32 inverse-radix2-64 inverse-radix3 inverse-final inverse-ntt ntt-invntt-roundtrip ntt-basemul-invntt
+check: factorization evaluation representation forward-stage1 forward-radix3 forward-radix2-64 forward-radix2-32 forward-radix2-16 forward-radix2-8 forward-radix2-4 forward-ntt inverse-radix2-4 inverse-radix2-8 inverse-radix2-16 inverse-radix2-32 inverse-radix2-64 inverse-radix3 inverse-final inverse-ntt ntt-invntt-roundtrip ntt-basemul-invntt valid-key-decap-m1
 
 factorization:
 	$(EASYCRYPT) compile -no-eco $(EASYCRYPT_INCLUDES) $(FACTORIZATION_THEORY)
@@ -203,3 +206,6 @@ ntt-invntt-roundtrip: forward-ntt inverse-ntt
 
 ntt-basemul-invntt: ntt-invntt-roundtrip
 	$(EASYCRYPT) compile $(EASYCRYPT_INCLUDES) $(NTT_BASEMUL_INVNTT_THEORY)
+
+valid-key-decap-m1: ntt-basemul-invntt
+	$(EASYCRYPT) compile $(EASYCRYPT_INCLUDES) $(VALID_KEY_DECAP_M1_THEORY)
