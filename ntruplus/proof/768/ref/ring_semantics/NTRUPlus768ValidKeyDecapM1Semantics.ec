@@ -250,6 +250,128 @@ proof.
       Hout)).
 qed.
 
+lemma terminal_valid_key_decap_product_local
+    (h f g r m c product_ntt : W16.t Array768.t)
+    (F G R M : poly) :
+  terminal_represents f F =>
+  terminal_represents g G =>
+  terminal_represents r R =>
+  terminal_represents m M =>
+  poly_basemul_qring h f g 192 =>
+  poly_basemul_add_qring h r m c 192 =>
+  poly_basemul_qring c f product_ntt 192 =>
+  terminal_represents product_ntt (G * R + M * F).
+proof.
+  move=> Hf Hg Hr Hm Hhf Hcrm Hcf.
+  rewrite /terminal_represents.
+  move=> k Hk.
+  have HGR :
+      eqm4 k (G * R)
+        (block_poly (block4 g k) * block_poly (block4 r k)).
+  + exact
+      (eqm4_mul k G (block_poly (block4 g k))
+        R (block_poly (block4 r k))
+        (Hg k Hk) (Hr k Hk)).
+  have HMF :
+      eqm4 k (M * F)
+        (block_poly (block4 m k) * block_poly (block4 f k)).
+  + exact
+      (eqm4_mul k M (block_poly (block4 m k))
+        F (block_poly (block4 f k))
+        (Hm k Hk) (Hf k Hk)).
+  have Hrepresented :
+      eqm4 k (G * R + M * F)
+        (block_poly (block4 g k) * block_poly (block4 r k) +
+         block_poly (block4 m k) * block_poly (block4 f k)).
+  + exact
+      (eqm4_add k (G * R)
+        (block_poly (block4 g k) * block_poly (block4 r k))
+        (M * F)
+        (block_poly (block4 m k) * block_poly (block4 f k))
+        HGR HMF).
+  have Hgf := poly_basemul_qring_block_eqm4 h f g k Hhf Hk.
+  have Hgf_times_r :
+      eqm4 k
+        (block_poly (block4 g k) * block_poly (block4 r k))
+        ((block_poly (block4 h k) * block_poly (block4 f k)) *
+         block_poly (block4 r k)).
+  + exact
+      (eqm4_mul k
+        (block_poly (block4 g k))
+        (block_poly (block4 h k) * block_poly (block4 f k))
+        (block_poly (block4 r k)) (block_poly (block4 r k))
+        Hgf (eqm4_refl k (block_poly (block4 r k)))).
+  have Hexpanded_add :
+      eqm4 k
+        (block_poly (block4 g k) * block_poly (block4 r k) +
+         block_poly (block4 m k) * block_poly (block4 f k))
+        (((block_poly (block4 h k) * block_poly (block4 f k)) *
+          block_poly (block4 r k)) +
+         block_poly (block4 m k) * block_poly (block4 f k)).
+  + exact
+      (eqm4_add k
+        (block_poly (block4 g k) * block_poly (block4 r k))
+        ((block_poly (block4 h k) * block_poly (block4 f k)) *
+         block_poly (block4 r k))
+        (block_poly (block4 m k) * block_poly (block4 f k))
+        (block_poly (block4 m k) * block_poly (block4 f k))
+        Hgf_times_r
+        (eqm4_refl k
+          (block_poly (block4 m k) * block_poly (block4 f k)))).
+  have Hexpanded :
+      eqm4 k
+        (block_poly (block4 g k) * block_poly (block4 r k) +
+         block_poly (block4 m k) * block_poly (block4 f k))
+        ((block_poly (block4 h k) * block_poly (block4 r k) +
+          block_poly (block4 m k)) * block_poly (block4 f k)).
+  + have -> :
+        ((block_poly (block4 h k) * block_poly (block4 r k) +
+          block_poly (block4 m k)) * block_poly (block4 f k)) =
+        (((block_poly (block4 h k) * block_poly (block4 f k)) *
+          block_poly (block4 r k)) +
+         block_poly (block4 m k) * block_poly (block4 f k)) by ring.
+    exact Hexpanded_add.
+  have Hc :=
+    poly_basemul_add_qring_block_eqm4 h r m c k Hcrm Hk.
+  have Hc_times_f :
+      eqm4 k
+        ((block_poly (block4 h k) * block_poly (block4 r k) +
+          block_poly (block4 m k)) * block_poly (block4 f k))
+        (block_poly (block4 c k) * block_poly (block4 f k)).
+  + exact
+      (eqm4_mul k
+        (block_poly (block4 h k) * block_poly (block4 r k) +
+         block_poly (block4 m k))
+        (block_poly (block4 c k))
+        (block_poly (block4 f k)) (block_poly (block4 f k))
+        (eqm4_sym k (block_poly (block4 c k))
+          (block_poly (block4 h k) * block_poly (block4 r k) +
+           block_poly (block4 m k)) Hc)
+        (eqm4_refl k (block_poly (block4 f k)))).
+  have Hproduct :=
+    poly_basemul_qring_block_eqm4 c f product_ntt k Hcf Hk.
+  have Hto_expanded :=
+    eqm4_trans k (G * R + M * F)
+      (block_poly (block4 g k) * block_poly (block4 r k) +
+       block_poly (block4 m k) * block_poly (block4 f k))
+      ((block_poly (block4 h k) * block_poly (block4 r k) +
+        block_poly (block4 m k)) * block_poly (block4 f k))
+      Hrepresented Hexpanded.
+  have Hto_product_input :=
+    eqm4_trans k (G * R + M * F)
+      ((block_poly (block4 h k) * block_poly (block4 r k) +
+        block_poly (block4 m k)) * block_poly (block4 f k))
+      (block_poly (block4 c k) * block_poly (block4 f k))
+      Hto_expanded Hc_times_f.
+  exact
+    (eqm4_trans k (G * R + M * F)
+      (block_poly (block4 c k) * block_poly (block4 f k))
+      (block_poly (block4 product_ntt k))
+      Hto_product_input
+      (eqm4_sym k (block_poly (block4 product_ntt k))
+        (block_poly (block4 c k) * block_poly (block4 f k)) Hproduct)).
+qed.
+
 lemma terminal_valid_key_decap_product
     (h f g r m c product_ntt : W16.t Array768.t)
     (H F G R M : poly) :
@@ -263,76 +385,45 @@ lemma terminal_valid_key_decap_product
   poly_basemul_qring c f product_ntt 192 =>
   terminal_represents product_ntt (G * R + M * F).
 proof.
-  move=> Hh Hf Hg Hr Hm Hhf Hcrm Hcf.
-  have Hc :
-      terminal_represents c (H * R + M).
-  + exact
-      (poly_basemul_add_qring_represents_product_plus
-        h r m c H R M
-        Hh Hr Hm Hcrm).
-  have Hproduct :
-      terminal_represents product_ntt ((H * R + M) * F).
-  + exact
-      (poly_basemul_qring_represents_product
-        c f product_ntt (H * R + M) F
-        Hc Hf Hcf).
-  rewrite /terminal_represents.
-  move=> k Hk.
-  have Hgf_block :
-      eqm4 k
-        (block_poly (block4 g k))
-        (block_poly (block4 h k) * block_poly (block4 f k)).
-  + exact (poly_basemul_qring_block_eqm4 h f g k Hhf Hk).
-  have Hgf_global_to_block :
-      eqm4 k G
-        (block_poly (block4 h k) * block_poly (block4 f k)).
-  + exact
-      (eqm4_trans k G
-        (block_poly (block4 g k))
-        (block_poly (block4 h k) * block_poly (block4 f k))
-        (Hg k Hk) Hgf_block).
-  have HHF_to_block :
-      eqm4 k (H * F)
-        (block_poly (block4 h k) * block_poly (block4 f k)).
-  + exact
-      (eqm4_mul k H (block_poly (block4 h k)) F (block_poly (block4 f k))
-        (Hh k Hk) (Hf k Hk)).
-  have HG_to_HF :
-      eqm4 k G (H * F).
-  + exact
-      (eqm4_trans k G
-        (block_poly (block4 h k) * block_poly (block4 f k))
-        (H * F)
-        Hgf_global_to_block
-        (eqm4_sym k (H * F)
-          (block_poly (block4 h k) * block_poly (block4 f k))
-          HHF_to_block)).
-  have HGR :
-      eqm4 k (G * R) ((H * F) * R).
-  + exact (eqm4_mul k G (H * F) R R HG_to_HF (eqm4_refl k R)).
-  have HMF :
-      eqm4 k (M * F) (M * F).
-  + exact (eqm4_refl k (M * F)).
-  have Hrewrite :
-      eqm4 k (G * R + M * F) (((H * R + M) * F)).
-  + have Hadd :
-        eqm4 k (G * R + M * F) (((H * F) * R) + (M * F)).
-    + exact (eqm4_add k (G * R) ((H * F) * R) (M * F) (M * F) HGR HMF).
-    have -> :
-        ((H * R + M) * F) = (((H * F) * R) + (M * F)) by ring.
-    exact Hadd.
+  move=> _ Hf Hg Hr Hm Hhf Hcrm Hcf.
   exact
-    (eqm4_trans k (G * R + M * F)
-      (((H * R + M) * F))
-      (block_poly (block4 product_ntt k))
-      Hrewrite
-      (Hproduct k Hk)).
+    (terminal_valid_key_decap_product_local
+      h f g r m c product_ntt F G R M
+      Hf Hg Hr Hm Hhf Hcrm Hcf).
 qed.
 
 op valid_key_decap_m1_semantics
     (G R M F : poly) (output : W16.t Array768.t) : bool =
   NTRUPlus768InverseNTTSemantics.invntt_semantics
     (G * R + M * F) output.
+
+lemma valid_key_decap_m1_local_spec_semantics
+    (h f g r m c product_ntt : W16.t Array768.t)
+    (F G R M : poly) :
+  terminal_represents f F =>
+  terminal_represents g G =>
+  terminal_represents r R =>
+  terminal_represents m M =>
+  poly_basemul_qring h f g 192 =>
+  poly_basemul_add_qring h r m c 192 =>
+  poly_basemul_qring c f product_ntt 192 =>
+  valid_key_decap_m1_semantics G R M F
+    (NTRUPlus768InvNTTAlgebra.inverse_invntt_spec product_ntt).
+proof.
+  move=> Hf Hg Hr Hm Hhf Hcrm Hcf.
+  rewrite /valid_key_decap_m1_semantics.
+  apply
+    (NTRUPlus768InverseNTTSemantics.inverse_invntt_spec_semantics
+      (G * R + M * F) product_ntt).
+  + exact
+      (terminal_valid_key_decap_product_local
+        h f g r m c product_ntt F G R M
+        Hf Hg Hr Hm Hhf Hcrm Hcf).
+  have Hready :=
+    NTRUPlus768PolyBasemulInvNTTAlgebra.poly_basemul_qring_implies_invntt_ready
+      c f product_ntt Hcf.
+  by move: Hready => [_ Hshape].
+qed.
 
 lemma valid_key_decap_m1_spec_semantics
     (h f g r m c product_ntt : W16.t Array768.t)
@@ -348,17 +439,9 @@ lemma valid_key_decap_m1_spec_semantics
   valid_key_decap_m1_semantics G R M F
     (NTRUPlus768InvNTTAlgebra.inverse_invntt_spec product_ntt).
 proof.
-  move=> Hh Hf Hg Hr Hm Hhf Hcrm Hcf.
-  rewrite /valid_key_decap_m1_semantics.
-  apply
-    (NTRUPlus768InverseNTTSemantics.inverse_invntt_spec_semantics
-      (G * R + M * F) product_ntt).
-  + exact
-      (terminal_valid_key_decap_product
-        h f g r m c product_ntt H F G R M
-        Hh Hf Hg Hr Hm Hhf Hcrm Hcf).
-  have Hready :=
-    NTRUPlus768PolyBasemulInvNTTAlgebra.poly_basemul_qring_implies_invntt_ready
-      c f product_ntt Hcf.
-  by move: Hready => [_ Hshape].
+  move=> _ Hf Hg Hr Hm Hhf Hcrm Hcf.
+  exact
+    (valid_key_decap_m1_local_spec_semantics
+      h f g r m c product_ntt F G R M
+      Hf Hg Hr Hm Hhf Hcrm Hcf).
 qed.

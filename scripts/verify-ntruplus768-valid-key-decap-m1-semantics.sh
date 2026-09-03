@@ -157,7 +157,9 @@ main() {
   require_operation valid_key_decap_m1_semantics
   require_lemma poly_basemul_add_qring_block_eqm4
   require_lemma poly_basemul_add_qring_represents_product_plus
+  require_lemma terminal_valid_key_decap_product_local
   require_lemma terminal_valid_key_decap_product
+  require_lemma valid_key_decap_m1_local_spec_semantics
   require_lemma valid_key_decap_m1_spec_semantics
   reject_proof_holes
 
@@ -166,6 +168,7 @@ main() {
   compile_easycrypt_via_makefile
 
   printf 'PASS: poly_basemul_add lifts to terminal representation of H*R+M\n'
+  printf 'PASS: valid-key composition needs no global polynomial representative for h\n'
   printf 'PASS: the local valid-key relation h*f=g rewrites every terminal quartic\n'
   printf 'PASS: the decapsulation product represents G*R+M*F without global CRT injectivity\n'
   printf 'PASS: inverse NTT reconstructs the valid-key pre-crepmod3 m1 polynomial\n'

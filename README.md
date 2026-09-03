@@ -787,7 +787,7 @@ full-KEM correctness proof.
 
 The next KEM-facing semantics theory combines the established key, ciphertext,
 and decapsulation multiplication relations. Given terminal representations of
-`h`, `f`, `g`, `r`, and the encoded message together with
+`f`, `g`, `r`, and the encoded message together with
 
 ```text
 h * f = g
@@ -801,10 +801,12 @@ in all 192 terminal quotient rings, it proves that `product_ntt` represents
 G * R + M * F.
 ```
 
-The proof first lifts `poly_basemul_add_qring` into a reusable terminal
-representation theorem for `H*R+M`. It then performs
-`(H*R+M)*F = (H*F)*R+M*F = G*R+M*F` separately in each quartic factor and
-applies the composed inverse semantics, yielding
+The proof lifts `poly_basemul_add_qring` into a reusable terminal
+representation theorem, but the valid-key result itself now composes the
+three local relations directly in each quartic factor. In particular, it
+uses `h*f=g` before lifting the result to `G*R+M*F`, so no global polynomial
+representative for `h` is required. It then applies the composed inverse
+semantics, yielding
 
 ```text
 eqm_global (G * R + M * F)
@@ -817,10 +819,52 @@ Rebuild the complete semantic dependency chain with:
 ./scripts/verify-ntruplus768-valid-key-decap-m1-semantics.sh
 ```
 
-No global CRT injectivity is assumed. This theorem deliberately stops before
-secret-key byte provenance and the centered-noise/no-q-wrap argument needed
-to turn `F = 1+3F'` and `G = 3G'` into the exact post-`poly_crepmod3`
-conclusion `m1 = encoded_m`.
+No global CRT injectivity is assumed. The pure theorem does not itself supply
+secret-key byte provenance or the centered-noise/no-q-wrap argument needed to
+turn `F = 1+3F'` and `G = 3G'` into the exact post-`poly_crepmod3`
+conclusion `m1 = encoded_m`; the first of those boundaries is discharged
+below.
+
+## Secret-key `f` serialization provenance
+
+The secret-`f` bridge connects the first 1152 bytes written during key
+generation to the polynomial read by decapsulation:
+
+```text
+keygen: poly_tobytes(sk, f)
+decap:  decoded_f = poly_frombytes(sk)
+```
+
+It reuses the verified byte round trip to prove that `decoded_f` is the
+canonical `[0,q)` representative of `f` and is coefficientwise equal to `f`
+modulo `q`. Two reusable congruence lemmas then show that this replacement
+preserves both terminal polynomial representation and a right-hand
+`poly_basemul_qring` operand. Combined with the existing decoded public-key
+relation, the result is the actual serialized-key identity
+
+```text
+decoded_h * decoded_f = g
+```
+
+in every terminal quotient ring. The headline composition feeds that identity
+and the terminal representation of `decoded_f` into the local valid-key theorem,
+so the pre-`crepmod3` `G*R+M*F` semantics no longer requires a global polynomial
+representative for `h`. Separate Hoare and probability-one theorems cover the
+exact Jasmin `poly_tobytes` call on `f`.
+
+Run the proof, fail-closed source checks, and 10,256 normal/UBSan serialization
+cases with:
+
+```sh
+./scripts/verify-ntruplus768-keygen-secret-f.sh
+```
+
+Set `NTRUPLUS768_FULL_PREDECESSOR=1` to replay the complete public-key,
+valid-key semantics, and decapsulation predecessor verifier chains. This
+milestone intentionally stops before the `hinv` and hash-suffix secret-key
+blocks, formal production-C semantics or C/Jasmin equivalence, the
+centered-noise/no-q-wrap theorem, exact post-`poly_crepmod3` message recovery,
+or full-KEM correctness.
 
 ## Independent `poly_basemul -> invntt` bridge
 
