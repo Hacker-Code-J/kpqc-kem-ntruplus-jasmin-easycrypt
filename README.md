@@ -866,6 +866,69 @@ blocks, formal production-C semantics or C/Jasmin equivalence, the
 centered-noise/no-q-wrap theorem, exact post-`poly_crepmod3` message recovery,
 or full-KEM correctness.
 
+## Conditional exact message-polynomial recovery
+
+The theories under `ntruplus/proof/768/ref/valid_key_m1_recovery/` connect
+the sampled secret-key forms and the serialized-`f` bridge to exact
+post-`poly_crepmod3` recovery. Write `F'` and `G'` for the integer CBD1
+polynomials, so the sampled key polynomials are `F = 1 + 3F'` and
+`G = 3G'`. All products in the following expression are computed over
+`Z[X]/(X^768 - X^384 + 1)`, without reducing coefficients modulo `q`:
+
+```text
+noise = G' * R + M * F'
+T     = M + 3 * noise
+no_wrap <=> -1728 <= T[j] <= 1728 for every 0 <= j < 768.
+```
+
+The integer convolution explicitly reduces each product monomial modulo
+the cyclotomic polynomial. Its field embedding is proved congruent to the
+global product. A separate low-degree uniqueness theorem then turns the
+existing inverse-NTT global congruence into coefficientwise congruence
+modulo `q = 3457`. Under `no_wrap`, `T[j]` is exactly the centered lift of
+the inverse-NTT output coefficient. Since `T[j] = M[j] (mod 3)` and `M`
+is a trit polynomial, the verified reduction yields exact array equality:
+
+```text
+valid serialized-key relation + encapsulation/decapsulation q-ring relations
++ sampled forms + no_wrap
+=> inverse_invntt_crepmod3_spec(product_ntt) = M.
+```
+
+The headline theorem consumes the actual `decoded_f` and `decoded_h`
+relation established by the preceding secret-key bridge. For
+`M = poly_sotp_encode_spec(msg, pad)`, a further theorem proves the SOTP
+decoder returns `(msg, false)` using that same explicit `pad`. The scalar
+recovery theory also supplies exact Hoare and probability-one contracts
+for the Jasmin `poly_crepmod3` procedure.
+
+No-wrap is a sufficient condition, not a universal sampler guarantee.
+The deterministic regression includes a sampler-domain counterexample:
+for the all-ones polynomial `A`, the integer quotient-ring coefficient
+`(A*A)[767] = 1152`. Taking `F' = G' = R = M = A` gives
+`T[767] = 6913`, whose centered residue modulo `3457` is `-1`, while
+`M[767] = 1`. This witnesses the failure of a universal no-wrap claim over
+the trit domain; it is not a demonstrated valid KEM seed or a probability
+estimate.
+
+Run each of the four new EasyCrypt theories as a separate verification
+target, followed by the independent integer-convolution/production-C
+regressions in normal and UBSan builds:
+
+```sh
+./scripts/verify-ntruplus768-valid-key-m1-recovery.sh
+```
+
+Each executable covers all 6,914 supported scalar representatives, the
+`+/-1728` and `+/-1729` boundaries, 134 polynomial cases (132 satisfying
+no-wrap and two wrap counterexamples), and 128 same-pad SOTP messages.
+Set `NTRUPLUS768_FULL_PREDECESSOR=1` to also replay the predecessor
+verifiers. The new proof makes no failure-probability claim and does not
+establish ciphertext byte provenance, `r2 = r`, actual decapsulation-pad
+agreement, formal production-C semantics or C/Jasmin equivalence, or
+full-KEM correctness. Quantifying the probability that the explicit
+no-wrap condition fails remains a separate distributional obligation.
+
 ## Independent `poly_basemul -> invntt` bridge
 
 The signed-12-bit bridge theory at
