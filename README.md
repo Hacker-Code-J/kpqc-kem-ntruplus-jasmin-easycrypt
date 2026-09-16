@@ -929,6 +929,70 @@ agreement, formal production-C semantics or C/Jasmin equivalence, or
 full-KEM correctness. Quantifying the probability that the explicit
 no-wrap condition fails remains a separate distributional obligation.
 
+## Conditional `r2` bytes, actual pad, and message agreement
+
+The theories under `ntruplus/proof/768/ref/valid_key_r2_recovery/` extend
+conditional `m1` recovery through the ciphertext and secret `hinv` byte
+blocks to the pad actually computed from `r2`. The serialization relation
+records the ciphertext bytes, the separate 1152-byte `hinv` block, and
+their decoded arrays. Existing range and round-trip contracts establish
+the coefficientwise congruences needed on both sides of decapsulation.
+In particular, the first decoded-ciphertext product is connected back to
+the preceding no-wrap `m1` theorem.
+
+The successful keypair relation yields `h*hinv = 1` in each terminal
+quartic. After `m1 = encoded_m`, the verified subtraction and multiplication
+contracts give
+
+```text
+decoded_c - NTT(m1) = decoded_h * r_ntt       (mod q)
+r2                  = r_ntt                  (mod q).
+```
+
+Canonical coefficient uniqueness under the serializer's `[-q,q)` input
+contract turns this into exact byte equality. Consequently the two
+`hash_g_spec` calls receive identical byte arrays, and their pads are equal:
+
+```text
+tobytes(r2) = tobytes(r_ntt)
+hash_g_spec(tobytes(r2)) = hash_g_spec(tobytes(r_ntt)).
+```
+
+The headline `no_wrap_serialized_message_recovery` theorem defines the
+encapsulation message using the encapsulation-side hash pad and proves
+that SOTP decoding with the recovered `r2` hash pad returns `(msg, false)`.
+Pad equality and byte equality are conclusions of this theorem, not input
+premises. Intermediate `r2` and `r_ntt` word arrays may differ by multiples
+of `q`; their exact word equality is neither required nor asserted.
+
+Run all three new theories as separate EasyCrypt verification targets,
+the source-seam checker and its 14 rejected mutations, the normal/UBSan
+regressions, and GCC driver analysis with:
+
+```sh
+./scripts/verify-ntruplus768-valid-key-r2-recovery.sh
+```
+
+Each executable checks all 3,457 residues with positive, negative, and
+mixed representatives and runs 132 deterministic primitive/caller-seam
+cases using production CBD1, key inverses, serialization, NTT arithmetic,
+hashing, and SOTP. There are 130 no-wrap recoveries and two wrap examples.
+Of the successful cases, 116 have different `r2` word arrays but identical
+bytes, and 129 detect using the `f` block in place of `hinv`. An independent
+integer convolution classifies no-wrap, and an independent packing oracle
+checks canonical bytes. The source checker fixes the `hinv` offset and
+the ciphertext, `r2`, hash, and SOTP call sequences.
+
+This is a conditional array-value message-recovery theorem under the
+successful key/arithmetic contracts and explicit no-wrap condition.
+The `hinv` block contract and source checks do not constitute a whole
+secret-key C-memory proof. Formal production-C/Jasmin equivalence,
+the remaining `hash_h`/verification/shared-secret composition, full-KEM
+correctness, and distributional failure bounds remain separate work.
+The runtime cases use explicit sampler buffers, not demonstrated KEM
+random-seed witnesses. `NTRUPLUS768_FULL_PREDECESSOR=1` additionally replays
+the existing `m1`, `r2`, and `hash_g` predecessor verifiers.
+
 ## Independent `poly_basemul -> invntt` bridge
 
 The signed-12-bit bridge theory at
