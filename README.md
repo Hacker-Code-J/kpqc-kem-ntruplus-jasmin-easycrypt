@@ -1,4 +1,4 @@
-# kpqc-sig-ntruplus-jasmin-easycrypt
+# kpqc-kem-ntruplus-jasmin-easycrypt
 
 This repository is a workspace for developing and checking Jasmin and
 EasyCrypt artifacts for NTRU+.
@@ -3207,7 +3207,7 @@ Clone this repository with all nested dependencies:
 
 ```sh
 git clone --recurse-submodules \
-  https://github.com/Hacker-Code-J/kpqc-sig-ntruplus-jasmin-easycrypt.git
+  https://github.com/Hacker-Code-J/kpqc-kem-ntruplus-jasmin-easycrypt.git
 ```
 
 For an existing clone, initialize the pinned submodules with:
