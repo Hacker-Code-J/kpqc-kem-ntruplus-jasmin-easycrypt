@@ -1,3 +1,9 @@
+.agents/
+.codex/
+.ruff_cache/
+
+.omx/
+
 # Prerequisites
 *.d
 
