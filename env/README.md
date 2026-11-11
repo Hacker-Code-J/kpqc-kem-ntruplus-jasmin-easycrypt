@@ -150,3 +150,17 @@ gates and returns its exit status. Add `--check-only` only for source controls;
 such a result is not a full proof PASS. Preserve the output `summary.json` and
 logs, and distinguish this target's fresh checks from its authenticated
 historical dependencies.
+
+## Recorded full replay
+
+The public launcher completed a full runtime-bound replay on source commit
+`359b9279b7718912951a2ce9141d4014f92bbddf`: 37 main proofs, 37 own unfinished-proof
+rejections and 105 commands with expected outcomes. The complete command took
+23:57.69 with maximum RSS 2,694,052 KiB. See the
+[source-bound full record](../evidence/preserved-full-replay-20261111/README.md).
+
+The capture manifest retains its creation-time `NOT_REPLAYED` status and exact
+bytes; the later proof result is a separate record bound to that manifest's
+SHA-256. This avoids changing a verified package merely to update its status.
+The successful replay used the same host OS/runtime dependencies and does not
+establish independent-machine reproduction or a standalone OS image.

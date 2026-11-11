@@ -1,0 +1,23 @@
+{
+  "result": "PASS",
+  "verified_at": "2026-11-11T14:26:23.576768+00:00",
+  "tested_source_commit": "359b9279b7718912951a2ce9141d4014f92bbddf",
+  "source_manifest_sha256": "64dd55602a6927a4392da163a1af3c3985b6482d06a6f0ed720d2c7dd8e390c6",
+  "source_manifest_files": 1878,
+  "runner_source_audit_files": 1121,
+  "runner_external_audit_files": 286,
+  "commands_and_log_hashes_verified": 105,
+  "main_proofs": 37,
+  "own_unfinished_proof_rejections": 37,
+  "actual_exported_type": "PASS",
+  "source_and_external_inputs_unchanged": true,
+  "captured_environment_files_authenticated": 3145,
+  "environment_manifest_sha256": "fb2cb4f9be729ef3706d9ec7a98e44ad6b35230e743762ba29899301b732d4d5",
+  "prior_summaries_authenticated": 26,
+  "prior_evidence_manifest_sha256": "816ebfc138f08a74e33b0bc959b42c45a47b4145cc24e33e468c441eb5f1c7b0",
+  "wall_time": "23:57.69",
+  "wall_seconds": 1437.69,
+  "maximum_rss_kib": 2694052,
+  "scope": "Default runtime-bound full verifier through the public preserved-home launcher; imported EC/Coq prerequisites authenticated through historical evidence, not freshly replayed.",
+  "host_boundary": "Same Linux host OS libraries and Python standard library; not a standalone OS image or independent machine replay."
+}

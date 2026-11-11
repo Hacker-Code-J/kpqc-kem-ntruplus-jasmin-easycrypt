@@ -33,11 +33,13 @@ and a small actual compiler probe. The target's imported prerequisites remain
 authenticated historical results. This does not supersede the whole-suite and
 clean-machine gates below.
 
-A subsequent [full preserved-environment attempt](../evidence/preserved-replay-attempt-20261111/README.md)
-authenticated the public inputs but failed when EasyCrypt automatically started
-its Why3 server. Separate socket/direct-server diagnostics passed, so the exact
-failing operation in that full-run context remains unresolved. This attempt
-does not establish a full PASS for the public preserved-home launcher.
+The [full public preserved-environment replay](../evidence/preserved-full-replay-20261111/README.md)
+subsequently passed on source commit `359b927`: 37 main proofs, 37 own unfinished
+proof rejections and all 105 commands completed with expected outcomes through
+`env/replay_runtime.py`. Source, captured environment and log hashes were checked.
+The [earlier server-start failure](../evidence/preserved-replay-attempt-20261111/README.md)
+remains a separate record. This successful replay used the same Linux host's
+OS/runtime dependencies; it does not establish a standalone image or new-host replay.
 
 ## Release gates
 
@@ -45,10 +47,10 @@ does not establish a full PASS for the public preserved-home launcher.
 | --- | --- | --- |
 | Research snapshot | The local candidate preserves the existing research changes and public tooling in an identifiable commit; source archives carry a file manifest | Check the selected commit, archive contents and recursive submodule pins before publishing |
 | Historical artifacts | 26 summaries and two specification inputs have been exported with original bytes and checksums | Review redistribution/provenance and supply an immutable download URL; include final replay logs |
-| Fresh installation | Exact audited tool inputs are captured; the package still depends on host OS libraries and Python stdlib | Provide the necessary OS/runtime closure and validate setup in a new machine/container |
-| Evidence portability | A preserved-layout launcher restores captured inputs; isolated source controls and a small compiler probe passed | Replay the selected full targets under the final captured environment; never rewrite frozen hashes just to pass |
+| Host/runtime support | Exact tool inputs are captured and the full target passed; OS libraries and Python stdlib remain host dependencies | Document compatible host requirements; validate additional platforms before claiming their support |
+| Evidence portability | The full runtime-bound target passed through the public preserved-layout launcher | Retain the verified source/environment/evidence bytes and full logs; never rewrite historical pins |
 | Full proof replay | The default runtime-bound target passed freshly; its prerequisite proofs are authenticated historical imports | Replay other release claims as needed, including negative controls, EOF/kernel checks; retain all results |
-| Resources | The fresh runtime-bound target took 23:32.23 and maximum RSS 2,696,728 KiB on this host | Measure the remaining selected release targets and record the final release environment |
+| Resources | The public preserved-environment runtime-bound run took 23:57.69 and maximum RSS 2,694,052 KiB | Retain the measured environment; measure other targets or platforms before quoting their costs |
 | Third-party redistribution | Root MIT covers repository-owned material; Formosa has no top-level license at its pinned commit | Resolve applicable file/upstream terms before bundling external sources; retain provenance and notices |
 | Citation | Repository author/title available; thesis metadata, DOI and release date are not finalized here | Confirm authorship/title, create the validated release, archive it and record its version DOI |
 
