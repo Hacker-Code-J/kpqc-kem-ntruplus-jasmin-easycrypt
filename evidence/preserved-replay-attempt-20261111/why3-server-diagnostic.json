@@ -1,0 +1,5 @@
+{
+  "exit_code": 0,
+  "stdout": "{\"temporary_directory\": \"/tmp\", \"TMPDIR\": null, \"server_exists\": true, \"socket_created\": true, \"initial_returncode\": null, \"connected\": true, \"returncode\": 1, \"stdout\": \"\", \"stderr\": \"\", \"server_log\": \"accepted client \\n\"}\n",
+  "stderr": ""
+}

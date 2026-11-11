@@ -1,0 +1,8 @@
+{
+  "result": "PASS",
+  "source_commit": "359b9279b7718912951a2ce9141d4014f92bbddf",
+  "source_manifest_files": 1878,
+  "environment_files": 3145,
+  "checked": "source archive manifest and captured payload hashes/modes/inventory after failed replay",
+  "proof_result": "FAIL; integrity is not a proof PASS"
+}

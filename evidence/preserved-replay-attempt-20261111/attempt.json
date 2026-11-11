@@ -1,0 +1,35 @@
+{
+  "status": "FULL_REPLAY_FAILED_WHY3_AUTOSTART",
+  "proof_result": "FAIL",
+  "source_commit": "359b9279b7718912951a2ce9141d4014f92bbddf",
+  "runner_error": "command failed: proof-04-NTRUPlus768RTFixedBaseinv",
+  "source_inputs_unchanged": true,
+  "external_inputs_unchanged": true,
+  "command_count": 48,
+  "failed_commands": [
+    "proof-05-NTRUPlus768RTFixedBasemul",
+    "proof-04-NTRUPlus768RTFixedBaseinv",
+    "proof-06-NTRUPlus768RTFixedCBD",
+    "proof-07-NTRUPlus768RTFixedCenteredAdd",
+    "proof-08-NTRUPlus768RTFixedDecapR2",
+    "proof-09-NTRUPlus768RTFixedFromBytes",
+    "proof-10-NTRUPlus768RTFixedGPrepare",
+    "proof-11-NTRUPlus768RTFixedInvNTT",
+    "proof-12-NTRUPlus768RTFixedNTT",
+    "proof-13-NTRUPlus768RTFixedPolySub",
+    "proof-14-NTRUPlus768RTFixedSOTPEncode",
+    "proof-15-NTRUPlus768RTFixedToBytes",
+    "proof-16-NTRUPlus768RTFixedWordChecks",
+    "proof-20-NTRUPlus768RTKernelTypes",
+    "proof-22-NTRUPlus768RTModel",
+    "proof-30-NTRUPlus768RTStepSemantics",
+    "proof-33-NTRUPlus768RTWordCodec"
+  ],
+  "passed_main_commands": [
+    "proof-34-NTRUPlus768RTWordGames"
+  ],
+  "diagnosis": "Automatic EasyCrypt/Why3 server connection failed. Separate same-layout socket and direct-server probes passed. Exact failing operation/errno in the original full-run context is unresolved; this is not classified as a proven socket-creation denial.",
+  "manual_launcher": "run-in-terminal.sh",
+  "acceptance_conditions_modified": false,
+  "permission_policy_modified": false
+}

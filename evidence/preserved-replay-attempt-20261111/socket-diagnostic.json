@@ -1,0 +1,6 @@
+{
+  "scope": "Socket diagnostic using public launcher fixed mounts and configuration; proof runner was not executed by this diagnostic",
+  "exit_code": 0,
+  "stdout": "{\"local_unix_socket\": \"PASS\"}\n",
+  "stderr": ""
+}

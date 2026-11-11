@@ -33,6 +33,12 @@ and a small actual compiler probe. The target's imported prerequisites remain
 authenticated historical results. This does not supersede the whole-suite and
 clean-machine gates below.
 
+A subsequent [full preserved-environment attempt](../evidence/preserved-replay-attempt-20261111/README.md)
+authenticated the public inputs but failed when EasyCrypt automatically started
+its Why3 server. Separate socket/direct-server diagnostics passed, so the exact
+failing operation in that full-run context remains unresolved. This attempt
+does not establish a full PASS for the public preserved-home launcher.
+
 ## Release gates
 
 | Gate | Current boundary | Required release evidence |

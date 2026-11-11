@@ -1,0 +1,24 @@
+Command exited with non-zero status 1
+	Command being timed: "python3 -B /home/hacker-code-j/Desktop/2026/HAETAE/artifact-release-preparation/ntru/source-359b9279b771/env/replay_runtime.py --environment /home/hacker-code-j/Desktop/2026/HAETAE/artifact-release-preparation/ntru/preserved-environment --evidence-root /home/hacker-code-j/Desktop/2026/HAETAE/artifact-release-preparation/ntruplus-prior-evidence-20261111 --output /home/hacker-code-j/Desktop/2026/HAETAE/artifact-release-preparation/ntru/preserved-full-20261111T133243Z/results"
+	User time (seconds): 258.55
+	System time (seconds): 19.36
+	Percent of CPU this job got: 111%
+	Elapsed (wall clock) time (h:mm:ss or m:ss): 4:09.30
+	Average shared text size (kbytes): 0
+	Average unshared data size (kbytes): 0
+	Average stack size (kbytes): 0
+	Average total size (kbytes): 0
+	Maximum resident set size (kbytes): 1776704
+	Average resident set size (kbytes): 0
+	Major (requiring I/O) page faults: 1
+	Minor (reclaiming a frame) page faults: 1902640
+	Voluntary context switches: 10396
+	Involuntary context switches: 1756
+	Swaps: 0
+	File system inputs: 1668120
+	File system outputs: 119448
+	Socket messages sent: 0
+	Socket messages received: 0
+	Signals delivered: 0
+	Page size (bytes): 4096
+	Exit status: 1

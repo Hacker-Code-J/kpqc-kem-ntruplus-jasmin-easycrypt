@@ -1,0 +1,19 @@
+{
+  "command": [
+    "python3",
+    "-B",
+    "/home/hacker-code-j/Desktop/2026/HAETAE/artifact-release-preparation/ntru/source-359b9279b771/env/replay_runtime.py",
+    "--environment",
+    "/home/hacker-code-j/Desktop/2026/HAETAE/artifact-release-preparation/ntru/preserved-environment",
+    "--evidence-root",
+    "/home/hacker-code-j/Desktop/2026/HAETAE/artifact-release-preparation/ntruplus-prior-evidence-20261111",
+    "--output",
+    "/home/hacker-code-j/Desktop/2026/HAETAE/artifact-release-preparation/ntru/preserved-full-20261111T133243Z/results"
+  ],
+  "source_commit": "359b9279b7718912951a2ce9141d4014f92bbddf",
+  "source_manifest_sha256": "64dd55602a6927a4392da163a1af3c3985b6482d06a6f0ed720d2c7dd8e390c6",
+  "environment_manifest_sha256": "fb2cb4f9be729ef3706d9ec7a98e44ad6b35230e743762ba29899301b732d4d5",
+  "prior_evidence_manifest_sha256": "816ebfc138f08a74e33b0bc959b42c45a47b4145cc24e33e468c441eb5f1c7b0",
+  "run_directory": "/home/hacker-code-j/Desktop/2026/HAETAE/artifact-release-preparation/ntru/preserved-full-20261111T133243Z",
+  "scope": "Full runtime-bound replay through public preserved-home launcher; host OS dependencies retained."
+}

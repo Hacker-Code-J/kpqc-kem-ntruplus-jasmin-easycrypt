@@ -116,20 +116,25 @@ does not establish permission to redistribute it. If it cannot be bundled,
 provide a documented acquisition/extraction procedure that produces the pinned
 bytes and verify that procedure independently.
 
-The existing provenance record identifies the source as the user-provided
-official specification dated July 10, 2026, with PDF SHA-256
-`5899bf061d3814c1c003f69df79b13dbea203b2ac7e6ec52f7c35699f020b2bc`.
-Local re-extraction with Poppler `pdftotext` 22.02.0 was checked on 2026-11-11:
+The [official specification page](https://www.ntruplus.org/specification) links
+the [July 10, 2026 PDF](https://data.ntruplus.org/NTRU%2B_20260710.pdf).
+On 2026-11-11, the downloaded 559,101-byte PDF matched the existing provenance
+record's SHA-256, and extraction with Poppler `pdftotext` 22.02.0 produced the
+exact pinned 164,278-byte specification text:
 
 ```sh
+wget -O NTRU+_20260710.pdf 'https://data.ntruplus.org/NTRU%2B_20260710.pdf'
+printf '%s  %s\n' '5899bf061d3814c1c003f69df79b13dbea203b2ac7e6ec52f7c35699f020b2bc' 'NTRU+_20260710.pdf' | sha256sum --check -
 pdftotext -layout NTRU+_20260710.pdf ntruplus-specification.txt
-sha256sum ntruplus-specification.txt
-# 2e19833445d3c2fcb0abb226234c86b960058b10441e1093657ecf550fc0be27
+printf '%s  %s\n' '2e19833445d3c2fcb0abb226234c86b960058b10441e1093657ecf550fc0be27' 'ntruplus-specification.txt' | sha256sum --check -
 ```
 
-This establishes an exact-byte extraction recipe for that PDF. It does not
-establish an immutable public acquisition URL or redistribution permission;
-those remain publication requirements if the specification input is shipped.
+Use new output paths when acquiring these files, then place the verified text
+at the evidence-relative path in the table above. This gives recipients an
+exact-byte acquisition/extraction procedure without requiring the text to be
+redistributed in the artifact. The dated URL is not a promise of immutable
+hosting: the hashes reject changed bytes. Public availability does not establish
+redistribution permission if the PDF or extracted text is bundled.
 
 ## Portability and release gates
 
