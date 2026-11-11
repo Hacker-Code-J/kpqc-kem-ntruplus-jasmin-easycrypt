@@ -1,5 +1,12 @@
 # Reproducing the NTRU+768 artifacts
 
+The initial public package contains sources and verification evidence, with tool
+versions and installation/provenance information. It does not include the
+preserved compiler/prover binaries. Source inspection and C/KAT checks can run
+with their listed prerequisites. Full formal replay additionally needs the
+matching documented environment; equally numbered rebuilt tools do not
+automatically satisfy historical binary-identity checks.
+
 This guide separates source inspection, C/KAT execution, and formal verification.
 The [claim map](claims.md) defines the scope of individual results. A successful
 source check or C test does not establish a formal theorem. Some formal harnesses

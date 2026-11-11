@@ -7,6 +7,7 @@ from pathlib import Path
 import sys
 import tempfile
 import unittest
+from unittest.mock import patch
 
 
 SCRIPTS = Path(__file__).resolve().parents[1] / "scripts"
@@ -60,14 +61,17 @@ class ExportTests(unittest.TestCase):
         path.parent.mkdir(parents=True, exist_ok=True)
         path.write_text(json.dumps(data))
 
-    def export(self, source=None, destination=None):
+    def export(self, source=None, destination=None, **options):
         return exporter.export_evidence(
-            source or self.source, destination or self.destination, self.repo)
+            source or self.source, destination or self.destination,
+            self.repo, **options)
 
     def test_exact_bytes_inventory_and_checksums(self):
         manifest = self.export()
         self.assertEqual(len(manifest["files"]), 3)
         self.assertFalse(manifest["proofs_replayed"])
+        self.assertNotIn("omitted_inputs", manifest)
+        self.assertEqual((self.destination / "README.txt").read_text(), exporter.NOTICE)
         self.assertEqual((self.destination / self.summary_name).read_bytes(),
                          self.summary_bytes)
         self.assertFalse((self.destination / "private-unrelated.txt").exists())
@@ -89,6 +93,69 @@ class ExportTests(unittest.TestCase):
         self.assertEqual(first, self.export(destination=second_destination))
         self.assertEqual((self.destination / "SHA256SUMS").read_bytes(),
                          (second_destination / "SHA256SUMS").read_bytes())
+
+    def test_omission_succeeds_without_source_text_and_records_exact_pin(self):
+        omitted = self.specs["source_text"]
+        (self.source / omitted["path"]).unlink()
+        manifest = self.export(without_specification_text=True)
+        self.assertEqual(len(manifest["files"]), 2)
+        self.assertFalse(manifest["complete_keygen_generation_law_inputs"])
+        self.assertEqual(manifest["omitted_inputs"], [{
+            **omitted, "kind": "specification_source_text",
+            "required_by": [str(exporter.SPECIFICATION_PINS)],
+        }])
+        self.assertFalse((self.destination / omitted["path"]).exists())
+        self.assertNotIn(omitted["path"], (self.destination / "SHA256SUMS").read_text())
+        self.assertIn("acquire", (self.destination / "README.txt").read_text())
+        for record in manifest["files"]:
+            self.assertEqual(
+                hashlib.sha256((self.destination / record["path"]).read_bytes())
+                .hexdigest(), record["sha256"])
+
+    def test_omission_does_not_read_present_source_text(self):
+        source_text = self.source / self.specs["source_text"]["path"]
+        original = Path.read_bytes
+
+        def included_only(path):
+            self.assertNotEqual(path, source_text)
+            return original(path)
+
+        with patch.object(Path, "read_bytes", included_only):
+            self.export(without_specification_text=True)
+
+    def test_omission_still_rejects_missing_or_tampered_included_files(self):
+        for name in (self.summary_name, self.specs["contract"]["path"]):
+            path = self.source / name
+            data = path.read_bytes()
+            for tampered in (False, True):
+                with self.subTest(name=name, tampered=tampered):
+                    if tampered:
+                        path.write_bytes(b"changed")
+                    else:
+                        path.unlink()
+                    with self.assertRaises(ValueError):
+                        self.export(without_specification_text=True)
+                    self.assertFalse(self.destination.exists())
+                    path.write_bytes(data)
+
+    def test_omission_still_validates_source_text_pin_schema(self):
+        for change in ({"path": "../escape"}, {"sha256": "bad"}):
+            original = dict(self.specs["source_text"])
+            self.specs["source_text"].update(change)
+            self.write_pins("keygen_gen_law/specification-pins.json", self.specs)
+            with self.subTest(change=change), self.assertRaises(ValueError):
+                self.export(without_specification_text=True)
+            self.assertFalse(self.destination.exists())
+            self.specs["source_text"] = original
+
+    def test_cli_omission_option_is_forwarded(self):
+        with patch.object(exporter, "export_evidence",
+                          return_value={"files": []}) as export:
+            self.assertEqual(exporter.main([
+                "--evidence-root", str(self.source), "--without-specification-text",
+                str(self.destination)]), 0)
+            export.assert_called_once_with(
+                self.source, self.destination, without_specification_text=True)
 
     def test_existing_destination_is_untouched(self):
         self.destination.mkdir()

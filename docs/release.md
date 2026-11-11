@@ -4,6 +4,26 @@ Status: **publication preparation, not a validated thesis release**.
 The repository interface and lightweight CI are prepared. No public release,
 tag, DOI, push, or fresh whole-suite proof replay is implied by this document.
 
+## Selected initial publication scope
+
+The initial distribution contains implementation/proof sources, reproducibility
+scripts, pinned dependency recovery sources, license notices, and verification
+reports/logs. It does not distribute compiler/prover executables, installed opam
+switches, a VM/container image, or the preserved binary environment attachment.
+The environment inventory remains available as provenance and optional later
+distribution documentation.
+
+Ubuntu source-package downloads for Bash, coreutils and Python concern that
+separate binary-redistribution work. They are **not a prerequisite for this
+source-and-evidence publication**. The raw specification text is separately
+acquired using the documented official hash-checked recipe; the selected prior
+evidence attachment contains the summaries and reviewed contract, not that text.
+
+This scope does not promise a self-contained proof appliance. Formal replay
+still requires the matching documented tools, and historical-evidence-linked
+targets retain their strict environment checks. The successful recorded runs
+and their exact tested source identities remain distinct from later packaging.
+
 ## What is available
 
 - A concise [README](../README.md) and preserved [development record](development-record.md).
@@ -51,7 +71,7 @@ OS/runtime dependencies; it does not establish a standalone image or new-host re
 | Evidence portability | The full runtime-bound target passed through the public preserved-layout launcher | Retain the verified source/environment/evidence bytes and full logs; never rewrite historical pins |
 | Full proof replay | The default runtime-bound target passed freshly; its prerequisite proofs are authenticated historical imports | Replay other release claims as needed, including negative controls, EOF/kernel checks; retain all results |
 | Resources | The public preserved-environment runtime-bound run took 23:57.69 and maximum RSS 2,694,052 KiB | Retain the measured environment; measure other targets or platforms before quoting their costs |
-| Third-party materials | Exact-file upstream provenance, component attribution, original notices and source-material companions are recorded; three system source payloads remain pending | Include the relevant notices/companions with the chosen distribution; finish pending source acquisition and review the recorded component/build-option conditions before distributing the binary attachment |
+| Third-party materials | Source notices and exact dependency recovery are included; the binary environment is outside this initial publication scope | Retain notices and scope boundaries for the selected source/evidence files; handle optional binary redistribution separately |
 | Citation | Repository author/title available; thesis metadata, DOI and release date are not finalized here | Confirm authorship/title, create the validated release, archive it and record its version DOI |
 
 The runtime proof manifest's `ROOT_REVIEWED_ALPHA_RENAME_NOT_REPLAYED` state

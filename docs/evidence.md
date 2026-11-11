@@ -51,7 +51,7 @@ python3 scripts/check_public_evidence.py \
 (cd /path/to/new-evidence-bundle && sha256sum --check SHA256SUMS)
 ```
 
-The exporter authenticates all 26 historical summaries and the two separately
+By default, the exporter authenticates all 26 historical summaries and the two separately
 pinned KeyGen specification inputs before writing. It refuses existing output
 directories, overlapping input/output trees, symlinks, missing files and changed
 bytes. The resulting 28 inputs retain their exact bytes and relative paths.
@@ -69,6 +69,33 @@ bundle as a whole. Export regression tests are available with:
 ```sh
 python3 -B -m unittest discover -s tests -p 'test_*public_evidence.py'
 ```
+
+### Excluding the separately acquired specification text
+
+For a source, proof and verification-results release that does not redistribute
+the specification's raw text, select the explicit omission mode:
+
+```sh
+python3 scripts/export_public_evidence.py \
+  --without-specification-text \
+  --evidence-root /path/to/original-evidence /path/to/new-evidence-bundle
+```
+
+This preserves 26 authenticated historical summaries and the reviewed KeyGen
+specification contract: 27 inputs. The source-text pin is still schema-checked,
+but its file need not exist and is never read. Its exact relative path, SHA-256,
+kind and requiring pin manifest appear in `BUNDLE-MANIFEST.json` under
+`omitted_inputs`. It is absent from both the exported files and `SHA256SUMS`.
+All checks for included files remain unchanged. Without the option, the default
+28-input bundle and its metadata remain unchanged.
+
+**This bundle alone does not supply all KeyGen generation-law inputs.** Its
+manifest marks `complete_keygen_generation_law_inputs` as false. Recipients must
+follow the [verified official PDF acquisition and extraction procedure](#additional-specification-inputs)
+below, check both hashes, and place the text at its pinned evidence-relative
+path before running that target. The historical-summary checker covers only
+the 26 summaries; its success does not establish presence of the omitted text.
+Neither export mode includes runtime tool binaries.
 
 ## What must be preserved
 

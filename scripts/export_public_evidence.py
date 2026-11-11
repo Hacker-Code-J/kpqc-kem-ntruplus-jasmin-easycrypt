@@ -34,6 +34,27 @@ and provide or reconstruct the compatible environment and final replay logs.
 The source repository's MIT license does not automatically license this entire
 bundle. No DOI, public upload or redistribution clearance is implied.
 """
+OMISSION_NOTICE = """NTRU+768 historical-input bundle (specification text excluded)
+
+This directory contains the pinned historical summaries and reviewed KeyGen
+specification contract. Their original bytes and relative paths are preserved.
+The raw specification text is NOT included or read by this export mode.
+BUNDLE-MANIFEST.json records its path, expected hash and consumers under
+omitted_inputs. KeyGen generation-law inputs are incomplete until recipients
+acquire and verify that text separately using docs/evidence.md in the source
+repository, section "Additional specification inputs".
+
+Verify bundled inputs and metadata from this directory:
+
+    sha256sum --check SHA256SUMS
+
+The omitted text has no entry in SHA256SUMS. These are authenticated historical
+records, NOT a fresh proof replay or a complete archive of logs, sources, tools
+or current results. Recorded commands and host paths are historical data; the
+exporter does not execute them. Review preserved paths and provenance before
+publication. Repository MIT terms do not automatically license the whole bundle.
+No DOI, public upload or redistribution clearance is implied.
+"""
 
 
 def checked_path(path):
@@ -72,7 +93,8 @@ def bundle_inventory(repo):
     return [records[name] for name in sorted(records)]
 
 
-def export_evidence(evidence_root, destination, repo=ROOT):
+def export_evidence(evidence_root, destination, repo=ROOT, *,
+                    without_specification_text=False):
     """Validate every input before writing; never overwrite previous evidence."""
     repo = checked_path(repo).resolve(strict=True)
     evidence_root = checked_path(evidence_root).resolve(strict=True)
@@ -86,6 +108,12 @@ def export_evidence(evidence_root, destination, repo=ROOT):
     if destination.exists():
         raise ValueError("destination already exists")
     records = bundle_inventory(repo)
+    omitted = []
+    if without_specification_text:
+        omitted = [record for record in records
+                   if record["kind"] == "specification_source_text"]
+        records = [record for record in records
+                   if record["kind"] != "specification_source_text"]
     contents = {}
     for record in records:
         name = record["path"]
@@ -110,8 +138,14 @@ def export_evidence(evidence_root, destination, repo=ROOT):
                           for name in pin_names},
         "files": records,
     }
+    if without_specification_text:
+        report.update(
+            scope="historical summaries and reviewed KeyGen contract; text excluded",
+            omitted_inputs=omitted,
+            complete_keygen_generation_law_inputs=False)
     contents["BUNDLE-MANIFEST.json"] = (json.dumps(report, indent=2) + "\n").encode()
-    contents["README.txt"] = NOTICE.encode()
+    contents["README.txt"] = (
+        OMISSION_NOTICE if without_specification_text else NOTICE).encode()
     checksums = "".join(hashlib.sha256(data).hexdigest() + "  " + name + "\n"
                         for name, data in sorted(contents.items()))
     contents["SHA256SUMS"] = checksums.encode()
@@ -135,9 +169,14 @@ def main(argv=None):
     parser.add_argument(
         "destination", type=Path,
         help="new directory outside source and evidence trees")
+    parser.add_argument(
+        "--without-specification-text", action="store_true",
+        help="omit raw specification text; record its pin for separate acquisition")
     args = parser.parse_args(argv)
     try:
-        report = export_evidence(args.evidence_root, args.destination)
+        report = export_evidence(
+            args.evidence_root, args.destination,
+            without_specification_text=args.without_specification_text)
     except (OSError, ValueError) as error:
         print("Export failed: " + str(error), file=sys.stderr)
         return 1
