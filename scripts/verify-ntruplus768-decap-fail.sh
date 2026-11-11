@@ -4,6 +4,8 @@ set -euo pipefail
 
 SCRIPT_DIR=$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)
 REPO_ROOT=$(cd -- "$SCRIPT_DIR/.." && pwd)
+
+python3 "$REPO_ROOT/tests/ntruplus768/toolchain/check_model_compatibility.py" --source-only
 PROOF_ROOT="$REPO_ROOT/ntruplus/proof/768/ref"
 PROOF_DIR="$PROOF_ROOT/decap_fail"
 FAIL_PROOF="$PROOF_DIR/NTRUPlus768DecapFailProof.ec"
@@ -146,7 +148,7 @@ compile_easycrypt_target() {
   if start_why3_server "$server_log"; then
     if ! (
       cd "$workdir"
-      easycrypt compile -no-eco -p Z3 -timeout 5 -max-provers 1 -server "$WHY3_SOCKET" "$proof"
+      easycrypt compile -I "Jasmin:$REPO_ROOT/ntruplus/proof/compat/jasmin" -no-eco -p Z3 -timeout 5 -max-provers 1 -server "$WHY3_SOCKET" "$proof"
     ); then
       sed -n '1,120p' "$server_log" >&2 || true
       fail "EasyCrypt $label failed"
@@ -154,7 +156,7 @@ compile_easycrypt_target() {
   else
     if ! (
       cd "$workdir"
-      easycrypt compile -no-eco -p Z3 -timeout 5 -max-provers 1 "$proof"
+      easycrypt compile -I "Jasmin:$REPO_ROOT/ntruplus/proof/compat/jasmin" -no-eco -p Z3 -timeout 5 -max-provers 1 "$proof"
     ); then
       sed -n '1,120p' "$server_log" >&2 || true
       fail "EasyCrypt $label failed without Why3 server fallback"

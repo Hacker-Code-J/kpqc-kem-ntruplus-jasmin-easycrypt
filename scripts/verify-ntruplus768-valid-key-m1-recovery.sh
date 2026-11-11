@@ -4,6 +4,8 @@ set -euo pipefail
 
 SCRIPT_DIR=$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)
 REPO_ROOT=$(cd -- "$SCRIPT_DIR/.." && pwd)
+
+python3 "$REPO_ROOT/tests/ntruplus768/toolchain/check_model_compatibility.py" --source-only
 PROOF_DIR="$REPO_ROOT/ntruplus/proof/768/ref/valid_key_m1_recovery"
 TEST_DIR="$REPO_ROOT/tests/ntruplus768/valid_key_m1_recovery"
 FULL_PREDECESSOR=${NTRUPLUS768_FULL_PREDECESSOR:-0}

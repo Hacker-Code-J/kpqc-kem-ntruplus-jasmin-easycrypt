@@ -1,0 +1,70 @@
+{
+  "schema": 1,
+  "status": "FROZEN",
+  "mains": [
+    {
+      "source": "kem_history_refinement/NTRUPlus768HistKey.ec",
+      "source_sha256": "f97ba5f34f7469956cdc8b06540178ea7e349265e316c345f31ee61b1508d531",
+      "semantic_target": "hist_cipher_correct",
+      "module_binders": [],
+      "sentinel": "\nlemma __history_refinement_eof_HistKey x0 y0 :\n phoare[HistKey.cipher:x=x0 /\\ y=y0 ==>res.`1=(x0=y0) /\\ res.`2=1152]=1%r.\nproof. exact (hist_cipher_correct x0 y0). qed.\n"
+    },
+    {
+      "source": "kem_history_refinement/NTRUPlus768HistModel.ec",
+      "source_sha256": "ddbb68734cfc7b160eb060f4737a4e77e796cbe0f4842ee1df881fea04b162f2",
+      "semantic_target": "hist_rep_empty",
+      "module_binders": [],
+      "sentinel": "\nlemma __history_refinement_eof_HistModel : hist_rep [] empty.\nproof. exact (hist_rep_empty). qed.\n"
+    },
+    {
+      "source": "kem_history_refinement/NTRUPlus768HistTable.ec",
+      "source_sha256": "26074e3208d89c14eae2aba3acaf63976d8585b60087d1956c47144854b93128",
+      "semantic_target": "hist_table_put_refinement",
+      "module_binders": [],
+      "sentinel": "\nlemma __history_refinement_eof_HistTable x0 y0 xs0 m0 : hist_rep xs0 m0=>\n phoare[HistTable.put:x=x0 /\\ y=y0 /\\ xs=xs0 ==>\n hist_rep res.`1 m0.[x0<-y0] /\\ size res.`1<=size xs0+1 /\\\n 0<=res.`2<=2*size xs0 /\\ res.`3=128*size xs0]=1%r.\nproof. exact (hist_table_put_refinement x0 y0 xs0 m0). qed.\n"
+    },
+    {
+      "source": "kem_history_refinement/NTRUPlus768HistLookup.ec",
+      "source_sha256": "90caced01a6aeba431fba12d407b20d8345ce40fb62bb54a0cf7fab77ca13841",
+      "semantic_target": "hist_lookup_g_calls",
+      "module_binders": [],
+      "sentinel": "\nlemma __history_refinement_eof_HistLookup n0 :\n hoare[HistLookup(SecGLogged(FOGActual)).run:\n size SecGHistory.queries=n0 ==>\n size SecGHistory.queries=n0+res.`3].\nproof. exact (hist_lookup_g_calls n0). qed.\n"
+    },
+    {
+      "source": "kem_history_refinement/NTRUPlus768HistOrder.ec",
+      "source_sha256": "f88baad5b981b5cd8ae2c0f6be3eb4b11bc02740ce8085ade64c500a538c707c",
+      "semantic_target": "hist_lookup_original_equiv",
+      "module_binders": [],
+      "sentinel": "\nlemma __history_refinement_eof_HistOrder w g xs0 log0 table ex hs cs ct0 gm0 n0 :\n pke_key_relation w=>hist_rep xs0 log0=>sim_log_included log0 table=>\n fo_hcache_good w g ex log0=>fo_challenge_invariant w g ex hs cs table=>\n acwc2_cache_matches g gm0=>\n equiv[SimLookup(FOGActual).decap ~ HistLookup(FOGActual).run:\n ct{1}=ct0 /\\ SimPublic.pk{1}=w.`kg_pk /\\\n SimPublic.suffix{1}=complete_sk_suffix w.`kg_sk /\\\n SimPublic.cstar{1}=Some cs /\\ SimPublic.count{1}=n0 /\\ SimHistory.h{1}=log0 /\\\n xs{2}=xs0 /\\ pk{2}=w.`kg_pk /\\ suffix{2}=complete_sk_suffix w.`kg_sk /\\\n cstar{2}=Some cs /\\ ct{2}=ct0 /\\ ROG.m{1}=gm0 /\\ ROG.m{2}=gm0 ==>\n res{1}=res.`1{2} /\\ ROG.m{1}=gm0 /\\ ROG.m{2}=gm0 /\\\n SimPublic.pk{1}=w.`kg_pk /\\ SimPublic.suffix{1}=complete_sk_suffix w.`kg_sk /\\\n SimPublic.cstar{1}=Some cs /\\ SimPublic.count{1}=n0+1 /\\ SimHistory.h{1}=log0].\nproof. exact (hist_lookup_original_equiv w g xs0 log0 table ex hs cs ct0 gm0 n0). qed.\n"
+    },
+    {
+      "source": "kem_history_refinement/NTRUPlus768HistBuild.ec",
+      "source_sha256": "47e57a5e140f3f8925102fdcf3aea8280dbaa3fc16434aa192f9dd794814cae8",
+      "semantic_target": "hist_build_invariant",
+      "module_binders": [],
+      "sentinel": "\nlemma __history_refinement_eof_HistBuild w0 g0 qs0 :\n hoare[HistBuild.run:w=w0 /\\ g=g0 /\\ qs=qs0 ==>\n hist_rep res.`1 ROH.m /\\ size res.`1<=size qs0 /\\\n (!res.`2=>fo_hcache_good w0 g0 None ROH.m)].\nproof. exact (hist_build_invariant w0 g0 qs0). qed.\n"
+    },
+    {
+      "source": "kem_history_refinement/NTRUPlus768HistBound.ec",
+      "source_sha256": "81d356ef2577caae21a4f81f3805ea323b91d7d868e7e12e5a4ad65a4d6e6738",
+      "semantic_target": "hist_lookup_after_build_distance",
+      "module_binders": [],
+      "sentinel": "\nlemma __history_refinement_eof_HistBound w0 g0 gm0 qs0 ct0 &m (event:cca_reply->bool) :\n pke_key_relation w0=>acwc2_cache_matches g0 gm0=>\n `|Pr[HistLookupAfterBuild.run(w0,g0,gm0,qs0,ct0,true)@&m:event res.`1]-\n Pr[HistLookupAfterBuild.run(w0,g0,gm0,qs0,ct0,false)@&m:event res.`1]|\n <=(size qs0)%r*fo_error w0 g0.\nproof. exact (hist_lookup_after_build_distance w0 g0 gm0 qs0 ct0 &m event). qed.\n"
+    },
+    {
+      "source": "kem_history_refinement/NTRUPlus768HistCosts.ec",
+      "source_sha256": "d435eedef06410a9b1975b63c93ecc308eb7010fa2afc199f75a662d808017b1",
+      "semantic_target": "hist_public_lookup_projection",
+      "module_binders": [],
+      "sentinel": "\nlemma __history_refinement_eof_HistCosts :\n equiv[HistPublicLookup.run ~ HistLookupAfterBuild.run:\n pk{1}=w{2}.`kg_pk /\\ suffix{1}=complete_sk_suffix w{2}.`kg_sk /\\\n ={qs,ct} /\\ ROG.m{1}=gm{2} /\\ which{2} ==>\n res{1}.`1=res{2}.`1 /\\ ={ROG.m,ROH.m}].\nproof. exact (hist_public_lookup_projection). qed.\n"
+    },
+    {
+      "source": "kem_history_refinement/NTRUPlus768HistAverage.ec",
+      "source_sha256": "6d3ec1aebc5494a374dab020d75e2fa9dc7216f161c724744b2e03b3b6441aa9",
+      "semantic_target": "hist_public_lookup_setup_distance",
+      "module_binders": [],
+      "sentinel": "\nlemma __history_refinement_eof_HistAverage qs ct event &m :\n `|Pr[HistAveragePublicExperiment.run(qs,ct,event)@&m:res]-\n   Pr[HistAverageExperiment.run(qs,ct,false,event)@&m:res]|\n <=(size qs)%r/(2%r^353).\nproof. exact (hist_public_lookup_setup_distance qs ct event &m). qed.\n"
+    }
+  ],
+  "contracts": []
+}

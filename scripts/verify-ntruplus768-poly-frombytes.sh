@@ -4,6 +4,8 @@ set -euo pipefail
 
 SCRIPT_DIR=$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)
 REPO_ROOT=$(cd -- "$SCRIPT_DIR/.." && pwd)
+
+python3 "$REPO_ROOT/tests/ntruplus768/toolchain/check_model_compatibility.py" --source-only
 PROOF_DIR="$REPO_ROOT/ntruplus/proof/768/ref/poly_frombytes"
 PROOF="$PROOF_DIR/NTRUPlus768PolyFromBytesAlgebra.ec"
 TEST_DIR="$REPO_ROOT/tests/ntruplus768/poly_frombytes"
@@ -108,7 +110,7 @@ compile_easycrypt() {
     fail "Why3 server did not accept the poly_frombytes proof after three attempts"
   fi
 
-  if ! easycrypt compile -no-eco -p Z3 -timeout 5 -max-provers 1 \
+  if ! easycrypt compile -I "Jasmin:$REPO_ROOT/ntruplus/proof/compat/jasmin" -no-eco -p Z3 -timeout 5 -max-provers 1 \
     -server "$socket" \
     -I "$PROOF_DIR" \
     -I "$BASEMUL_PROOF" \

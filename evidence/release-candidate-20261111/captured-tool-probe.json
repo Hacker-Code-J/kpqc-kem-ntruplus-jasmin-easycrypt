@@ -1,0 +1,22 @@
+{
+  "scope": "Tiny positive/unfinished-proof smoke test with trailing declaration sentinel in isolated captured home plus host OS; not runtime-bound replay",
+  "environment_manifest_sha256": "fb2cb4f9be729ef3706d9ec7a98e44ad6b35230e743762ba29899301b732d4d5",
+  "checks": [
+    {
+      "source": "CapturedToolProbeV4.ec",
+      "sha256": "49d5f71684aca47d1171ccd2cb01eeb19e5c25cac1bfc4ca153e6b2e7a23e5b7",
+      "exit_code": 0,
+      "expected_success": true,
+      "expectation_met": true,
+      "diagnostic_tail": ""
+    },
+    {
+      "source": "CapturedToolProbeOpenV4.ec",
+      "sha256": "f233a501060b93bcda96102bc990ccda19e35a54d901e5de75f6bfc2ac954fb9",
+      "exit_code": 1,
+      "expected_success": false,
+      "expectation_met": true,
+      "diagnostic_tail": "% (-1.0B / [frag -1.0B])\n[\\] [0003] 50.3% (-1.0B / [frag -1.0B])\n[|] [0003] 55.1% (-1.0B / [frag -1.0B])\n[/] [0003] 59.9% (-1.0B / [frag -1.0B])\n[-] [0004] 85.7% (-1.0B / [frag -1.0B])\n                                                   \n                                                   \n[critical] [/tmp/work/results/CapturedToolProbeOpenV4.ec: line 3 (14) to line 4 (36)] cannot process [axiom] inside a proof script\n[\\] [0004] 85.7% (-1.0B / [frag -1.0B])\n[|] [0004] 85.7% (-1.0B / [frag -1.0B])\n"
+    }
+  ]
+}

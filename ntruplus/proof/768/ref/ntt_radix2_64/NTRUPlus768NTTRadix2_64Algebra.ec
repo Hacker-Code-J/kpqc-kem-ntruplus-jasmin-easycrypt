@@ -478,10 +478,8 @@ proof.
     rewrite /r /x barrett_qhalfE /q.
     smt().
   have Hrange : -1728 <= coeff (barrett_reduce a) <= 1728.
-  + rewrite Hcoeff /r.
-    move: Hr.
-    rewrite barrett_qhalfE.
-    smt().
+  + rewrite Hcoeff.
+    by move: Hr; rewrite /r /centered_rem /k barrett_qhalfE.
   split; first by rewrite Hcoeff /r.
   split; first exact Hrange.
   rewrite Hcoeff /x.

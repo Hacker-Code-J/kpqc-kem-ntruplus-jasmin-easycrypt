@@ -7,7 +7,7 @@ import SLH64.
 require import Array4 Array96 Array768 WArray8 WArray192 WArray1536.
 
 abbrev nTRUPLUS_ZETAS96 =
-((Array96.of_list witness)
+((Array96.of_list witness<:W16.t>)
 [(W16.of_int 223); (W16.of_int 1138); (W16.of_int (-1059));
 (W16.of_int (-397)); (W16.of_int (-183)); (W16.of_int 1655);
 (W16.of_int 559); (W16.of_int (-1674)); (W16.of_int 277); (W16.of_int 933);

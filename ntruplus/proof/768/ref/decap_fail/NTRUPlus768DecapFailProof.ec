@@ -104,7 +104,8 @@ lemma decap_fail_spec_zero_iff
   decap_fail_spec_bool decode_failed compare_failed = W8.of_int 0 <=>
   ! decode_failed /\ ! compare_failed.
 proof.
-  case decode_failed; case compare_failed => /=; smt().
+  case decode_failed; case compare_failed => /=;
+  by rewrite /decap_fail_spec_bool /fail_byte /= ?W8.to_uint_eq.
 qed.
 
 lemma decap_fail_spec_one_iff
@@ -112,7 +113,8 @@ lemma decap_fail_spec_one_iff
   decap_fail_spec_bool decode_failed compare_failed = W8.of_int 1 <=>
   decode_failed \/ compare_failed.
 proof.
-  case decode_failed; case compare_failed => /=; smt().
+  case decode_failed; case compare_failed => /=;
+  by rewrite /decap_fail_spec_bool /fail_byte /= ?W8.to_uint_eq.
 qed.
 
 lemma decap_fail_spec_to_uint

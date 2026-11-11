@@ -1,0 +1,3 @@
+[general]
+# Legacy Formosa module name, implemented by the installed Jasmin x86 model.
+rdirs = Jasmin:ntruplus/proof/compat/jasmin

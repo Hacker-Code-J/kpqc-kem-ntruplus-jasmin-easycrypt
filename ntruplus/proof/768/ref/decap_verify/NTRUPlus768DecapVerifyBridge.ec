@@ -85,8 +85,9 @@ lemma decap_verify_procedure_functional
   hoare [Verify.verify :
     arg = (buf1, buf2) ==> res = compare_result].
 proof.
-  move=> [_ [_ ->]].
-  exact (verify_functional buf1 buf2).
+  move=> [_ [_ Hresult]].
+  conseq (verify_functional buf1 buf2) => //.
+  by move=> &m; rewrite Hresult.
 qed.
 
 lemma decap_verify_procedure_correct
@@ -98,6 +99,7 @@ lemma decap_verify_procedure_correct
   phoare [Verify.verify :
     arg = (buf1, buf2) ==> res = compare_result] = 1%r.
 proof.
-  move=> [_ [_ ->]].
-  exact (verify_correct buf1 buf2).
+  move=> [_ [_ Hresult]].
+  conseq (verify_correct buf1 buf2) => //.
+  by move=> &m; rewrite Hresult.
 qed.

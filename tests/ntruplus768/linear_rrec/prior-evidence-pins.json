@@ -1,0 +1,13 @@
+{
+  "handoff/verification/ntruplus-failure-bound-20261013/final-replay/summary.json": "b09408d060d644a04961057c24c82fcdaa41e0ca7a82de5a3cc466817de3a161",
+  "handoff/verification/ntruplus-keygen-complete-20261013/final-replay/summary.json": "6a3e54cf3ff71f926298eb93cb64cbe0d5421f2f53de9c0e32720b1da451a131",
+  "handoff/verification/ntruplus-encap-agreement-20261012/final-replay/summary.json": "b0c233e9ee3f9fa3e16f8caf2361d3c1c269202f561e11b0f04878d5fa5a5824",
+  "handoff/verification/ntruplus-classical-rom-20261013/final-replay/summary.json": "0f2a09c1c0be2585be1c73ae6cfc52cb5d75c17e6f4e5878d3ab159804846016",
+  "handoff/verification/ntruplus-stopped-rom-20261013/final-replay/summary.json": "6016c2c22d81fae43c2ab8e14955136779432fc405efa6f70e2ccff8e473d702",
+  "handoff/verification/ntruplus-acceptance-bound-20261013/final-replay/summary.json": "ed07f10197e0182cd837f930aae347861f835137b6abcf488f5b05c853256c5e",
+  "handoff/verification/ntruplus-numerical-dfr-20261014/final-replay/summary.json": "9c67e99f22cb256bd9874c0eb698a0dfaf26bb26aa0ba67f7beac453e1c7a791",
+  "handoff/verification/ntruplus-indcca-game-20261014/final-replay/summary.json": "2f5e01a29467674796b7252c5245e29cb542a60de93e7af8e4c6071bbec211c5",
+  "handoff/verification/ntruplus-pke-average-20261014/final-replay/summary.json": "6e005a1f1d4fbdf723f0cb2b47e4666f0ac3a4d7d177a686ae9474ecf7f4aece",
+  "handoff/verification/ntruplus-acwc2-contracts-20261014/final-replay/summary.json": "8db7730a68f34d597377236eac70932ce0e9f1c873dd8652391660e0a25a37d7",
+  "handoff/verification/ntruplus-acwc2-correctness-20261014/final-replay/summary.json": "71927ffd18ec5f8dce0ee2fac9288f7438f7a48abd8cb19386e218628af1e0a3"
+}

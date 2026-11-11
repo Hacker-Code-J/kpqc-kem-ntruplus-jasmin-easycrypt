@@ -1,0 +1,109 @@
+{
+  "schema": 1,
+  "status": "FROZEN",
+  "mains": [
+    {
+      "source": "kem_indcpa_reduction/NTRUPlus768CPAChallenge.ec",
+      "source_sha256": "92d338ae696eec4659ec6d1c549dfef4f8d7a0425e2889a46ece43b493674bc0",
+      "semantic_target": "cpa_hash_split_law",
+      "module_binders": [],
+      "sentinel": "\nlemma __indcpa_eof_CPAChallenge : dmap (uniform32 `*` uniform192) hash_join=uniform224.\nproof. exact(cpa_hash_split_law). qed.\n"
+    },
+    {
+      "source": "kem_indcpa_reduction/NTRUPlus768CPAChallengeBridge.ec",
+      "source_sha256": "ba15dab93eeb01ff5baa720e11d0c91cc43f8ab39ab2e6ce5affbb5917cb0c8b",
+      "semantic_target": "cpa_actual_programmed_probability",
+      "module_binders": [
+        "A"
+      ],
+      "sentinel": "\nlemma __indcpa_eof_CPAChallengeBridge\n (A<:CCAExtendedAdversary {-ROE,-ROF,-ROG,-ROH,-RawXOFStreams,-SimPublic,-SimHistory}) &m :\n Pr[SimPublicFreshGame(A).run() @ &m:res]=Pr[CPAProgrammed(A).run() @ &m:res].\nproof. exact(cpa_actual_programmed_probability A &m). qed.\n"
+    },
+    {
+      "source": "kem_indcpa_reduction/NTRUPlus768CPACrossHit.ec",
+      "source_sha256": "951edf1436bfd63e92b33e39a4d36a326d286768c1ba9a54ee8a5e9ced254a07",
+      "semantic_target": "cpa_cross_hit",
+      "module_binders": [
+        "A"
+      ],
+      "sentinel": "\nlemma __indcpa_eof_CPACrossHit (A<:CCAExtendedAdversary {-ROE,-ROF,-ROG,-ROH,-RawXOFStreams,-SimPublic,-SimHistory}) qHC &m : 0<=qHC=>\n hoare[CPAPhase(A).run:true ==>fsize SimHistory.h<=qHC]=>\n Pr[CPAHybrid(A).run(true)@&m:res]<=qHC%r/(2%r^768).\nproof. exact(cpa_cross_hit A qHC &m). qed.\n"
+    },
+    {
+      "source": "kem_indcpa_reduction/NTRUPlus768CPAFinal.ec",
+      "source_sha256": "cf43d0bbdc5caac916a9027eae4135aaaadcee8320ed88499f9b0216ae88ef8a",
+      "semantic_target": "cpa_original_indcca",
+      "module_binders": [
+        "A",
+        "H",
+        "D",
+        "H",
+        "D"
+      ],
+      "sentinel": "\nlemma __indcpa_eof_CPAFinal\n (A<:CCAExtendedAdversary {-ROE,-ROF,-ROG,-ROH,-RawXOFStreams,-CCADecapOracle,-FOPublicKey,\n  -FOContext,-FOBadState,-FOBudgetState,-FOGRO.RO,-FOGRO.FRO,-SimPublic,-SimHistory,-SimBad,\n  -SimPhaseInput,-SimSelectedFixed,-SimPublicBudget,-SimHRO.RO,-SimHRO.FRO,-SimGRO.RO,-SimGRO.FRO,\n  -SH.HB.Count,-SH.HB.HybOrcl,-ErasureSeedLog,-ErasureHit,-ErasureSeedPool,-EBudgetState,-ErasureTape,\n  -CPAReduction,-CPAHitState}) &m qE q0 qH qC :\n 0<=q0=>FOBudgetState.limit{m}=q0=>0<=qH=>0<=qC=>\n (forall(H<:CCAExtendedOraclePort {-A})(D<:CCADecapPort {-A}),\n  islossless H.e=>islossless H.f=>islossless H.g=>islossless H.h=>islossless H.raw=>\n  islossless D.decap=>islossless A(H,D).guess)=>\n hoare[CountedA(A,SharedCCAExtendedOracles,CCADecapOracle).guess:\n EBudgetState.requests=0 /\\ EBudgetState.forwarded=0 /\\ EBudgetState.limit=qE /\\\n !EBudgetState.overflow /\\ EBudgetState.queries=[] ==>EBudgetState.requests<=qE]=>\n erasure_budget_initial qE EBudgetState.requests{m} EBudgetState.forwarded{m}\n EBudgetState.limit{m} EBudgetState.overflow{m} EBudgetState.queries{m}=>\n hoare[FOCountedA(A,FOHashView(FONativePlainBackend),FODecapView(FONativePlainBackend)).guess:\n fo_budget_initial q0 FOBudgetState.nH FOBudgetState.nD FOBudgetState.limit FOBudgetState.overflow ==>\n fo_query_count FOBudgetState.nH FOBudgetState.nD<=q0]=>\n hoare[FOCountedA(A,FOHashView(FOFullPlainBackend),FODecapView(FOFullPlainBackend)).guess:\n fo_budget_initial q0 FOBudgetState.nH FOBudgetState.nD FOBudgetState.limit FOBudgetState.overflow ==>\n fo_query_count FOBudgetState.nH FOBudgetState.nD<=q0]=>\n (forall(H<:CCAExtendedOraclePort {-A,-FOBudgetState})(D<:CCADecapPort {-A,-FOBudgetState}),\n hoare[FOCountedA(A,H,D).guess:FOBudgetState.nD=0 ==>FOBudgetState.nD<=max 0 budget])=>\n hoare[SimPublicCountedA(A,FOHashView(SimKnownPublicBackend),FODecapView(SimKnownPublicBackend)).guess:\n sim_public_budget_initial qH SimPublicBudget.nh SimPublicBudget.limit SimPublicBudget.overflow ==>\n SimPublicBudget.nh<=qH]=>\n hoare[CPAPhase(A).run:true ==>fsize SimHistory.h<=qC]=>\n `|Pr[CCAOriginalGame(A).run()@&m:res]-1%r/2%r| <=\n ((130820%r+512%r*qE%r)/(2%r^256)+q0%r/(2%r^353))+\n ((max 0 budget)%r/(2%r^768)+(qH+max 0 budget)%r/(2%r^353))+\n (2%r*`|Pr[CPAGame(CPAReduction(A)).run()@&m:res]-1%r/2%r|+qC%r/(2%r^768)).\nproof. exact(cpa_original_indcca A &m qE q0 qH qC). qed.\n"
+    },
+    {
+      "source": "kem_indcpa_reduction/NTRUPlus768CPAHitHistory.ec",
+      "source_sha256": "f9ed0adfedfb49c86f2c6042d52a03b0aada8877d9700cdddba6bd457a670002",
+      "semantic_target": "cpa_hit_adversary_history",
+      "module_binders": [
+        "A"
+      ],
+      "sentinel": "\nlemma __indcpa_eof_CPAHitHistory\n (A<:CCAExtendedAdversary {-CPAHitState,-SimHistory,-ROE,-ROF,-ROG,-ROH,-RawXOFStreams,-SimPublic,-CCADecapOracle}) :\n hoare[A(SimOracles(FOGActual,CPAHitH),SimLookup(FOGActual)).guess :\n CPAHitState.hit=(CPAHitState.target \\in SimHistory.h) ==>\n CPAHitState.hit=(CPAHitState.target \\in SimHistory.h)].\nproof. exact(cpa_hit_adversary_history A). qed.\n"
+    },
+    {
+      "source": "kem_indcpa_reduction/NTRUPlus768CPAHitOracles.ec",
+      "source_sha256": "9c0bcdea75bba8b75b222520087b54ec3c7604d9f51986d1f40cb980a120a64c",
+      "semantic_target": "cpa_hit_context_coupling",
+      "module_binders": [
+        "C",
+        "H"
+      ],
+      "sentinel": "\nlemma __indcpa_eof_CPAHitOracles (C<:CPAHContext {-ROH,-CPAHitState}) :\n (forall(H<:SimHPort {-C}),islossless H.get=>islossless C(H).run)=>\n equiv[C(CPAHitH).run ~ C(CPAHitH).run :\n ={arg,glob C,glob CPAHitState} /\\\n cpa_h_outside CPAHitState.target{1} ROH.m{1} ROH.m{2} ==>\n ={CPAHitState.hit} /\\ (!CPAHitState.hit{2}=>\n ={res,glob C,glob CPAHitState} /\\\n cpa_h_outside CPAHitState.target{1} ROH.m{1} ROH.m{2})].\nproof. exact(cpa_hit_context_coupling C). qed.\n"
+    },
+    {
+      "source": "kem_indcpa_reduction/NTRUPlus768CPAModel.ec",
+      "source_sha256": "220dec4d6966fa79f5e8c846f0524a5b2e12ecdc9fed3a377994308490cf5596",
+      "semantic_target": "cpa_cipher_ll",
+      "module_binders": [],
+      "sentinel": "\nlemma __indcpa_eof_CPAModel : islossless CPACipher.run.\nproof. exact(cpa_cipher_ll). qed.\n"
+    },
+    {
+      "source": "kem_indcpa_reduction/NTRUPlus768CPAProgramming.ec",
+      "source_sha256": "68e5428c0f72db87684c2a7d0d10b7c59085b6ed9877aee3a09f68359211367e",
+      "semantic_target": "cpa_programming_game_distance",
+      "module_binders": [
+        "A",
+        "H"
+      ],
+      "sentinel": "\nlemma __indcpa_eof_CPAProgramming\n (A<:CCAExtendedAdversary {-ROE,-ROF,-ROG,-ROH,-RawXOFStreams,-SimPublic,-SimHistory,-CPAHitState}) &m :\n (forall(H<:SimHPort {-A}),islossless H.get=>\n islossless A(SimOracles(FOGActual,H),SimLookup(FOGActual)).guess)=>\n `|Pr[CPAProgrammingGame(A).run(true)@&m:res.`1]-Pr[CPAProgrammingGame(A).run(false)@&m:res.`1]|\n <=Pr[CPAProgrammingGame(A).run(false)@&m:res.`2].\nproof. exact(cpa_programming_game_distance A &m). qed.\n"
+    },
+    {
+      "source": "kem_indcpa_reduction/NTRUPlus768CPAProgrammingBridge.ec",
+      "source_sha256": "54b67baeca1f7652314f5584763eb5d20d9e45d6c047a43e7dd6c9d357b6e33f",
+      "semantic_target": "cpa_programming_erased_probability",
+      "module_binders": [
+        "A"
+      ],
+      "sentinel": "\nlemma __indcpa_eof_CPAProgrammingBridge\n (A<:CCAExtendedAdversary {-ROE,-ROF,-ROG,-ROH,-RawXOFStreams,-SimPublic,-SimHistory,-CPAHitState,-CCADecapOracle}) &m (event:bool*bool->bool) :\n Pr[CPAProgrammingGame(A).run(false)@&m:event res]=Pr[CPAErased(A).run()@&m:event res].\nproof. exact(cpa_programming_erased_probability A &m event). qed.\n"
+    },
+    {
+      "source": "kem_indcpa_reduction/NTRUPlus768CPAReduction.ec",
+      "source_sha256": "441548ac9fa5b52c7c1c5cbff7a6b558858ec8f620f95d7735ddf2b46fed0f7c",
+      "semantic_target": "cpa_reduction_success",
+      "module_binders": [
+        "A",
+        "H",
+        "D"
+      ],
+      "sentinel": "\nlemma __indcpa_eof_CPAReduction (A<:CCAExtendedAdversary {-CPAReduction,-ROE,-ROF,-ROG,-ROH,-RawXOFStreams,-SimPublic,-SimHistory}) &m :\n (forall(H<:CCAExtendedOraclePort {-A})(D<:CCADecapPort {-A}),\n islossless H.e=>islossless H.f=>islossless H.g=>islossless H.h=>islossless H.raw=>\n islossless D.decap=>islossless A(H,D).guess)=>\n Pr[CPAGame(CPAReduction(A)).run()@&m:res]=\n (1%r+Pr[CPAUnprogrammed(A).run()@&m:res]-Pr[CPAHybrid(A).run(true)@&m:res])/2%r.\nproof. exact(cpa_reduction_success A &m). qed.\n"
+    },
+    {
+      "source": "kem_indcpa_reduction/NTRUPlus768CPAUnbiased.ec",
+      "source_sha256": "f4b28f27f417c151140325f6a7cb1c3e95246964404130f429d1b911e6a561a3",
+      "semantic_target": "cpa_erased_hit",
+      "module_binders": [
+        "A"
+      ],
+      "sentinel": "\nlemma __indcpa_eof_CPAUnbiased\n (A<:CCAExtendedAdversary {-ROE,-ROF,-ROG,-ROH,-RawXOFStreams,-SimPublic,-SimHistory}) &m :\n Pr[CPAErased(A).run()@&m:res.`2]=Pr[CPAUnprogrammed(A).run()@&m:res].\nproof. exact(cpa_erased_hit A &m). qed.\n"
+    }
+  ]
+}

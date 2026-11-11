@@ -16,3 +16,9 @@ encode:
 
 roundtrip:
 	$(EASYCRYPT) compile $(EASYCRYPT_FLAGS) $(ROUNDTRIP_PROOF)
+
+.PHONY: check-model-compatibility
+check-model-compatibility:
+	python3 ../../../../../tests/ntruplus768/toolchain/check_model_compatibility.py --source-only
+
+encode roundtrip: check-model-compatibility

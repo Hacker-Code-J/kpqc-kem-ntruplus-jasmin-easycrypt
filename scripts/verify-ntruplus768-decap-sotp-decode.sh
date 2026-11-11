@@ -4,6 +4,8 @@ set -euo pipefail
 
 SCRIPT_DIR=$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)
 REPO_ROOT=$(cd -- "$SCRIPT_DIR/.." && pwd)
+
+python3 "$REPO_ROOT/tests/ntruplus768/toolchain/check_model_compatibility.py" --source-only
 PROOF_ROOT="$REPO_ROOT/ntruplus/proof/768/ref"
 PROOF_DIR="$PROOF_ROOT/poly_sotp_decode"
 ALGEBRA_PROOF="$PROOF_DIR/NTRUPlus768PolySOTPDecodeAlgebra.ec"
@@ -137,7 +139,7 @@ compile_proof() {
 
   if ! (
     cd "$PROOF_DIR"
-    easycrypt compile -no-eco -p Z3 -timeout 5 -max-provers 1 \
+    easycrypt compile -I "Jasmin:$REPO_ROOT/ntruplus/proof/compat/jasmin" -no-eco -p Z3 -timeout 5 -max-provers 1 \
       -server "$WHY3_SOCKET" "$proof"
   ); then
     sed -n '1,120p' "$WORKDIR/why3.log" >&2 || true

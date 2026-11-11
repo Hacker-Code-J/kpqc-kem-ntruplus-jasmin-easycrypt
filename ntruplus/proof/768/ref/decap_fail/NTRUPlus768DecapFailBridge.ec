@@ -169,8 +169,9 @@ lemma decap_fail_procedure_functional
   hoare [DecapFail.combine :
     arg = (decode_fail_byte, compare_result) ==> res = final_fail].
 proof.
-  move=> [_ [_ [-> [-> [_ ->]]]]].
-  exact (decap_fail_functional decode_failed compare_failed).
+  move=> [_ [_ [Hdecode [Hcompare [_ Hfail]]]]].
+  conseq (decap_fail_functional decode_failed compare_failed) => //;
+    by move=> &m; rewrite ?Hdecode ?Hcompare ?Hfail.
 qed.
 
 lemma decap_fail_procedure_correct
@@ -188,6 +189,7 @@ lemma decap_fail_procedure_correct
   phoare [DecapFail.combine :
     arg = (decode_fail_byte, compare_result) ==> res = final_fail] = 1%r.
 proof.
-  move=> [_ [_ [-> [-> [_ ->]]]]].
-  exact (decap_fail_correct decode_failed compare_failed).
+  move=> [_ [_ [Hdecode [Hcompare [_ Hfail]]]]].
+  conseq (decap_fail_correct decode_failed compare_failed) => //;
+    by move=> &m; rewrite ?Hdecode ?Hcompare ?Hfail.
 qed.

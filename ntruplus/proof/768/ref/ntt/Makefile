@@ -38,3 +38,9 @@ extract:
 check:
 	$(EASYCRYPT) compile -no-eco $(EASYCRYPT_INCLUDES) $(WORD_PROOF)
 	$(EASYCRYPT) compile -no-eco $(EASYCRYPT_INCLUDES) $(ALGEBRA_PROOF)
+
+.PHONY: check-model-compatibility
+check-model-compatibility:
+	python3 ../../../../../tests/ntruplus768/toolchain/check_model_compatibility.py --source-only
+
+check: check-model-compatibility

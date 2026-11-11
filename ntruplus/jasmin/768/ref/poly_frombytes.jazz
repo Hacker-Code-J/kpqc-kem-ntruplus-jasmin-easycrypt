@@ -1,0 +1,73 @@
+param int NTRUPLUS_N = 768;
+param int NTRUPLUS_Q = 3457;
+param int NTRUPLUS_POLYBYTES = 1152;
+
+// Official checked decoder: retain all decoded values, including on failure.
+// Caller supplies disjoint regions: 1536 writable bytes at rp (u16-aligned)
+// and 1152 initialized readable bytes at ap.
+#[safety =
+   { requires = is_arr_init(ap,0,NTRUPLUS_POLYBYTES)
+   , ensures = is_arr_init(rp,0,2 * NTRUPLUS_N)
+   }
+]
+#[ct = "secret × secret → secret × secret"]
+#[sct="
+{ ptr: transient, val: secret } ×
+{ ptr: transient, val: secret } →
+{ ptr: public, val: secret } ×
+secret
+"]
+export fn jade_ntruplus_ntruplus768_amd64_ref_poly_frombytes(
+  reg mut ptr u16[NTRUPLUS_N] rp,
+  reg const ptr u8[NTRUPLUS_POLYBYTES] ap) -> (reg ptr u16[NTRUPLUS_N], reg u32)
+{
+  reg u64 i;
+  reg u64 off;
+  reg u8 byte;
+  reg u16 t0;
+  reg u16 t1;
+  reg u16 word;
+  reg u32 wide;
+  reg u32 delta;
+  reg u32 fail;
+
+  _ = #init_msf();
+  i = 0;
+  fail = 0;
+  while (i < NTRUPLUS_N / 2) {
+    off = i;
+    off <<= 1;
+    off += i;
+
+    byte = ap[off];
+    t0 = (16u) byte;
+    byte = ap[off + 1];
+    word = (16u) byte;
+    word <<= 8;
+    t0 |= word;
+    t0 &= 4095;
+
+    t1 = (16u) byte;
+    t1 >>= 4;
+    byte = ap[off + 2];
+    word = (16u) byte;
+    word <<= 4;
+    t1 |= word;
+    t1 &= 4095;
+
+    rp[2 * i] = t0;
+    rp[2 * i + 1] = t1;
+    wide = (32u) t0;
+    delta = NTRUPLUS_Q - 1;
+    delta -= wide;
+    fail |= delta;
+    wide = (32u) t1;
+    delta = NTRUPLUS_Q - 1;
+    delta -= wide;
+    fail |= delta;
+
+    i += 1;
+  }
+  fail >>= 31;
+  return rp, fail;
+}

@@ -1,0 +1,49 @@
+param int NTRUPLUS_N = 768;
+
+// Three disjoint, u16-aligned regions. Product coefficients are in
+// [-3457,3457), and add coefficients are centered in [-1728,1728].
+// Secret comparisons select register values through conditional moves.
+#[safety =
+   { requires = is_arr_init(product,0,2 * NTRUPLUS_N) &&
+                is_arr_init(add,0,2 * NTRUPLUS_N)
+   , ensures = is_arr_init(output,0,2 * NTRUPLUS_N)
+   }
+]
+#[ct = "secret × secret × secret → secret"]
+#[sct="
+{ ptr: transient, val: secret } ×
+{ ptr: transient, val: secret } ×
+{ ptr: transient, val: secret } →
+{ ptr: public, val: secret }
+"]
+export fn jade_ntruplus_ntruplus768_amd64_ref_poly_centered_add(
+  reg mut ptr u16[NTRUPLUS_N] output,
+  reg const ptr u16[NTRUPLUS_N] product,
+  reg const ptr u16[NTRUPLUS_N] add) -> reg ptr u16[NTRUPLUS_N]
+{
+  reg u64 i;
+  reg u16 p, a;
+  reg u32 s, t;
+  reg bool low, high;
+
+  _ = #init_msf();
+  i = 0;
+  while (i < NTRUPLUS_N) {
+    p = product[i];
+    a = add[i];
+    s = (32s) p;
+    t = (32s) a;
+    s += t;
+    t = s;
+    t += 3457;
+    low = s <s -3457;
+    s = low ? t : s;
+    t = s;
+    t -= 3457;
+    high = s >=s 3457;
+    s = high ? t : s;
+    output[i] = (16u) s;
+    i += 1;
+  }
+  return output;
+}

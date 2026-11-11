@@ -209,3 +209,9 @@ ntt-basemul-invntt: ntt-invntt-roundtrip
 
 valid-key-decap-m1: ntt-basemul-invntt
 	$(EASYCRYPT) compile $(EASYCRYPT_INCLUDES) $(VALID_KEY_DECAP_M1_THEORY)
+
+.PHONY: check-model-compatibility
+check-model-compatibility:
+	python3 ../../../../../tests/ntruplus768/toolchain/check_model_compatibility.py --source-only
+
+factorization evaluation representation forward-stage1 forward-radix3 forward-radix2-64 forward-radix2-32 forward-radix2-16 forward-radix2-8 forward-radix2-4 forward-ntt inverse-radix2-4-recombination inverse-radix2-4-semantics inverse-radix2-8-recombination inverse-radix2-8-semantics inverse-radix2-16-recombination inverse-radix2-16-semantics inverse-radix2-32-recombination inverse-radix2-32-semantics inverse-radix2-64-recombination inverse-radix2-64-semantics inverse-radix3-recombination inverse-radix3-interpolation inverse-radix3-semantics inverse-final-recombination inverse-final-interpolation inverse-final-semantics inverse-ntt ntt-invntt-roundtrip ntt-basemul-invntt valid-key-decap-m1: check-model-compatibility

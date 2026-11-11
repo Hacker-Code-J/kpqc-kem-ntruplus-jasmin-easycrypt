@@ -1,0 +1,13 @@
+{
+  "ntruplus/jasmin/768/ref/crepmod3.jazz": "62ad219ab935c065a54cf4fa36480311b4d432d7e639989782c97f45064c769a",
+  "ntruplus/jasmin/768/ref/decap_candidate.jazz": "45ba7d0479dd46474eff79ae1c324c44ff0ce8de30e51d8cfc3c572cbde51a85",
+  "ntruplus/jasmin/768/ref/invntt.jazz": "513f145ce7512ae9af6c08749fd653d003b11031228143e740e42676aca95edc",
+  "ntruplus/jasmin/768/ref/invntt_final.jazz": "3250edcbdd2d731d8f94a1587641f41a2099beb2b3aabdd8aea2a4a29ad2536d",
+  "ntruplus/jasmin/768/ref/invntt_radix2_16.jazz": "53649ec7389a061c7ee4420777007056ab28f5c2afa0a03a7a97d25181e5314a",
+  "ntruplus/jasmin/768/ref/invntt_radix2_32.jazz": "a6e70c24854fa01aba45b1e22c3f5f31d40e9e3f0f758169f553f197ceb53e0d",
+  "ntruplus/jasmin/768/ref/invntt_radix2_4.jazz": "0cdd6cbf7f299bcc4f986005abf0e6b43bc26c9c80b85b412e3bc07fe68e894c",
+  "ntruplus/jasmin/768/ref/invntt_radix2_64.jazz": "be58bbaf1985f6c56178b6cefb8b1e177a195ef660f4ace7f96887ab3a873369",
+  "ntruplus/jasmin/768/ref/invntt_radix2_8.jazz": "bbe2594fd8d8e5791601f6041d30724e2f9664b31ca9857804c639d6168190da",
+  "ntruplus/jasmin/768/ref/invntt_radix3.jazz": "7ee6985f8752444c7c96e83ff8ec58dc4561624a970fb18d611702f59a2b37e5",
+  "ntruplus/jasmin/768/ref/poly_basemul.jazz": "d1e4b768d08bb25e15d74d512184be78753ca72d53a227fb76270eab6647cad8"
+}

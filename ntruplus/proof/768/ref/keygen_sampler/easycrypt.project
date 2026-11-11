@@ -1,8 +1,8 @@
 [general]
+rdirs = Jasmin:../../../compat/jasmin
 timeout = 30
 
 idirs = JazzEC:../../../../../external/formosa-mlkem/crypto-specs/arrays
-rdirs = Jasmin:../../../../../external/formosa-mlkem/jasmin/eclib
 
 rdirs = .
 rdirs = ../basemul

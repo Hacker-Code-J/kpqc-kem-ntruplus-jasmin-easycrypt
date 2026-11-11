@@ -1,0 +1,64 @@
+{
+  "schema": 1,
+  "status": "OBSERVED_LOCAL_ENVIRONMENT_NOT_INSTALLER_LOCK",
+  "observed_on": "2026-11-11",
+  "platform": "Linux x86_64",
+  "scope": "Observed tools during publication preparation; not a clean-machine full replay. Binary hashes identify this host only.",
+  "tools": {
+    "python3": {
+      "version": "Python 3.10.12",
+      "sha256": "a2f33a6e006989270f4340528eb61f8f97366e00a5d1b602ac8672ea44fc56ae"
+    },
+    "gcc": {
+      "version": "gcc (Ubuntu 11.4.0-1ubuntu1~22.04.3) 11.4.0",
+      "sha256": "821af3c74506283c179ca413bb33e6b528805a4dd8a5c09df125e5ad560a9e89"
+    },
+    "opam": {
+      "version": "2.1.2",
+      "sha256": "0580a4591933d87e38af9b0f85b3d430c1bdbf02dbe3b2bdaa8eacfafa1e67fb"
+    },
+    "jasminc": {
+      "version": "Jasmin Compiler 2026.09.0",
+      "sha256": "d17844ca514d73b459d2a99dcaa886b2b07bccfd2f90925b1cc400e475e62b53"
+    },
+    "jasmin2ec": {
+      "version": "Jasmin Compiler 2026.09.0",
+      "sha256": "9a32cb80dc839e9feb2d6eff519b2df65d7d0517da5e6e801c889697b85d7660"
+    },
+    "why3": {
+      "version": "Why3 platform, version 1.8.2",
+      "sha256": "59981bbdf5225aa1fc1a3f321abc98987ef8ac4d6e0f25f8f0642cb19f7a4d21"
+    },
+    "z3": {
+      "version": "Z3 version 4.12.6 - 64 bit",
+      "sha256": "574aa7f011ef3c34c4ea1fd7255251d5054107124da0bcbbb3de82d12bfaa2d5"
+    },
+    "cvc5": {
+      "version": "This is cvc5 version 1.2.1 [git tag 1.2.1 branch HEAD]",
+      "sha256": "ee4c6787a95218a571080a599bdf579aca5b0f1e4f27687f70f46d4d12148974"
+    },
+    "ocamlc": {
+      "version": "5.4.0",
+      "sha256": "59d60287799b6014233c86b1a7d5f62ac14b24f4931294bdd9c2b7f2af589e1f"
+    },
+    "easycrypt": {
+      "opam_version": "2026.09",
+      "source_commit": "2aaa14acf7b2ce234b475f24f9e85ba0bdaeb024",
+      "source_worktree_clean": true,
+      "sha256": "f3a956f5a71af7a38e722c8364cc91b54d699c09c5e5108d4dd7c6bb261d565e"
+    },
+    "coqc_native_backend": {
+      "version": "The Coq Proof Assistant, version 8.20.1",
+      "ocaml_version": "4.12.0",
+      "mathcomp_version": "2.2.0",
+      "sha256": "3bd7c78fd110586840cc68f2a46740189024f3e33c03f3988427a5695bbddb63",
+      "note": "Separate Coq switch; system coqc on PATH is 8.15.0 and is not this backend."
+    }
+  },
+  "limitations": [
+    "EasyCrypt and Jasmin are installed through local opam pins; no clean-machine installer validated.",
+    "Jasmin source is an unpacked release without Git metadata; source archive digest must be pinned for release.",
+    "Inherited proof evidence compares absolute external toolchain/library paths and hashes; relocating summaries alone is insufficient.",
+    "No full proof replay or CPU/RAM benchmark performed by this inventory."
+  ]
+}

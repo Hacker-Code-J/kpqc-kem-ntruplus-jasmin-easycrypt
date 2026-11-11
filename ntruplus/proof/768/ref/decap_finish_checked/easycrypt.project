@@ -1,0 +1,12 @@
+[general]
+rdirs = Jasmin:../../../compat/jasmin
+timeout = 60
+rdirs = .
+rdirs = extracted
+rdirs = ../decap_verify
+rdirs = ../decap_fail
+rdirs = ../decap_mask
+rdirs = ../decap_terminal
+rdirs = ../../../../../external/formosa-mlkem/crypto-specs/arrays
+rdirs = ../../../../../external/formosa-mlkem/crypto-specs/common
+rdirs = ../../../../../external/formosa-mlkem/proof/eclib

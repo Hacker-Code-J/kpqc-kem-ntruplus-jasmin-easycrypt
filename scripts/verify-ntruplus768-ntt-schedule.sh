@@ -4,6 +4,8 @@ set -euo pipefail
 
 SCRIPT_DIR=$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)
 REPO_ROOT=$(cd -- "$SCRIPT_DIR/.." && pwd)
+
+python3 "$REPO_ROOT/tests/ntruplus768/toolchain/check_model_compatibility.py" --source-only
 TEST_DIR="$REPO_ROOT/tests/ntruplus768/ntt_schedule"
 CHECKER="$TEST_DIR/check_ntt_schedule.py"
 NTT_SOURCE="$REPO_ROOT/NTRU+/NTRU+768/ntt.c"

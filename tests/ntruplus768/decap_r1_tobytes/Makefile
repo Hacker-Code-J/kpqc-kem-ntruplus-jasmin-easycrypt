@@ -2,7 +2,7 @@
 
 CC ?= /usr/bin/gcc
 PYTHON ?= python3
-JASMINC ?= /usr/local/bin/jasminc
+JASMINC ?= jasminc
 JFLAGS ?= -arch x86-64 -call-conv linux -system linux
 OUTDIR ?= build
 

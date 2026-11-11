@@ -1,0 +1,39 @@
+param int NTRUPLUS_SKBYTES = 2336;
+param int NTRUPLUS_POLYBYTES = 1152;
+param int NTRUPLUS_HASH_F_BYTES = 32;
+
+// Disjoint byte arrays. Assemble f || hinv || HashF(pk).
+#[safety = { requires = is_arr_init(fbytes,0,NTRUPLUS_POLYBYTES)
+                       && is_arr_init(hinvbytes,0,NTRUPLUS_POLYBYTES)
+                       && is_arr_init(hash_f,0,NTRUPLUS_HASH_F_BYTES)
+           , ensures = is_arr_init(sk,0,NTRUPLUS_SKBYTES) }]
+#[ct = "secret × secret × secret × secret → secret"]
+#[sct="{ ptr: transient, val: secret } × { ptr: transient, val: secret } ×
+{ ptr: transient, val: secret } × { ptr: transient, val: secret } →
+{ ptr: public, val: secret }"]
+export fn jade_ntruplus_ntruplus768_amd64_ref_keygen_pack_sk(
+  reg mut ptr u8[NTRUPLUS_SKBYTES] sk,
+  reg const ptr u8[NTRUPLUS_POLYBYTES] fbytes,
+  reg const ptr u8[NTRUPLUS_POLYBYTES] hinvbytes,
+  reg const ptr u8[NTRUPLUS_HASH_F_BYTES] hash_f) ->
+  reg ptr u8[NTRUPLUS_SKBYTES]
+{
+  reg u64 i;
+  reg u8 b;
+  _ = #init_msf();
+  i = 0;
+  while (i < NTRUPLUS_SKBYTES) {
+    if (i < NTRUPLUS_POLYBYTES) {
+      b = fbytes[i];
+    } else {
+      if (i < 2 * NTRUPLUS_POLYBYTES) {
+        b = hinvbytes[i - NTRUPLUS_POLYBYTES];
+      } else {
+        b = hash_f[i - 2 * NTRUPLUS_POLYBYTES];
+      }
+    }
+    sk[i] = b;
+    i += 1;
+  }
+  return sk;
+}

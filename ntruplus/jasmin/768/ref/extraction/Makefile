@@ -1,6 +1,6 @@
 # -*- Makefile -*-
 
-JASMIN2EC ?= /usr/local/bin/jasmin2ec
+JASMIN2EC ?= jasmin2ec
 OUTDIR := $(if $(OUTDIR),$(OUTDIR),$(shell mktemp -d /tmp/ntruplus768-basemul-ec.XXXXXX))
 SLICE := jade_ntruplus_ntruplus768_amd64_ref_basemul
 NORMAL := $(OUTDIR)/NTRUPlus768Basemul.ec

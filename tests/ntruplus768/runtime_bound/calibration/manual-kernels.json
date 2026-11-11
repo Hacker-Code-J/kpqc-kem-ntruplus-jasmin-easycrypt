@@ -1,0 +1,1843 @@
+{
+  "schema": "rt-kernel-cost-calibration-v1",
+  "rules": {
+    "array_owned_clone": "3*cells",
+    "call": "2+arity+scratch_cells+3*result_cells+selector_ops",
+    "assignment": "1+primitive_expression_ops+3*copied_cells",
+    "guard": "expression_ops+branch",
+    "return_": "1+expression_ops+3*result_cells"
+  },
+  "callees": {
+    "ntt": {
+      "module": "RTFixedNTT",
+      "proc": "jade_ntruplus_ntruplus768_amd64_ref_ntt",
+      "original": "NTRUPlus768NTT.M.jade_ntruplus_ntruplus768_amd64_ref_ntt",
+      "ret": "W16.t Array768.t",
+      "cells": 768,
+      "arity": 2,
+      "scratch": 768,
+      "bound": "rt_fixed_ntt_bound",
+      "proof": "rt_fixed_ntt_jade_ntruplus_ntruplus768_amd64_ref_ntt_projection",
+      "cost": "rt_fixed_ntt_bound_cost"
+    },
+    "invntt": {
+      "module": "RTFixedInvNTT",
+      "proc": "jade_ntruplus_ntruplus768_amd64_ref_invntt",
+      "original": "NTRUPlus768InvNTT.M.jade_ntruplus_ntruplus768_amd64_ref_invntt",
+      "ret": "W16.t Array768.t",
+      "cells": 768,
+      "arity": 2,
+      "scratch": 768,
+      "bound": "rt_fixed_invntt_bound",
+      "proof": "rt_fixed_invntt_jade_ntruplus_ntruplus768_amd64_ref_invntt_projection",
+      "cost": "rt_fixed_invntt_bound_cost"
+    },
+    "basemul": {
+      "module": "RTFixedBasemul",
+      "proc": "jade_ntruplus_ntruplus768_amd64_ref_poly_basemul",
+      "original": "NTRUPlus768PolyBasemul.M.jade_ntruplus_ntruplus768_amd64_ref_poly_basemul",
+      "ret": "W16.t Array768.t",
+      "cells": 768,
+      "arity": 3,
+      "scratch": 768,
+      "bound": "rt_fixed_basemul_bound",
+      "proof": "rt_fixed_basemul_jade_ntruplus_ntruplus768_amd64_ref_poly_basemul_projection",
+      "cost": "rt_fixed_basemul_bound_cost"
+    },
+    "baseinv": {
+      "module": "RTFixedBaseinv",
+      "proc": "__poly_baseinv_core",
+      "original": "NTRUPlus768PolyBaseInv.M.__poly_baseinv_core",
+      "ret": "W16.t Array768.t*W64.t",
+      "cells": 768,
+      "arity": 2,
+      "scratch": 768,
+      "bound": "rt_fixed_baseinv_bound",
+      "proof": "rt_fixed_baseinv___poly_baseinv_core_projection",
+      "cost": "rt_fixed_baseinv_bound_cost"
+    },
+    "tobytes": {
+      "module": "RTFixedToBytes",
+      "proc": "jade_ntruplus_ntruplus768_amd64_ref_poly_tobytes",
+      "original": "NTRUPlus768PolyToBytes.M.jade_ntruplus_ntruplus768_amd64_ref_poly_tobytes",
+      "ret": "W8.t Array1152.t",
+      "cells": 1152,
+      "arity": 2,
+      "scratch": 1152,
+      "bound": "rt_fixed_tobytes_bound",
+      "proof": "rt_fixed_tobytes_jade_ntruplus_ntruplus768_amd64_ref_poly_tobytes_projection",
+      "cost": "rt_fixed_tobytes_bound_cost"
+    },
+    "frombytes": {
+      "module": "RTFixedFromBytes",
+      "proc": "jade_ntruplus_ntruplus768_amd64_ref_poly_frombytes",
+      "original": "NTRUPlus768PolyFromBytesChecked.M.jade_ntruplus_ntruplus768_amd64_ref_poly_frombytes",
+      "ret": "W16.t Array768.t*W32.t",
+      "cells": 768,
+      "arity": 2,
+      "scratch": 768,
+      "bound": "rt_fixed_frombytes_bound",
+      "proof": "rt_fixed_frombytes_jade_ntruplus_ntruplus768_amd64_ref_poly_frombytes_projection",
+      "cost": "rt_fixed_frombytes_bound_cost"
+    },
+    "centeredadd": {
+      "module": "RTFixedCenteredAdd",
+      "proc": "jade_ntruplus_ntruplus768_amd64_ref_poly_centered_add",
+      "original": "NTRUPlus768PolyCenteredAdd.M.jade_ntruplus_ntruplus768_amd64_ref_poly_centered_add",
+      "ret": "W16.t Array768.t",
+      "cells": 768,
+      "arity": 3,
+      "scratch": 768,
+      "bound": "rt_fixed_centeredadd_bound",
+      "proof": "rt_fixed_centeredadd_jade_ntruplus_ntruplus768_amd64_ref_poly_centered_add_projection",
+      "cost": "rt_fixed_centeredadd_bound_cost"
+    },
+    "polysub": {
+      "module": "RTFixedPolySub",
+      "proc": "jade_ntruplus_ntruplus768_amd64_ref_poly_sub",
+      "original": "NTRUPlus768PolySub.M.jade_ntruplus_ntruplus768_amd64_ref_poly_sub",
+      "ret": "W16.t Array768.t",
+      "cells": 768,
+      "arity": 3,
+      "scratch": 768,
+      "bound": "rt_fixed_polysub_bound",
+      "proof": "rt_fixed_polysub_jade_ntruplus_ntruplus768_amd64_ref_poly_sub_projection",
+      "cost": "rt_fixed_polysub_bound_cost"
+    },
+    "decapr2": {
+      "module": "RTFixedDecapR2",
+      "proc": "jade_ntruplus_ntruplus768_amd64_ref_decap_r2",
+      "original": "NTRUPlus768DecapR2Comp.M.jade_ntruplus_ntruplus768_amd64_ref_decap_r2",
+      "ret": "W16.t Array768.t",
+      "cells": 768,
+      "arity": 4,
+      "scratch": 768,
+      "bound": "rt_fixed_decapr2_bound",
+      "proof": "rt_fixed_decapr2_jade_ntruplus_ntruplus768_amd64_ref_decap_r2_projection",
+      "cost": "rt_fixed_decapr2_bound_cost"
+    },
+    "normalize": {
+      "module": "RTFixedWordChecks",
+      "proc": "normalize",
+      "original": "RRecNormalize.run",
+      "ret": "W16.t Array768.t",
+      "cells": 768,
+      "arity": 1,
+      "scratch": 0,
+      "bound": "rt_fixed_normalize_bound",
+      "proof": "rt_fixed_normalize_projection",
+      "cost": "rt_fixed_normalize_bound_cost"
+    },
+    "trit": {
+      "module": "RTFixedWordChecks",
+      "proc": "trit",
+      "original": "RRecTrit.check",
+      "ret": "bool",
+      "cells": 0,
+      "arity": 1,
+      "scratch": 0,
+      "bound": "rt_fixed_trit_bound",
+      "proof": "rt_fixed_trit_projection",
+      "cost": "rt_fixed_trit_bound_cost"
+    },
+    "encode": {
+      "module": "RTKernelEncode",
+      "proc": "run",
+      "original": "RTWordEncode.run",
+      "ret": "W8.t Array1152.t",
+      "cells": 1152,
+      "arity": 1,
+      "scratch": 0,
+      "bound": "rt_kernel_encode_bound",
+      "proof": "rt_kernel_encode_projection",
+      "cost": "rt_kernel_encode_cost"
+    },
+    "publicinverse": {
+      "module": "RTKernelPublicInverse",
+      "proc": "run",
+      "original": "RRecPublicInverse.run",
+      "ret": "W16.t Array768.t option",
+      "cells": 768,
+      "arity": 1,
+      "scratch": 0,
+      "bound": "rt_kernel_publicinverse_bound",
+      "proof": "rt_kernel_publicinverse_projection",
+      "cost": "rt_kernel_publicinverse_cost"
+    },
+    "pkeencbody": {
+      "module": "RTKernelPKEEncBody",
+      "proc": "run",
+      "original": "PKEEncBody.run",
+      "ret": "W8.t Array1152.t",
+      "cells": 1152,
+      "arity": 3,
+      "scratch": 0,
+      "bound": "rt_kernel_pkeencbody_bound",
+      "proof": "rt_kernel_pkeencbody_projection",
+      "cost": "rt_kernel_pkeencbody_cost"
+    },
+    "pkeenc": {
+      "module": "RTKernelPKEEnc",
+      "proc": "run",
+      "original": "PKEEnc.run",
+      "ret": "W8.t Array1152.t option",
+      "cells": 1152,
+      "arity": 3,
+      "scratch": 0,
+      "bound": "rt_kernel_pkeenc_bound",
+      "proof": "rt_kernel_pkeenc_projection",
+      "cost": "rt_kernel_pkeenc_cost"
+    },
+    "rreccore": {
+      "module": "RTKernelRRecCore",
+      "proc": "run",
+      "original": "RRecCore.run",
+      "ret": "W16.t Array768.t",
+      "cells": 768,
+      "arity": 3,
+      "scratch": 0,
+      "bound": "rt_kernel_rreccore_bound",
+      "proof": "rt_kernel_rreccore_projection",
+      "cost": "rt_kernel_rreccore_cost"
+    },
+    "rrecfinish": {
+      "module": "RTKernelRRecFinish",
+      "proc": "run",
+      "original": "RRecFinish.run",
+      "ret": "W16.t Array768.t option",
+      "cells": 768,
+      "arity": 3,
+      "scratch": 0,
+      "bound": "rt_kernel_rrecfinish_bound",
+      "proof": "rt_kernel_rrecfinish_projection",
+      "cost": "rt_kernel_rrecfinish_cost"
+    },
+    "linearusinginverse": {
+      "module": "RTKernelLinearUsingInverse",
+      "proc": "run",
+      "original": "LinearRRecUsingInverse.run",
+      "ret": "W16.t Array768.t option",
+      "cells": 768,
+      "arity": 4,
+      "scratch": 0,
+      "bound": "rt_kernel_linearusinginverse_bound",
+      "proof": "rt_kernel_linearusinginverse_projection",
+      "cost": "rt_kernel_linearusinginverse_cost"
+    },
+    "linearrrec": {
+      "module": "RTKernelLinearRRec",
+      "proc": "run",
+      "original": "LinearRRec.run",
+      "ret": "W16.t Array768.t option",
+      "cells": 768,
+      "arity": 3,
+      "scratch": 0,
+      "bound": "rt_kernel_linearrrec_bound",
+      "proof": "rt_kernel_linearrrec_projection",
+      "cost": "rt_kernel_linearrrec_cost"
+    },
+    "unit": {
+      "module": "RTKernelUnit",
+      "proc": "run",
+      "original": "RTWordUnit.run",
+      "ret": "bool",
+      "cells": 0,
+      "arity": 1,
+      "scratch": 0,
+      "bound": "rt_kernel_unit_bound",
+      "proof": "rt_kernel_unit_projection",
+      "cost": "rt_kernel_unit_cost"
+    },
+    "recover": {
+      "module": "RTKernelRecover",
+      "proc": "run",
+      "original": "RTWordRecover.run",
+      "ret": "W16.t Array768.t option",
+      "cells": 768,
+      "arity": 3,
+      "scratch": 0,
+      "bound": "rt_kernel_recover_bound",
+      "proof": "rt_kernel_recover_projection",
+      "cost": "rt_kernel_recover_cost"
+    },
+    "mreccandidate": {
+      "module": "RTKernelMRecCandidate",
+      "proc": "run",
+      "original": "MRecCandidate.run",
+      "ret": "W16.t Array768.t",
+      "cells": 768,
+      "arity": 3,
+      "scratch": 0,
+      "bound": "rt_kernel_mreccandidate_bound",
+      "proof": "rt_kernel_mreccandidate_projection",
+      "cost": "rt_kernel_mreccandidate_cost"
+    },
+    "mrec": {
+      "module": "RTKernelMRec",
+      "proc": "run",
+      "original": "MRec.run",
+      "ret": "W16.t Array768.t option",
+      "cells": 768,
+      "arity": 3,
+      "scratch": 0,
+      "bound": "rt_kernel_mrec_bound",
+      "proof": "rt_kernel_mrec_projection",
+      "cost": "rt_kernel_mrec_cost"
+    },
+    "decodecandidate": {
+      "module": "RTKernelDecodeCandidate",
+      "proc": "run",
+      "original": "MRecDecodeCandidate.run",
+      "ret": "W16.t Array768.t",
+      "cells": 768,
+      "arity": 1,
+      "scratch": 0,
+      "bound": "rt_kernel_decodecandidate_bound",
+      "proof": "rt_kernel_decodecandidate_projection",
+      "cost": "rt_kernel_decodecandidate_cost"
+    },
+    "decode": {
+      "module": "RTKernelDecode",
+      "proc": "run",
+      "original": "MRecDecode.run",
+      "ret": "W16.t Array768.t option",
+      "cells": 768,
+      "arity": 1,
+      "scratch": 0,
+      "bound": "rt_kernel_decode_bound",
+      "proof": "rt_kernel_decode_projection",
+      "cost": "rt_kernel_decode_cost"
+    },
+    "candidate": {
+      "module": "RTKernelCandidate",
+      "proc": "run",
+      "original": "SecCandidate.run",
+      "ret": "(W16.t Array768.t*W16.t Array768.t) option",
+      "cells": 1536,
+      "arity": 3,
+      "scratch": 0,
+      "bound": "rt_kernel_candidate_bound",
+      "proof": "rt_kernel_candidate_projection",
+      "cost": "rt_kernel_candidate_cost"
+    }
+  },
+  "procedures": [
+    {
+      "name": "Encode",
+      "old": "RTWordEncode.run",
+      "file": "kem_runtime_bound/NTRUPlus768RTWordCodec.ec",
+      "args": "a:W16.t Array768.t",
+      "types": {
+        "a": 768
+      },
+      "locals": "h:W16.t Array768.t;var bytes:W8.t Array1152.t",
+      "ret": "W8.t Array1152.t",
+      "cells": 1152,
+      "body": [
+        {
+          "kind": "call",
+          "lhs": "h",
+          "key": "ntt",
+          "args": "witness,a",
+          "selectors": 0,
+          "temp": "rt_call_0",
+          "fee": 3076,
+          "source_statement": "h<@NTRUPlus768NTT.M.jade_ntruplus_ntruplus768_amd64_ref_ntt(witness,a);",
+          "fee_parts": {
+            "call_frame": 2,
+            "arguments": 2,
+            "scratch_cells": 768,
+            "result_clone": 2304,
+            "selector_ops": 0
+          }
+        },
+        {
+          "kind": "call",
+          "lhs": "bytes",
+          "key": "tobytes",
+          "args": "witness,h",
+          "selectors": 0,
+          "temp": "rt_call_1",
+          "fee": 4612,
+          "source_statement": "bytes<@NTRUPlus768PolyToBytes.M.jade_ntruplus_ntruplus768_amd64_ref_poly_tobytes(witness,h);",
+          "fee_parts": {
+            "call_frame": 2,
+            "arguments": 2,
+            "scratch_cells": 1152,
+            "result_clone": 3456,
+            "selector_ops": 0
+          }
+        }
+      ],
+      "result": "bytes",
+      "entry": 2304,
+      "returnfee": 3457,
+      "bound": "2304+(3076+rt_fixed_ntt_bound+4612+rt_fixed_tobytes_bound)+3457",
+      "source_sha256": "1713c886dc650addba4fc0c73f054165907867263b4a0ac58d01e3bee0083977",
+      "original_body_sha256": "fc84be40d8998625e9a341e271d3aa8a9131f8b4d97989e067e2619731634f03",
+      "source_body_verified": true
+    },
+    {
+      "name": "PublicInverse",
+      "old": "RRecPublicInverse.run",
+      "file": "acwc2_contracts/NTRUPlus768RRecPublicInverse.ec",
+      "args": "hp:W16.t Array768.t",
+      "types": {
+        "hp": 768
+      },
+      "locals": "raw,canonical:W16.t Array768.t;var status:W64.t;var decoded_status:W32.t;var bytes:W8.t Array1152.t;var result:W16.t Array768.t option",
+      "ret": "W16.t Array768.t option",
+      "cells": 768,
+      "body": [
+        {
+          "kind": "assign",
+          "lhs": "result",
+          "expr": "None",
+          "fee": 1,
+          "cells": 0,
+          "ops": 0,
+          "source_statement": "result<-None;",
+          "fee_parts": {
+            "transfer": 1,
+            "expression_ops": 0,
+            "result_clone": 0
+          }
+        },
+        {
+          "kind": "call",
+          "lhs": "(raw,status)",
+          "key": "baseinv",
+          "args": "witness,hp",
+          "selectors": 0,
+          "temp": "rt_call_1",
+          "fee": 3076,
+          "source_statement": "(raw,status)<@NTRUPlus768PolyBaseInv.M.__poly_baseinv_core(witness,hp);",
+          "fee_parts": {
+            "call_frame": 2,
+            "arguments": 2,
+            "scratch_cells": 768,
+            "result_clone": 2304,
+            "selector_ops": 0
+          }
+        },
+        {
+          "kind": "if",
+          "cond": "status=W64.zero",
+          "fee": 2,
+          "body": [
+            {
+              "kind": "call",
+              "lhs": "bytes",
+              "key": "tobytes",
+              "args": "witness,raw",
+              "selectors": 0,
+              "temp": "rt_call_3",
+              "fee": 4612,
+              "source_statement": "bytes<@NTRUPlus768PolyToBytes.M.jade_ntruplus_ntruplus768_amd64_ref_poly_tobytes(witness,raw);",
+              "fee_parts": {
+                "call_frame": 2,
+                "arguments": 2,
+                "scratch_cells": 1152,
+                "result_clone": 3456,
+                "selector_ops": 0
+              }
+            },
+            {
+              "kind": "call",
+              "lhs": "(canonical,decoded_status)",
+              "key": "frombytes",
+              "args": "witness,bytes",
+              "selectors": 0,
+              "temp": "rt_call_4",
+              "fee": 3076,
+              "source_statement": "(canonical,decoded_status)<@NTRUPlus768PolyFromBytesChecked.M.jade_ntruplus_ntruplus768_amd64_ref_poly_frombytes(witness,bytes);",
+              "fee_parts": {
+                "call_frame": 2,
+                "arguments": 2,
+                "scratch_cells": 768,
+                "result_clone": 2304,
+                "selector_ops": 0
+              }
+            },
+            {
+              "kind": "if",
+              "cond": "decoded_status=W32.zero",
+              "fee": 2,
+              "body": [
+                {
+                  "kind": "assign",
+                  "lhs": "result",
+                  "expr": "Some canonical",
+                  "fee": 2306,
+                  "cells": 768,
+                  "ops": 1,
+                  "source_statement": "result<-Some canonical;",
+                  "fee_parts": {
+                    "transfer": 1,
+                    "expression_ops": 1,
+                    "result_clone": 2304
+                  }
+                }
+              ],
+              "source_statement": "if(decoded_status=W32.zero){result<-Some canonical;}",
+              "fee_parts": {
+                "branch": 1,
+                "guard_ops": 1
+              }
+            }
+          ],
+          "source_statement": "if(status=W64.zero){bytes<@NTRUPlus768PolyToBytes.M.jade_ntruplus_ntruplus768_amd64_ref_poly_tobytes(witness,raw);(canonical,decoded_status)<@NTRUPlus768PolyFromBytesChecked.M.jade_ntruplus_ntruplus768_amd64_ref_poly_frombytes(witness,bytes);if(decoded_status=W32.zero){result<-Some canonical;}}",
+          "fee_parts": {
+            "branch": 1,
+            "guard_ops": 1
+          }
+        }
+      ],
+      "result": "result",
+      "entry": 2304,
+      "returnfee": 2305,
+      "bound": "2304+(1+3076+rt_fixed_baseinv_bound+2+(4612+rt_fixed_tobytes_bound+3076+rt_fixed_frombytes_bound+2+(2306)))+2305",
+      "source_sha256": "568a595a9c2123b2d3aa7b4c84465b8b055b5a7b2c0a62438d947dd8978c3e35",
+      "original_body_sha256": "08f67ba5fb68757b1424e5b06b71d28864ec2f503a9c69604222812489b1764d",
+      "source_body_verified": true
+    },
+    {
+      "name": "PKEEncBody",
+      "old": "PKEEncBody.run",
+      "file": "pke_average_correctness/NTRUPlus768PKEProcedures.ec",
+      "args": "hp m r:W16.t Array768.t",
+      "types": {
+        "hp": 768,
+        "m": 768,
+        "r": 768
+      },
+      "locals": "rhat,mhat,product,cipher:W16.t Array768.t;var ct:W8.t Array1152.t",
+      "ret": "W8.t Array1152.t",
+      "cells": 1152,
+      "body": [
+        {
+          "kind": "call",
+          "lhs": "rhat",
+          "key": "ntt",
+          "args": "witness,r",
+          "selectors": 0,
+          "temp": "rt_call_0",
+          "fee": 3076,
+          "source_statement": "rhat<@NTRUPlus768NTT.M.jade_ntruplus_ntruplus768_amd64_ref_ntt(witness,r);",
+          "fee_parts": {
+            "call_frame": 2,
+            "arguments": 2,
+            "scratch_cells": 768,
+            "result_clone": 2304,
+            "selector_ops": 0
+          }
+        },
+        {
+          "kind": "call",
+          "lhs": "mhat",
+          "key": "ntt",
+          "args": "witness,m",
+          "selectors": 0,
+          "temp": "rt_call_1",
+          "fee": 3076,
+          "source_statement": "mhat<@NTRUPlus768NTT.M.jade_ntruplus_ntruplus768_amd64_ref_ntt(witness,m);",
+          "fee_parts": {
+            "call_frame": 2,
+            "arguments": 2,
+            "scratch_cells": 768,
+            "result_clone": 2304,
+            "selector_ops": 0
+          }
+        },
+        {
+          "kind": "call",
+          "lhs": "product",
+          "key": "basemul",
+          "args": "witness,hp,rhat",
+          "selectors": 0,
+          "temp": "rt_call_2",
+          "fee": 3077,
+          "source_statement": "product<@NTRUPlus768PolyBasemul.M.jade_ntruplus_ntruplus768_amd64_ref_poly_basemul(witness,hp,rhat);",
+          "fee_parts": {
+            "call_frame": 2,
+            "arguments": 3,
+            "scratch_cells": 768,
+            "result_clone": 2304,
+            "selector_ops": 0
+          }
+        },
+        {
+          "kind": "call",
+          "lhs": "cipher",
+          "key": "centeredadd",
+          "args": "witness,product,mhat",
+          "selectors": 0,
+          "temp": "rt_call_3",
+          "fee": 3077,
+          "source_statement": "cipher<@NTRUPlus768PolyCenteredAdd.M.jade_ntruplus_ntruplus768_amd64_ref_poly_centered_add(witness,product,mhat);",
+          "fee_parts": {
+            "call_frame": 2,
+            "arguments": 3,
+            "scratch_cells": 768,
+            "result_clone": 2304,
+            "selector_ops": 0
+          }
+        },
+        {
+          "kind": "call",
+          "lhs": "ct",
+          "key": "tobytes",
+          "args": "witness,cipher",
+          "selectors": 0,
+          "temp": "rt_call_4",
+          "fee": 4612,
+          "source_statement": "ct<@NTRUPlus768PolyToBytes.M.jade_ntruplus_ntruplus768_amd64_ref_poly_tobytes(witness,cipher);",
+          "fee_parts": {
+            "call_frame": 2,
+            "arguments": 2,
+            "scratch_cells": 1152,
+            "result_clone": 3456,
+            "selector_ops": 0
+          }
+        }
+      ],
+      "result": "ct",
+      "entry": 6912,
+      "returnfee": 3457,
+      "bound": "6912+(3076+rt_fixed_ntt_bound+3076+rt_fixed_ntt_bound+3077+rt_fixed_basemul_bound+3077+rt_fixed_centeredadd_bound+4612+rt_fixed_tobytes_bound)+3457",
+      "source_sha256": "37ce44a3de791c6d54daafb657969a9095e635ba536636682f909d6e864de68c",
+      "original_body_sha256": "816148843f5eceb1b36368ee4ab645ffbc3a348552c6a09f39baea23e1012655",
+      "source_body_verified": true
+    },
+    {
+      "name": "PKEEnc",
+      "old": "PKEEnc.run",
+      "file": "pke_average_correctness/NTRUPlus768PKEProcedures.ec",
+      "args": "pk:W8.t Array1152.t,m r:W16.t Array768.t",
+      "types": {
+        "pk": 1152,
+        "m": 768,
+        "r": 768
+      },
+      "locals": "hp:W16.t Array768.t;var status:W32.t;var ct:W8.t Array1152.t;var result:W8.t Array1152.t option",
+      "ret": "W8.t Array1152.t option",
+      "cells": 1152,
+      "body": [
+        {
+          "kind": "assign",
+          "lhs": "result",
+          "expr": "None",
+          "fee": 1,
+          "cells": 0,
+          "ops": 0,
+          "source_statement": "result<-None;",
+          "fee_parts": {
+            "transfer": 1,
+            "expression_ops": 0,
+            "result_clone": 0
+          }
+        },
+        {
+          "kind": "call",
+          "lhs": "(hp,status)",
+          "key": "frombytes",
+          "args": "witness,pk",
+          "selectors": 0,
+          "temp": "rt_call_1",
+          "fee": 3076,
+          "source_statement": "(hp,status)<@NTRUPlus768PolyFromBytesChecked.M.jade_ntruplus_ntruplus768_amd64_ref_poly_frombytes(witness,pk);",
+          "fee_parts": {
+            "call_frame": 2,
+            "arguments": 2,
+            "scratch_cells": 768,
+            "result_clone": 2304,
+            "selector_ops": 0
+          }
+        },
+        {
+          "kind": "if",
+          "cond": "status=W32.zero",
+          "fee": 2,
+          "body": [
+            {
+              "kind": "call",
+              "lhs": "ct",
+              "key": "pkeencbody",
+              "args": "hp,m,r",
+              "selectors": 0,
+              "temp": "rt_call_3",
+              "fee": 3461,
+              "source_statement": "ct<@PKEEncBody.run(hp,m,r);",
+              "fee_parts": {
+                "call_frame": 2,
+                "arguments": 3,
+                "scratch_cells": 0,
+                "result_clone": 3456,
+                "selector_ops": 0
+              }
+            },
+            {
+              "kind": "assign",
+              "lhs": "result",
+              "expr": "Some ct",
+              "fee": 3458,
+              "cells": 1152,
+              "ops": 1,
+              "source_statement": "result<-Some ct;",
+              "fee_parts": {
+                "transfer": 1,
+                "expression_ops": 1,
+                "result_clone": 3456
+              }
+            }
+          ],
+          "source_statement": "if(status=W32.zero){ct<@PKEEncBody.run(hp,m,r);result<-Some ct;}",
+          "fee_parts": {
+            "branch": 1,
+            "guard_ops": 1
+          }
+        }
+      ],
+      "result": "result",
+      "entry": 8064,
+      "returnfee": 3457,
+      "bound": "8064+(1+3076+rt_fixed_frombytes_bound+2+(3461+rt_kernel_pkeencbody_bound+3458))+3457",
+      "source_sha256": "37ce44a3de791c6d54daafb657969a9095e635ba536636682f909d6e864de68c",
+      "original_body_sha256": "f47328417646c991a044e0bbe34b962041b2c43b4ea71969965b8e492fcc0bed",
+      "source_body_verified": true
+    },
+    {
+      "name": "RRecCore",
+      "old": "RRecCore.run",
+      "file": "acwc2_contracts/NTRUPlus768RRecProcedures.ec",
+      "args": "cp m inverse:W16.t Array768.t",
+      "types": {
+        "cp": 768,
+        "m": 768,
+        "inverse": 768
+      },
+      "locals": "rhat,raw:W16.t Array768.t",
+      "ret": "W16.t Array768.t",
+      "cells": 768,
+      "body": [
+        {
+          "kind": "call",
+          "lhs": "rhat",
+          "key": "decapr2",
+          "args": "witness,cp,m,inverse",
+          "selectors": 0,
+          "temp": "rt_call_0",
+          "fee": 3078,
+          "source_statement": "rhat<@NTRUPlus768DecapR2Comp.M.jade_ntruplus_ntruplus768_amd64_ref_decap_r2(witness,cp,m,inverse);",
+          "fee_parts": {
+            "call_frame": 2,
+            "arguments": 4,
+            "scratch_cells": 768,
+            "result_clone": 2304,
+            "selector_ops": 0
+          }
+        },
+        {
+          "kind": "call",
+          "lhs": "raw",
+          "key": "invntt",
+          "args": "witness,rhat",
+          "selectors": 0,
+          "temp": "rt_call_1",
+          "fee": 3076,
+          "source_statement": "raw<@NTRUPlus768InvNTT.M.jade_ntruplus_ntruplus768_amd64_ref_invntt(witness,rhat);",
+          "fee_parts": {
+            "call_frame": 2,
+            "arguments": 2,
+            "scratch_cells": 768,
+            "result_clone": 2304,
+            "selector_ops": 0
+          }
+        }
+      ],
+      "result": "raw",
+      "entry": 6912,
+      "returnfee": 2305,
+      "bound": "6912+(3078+rt_fixed_decapr2_bound+3076+rt_fixed_invntt_bound)+2305",
+      "source_sha256": "897473472848446ff09c67fe3530e638dba73bbb8a1728391b7e6dd9f0ce9d38",
+      "original_body_sha256": "aba9d86e646a60cc873f2cd56db686d2c4647e5c5ba2d8a3a005d4af8d1322aa",
+      "source_body_verified": true
+    },
+    {
+      "name": "RRecFinish",
+      "old": "RRecFinish.run",
+      "file": "acwc2_contracts/NTRUPlus768RRecProcedures.ec",
+      "args": "cp m inverse:W16.t Array768.t",
+      "types": {
+        "cp": 768,
+        "m": 768,
+        "inverse": 768
+      },
+      "locals": "raw,candidate:W16.t Array768.t;var valid:bool;var result:W16.t Array768.t option",
+      "ret": "W16.t Array768.t option",
+      "cells": 768,
+      "body": [
+        {
+          "kind": "assign",
+          "lhs": "result",
+          "expr": "None",
+          "fee": 1,
+          "cells": 0,
+          "ops": 0,
+          "source_statement": "result<-None;",
+          "fee_parts": {
+            "transfer": 1,
+            "expression_ops": 0,
+            "result_clone": 0
+          }
+        },
+        {
+          "kind": "call",
+          "lhs": "raw",
+          "key": "rreccore",
+          "args": "cp,m,inverse",
+          "selectors": 0,
+          "temp": "rt_call_1",
+          "fee": 2309,
+          "source_statement": "raw<@RRecCore.run(cp,m,inverse);",
+          "fee_parts": {
+            "call_frame": 2,
+            "arguments": 3,
+            "scratch_cells": 0,
+            "result_clone": 2304,
+            "selector_ops": 0
+          }
+        },
+        {
+          "kind": "call",
+          "lhs": "candidate",
+          "key": "normalize",
+          "args": "raw",
+          "selectors": 0,
+          "temp": "rt_call_2",
+          "fee": 2307,
+          "source_statement": "candidate<@RRecNormalize.run(raw);",
+          "fee_parts": {
+            "call_frame": 2,
+            "arguments": 1,
+            "scratch_cells": 0,
+            "result_clone": 2304,
+            "selector_ops": 0
+          }
+        },
+        {
+          "kind": "call",
+          "lhs": "valid",
+          "key": "trit",
+          "args": "candidate",
+          "selectors": 0,
+          "temp": "rt_call_3",
+          "fee": 3,
+          "source_statement": "valid<@RRecTrit.check(candidate);",
+          "fee_parts": {
+            "call_frame": 2,
+            "arguments": 1,
+            "scratch_cells": 0,
+            "result_clone": 0,
+            "selector_ops": 0
+          }
+        },
+        {
+          "kind": "if",
+          "cond": "valid",
+          "fee": 1,
+          "body": [
+            {
+              "kind": "assign",
+              "lhs": "result",
+              "expr": "Some candidate",
+              "fee": 2306,
+              "cells": 768,
+              "ops": 1,
+              "source_statement": "result<-Some candidate;",
+              "fee_parts": {
+                "transfer": 1,
+                "expression_ops": 1,
+                "result_clone": 2304
+              }
+            }
+          ],
+          "source_statement": "if(valid){result<-Some candidate;}",
+          "fee_parts": {
+            "branch": 1,
+            "guard_ops": 0
+          }
+        }
+      ],
+      "result": "result",
+      "entry": 6912,
+      "returnfee": 2305,
+      "bound": "6912+(1+2309+rt_kernel_rreccore_bound+2307+rt_fixed_normalize_bound+3+rt_fixed_trit_bound+1+(2306))+2305",
+      "source_sha256": "897473472848446ff09c67fe3530e638dba73bbb8a1728391b7e6dd9f0ce9d38",
+      "original_body_sha256": "6a31310174c57aa6ade445e88b759f39cd62a705a6b23b17012acaf0ddd5cc6b",
+      "source_body_verified": true
+    },
+    {
+      "name": "LinearUsingInverse",
+      "old": "LinearRRecUsingInverse.run",
+      "file": "linear_rrec/NTRUPlus768RRecLinearProcedures.ec",
+      "args": "pk:W8.t Array1152.t,m:W16.t Array768.t,ct:W8.t Array1152.t,inverse:W16.t Array768.t",
+      "types": {
+        "pk": 1152,
+        "m": 768,
+        "ct": 1152,
+        "inverse": 768
+      },
+      "locals": "cp:W16.t Array768.t;var status:W32.t;var valid_message:bool;var result:W16.t Array768.t option",
+      "ret": "W16.t Array768.t option",
+      "cells": 768,
+      "body": [
+        {
+          "kind": "assign",
+          "lhs": "result",
+          "expr": "None",
+          "fee": 1,
+          "cells": 0,
+          "ops": 0,
+          "source_statement": "result<-None;",
+          "fee_parts": {
+            "transfer": 1,
+            "expression_ops": 0,
+            "result_clone": 0
+          }
+        },
+        {
+          "kind": "call",
+          "lhs": "(cp,status)",
+          "key": "frombytes",
+          "args": "witness,ct",
+          "selectors": 0,
+          "temp": "rt_call_1",
+          "fee": 3076,
+          "source_statement": "(cp,status)<@NTRUPlus768PolyFromBytesChecked.M.jade_ntruplus_ntruplus768_amd64_ref_poly_frombytes(witness,ct);",
+          "fee_parts": {
+            "call_frame": 2,
+            "arguments": 2,
+            "scratch_cells": 768,
+            "result_clone": 2304,
+            "selector_ops": 0
+          }
+        },
+        {
+          "kind": "if",
+          "cond": "status=W32.zero",
+          "fee": 2,
+          "body": [
+            {
+              "kind": "call",
+              "lhs": "valid_message",
+              "key": "trit",
+              "args": "m",
+              "selectors": 0,
+              "temp": "rt_call_3",
+              "fee": 3,
+              "source_statement": "valid_message<@RRecTrit.check(m);",
+              "fee_parts": {
+                "call_frame": 2,
+                "arguments": 1,
+                "scratch_cells": 0,
+                "result_clone": 0,
+                "selector_ops": 0
+              }
+            },
+            {
+              "kind": "if",
+              "cond": "valid_message",
+              "fee": 1,
+              "body": [
+                {
+                  "kind": "call",
+                  "lhs": "result",
+                  "key": "rrecfinish",
+                  "args": "cp,m,inverse",
+                  "selectors": 0,
+                  "temp": "rt_call_5",
+                  "fee": 2309,
+                  "source_statement": "result<@RRecFinish.run(cp,m,inverse);",
+                  "fee_parts": {
+                    "call_frame": 2,
+                    "arguments": 3,
+                    "scratch_cells": 0,
+                    "result_clone": 2304,
+                    "selector_ops": 0
+                  }
+                }
+              ],
+              "source_statement": "if(valid_message){result<@RRecFinish.run(cp,m,inverse);}",
+              "fee_parts": {
+                "branch": 1,
+                "guard_ops": 0
+              }
+            }
+          ],
+          "source_statement": "if(status=W32.zero){valid_message<@RRecTrit.check(m);if(valid_message){result<@RRecFinish.run(cp,m,inverse);}}",
+          "fee_parts": {
+            "branch": 1,
+            "guard_ops": 1
+          }
+        }
+      ],
+      "result": "result",
+      "entry": 11520,
+      "returnfee": 2305,
+      "bound": "11520+(1+3076+rt_fixed_frombytes_bound+2+(3+rt_fixed_trit_bound+1+(2309+rt_kernel_rrecfinish_bound)))+2305",
+      "source_sha256": "59a8e93f3eda7e792b938f0abed52862ccd2466ebc86e11118db6ce77cf5b2b9",
+      "original_body_sha256": "8621eea5527bb1082fe2b0d67787732d61bc49b7c7458e50d4ec7834dda31940",
+      "source_body_verified": true
+    },
+    {
+      "name": "LinearRRec",
+      "old": "LinearRRec.run",
+      "file": "linear_rrec/NTRUPlus768RRecLinearProcedures.ec",
+      "args": "pk:W8.t Array1152.t,m:W16.t Array768.t,ct:W8.t Array1152.t",
+      "types": {
+        "pk": 1152,
+        "m": 768,
+        "ct": 1152
+      },
+      "locals": "hp:W16.t Array768.t;var status:W32.t;var inverse,result:W16.t Array768.t option",
+      "ret": "W16.t Array768.t option",
+      "cells": 768,
+      "body": [
+        {
+          "kind": "assign",
+          "lhs": "result",
+          "expr": "None",
+          "fee": 1,
+          "cells": 0,
+          "ops": 0,
+          "source_statement": "result<-None;",
+          "fee_parts": {
+            "transfer": 1,
+            "expression_ops": 0,
+            "result_clone": 0
+          }
+        },
+        {
+          "kind": "call",
+          "lhs": "(hp,status)",
+          "key": "frombytes",
+          "args": "witness,pk",
+          "selectors": 0,
+          "temp": "rt_call_1",
+          "fee": 3076,
+          "source_statement": "(hp,status)<@NTRUPlus768PolyFromBytesChecked.M.jade_ntruplus_ntruplus768_amd64_ref_poly_frombytes(witness,pk);",
+          "fee_parts": {
+            "call_frame": 2,
+            "arguments": 2,
+            "scratch_cells": 768,
+            "result_clone": 2304,
+            "selector_ops": 0
+          }
+        },
+        {
+          "kind": "if",
+          "cond": "status=W32.zero",
+          "fee": 2,
+          "body": [
+            {
+              "kind": "call",
+              "lhs": "inverse",
+              "key": "publicinverse",
+              "args": "hp",
+              "selectors": 0,
+              "temp": "rt_call_3",
+              "fee": 2307,
+              "source_statement": "inverse<@RRecPublicInverse.run(hp);",
+              "fee_parts": {
+                "call_frame": 2,
+                "arguments": 1,
+                "scratch_cells": 0,
+                "result_clone": 2304,
+                "selector_ops": 0
+              }
+            },
+            {
+              "kind": "if",
+              "cond": "inverse<>None",
+              "fee": 2,
+              "body": [
+                {
+                  "kind": "call",
+                  "lhs": "result",
+                  "key": "linearusinginverse",
+                  "args": "pk,m,ct,oget inverse",
+                  "selectors": 1,
+                  "temp": "rt_call_5",
+                  "fee": 2311,
+                  "source_statement": "result<@LinearRRecUsingInverse.run(pk,m,ct,oget inverse);",
+                  "fee_parts": {
+                    "call_frame": 2,
+                    "arguments": 4,
+                    "scratch_cells": 0,
+                    "result_clone": 2304,
+                    "selector_ops": 1
+                  }
+                }
+              ],
+              "source_statement": "if(inverse<>None){result<@LinearRRecUsingInverse.run(pk,m,ct,oget inverse);}",
+              "fee_parts": {
+                "branch": 1,
+                "guard_ops": 1
+              }
+            }
+          ],
+          "source_statement": "if(status=W32.zero){inverse<@RRecPublicInverse.run(hp);if(inverse<>None){result<@LinearRRecUsingInverse.run(pk,m,ct,oget inverse);}}",
+          "fee_parts": {
+            "branch": 1,
+            "guard_ops": 1
+          }
+        }
+      ],
+      "result": "result",
+      "entry": 9216,
+      "returnfee": 2305,
+      "bound": "9216+(1+3076+rt_fixed_frombytes_bound+2+(2307+rt_kernel_publicinverse_bound+2+(2311+rt_kernel_linearusinginverse_bound)))+2305",
+      "source_sha256": "59a8e93f3eda7e792b938f0abed52862ccd2466ebc86e11118db6ce77cf5b2b9",
+      "original_body_sha256": "312dd5dd5db89a856c8f4c1b1438f1830718f5eb53d62081e704eb25c273c591",
+      "source_body_verified": true
+    },
+    {
+      "name": "Unit",
+      "old": "RTWordUnit.run",
+      "file": "kem_runtime_bound/NTRUPlus768RTWordCodec.ec",
+      "args": "a:W16.t Array768.t",
+      "types": {
+        "a": 768
+      },
+      "locals": "pk:W8.t Array1152.t;var hp:W16.t Array768.t;var status:W32.t;var inverse:W16.t Array768.t option",
+      "ret": "bool",
+      "cells": 0,
+      "body": [
+        {
+          "kind": "call",
+          "lhs": "pk",
+          "key": "encode",
+          "args": "a",
+          "selectors": 0,
+          "temp": "rt_call_0",
+          "fee": 3459,
+          "source_statement": "pk<@RTWordEncode.run(a);",
+          "fee_parts": {
+            "call_frame": 2,
+            "arguments": 1,
+            "scratch_cells": 0,
+            "result_clone": 3456,
+            "selector_ops": 0
+          }
+        },
+        {
+          "kind": "call",
+          "lhs": "(hp,status)",
+          "key": "frombytes",
+          "args": "witness,pk",
+          "selectors": 0,
+          "temp": "rt_call_1",
+          "fee": 3076,
+          "source_statement": "(hp,status)<@NTRUPlus768PolyFromBytesChecked.M.jade_ntruplus_ntruplus768_amd64_ref_poly_frombytes(witness,pk);",
+          "fee_parts": {
+            "call_frame": 2,
+            "arguments": 2,
+            "scratch_cells": 768,
+            "result_clone": 2304,
+            "selector_ops": 0
+          }
+        },
+        {
+          "kind": "call",
+          "lhs": "inverse",
+          "key": "publicinverse",
+          "args": "hp",
+          "selectors": 0,
+          "temp": "rt_call_2",
+          "fee": 2307,
+          "source_statement": "inverse<@RRecPublicInverse.run(hp);",
+          "fee_parts": {
+            "call_frame": 2,
+            "arguments": 1,
+            "scratch_cells": 0,
+            "result_clone": 2304,
+            "selector_ops": 0
+          }
+        }
+      ],
+      "result": "inverse<>None",
+      "entry": 2304,
+      "returnfee": 2,
+      "bound": "2304+(3459+rt_kernel_encode_bound+3076+rt_fixed_frombytes_bound+2307+rt_kernel_publicinverse_bound)+2",
+      "source_sha256": "1713c886dc650addba4fc0c73f054165907867263b4a0ac58d01e3bee0083977",
+      "original_body_sha256": "08ccb97e0215aac4d5ff6e76cd9f4da977970e98637a0db20d11a66592dc42ae",
+      "source_body_verified": true
+    },
+    {
+      "name": "Recover",
+      "old": "RTWordRecover.run",
+      "file": "kem_runtime_bound/NTRUPlus768RTWordCodec.ec",
+      "args": "a b code:W16.t Array768.t",
+      "types": {
+        "a": 768,
+        "b": 768,
+        "code": 768
+      },
+      "locals": "pk,ct:W8.t Array1152.t;var answer:W16.t Array768.t option",
+      "ret": "W16.t Array768.t option",
+      "cells": 768,
+      "body": [
+        {
+          "kind": "call",
+          "lhs": "pk",
+          "key": "encode",
+          "args": "a",
+          "selectors": 0,
+          "temp": "rt_call_0",
+          "fee": 3459,
+          "source_statement": "pk<@RTWordEncode.run(a);",
+          "fee_parts": {
+            "call_frame": 2,
+            "arguments": 1,
+            "scratch_cells": 0,
+            "result_clone": 3456,
+            "selector_ops": 0
+          }
+        },
+        {
+          "kind": "call",
+          "lhs": "ct",
+          "key": "encode",
+          "args": "b",
+          "selectors": 0,
+          "temp": "rt_call_1",
+          "fee": 3459,
+          "source_statement": "ct<@RTWordEncode.run(b);",
+          "fee_parts": {
+            "call_frame": 2,
+            "arguments": 1,
+            "scratch_cells": 0,
+            "result_clone": 3456,
+            "selector_ops": 0
+          }
+        },
+        {
+          "kind": "call",
+          "lhs": "answer",
+          "key": "linearrrec",
+          "args": "pk,code,ct",
+          "selectors": 0,
+          "temp": "rt_call_2",
+          "fee": 2309,
+          "source_statement": "answer<@LinearRRec.run(pk,code,ct);",
+          "fee_parts": {
+            "call_frame": 2,
+            "arguments": 3,
+            "scratch_cells": 0,
+            "result_clone": 2304,
+            "selector_ops": 0
+          }
+        }
+      ],
+      "result": "answer",
+      "entry": 6912,
+      "returnfee": 2305,
+      "bound": "6912+(3459+rt_kernel_encode_bound+3459+rt_kernel_encode_bound+2309+rt_kernel_linearrrec_bound)+2305",
+      "source_sha256": "1713c886dc650addba4fc0c73f054165907867263b4a0ac58d01e3bee0083977",
+      "original_body_sha256": "979a9f44be00f979b6023cedd97f53c3c5b8e2d25e5f52fbe8306af53c0ce37b",
+      "source_body_verified": true
+    },
+    {
+      "name": "MRecCandidate",
+      "old": "MRecCandidate.run",
+      "file": "kem_acwc2_security/NTRUPlus768MRecModel.ec",
+      "args": "hp cp r:W16.t Array768.t",
+      "types": {
+        "hp": 768,
+        "cp": 768,
+        "r": 768
+      },
+      "locals": "rh,product,difference,centered,inverse,result:W16.t Array768.t",
+      "ret": "W16.t Array768.t",
+      "cells": 768,
+      "body": [
+        {
+          "kind": "call",
+          "lhs": "rh",
+          "key": "ntt",
+          "args": "witness,r",
+          "selectors": 0,
+          "temp": "rt_call_0",
+          "fee": 3076,
+          "source_statement": "rh<@NTRUPlus768NTT.M.jade_ntruplus_ntruplus768_amd64_ref_ntt(witness,r);",
+          "fee_parts": {
+            "call_frame": 2,
+            "arguments": 2,
+            "scratch_cells": 768,
+            "result_clone": 2304,
+            "selector_ops": 0
+          }
+        },
+        {
+          "kind": "call",
+          "lhs": "product",
+          "key": "basemul",
+          "args": "witness,hp,rh",
+          "selectors": 0,
+          "temp": "rt_call_1",
+          "fee": 3077,
+          "source_statement": "product<@NTRUPlus768PolyBasemul.M.jade_ntruplus_ntruplus768_amd64_ref_poly_basemul(witness,hp,rh);",
+          "fee_parts": {
+            "call_frame": 2,
+            "arguments": 3,
+            "scratch_cells": 768,
+            "result_clone": 2304,
+            "selector_ops": 0
+          }
+        },
+        {
+          "kind": "call",
+          "lhs": "difference",
+          "key": "polysub",
+          "args": "witness,cp,product",
+          "selectors": 0,
+          "temp": "rt_call_2",
+          "fee": 3077,
+          "source_statement": "difference<@NTRUPlus768PolySub.M.jade_ntruplus_ntruplus768_amd64_ref_poly_sub(witness,cp,product);",
+          "fee_parts": {
+            "call_frame": 2,
+            "arguments": 3,
+            "scratch_cells": 768,
+            "result_clone": 2304,
+            "selector_ops": 0
+          }
+        },
+        {
+          "kind": "call",
+          "lhs": "centered",
+          "key": "normalize",
+          "args": "difference",
+          "selectors": 0,
+          "temp": "rt_call_3",
+          "fee": 2307,
+          "source_statement": "centered<@RRecNormalize.run(difference);",
+          "fee_parts": {
+            "call_frame": 2,
+            "arguments": 1,
+            "scratch_cells": 0,
+            "result_clone": 2304,
+            "selector_ops": 0
+          }
+        },
+        {
+          "kind": "call",
+          "lhs": "inverse",
+          "key": "invntt",
+          "args": "witness,centered",
+          "selectors": 0,
+          "temp": "rt_call_4",
+          "fee": 3076,
+          "source_statement": "inverse<@NTRUPlus768InvNTT.M.jade_ntruplus_ntruplus768_amd64_ref_invntt(witness,centered);",
+          "fee_parts": {
+            "call_frame": 2,
+            "arguments": 2,
+            "scratch_cells": 768,
+            "result_clone": 2304,
+            "selector_ops": 0
+          }
+        },
+        {
+          "kind": "call",
+          "lhs": "result",
+          "key": "normalize",
+          "args": "inverse",
+          "selectors": 0,
+          "temp": "rt_call_5",
+          "fee": 2307,
+          "source_statement": "result<@RRecNormalize.run(inverse);",
+          "fee_parts": {
+            "call_frame": 2,
+            "arguments": 1,
+            "scratch_cells": 0,
+            "result_clone": 2304,
+            "selector_ops": 0
+          }
+        }
+      ],
+      "result": "result",
+      "entry": 6912,
+      "returnfee": 2305,
+      "bound": "6912+(3076+rt_fixed_ntt_bound+3077+rt_fixed_basemul_bound+3077+rt_fixed_polysub_bound+2307+rt_fixed_normalize_bound+3076+rt_fixed_invntt_bound+2307+rt_fixed_normalize_bound)+2305",
+      "source_sha256": "6f16de3d4f8c613ba36a2e8afdb909b2be1753a8a55b2d31e3cac8ffec35db0d",
+      "original_body_sha256": "a081886876e76cd351c77f449e96317ccd2a1010fa619ddfe62d104e297c4975",
+      "source_body_verified": true
+    },
+    {
+      "name": "MRec",
+      "old": "MRec.run",
+      "file": "kem_acwc2_security/NTRUPlus768MRecModel.ec",
+      "args": "pk:W8.t Array1152.t,r:W16.t Array768.t,ct:W8.t Array1152.t",
+      "types": {
+        "pk": 1152,
+        "r": 768,
+        "ct": 1152
+      },
+      "locals": "hp,cp,m:W16.t Array768.t;var hs,cs:W32.t;var valid:bool;var result:W16.t Array768.t option",
+      "ret": "W16.t Array768.t option",
+      "cells": 768,
+      "body": [
+        {
+          "kind": "assign",
+          "lhs": "result",
+          "expr": "None",
+          "fee": 1,
+          "cells": 0,
+          "ops": 0,
+          "source_statement": "result<-None;",
+          "fee_parts": {
+            "transfer": 1,
+            "expression_ops": 0,
+            "result_clone": 0
+          }
+        },
+        {
+          "kind": "call",
+          "lhs": "(hp,hs)",
+          "key": "frombytes",
+          "args": "witness,pk",
+          "selectors": 0,
+          "temp": "rt_call_1",
+          "fee": 3076,
+          "source_statement": "(hp,hs)<@NTRUPlus768PolyFromBytesChecked.M.jade_ntruplus_ntruplus768_amd64_ref_poly_frombytes(witness,pk);",
+          "fee_parts": {
+            "call_frame": 2,
+            "arguments": 2,
+            "scratch_cells": 768,
+            "result_clone": 2304,
+            "selector_ops": 0
+          }
+        },
+        {
+          "kind": "call",
+          "lhs": "(cp,cs)",
+          "key": "frombytes",
+          "args": "witness,ct",
+          "selectors": 0,
+          "temp": "rt_call_2",
+          "fee": 3076,
+          "source_statement": "(cp,cs)<@NTRUPlus768PolyFromBytesChecked.M.jade_ntruplus_ntruplus768_amd64_ref_poly_frombytes(witness,ct);",
+          "fee_parts": {
+            "call_frame": 2,
+            "arguments": 2,
+            "scratch_cells": 768,
+            "result_clone": 2304,
+            "selector_ops": 0
+          }
+        },
+        {
+          "kind": "call",
+          "lhs": "valid",
+          "key": "trit",
+          "args": "r",
+          "selectors": 0,
+          "temp": "rt_call_3",
+          "fee": 3,
+          "source_statement": "valid<@RRecTrit.check(r);",
+          "fee_parts": {
+            "call_frame": 2,
+            "arguments": 1,
+            "scratch_cells": 0,
+            "result_clone": 0,
+            "selector_ops": 0
+          }
+        },
+        {
+          "kind": "if",
+          "cond": "hs=W32.zero /\\ cs=W32.zero /\\ valid",
+          "fee": 5,
+          "body": [
+            {
+              "kind": "call",
+              "lhs": "m",
+              "key": "mreccandidate",
+              "args": "hp,cp,r",
+              "selectors": 0,
+              "temp": "rt_call_5",
+              "fee": 2309,
+              "source_statement": "m<@MRecCandidate.run(hp,cp,r);",
+              "fee_parts": {
+                "call_frame": 2,
+                "arguments": 3,
+                "scratch_cells": 0,
+                "result_clone": 2304,
+                "selector_ops": 0
+              }
+            },
+            {
+              "kind": "call",
+              "lhs": "valid",
+              "key": "trit",
+              "args": "m",
+              "selectors": 0,
+              "temp": "rt_call_6",
+              "fee": 3,
+              "source_statement": "valid<@RRecTrit.check(m);",
+              "fee_parts": {
+                "call_frame": 2,
+                "arguments": 1,
+                "scratch_cells": 0,
+                "result_clone": 0,
+                "selector_ops": 0
+              }
+            },
+            {
+              "kind": "if",
+              "cond": "valid",
+              "fee": 1,
+              "body": [
+                {
+                  "kind": "assign",
+                  "lhs": "result",
+                  "expr": "Some m",
+                  "fee": 2306,
+                  "cells": 768,
+                  "ops": 1,
+                  "source_statement": "result<-Some m;",
+                  "fee_parts": {
+                    "transfer": 1,
+                    "expression_ops": 1,
+                    "result_clone": 2304
+                  }
+                }
+              ],
+              "source_statement": "if(valid){result<-Some m;}",
+              "fee_parts": {
+                "branch": 1,
+                "guard_ops": 0
+              }
+            }
+          ],
+          "source_statement": "if(hs=W32.zero /\\ cs=W32.zero /\\ valid){m<@MRecCandidate.run(hp,cp,r);valid<@RRecTrit.check(m);if(valid){result<-Some m;}}",
+          "fee_parts": {
+            "branch": 1,
+            "guard_ops": 4
+          }
+        }
+      ],
+      "result": "result",
+      "entry": 9216,
+      "returnfee": 2305,
+      "bound": "9216+(1+3076+rt_fixed_frombytes_bound+3076+rt_fixed_frombytes_bound+3+rt_fixed_trit_bound+5+(2309+rt_kernel_mreccandidate_bound+3+rt_fixed_trit_bound+1+(2306)))+2305",
+      "source_sha256": "6f16de3d4f8c613ba36a2e8afdb909b2be1753a8a55b2d31e3cac8ffec35db0d",
+      "original_body_sha256": "7e1c34df7bcdb8cc43807635241bf6c3e9ff63a6bf2fe0987766a2b02709720c",
+      "source_body_verified": true
+    },
+    {
+      "name": "DecodeCandidate",
+      "old": "MRecDecodeCandidate.run",
+      "file": "kem_acwc2_security/NTRUPlus768MRecDecode.ec",
+      "args": "cp:W16.t Array768.t",
+      "types": {
+        "cp": 768
+      },
+      "locals": "centered,inverse,r:W16.t Array768.t",
+      "ret": "W16.t Array768.t",
+      "cells": 768,
+      "body": [
+        {
+          "kind": "call",
+          "lhs": "centered",
+          "key": "normalize",
+          "args": "cp",
+          "selectors": 0,
+          "temp": "rt_call_0",
+          "fee": 2307,
+          "source_statement": "centered<@RRecNormalize.run(cp);",
+          "fee_parts": {
+            "call_frame": 2,
+            "arguments": 1,
+            "scratch_cells": 0,
+            "result_clone": 2304,
+            "selector_ops": 0
+          }
+        },
+        {
+          "kind": "call",
+          "lhs": "inverse",
+          "key": "invntt",
+          "args": "witness,centered",
+          "selectors": 0,
+          "temp": "rt_call_1",
+          "fee": 3076,
+          "source_statement": "inverse<@NTRUPlus768InvNTT.M.jade_ntruplus_ntruplus768_amd64_ref_invntt(witness,centered);",
+          "fee_parts": {
+            "call_frame": 2,
+            "arguments": 2,
+            "scratch_cells": 768,
+            "result_clone": 2304,
+            "selector_ops": 0
+          }
+        },
+        {
+          "kind": "call",
+          "lhs": "r",
+          "key": "normalize",
+          "args": "inverse",
+          "selectors": 0,
+          "temp": "rt_call_2",
+          "fee": 2307,
+          "source_statement": "r<@RRecNormalize.run(inverse);",
+          "fee_parts": {
+            "call_frame": 2,
+            "arguments": 1,
+            "scratch_cells": 0,
+            "result_clone": 2304,
+            "selector_ops": 0
+          }
+        }
+      ],
+      "result": "r",
+      "entry": 2304,
+      "returnfee": 2305,
+      "bound": "2304+(2307+rt_fixed_normalize_bound+3076+rt_fixed_invntt_bound+2307+rt_fixed_normalize_bound)+2305",
+      "source_sha256": "b58da2eb33378b03bf8493fe90da1150d8554cb68f18c902f81e98c0c7ca0623",
+      "original_body_sha256": "682265f74459883dc174b31f7d63da34c2598f5b3e944bf284037380988a36dd",
+      "source_body_verified": true
+    },
+    {
+      "name": "Decode",
+      "old": "MRecDecode.run",
+      "file": "kem_acwc2_security/NTRUPlus768MRecDecode.ec",
+      "args": "query:W8.t Array1152.t",
+      "types": {
+        "query": 1152
+      },
+      "locals": "cp,r:W16.t Array768.t;var status:W32.t;var valid:bool;var result:W16.t Array768.t option",
+      "ret": "W16.t Array768.t option",
+      "cells": 768,
+      "body": [
+        {
+          "kind": "assign",
+          "lhs": "result",
+          "expr": "None",
+          "fee": 1,
+          "cells": 0,
+          "ops": 0,
+          "source_statement": "result<-None;",
+          "fee_parts": {
+            "transfer": 1,
+            "expression_ops": 0,
+            "result_clone": 0
+          }
+        },
+        {
+          "kind": "call",
+          "lhs": "(cp,status)",
+          "key": "frombytes",
+          "args": "witness,query",
+          "selectors": 0,
+          "temp": "rt_call_1",
+          "fee": 3076,
+          "source_statement": "(cp,status)<@NTRUPlus768PolyFromBytesChecked.M.jade_ntruplus_ntruplus768_amd64_ref_poly_frombytes(witness,query);",
+          "fee_parts": {
+            "call_frame": 2,
+            "arguments": 2,
+            "scratch_cells": 768,
+            "result_clone": 2304,
+            "selector_ops": 0
+          }
+        },
+        {
+          "kind": "if",
+          "cond": "status=W32.zero",
+          "fee": 2,
+          "body": [
+            {
+              "kind": "call",
+              "lhs": "r",
+              "key": "decodecandidate",
+              "args": "cp",
+              "selectors": 0,
+              "temp": "rt_call_3",
+              "fee": 2307,
+              "source_statement": "r<@MRecDecodeCandidate.run(cp);",
+              "fee_parts": {
+                "call_frame": 2,
+                "arguments": 1,
+                "scratch_cells": 0,
+                "result_clone": 2304,
+                "selector_ops": 0
+              }
+            },
+            {
+              "kind": "call",
+              "lhs": "valid",
+              "key": "trit",
+              "args": "r",
+              "selectors": 0,
+              "temp": "rt_call_4",
+              "fee": 3,
+              "source_statement": "valid<@RRecTrit.check(r);",
+              "fee_parts": {
+                "call_frame": 2,
+                "arguments": 1,
+                "scratch_cells": 0,
+                "result_clone": 0,
+                "selector_ops": 0
+              }
+            },
+            {
+              "kind": "if",
+              "cond": "valid",
+              "fee": 1,
+              "body": [
+                {
+                  "kind": "assign",
+                  "lhs": "result",
+                  "expr": "Some r",
+                  "fee": 2306,
+                  "cells": 768,
+                  "ops": 1,
+                  "source_statement": "result<-Some r;",
+                  "fee_parts": {
+                    "transfer": 1,
+                    "expression_ops": 1,
+                    "result_clone": 2304
+                  }
+                }
+              ],
+              "source_statement": "if(valid){result<-Some r;}",
+              "fee_parts": {
+                "branch": 1,
+                "guard_ops": 0
+              }
+            }
+          ],
+          "source_statement": "if(status=W32.zero){r<@MRecDecodeCandidate.run(cp);valid<@RRecTrit.check(r);if(valid){result<-Some r;}}",
+          "fee_parts": {
+            "branch": 1,
+            "guard_ops": 1
+          }
+        }
+      ],
+      "result": "result",
+      "entry": 3456,
+      "returnfee": 2305,
+      "bound": "3456+(1+3076+rt_fixed_frombytes_bound+2+(2307+rt_kernel_decodecandidate_bound+3+rt_fixed_trit_bound+1+(2306)))+2305",
+      "source_sha256": "b58da2eb33378b03bf8493fe90da1150d8554cb68f18c902f81e98c0c7ca0623",
+      "original_body_sha256": "ed8affbc8415ab90b2d62d62c6e4a475fcca2ee8e0d502caddaa782e7720a08f",
+      "source_body_verified": true
+    },
+    {
+      "name": "Candidate",
+      "old": "SecCandidate.run",
+      "file": "kem_acwc2_security/NTRUPlus768SecExtract.ec",
+      "args": "pk ct query:W8.t Array1152.t",
+      "types": {
+        "pk": 1152,
+        "ct": 1152,
+        "query": 1152
+      },
+      "locals": "ro,mo:W16.t Array768.t option;var result:(W16.t Array768.t*W16.t Array768.t) option",
+      "ret": "(W16.t Array768.t*W16.t Array768.t) option",
+      "cells": 1536,
+      "body": [
+        {
+          "kind": "call",
+          "lhs": "ro",
+          "key": "decode",
+          "args": "query",
+          "selectors": 0,
+          "temp": "rt_call_0",
+          "fee": 2307,
+          "source_statement": "ro<@MRecDecode.run(query);",
+          "fee_parts": {
+            "call_frame": 2,
+            "arguments": 1,
+            "scratch_cells": 0,
+            "result_clone": 2304,
+            "selector_ops": 0
+          }
+        },
+        {
+          "kind": "assign",
+          "lhs": "result",
+          "expr": "None",
+          "fee": 1,
+          "cells": 0,
+          "ops": 0,
+          "source_statement": "result<-None;",
+          "fee_parts": {
+            "transfer": 1,
+            "expression_ops": 0,
+            "result_clone": 0
+          }
+        },
+        {
+          "kind": "if",
+          "cond": "ro<>None",
+          "fee": 2,
+          "body": [
+            {
+              "kind": "call",
+              "lhs": "mo",
+              "key": "mrec",
+              "args": "pk,oget ro,ct",
+              "selectors": 1,
+              "temp": "rt_call_3",
+              "fee": 2310,
+              "source_statement": "mo<@MRec.run(pk,oget ro,ct);",
+              "fee_parts": {
+                "call_frame": 2,
+                "arguments": 3,
+                "scratch_cells": 0,
+                "result_clone": 2304,
+                "selector_ops": 1
+              }
+            },
+            {
+              "kind": "if",
+              "cond": "mo<>None",
+              "fee": 2,
+              "body": [
+                {
+                  "kind": "assign",
+                  "lhs": "result",
+                  "expr": "Some(oget mo,oget ro)",
+                  "fee": 4613,
+                  "cells": 1536,
+                  "ops": 4,
+                  "source_statement": "result<-Some(oget mo,oget ro);",
+                  "fee_parts": {
+                    "transfer": 1,
+                    "expression_ops": 4,
+                    "result_clone": 4608
+                  }
+                }
+              ],
+              "source_statement": "if(mo<>None){result<-Some(oget mo,oget ro);}",
+              "fee_parts": {
+                "branch": 1,
+                "guard_ops": 1
+              }
+            }
+          ],
+          "source_statement": "if(ro<>None){mo<@MRec.run(pk,oget ro,ct);if(mo<>None){result<-Some(oget mo,oget ro);}}",
+          "fee_parts": {
+            "branch": 1,
+            "guard_ops": 1
+          }
+        }
+      ],
+      "result": "result",
+      "entry": 10368,
+      "returnfee": 4609,
+      "bound": "10368+(2307+rt_kernel_decode_bound+1+2+(2310+rt_kernel_mrec_bound+2+(4613)))+4609",
+      "source_sha256": "39b57065a0b8f8368f58b53356ef86cf317fbfee5e80bf1f38f1b39c996d3d48",
+      "original_body_sha256": "24f7401093a888a2b532f658453dedc326c3c80b1d447f80db4897e7f9ebf1a9",
+      "source_body_verified": true
+    }
+  ],
+  "generated_source_sha256": "a917d1516479751a9b92f76c149633be7ac609a65fff9bc5e77aa0ef2b467c9c"
+}

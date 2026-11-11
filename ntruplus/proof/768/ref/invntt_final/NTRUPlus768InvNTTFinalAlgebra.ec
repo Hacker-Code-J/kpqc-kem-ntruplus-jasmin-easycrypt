@@ -307,11 +307,8 @@ proof.
       ((coeff a + coeff b - (coeff a - coeff b) * zminusz5inv_root) *
        ninv_root) %% q.
   + have Hbase : coeff out.`1 %% q = (coeff lowin * ninv_root) %% q.
-    + move: Hlow.
-      rewrite /out /NTRUPlus768InvNTTFinalProof.invntt_final_pair
-              /NTRUPlus768InvNTTFinalProof.invntt_final_mul
-              /t1 /t2 /d /lowin /=.
-      smt().
+    + have [_ Hcongr] := Hlow.
+      exact Hcongr.
     rewrite Hbase.
     have -> :
         (coeff lowin * ninv_root) %% q =
@@ -323,11 +320,8 @@ proof.
       coeff out.`2 %% q =
       (((coeff a - coeff b) * zminusz5inv_root) * twoninv_root) %% q.
   + have Hbase : coeff out.`2 %% q = (coeff t2 * twoninv_root) %% q.
-    + move: Hhigh.
-      rewrite /out /NTRUPlus768InvNTTFinalProof.invntt_final_pair
-              /NTRUPlus768InvNTTFinalProof.invntt_final_mul
-              /t1 /t2 /d /=.
-      smt().
+    + have [_ Hcongr] := Hhigh.
+      exact Hcongr.
     rewrite Hbase.
     have -> :
         (coeff t2 * twoninv_root) %% q =
@@ -336,17 +330,11 @@ proof.
     rewrite Ht2_congr.
     by rewrite modzMml.
   split.
-  + move: Hlow.
-    rewrite /out /NTRUPlus768InvNTTFinalProof.invntt_final_pair
-            /NTRUPlus768InvNTTFinalProof.invntt_final_mul
-            /t1 /t2 /d /lowin /=.
-    smt().
+  + have [Hrange _] := Hlow.
+    exact Hrange.
   split.
-  + move: Hhigh.
-    rewrite /out /NTRUPlus768InvNTTFinalProof.invntt_final_pair
-            /NTRUPlus768InvNTTFinalProof.invntt_final_mul
-            /t1 /t2 /d /=.
-    smt().
+  + have [Hrange _] := Hhigh.
+    exact Hrange.
   split.
   + rewrite /invntt_final_pair_math /=.
     exact Hout0_congr.

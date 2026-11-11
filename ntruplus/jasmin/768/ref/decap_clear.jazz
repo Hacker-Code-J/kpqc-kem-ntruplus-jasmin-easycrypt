@@ -1,0 +1,24 @@
+param int NTRUPLUS_DECAP_WORKSPACEBYTES = 13506;
+
+// Clear the complete caller-owned C workspace, including its final padding
+// byte. This says nothing about registers, spills, or nested-call workspaces.
+#[safety =
+   { ensures = is_arr_init(workspace,0,NTRUPLUS_DECAP_WORKSPACEBYTES) }
+]
+#[ct = "secret → secret"]
+#[sct="
+{ ptr: transient, val: secret } → { ptr: public, val: secret }
+"]
+export fn jade_ntruplus_ntruplus768_amd64_ref_decap_clear(
+  reg mut ptr u8[NTRUPLUS_DECAP_WORKSPACEBYTES] workspace) ->
+  reg ptr u8[NTRUPLUS_DECAP_WORKSPACEBYTES]
+{
+  reg u64 i;
+  _ = #init_msf();
+  i = 0;
+  while (i < NTRUPLUS_DECAP_WORKSPACEBYTES) {
+    workspace[i] = 0;
+    i += 1;
+  }
+  return workspace;
+}

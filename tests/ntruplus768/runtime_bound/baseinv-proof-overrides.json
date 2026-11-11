@@ -1,0 +1,10 @@
+{
+  "__poly_baseinv_block_projection": "proc;seq 5 1:(={tr,ta,zeta_0,t0,t1,t2,t3}).\n + wp;call rt_fixed_baseinv_baseInv____baseinv_pretrace_projection;auto.\n if;auto.\n wp;call rt_fixed_baseinv_baseInv____baseinv_success_projection;auto.",
+  "__poly_baseinv_block_cost": "proc;seq 5:(0<=rt_work<=302).\n + wp;call rt_fixed_baseinv_baseInv____baseinv_pretrace_cost;auto=> />;smt().\n if;first by auto=> />;smt().\n wp;call rt_fixed_baseinv_baseInv____baseinv_success_cost;auto=> />;smt().",
+  "__poly_baseinv_apply_projection": "proc;seq 33 15:(={rp,ap,block,zeta_0,trp,status,off}).\n + wp;call rt_fixed_baseinv___poly_baseinv_block_projection;auto.\n if;auto.",
+  "__poly_baseinv_apply_cost": "proc;seq 33:(0<=rt_work<=5992).\n + wp;call rt_fixed_baseinv___poly_baseinv_block_cost;auto=> />;smt().\n if;auto=> />;smt().",
+  "__poly_baseinv_pair_projection": "proc;seq 9 3:(={rp,ap,i,zeta_0,status,block}).\n + wp;call rt_fixed_baseinv___poly_baseinv_apply_projection;auto.\n if;auto.\n wp;call rt_fixed_baseinv___poly_baseinv_apply_projection;auto.",
+  "__poly_baseinv_pair_cost": "proc;seq 9:(0<=rt_work<=15236).\n + wp;call rt_fixed_baseinv___poly_baseinv_apply_cost;auto=> />;smt().\n if;last by auto=> />;smt().\n wp;call rt_fixed_baseinv___poly_baseinv_apply_cost;auto=> />;smt().",
+  "__poly_baseinv_core_projection": "proc;seq 14 6:(={rp,ap,status}).\n + wp;while(={rp,ap,i,zetasp,status}).\n   - seq 6 2:(={rp,ap,i,zetasp,status,zeta_0}).\n     + wp;call rt_fixed_baseinv___poly_baseinv_pair_projection;auto.\n     if;auto.\n   auto.\n if;auto.\n wp;call rt_fixed_baseinv___poly_baseinv_zero_projection;auto.",
+  "__poly_baseinv_core_cost": "proc;seq 14:(0<=rt_work<=2932331).\n + wp;while(0<=W64.to_uint i<=96 /\\ 0<=rt_work<=5481+30488*W64.to_uint i).\n   - seq 6:(0<=W64.to_uint i<96 /\\ 0<=rt_work<=5481+30488*W64.to_uint i+30483).\n     + wp;call rt_fixed_baseinv___poly_baseinv_pair_cost.\n       auto=> /> &hr;rewrite W64.ultE /=;smt().\n     if;auto=> /> &hr;move=>*;try(rewrite rt_fixed_u64_next 1:/#);smt().\n   auto=> />;smt(rt_fixed_exit).\n if;last by auto=> />;smt().\n wp;call rt_fixed_baseinv___poly_baseinv_zero_cost;auto=> />;smt()."
+}

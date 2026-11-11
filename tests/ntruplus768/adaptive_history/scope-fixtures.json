@@ -1,0 +1,76 @@
+{
+  "schema": 1,
+  "scope": "Generic fresh-local state and existential export controls; not the actual NTRU theorem",
+  "prior_audit_sha256": "05618db887b36f89655c6b8877d0f14597d6c3e1f36bcd4eac8959ae20316431",
+  "fixtures": [
+    {
+      "source": "scope-fixtures/BoundaryReaderRejected.ec",
+      "sha256": "683d72e6581bf0b11edde7d1642472b03b0c6617f195f8fd52dbc89309fa3d33",
+      "expected_failure": true,
+      "error_line": 8,
+      "diagnostic": "the module Top.Reader is not allowed to use the variable(s) OldPrivate.rows"
+    },
+    {
+      "source": "scope-fixtures/ExistentialModule.ec",
+      "sha256": "dfcae4e7ec3516fd841df128ad688da8533d2c2d8cc0696bf2690286c527d186",
+      "expected_failure": false
+    },
+    {
+      "source": "scope-fixtures/ExistingBoundary.ec",
+      "sha256": "2abaf28d7f3f0824d60e97fd0387d81e27e8a207b553197dd61f3b074fd8fb6d",
+      "expected_failure": false
+    },
+    {
+      "source": "scope-fixtures/GlobalAfter.ec",
+      "sha256": "b91a3538281049a52195aec0b2235ea9e58cb05e8f067f08b3b49c565eefde09",
+      "expected_failure": true,
+      "error_line": 7,
+      "diagnostic": "The module A can write Fresh.x"
+    },
+    {
+      "source": "scope-fixtures/GlobalExistentialRejected.ec",
+      "sha256": "00d04789a0d0532bcebb32e6af4b7c4d03384127aa28c56f6119fad026494084",
+      "expected_failure": true,
+      "error_line": 21,
+      "diagnostic": "[by]: cannot close goals"
+    },
+    {
+      "source": "scope-fixtures/LocalAfter.ec",
+      "sha256": "fff81a22fdebbb60a6b35ed7ddb867f4752e90dc43f3229ce7b65f13ae81f5f5",
+      "expected_failure": false
+    },
+    {
+      "source": "scope-fixtures/LocalAliasRejected.ec",
+      "sha256": "b20b723b7a1b3394b0ebe55f13a97e5ba72ae9c5794a7c6863dabd2ad1204bd9",
+      "expected_failure": true,
+      "error_line": 8,
+      "diagnostic": "The module A can write PublicState.x"
+    },
+    {
+      "source": "scope-fixtures/LocalBefore.ec",
+      "sha256": "ee1d94bbbb170ef275a6f803dfb85e2bae59573e885a3f7ab7817d64f37afaa2",
+      "expected_failure": true,
+      "error_line": 7,
+      "diagnostic": "The module A can write Fresh.x"
+    },
+    {
+      "source": "scope-fixtures/LocalEscape.ec",
+      "sha256": "10bc7c939e293ba4e1ce19a1a3f1b46741f3391fb4f002b883de557ab739a31d",
+      "expected_failure": true,
+      "error_line": 7,
+      "diagnostic": "lemma/axiom escaped_frame cannot depend on local module Fresh"
+    },
+    {
+      "source": "scope-fixtures/LocalExistential.ec",
+      "sha256": "ce0f62ceb7188db9fa8585468fb15c201f95d93af2d2e1de394f3500a3f52aaf",
+      "expected_failure": false,
+      "printed_theorem": "reduction_exists",
+      "printed_statement": "lemma reduction_exists:\n  forall (A(O : O) <: Adv),\n    exists (B <: Runner),\n      forall &m, Pr[B.run() @ &m : res] = Pr[Original(A).run() @ &m : res]."
+    },
+    {
+      "source": "scope-fixtures/StatePort.ec",
+      "sha256": "58690e8ce93982dff35a713af50c341b96153b0e747bbd55fdc64546bfe3c221",
+      "expected_failure": false
+    }
+  ]
+}

@@ -1,4 +1,5 @@
 [general]
+rdirs = Jasmin:../../../compat/jasmin
 timeout = 30
 
 rdirs = .
@@ -67,7 +68,6 @@ rdirs = ../../../../../external/formosa-mlkem/proof/eclib
 rdirs = ../../../../../external/formosa-mlkem/crypto-specs/common
 rdirs = ../../../../../external/formosa-mlkem/crypto-specs/arrays
 idirs = JazzEC:../../../../../external/formosa-mlkem/crypto-specs/arrays
-rdirs = Jasmin:../../../../../external/formosa-mlkem/jasmin/eclib
 rdirs = CryptoSpecs:../../../../../external/formosa-mlkem/crypto-specs/fips202
 rdirs = CryptoSpecs:../../../../../external/formosa-mlkem/crypto-specs/fips202/properties
 rdirs = ../valid_key_m1_recovery

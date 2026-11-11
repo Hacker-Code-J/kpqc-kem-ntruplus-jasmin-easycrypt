@@ -1,0 +1,85 @@
+{
+  "schema": 1,
+  "status": "FROZEN",
+  "mains": [
+    {
+      "source": "kem_inj_hardness/NTRUPlus768INJBounds.ec",
+      "source_sha256": "5071e85c409d37a6f5197b7c5fd4e2175e0ad39ecb47b73bbc88fc3e2d5dbd98",
+      "semantic_target": "inj_short_nonzero_pair_bounds",
+      "module_binders": [],
+      "sentinel": "\nlemma __inj_hardness_eof_INJBounds v w : inj_short v=>inj_short w=>inj_pair_nonzero v w=>\n 0<inj_pair_sqnorm(v,w)<=6144 /\\ inj_pair_infnorm(v,w)<=2 /\\\n inj_sqnorm v<=3072 /\\ inj_sqnorm w<=3072.\nproof. exact(inj_short_nonzero_pair_bounds v w). qed.\n"
+    },
+    {
+      "source": "kem_inj_hardness/NTRUPlus768INJCollision.ec",
+      "source_sha256": "e1df5386e9369d20922dddcce11505e58db5346ab3a33c601f7caf4300c7e5a7",
+      "semantic_target": "inj_zero_pair_loses",
+      "module_binders": [],
+      "sentinel": "\nlemma __inj_hardness_eof_INJCollision h : !inj_short_win h inj_zero_pair.\nproof. exact(inj_zero_pair_loses h). qed.\n"
+    },
+    {
+      "source": "kem_inj_hardness/NTRUPlus768INJCollisionProof.ec",
+      "source_sha256": "c06ded6c1e2859609cfc82b01a6289270571dfde647f48f66b936feef9afa486",
+      "semantic_target": "inj_encoded_collision",
+      "module_binders": [],
+      "sentinel": "\nlemma __inj_hardness_eof_INJCollisionProof a z : ow_rq_domain a=>sec_inj_win(ow_encode a)z=>\n inj_short_win a (inj_difference_pair z).\nproof. exact(inj_encoded_collision a z). qed.\n"
+    },
+    {
+      "source": "kem_inj_hardness/NTRUPlus768INJExistence.ec",
+      "source_sha256": "6378f3b8f5af5ccad7cf4c9dd18ad6445f89579f03754cc7d7d207c1495959f1",
+      "semantic_target": "inj_uniform_existence_bound",
+      "module_binders": [
+        "C"
+      ],
+      "sentinel": "\nlemma __inj_hardness_eof_INJExistence (C<:INJShortAdversary) &m :\n Pr[INJShortRelationGame(C).run()@&m:res]<=inj_uniform_bad_mass.\nproof. exact(inj_uniform_existence_bound C &m). qed.\n"
+    },
+    {
+      "source": "kem_inj_hardness/NTRUPlus768INJFinal.ec",
+      "source_sha256": "ad686c14c98b552b95e4a45d2f0de8d1914baa703685bbfdd20d4cad8cd14b29",
+      "semantic_target": "inj_original_statistical",
+      "module_binders": [
+        "A",
+        "H",
+        "D",
+        "H",
+        "D"
+      ],
+      "sentinel": "\nlemma __inj_hardness_eof_INJFinal\n (A<:CCAExtendedAdversary {-ROE,-ROF,-ROG,-ROH,-RawXOFStreams,-CCADecapOracle,-FOPublicKey,\n  -FOContext,-FOBadState,-FOBudgetState,-FOGRO.RO,-FOGRO.FRO,-SimPublic,-SimHistory,-SimBad,\n  -SimPhaseInput,-SimSelectedFixed,-SimPublicBudget,-SimHRO.RO,-SimHRO.FRO,-SimGRO.RO,-SimGRO.FRO,\n  -SH.HB.Count,-SH.HB.HybOrcl,-ErasureSeedLog,-ErasureHit,-ErasureSeedPool,-EBudgetState,-ErasureTape,\n  -CPAReduction,-CPAHitState,-SecGHistory,-SecGMark}) &m qE q0 qH qC :\n 0<=q0=>FOBudgetState.limit{m}=q0=>0<=qH=>0<=qC=>\n (forall(H<:CCAExtendedOraclePort {-A})(D<:CCADecapPort {-A}),\n  islossless H.e=>islossless H.f=>islossless H.g=>islossless H.h=>islossless H.raw=>\n  islossless D.decap=>islossless A(H,D).guess)=>\n hoare[CountedA(A,SharedCCAExtendedOracles,CCADecapOracle).guess:\n EBudgetState.requests=0 /\\ EBudgetState.forwarded=0 /\\ EBudgetState.limit=qE /\\\n !EBudgetState.overflow /\\ EBudgetState.queries=[] ==>EBudgetState.requests<=qE]=>\n erasure_budget_initial qE EBudgetState.requests{m} EBudgetState.forwarded{m}\n EBudgetState.limit{m} EBudgetState.overflow{m} EBudgetState.queries{m}=>\n hoare[FOCountedA(A,FOHashView(FONativePlainBackend),FODecapView(FONativePlainBackend)).guess:\n fo_budget_initial q0 FOBudgetState.nH FOBudgetState.nD FOBudgetState.limit FOBudgetState.overflow ==>\n fo_query_count FOBudgetState.nH FOBudgetState.nD<=q0]=>\n hoare[FOCountedA(A,FOHashView(FOFullPlainBackend),FODecapView(FOFullPlainBackend)).guess:\n fo_budget_initial q0 FOBudgetState.nH FOBudgetState.nD FOBudgetState.limit FOBudgetState.overflow ==>\n fo_query_count FOBudgetState.nH FOBudgetState.nD<=q0]=>\n (forall(H<:CCAExtendedOraclePort {-A,-FOBudgetState})(D<:CCADecapPort {-A,-FOBudgetState}),\n hoare[FOCountedA(A,H,D).guess:FOBudgetState.nD=0 ==>FOBudgetState.nD<=max 0 budget])=>\n hoare[SimPublicCountedA(A,FOHashView(SimKnownPublicBackend),FODecapView(SimKnownPublicBackend)).guess:\n sim_public_budget_initial qH SimPublicBudget.nh SimPublicBudget.limit SimPublicBudget.overflow ==>\n SimPublicBudget.nh<=qH]=>\n hoare[CPAPhase(A).run:true ==>fsize SimHistory.h<=qC]=>\n `|Pr[CCAOriginalGame(A).run()@&m:res]-1%r/2%r| <=\n ((130820%r+512%r*qE%r)/(2%r^256)+q0%r/(2%r^353))+\n ((max 0 budget)%r/(2%r^768)+(qH+max 0 budget)%r/(2%r^353))+\n (2%r*(((Pr[OWNTRURealGame(INJNTRUReduction(SecINJAuxAdapter(SecINJReducer(A)))).run()@&m:res]-\n Pr[OWNTRUUniformGame(INJNTRUReduction(SecINJAuxAdapter(SecINJReducer(A)))).run()@&m:res]+\n inj_uniform_bad_mass)/ow_alpha_g)+\n ((Pr[OWNTRURealGame(OWNTRUReduction(SecOWAuxAdapter(SecOWReducer(A)))).run()@&m:res]-\n Pr[OWNTRUUniformGame(OWNTRUReduction(SecOWAuxAdapter(SecOWReducer(A)))).run()@&m:res]+\n Pr[OWRLWEGame(OWRLWESolver(SecOWAuxAdapter(SecOWReducer(A)))).run()@&m:res])/ow_alpha_g))+qC%r/(2%r^768)).\nproof. exact(inj_original_statistical A &m qE q0 qH qC). qed.\n"
+    },
+    {
+      "source": "kem_inj_hardness/NTRUPlus768INJGames.ec",
+      "source_sha256": "013aacf7c4fec9b0eeb07be7af84296ff199451dbc64ded5f1b94d4287a266bc",
+      "semantic_target": "inj_field_reject_nonunit",
+      "module_binders": [
+        "B"
+      ],
+      "sentinel": "\nlemma __inj_hardness_eof_INJGames(B<:SecINJAdversary) :\n phoare[INJFieldKernel(B).guess:!ow_unit_test a ==>!res]=1%r.\nproof. exact(inj_field_reject_nonunit B). qed.\n"
+    },
+    {
+      "source": "kem_inj_hardness/NTRUPlus768INJReduction.ec",
+      "source_sha256": "3ebc5b7ab2223022f9864a3eb7733d398ee007e761b507f3d4198bea88320362",
+      "semantic_target": "inj_base_hardness",
+      "module_binders": [
+        "B"
+      ],
+      "sentinel": "\nlemma __inj_hardness_eof_INJReduction(B<:SecINJAdversary) &m :\n Pr[SecBaseINJGame(B).run()@&m:res]<=\n (Pr[OWNTRURealGame(INJNTRUReduction(B)).run()@&m:res]-\n  Pr[OWNTRUUniformGame(INJNTRUReduction(B)).run()@&m:res]+\n  Pr[INJShortRelationGame(INJShortSolver(B)).run()@&m:res])/ow_alpha_g.\nproof. exact(inj_base_hardness B &m). qed.\n"
+    },
+    {
+      "source": "kem_inj_hardness/NTRUPlus768INJReductionReal.ec",
+      "source_sha256": "74ae5a3292ff02bd3e585e2fddf7752f19f7ed74f98a4bf1a983467e9aeabe3e",
+      "semantic_target": "inj_ntru_real_identity",
+      "module_binders": [
+        "B"
+      ],
+      "sentinel": "\nlemma __inj_hardness_eof_INJReductionReal(B<:SecINJAdversary) &m :\n Pr[OWNTRURealGame(INJNTRUReduction(B)).run()@&m:res]=\n ow_alpha_g*Pr[SecBaseINJGame(B).run()@&m:res].\nproof. exact(inj_ntru_real_identity B &m). qed.\n"
+    },
+    {
+      "source": "kem_inj_hardness/NTRUPlus768INJReductionUniform.ec",
+      "source_sha256": "315f183bbc26eda465768b3a1eb9665eee06ca4a9cb47cdbf51b3a466e9e8414",
+      "semantic_target": "inj_uniform_short_bound",
+      "module_binders": [
+        "B"
+      ],
+      "sentinel": "\nlemma __inj_hardness_eof_INJReductionUniform(B<:SecINJAdversary) &m :\n Pr[OWNTRUUniformGame(INJNTRUReduction(B)).run()@&m:res]<=\n Pr[INJShortRelationGame(INJShortSolver(B)).run()@&m:res].\nproof. exact(inj_uniform_short_bound B &m). qed.\n"
+    }
+  ]
+}

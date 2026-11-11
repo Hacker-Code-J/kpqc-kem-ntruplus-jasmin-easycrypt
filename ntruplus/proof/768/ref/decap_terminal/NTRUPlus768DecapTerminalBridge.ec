@@ -649,9 +649,10 @@ lemma finish_functional_from_value_flow
     arg = (ss_source, failv) ==>
       res.`1 = ss /\ res.`2 = ret_fail].
 proof.
-  move=> [_ [_ [Hmask ->]]].
-  move: Hmask => [_ [_ [_ ->]]].
-  exact (finish_functional ss_source failv).
+  move=> [_ [_ [Hmask Hret]]].
+  move: Hmask => [_ [_ [_ Hss]]].
+  conseq (finish_functional ss_source failv) => //.
+  by move=> &m; rewrite Hss Hret.
 qed.
 
 lemma finish_correct_from_value_flow
@@ -675,7 +676,8 @@ lemma finish_correct_from_value_flow
     arg = (ss_source, failv) ==>
       res.`1 = ss /\ res.`2 = ret_fail] = 1%r.
 proof.
-  move=> [_ [_ [Hmask ->]]].
-  move: Hmask => [_ [_ [_ ->]]].
-  exact (finish_correct ss_source failv).
+  move=> [_ [_ [Hmask Hret]]].
+  move: Hmask => [_ [_ [_ Hss]]].
+  conseq (finish_correct ss_source failv) => //.
+  by move=> &m; rewrite Hss Hret.
 qed.

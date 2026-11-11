@@ -15,3 +15,9 @@ verify-proof:
 
 bridge-proof:
 	$(EASYCRYPT) compile -no-eco $(BRIDGE_PROOF)
+
+.PHONY: check-model-compatibility
+check-model-compatibility:
+	python3 ../../../../../tests/ntruplus768/toolchain/check_model_compatibility.py --source-only
+
+verify-proof bridge-proof: check-model-compatibility

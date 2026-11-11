@@ -1,0 +1,80 @@
+namespace CheckedDecoder {
+  require "poly_frombytes.jazz"
+}
+
+param int NTRUPLUS_N = 768;
+param int NTRUPLUS_POLYBYTES = 1152;
+param int NTRUPLUS_SSBYTES = 32;
+
+// Official Decaps entry guard only: a zero status permits continuation.
+// All six regions are disjoint and the three polynomial outputs are aligned.
+// skpoly is the first 2304 bytes of the official 2336-byte secret key.
+// Only ct and skpoly must initially contain readable data. Skipped
+// polynomial outputs and the successful ss buffer are not read or overwritten.
+// CT/SCT disclose only the canonical-encoding predicates of fbytes and hbytes,
+// never the secret key bytes. On the canonical-secret-key domain each disclosed
+// predicate is zero. Arbitrary malformed secret keys are NOT covered by a
+// no-declassification constant-time claim.
+#[safety =
+   { requires = is_arr_init(ct,0,NTRUPLUS_POLYBYTES) &&
+                is_arr_init(skpoly,0,2 * NTRUPLUS_POLYBYTES)
+   , ensures = is_arr_init(cp,0,2 * NTRUPLUS_N)
+   }
+]
+#[ct = "secret × secret × secret × secret × public × secret → secret × secret × secret × secret × public"]
+#[sct="
+{ ptr: transient, val: secret } ×
+{ ptr: transient, val: secret } ×
+{ ptr: transient, val: secret } ×
+{ ptr: transient, val: secret } ×
+{ ptr: transient, val: transient } ×
+{ ptr: transient, val: secret } →
+{ ptr: public, val: secret } ×
+{ ptr: public, val: secret } ×
+{ ptr: public, val: secret } ×
+{ ptr: public, val: secret } ×
+public
+"]
+export fn jade_ntruplus_ntruplus768_amd64_ref_decap_guard(
+  reg mut ptr u16[NTRUPLUS_N] cp,
+  reg mut ptr u16[NTRUPLUS_N] fp,
+  reg mut ptr u16[NTRUPLUS_N] hp,
+  reg mut ptr u8[NTRUPLUS_SSBYTES] ss,
+  reg const ptr u8[NTRUPLUS_POLYBYTES] ct,
+  reg const ptr u8[2 * NTRUPLUS_POLYBYTES] skpoly) ->
+  (reg ptr u16[NTRUPLUS_N], reg ptr u16[NTRUPLUS_N],
+   reg ptr u16[NTRUPLUS_N], reg ptr u8[NTRUPLUS_SSBYTES], reg u32)
+{
+  reg const ptr u8[NTRUPLUS_POLYBYTES] fbytes;
+  reg const ptr u8[NTRUPLUS_POLYBYTES] hbytes;
+  reg u32 status;
+  reg u64 i;
+  reg u64 msf;
+
+  fbytes = skpoly[0:NTRUPLUS_POLYBYTES];
+  hbytes = skpoly[NTRUPLUS_POLYBYTES:NTRUPLUS_POLYBYTES];
+  _ = #init_msf();
+  #[inline] cp, status = CheckedDecoder::jade_ntruplus_ntruplus768_amd64_ref_poly_frombytes(cp, ct);
+  msf = #init_msf();
+  status = #protect_32(status, msf);
+  if (status == 0) {
+    #[inline] fp, status = CheckedDecoder::jade_ntruplus_ntruplus768_amd64_ref_poly_frombytes(fp, fbytes);
+    () = #declassify(status);
+    msf = #init_msf();
+    status = #protect_32(status, msf);
+    if (status == 0) {
+      #[inline] hp, status = CheckedDecoder::jade_ntruplus_ntruplus768_amd64_ref_poly_frombytes(hp, hbytes);
+      () = #declassify(status);
+      msf = #init_msf();
+      status = #protect_32(status, msf);
+    }
+  }
+  if (status != 0) {
+    i = 0;
+    while (i < NTRUPLUS_SSBYTES) {
+      ss[i] = 0;
+      i += 1;
+    }
+  }
+  return cp, fp, hp, ss, status;
+}

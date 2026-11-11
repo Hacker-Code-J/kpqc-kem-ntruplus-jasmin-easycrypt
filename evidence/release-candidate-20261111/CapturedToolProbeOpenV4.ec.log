@@ -1,0 +1,10 @@
+[-] [0002] 16.3% (-1.0B / [frag -1.0B])
+[\] [0003] 50.3% (-1.0B / [frag -1.0B])
+[|] [0003] 55.1% (-1.0B / [frag -1.0B])
+[/] [0003] 59.9% (-1.0B / [frag -1.0B])
+[-] [0004] 85.7% (-1.0B / [frag -1.0B])
+                                                   
+                                                   
+[critical] [/tmp/work/results/CapturedToolProbeOpenV4.ec: line 3 (14) to line 4 (36)] cannot process [axiom] inside a proof script
+[\] [0004] 85.7% (-1.0B / [frag -1.0B])
+[|] [0004] 85.7% (-1.0B / [frag -1.0B])

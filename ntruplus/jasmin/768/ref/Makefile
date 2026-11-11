@@ -1,8 +1,8 @@
 # -*- Makefile -*-
 
-JASMINC ?= /usr/local/bin/jasminc
-JASMINCT ?= /usr/local/bin/jasmin-ct
-JASMIN2EC ?= /usr/local/bin/jasmin2ec
+JASMINC ?= jasminc
+JASMINCT ?= jasmin-ct
+JASMIN2EC ?= jasmin2ec
 JFLAGS ?= -arch x86-64 -call-conv linux -system linux
 SLICE := jade_ntruplus_ntruplus768_amd64_ref_basemul
 OUTDIR := $(if $(OUTDIR),$(OUTDIR),$(shell mktemp -d /tmp/ntruplus768-basemul-asm.XXXXXX))

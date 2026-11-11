@@ -32,17 +32,33 @@ maintained locally.
 The official upstream commit
 `3991b2ae08d6f0008d37e41b8aceaaab27b4ec89` was audited on 2026-08-26 and was
 the upstream `HEAD`/`main` at that time. It is an immutable migration target,
-not the source currently imported or verified here. It preserves the
+not a replacement of the baseline reference tree above. It preserves the
 NTRU+768 KAT but changes 15 reference files, including canonical decoding and
 malformed-input behavior, one-buffer transform APIs, reduction placement, the
 `fqinv` trace, and secret-state cleanup.
 
-The paper remains explicitly scoped to the verified source commit above while
-the migration is pursued separately. Run
+The existing arithmetic and recovery results remain scoped to the verified
+source commit above. The checked-decoder subset below adds a separately
+identified official-target component; the full migration remains in progress. Run
 `scripts/audit-ntruplus768-upstream.sh` and
 `scripts/audit-ntruplus768-checker-impact.sh` to reproduce the compatibility
 evidence. See `docs/ntruplus768-upstream-migration.md` for the measured impact,
 proof reuse map, and required conditions before changing the imported pin.
+
+### Official checked-decoder reference subset
+
+- Path: `tests/ntruplus768/poly_frombytes_checked/reference/`
+- Source repository: <https://github.com/ntruplus/ntruplus>
+- Source commit: `3991b2ae08d6f0008d37e41b8aceaaab27b4ec89`
+- Original source directory: `Reference_Implementation/NTRU+768`
+- Purpose: an immutable C oracle for the standalone checked byte decoder;
+  source files and required headers are copied verbatim and hash-pinned by
+  the target's reference manifest.
+- License: upstream MIT license retained with the subset.
+
+Importing this subset does not replace `NTRU+/NTRU+768`, change the existing
+KAT baseline, or claim completion of the whole official-target migration.
+The new Jasmin/extracted-program contract concerns the decoder only.
 
 ## Formosa ML-KEM
 
@@ -73,3 +89,37 @@ repository does not contain a top-level `LICENSE` file. Preserve upstream
 provenance and review the applicable upstream and file-specific terms before
 copying, modifying, or redistributing any of its contents outside the
 submodule.
+
+### Jasmin model name compatibility (September 2026)
+
+The repository-owned `ntruplus/proof/compat/jasmin/JModel.ec` only re-exports
+`JModel_x86` from the installed Jasmin EasyCrypt library. This preserves the
+old import name used by the pinned Formosa helpers without copying or
+modifying third-party source files. No new word operations, facts, or proof
+assumptions are introduced. Project loader paths select the installed model
+and this single compatibility name, rather than the legacy Jasmin tree
+inside the Formosa submodule.
+
+### Official Encaps guard integration reference
+
+- Path: `tests/ntruplus768/encap_guard/reference/`
+- Source repository: <https://github.com/ntruplus/ntruplus>
+- Source commit: `3991b2ae08d6f0008d37e41b8aceaaab27b4ec89`
+- Purpose: pinned official C and KAT for comparison with an Encaps caller that
+  substitutes the verified Jasmin entry guard and retains the official C success body.
+- The target's manifest records original paths and SHA-256 hashes.
+- The upstream MIT license is retained; generated test adapters are identified
+  separately and do not replace the existing `NTRU+/NTRU+768` baseline.
+
+
+### Official Decaps guard integration reference
+
+- Path: `tests/ntruplus768/decap_guard/reference/`
+- Source: <https://github.com/ntruplus/ntruplus>, commit
+  `3991b2ae08d6f0008d37e41b8aceaaab27b4ec89`.
+- Purpose: immutable official C/KAT fixtures for standalone and mixed C/Jasmin
+  Decaps validation-boundary tests. Only a separately generated copy replaces
+  the input-validation block; arithmetic and cleanup remain official C.
+- `reference-manifest.json` records the source files and SHA-256 hashes.
+- The upstream MIT license is retained. These fixtures do not replace the
+  separately pinned `NTRU+/NTRU+768` baseline.

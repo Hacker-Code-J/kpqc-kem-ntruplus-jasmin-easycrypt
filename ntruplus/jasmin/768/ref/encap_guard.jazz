@@ -1,0 +1,57 @@
+namespace CheckedDecoder {
+  require "poly_frombytes.jazz"
+}
+
+param int NTRUPLUS_N = 768;
+param int NTRUPLUS_POLYBYTES = 1152;
+param int NTRUPLUS_SSBYTES = 32;
+
+// Encaps entry guard only: status zero permits the caller to continue.
+// All four regions are disjoint, hp is u16-aligned, and pk is public.
+// ct and ss are not read: they are cleared on rejection and otherwise untouched.
+#[safety =
+   { requires = is_arr_init(pk,0,NTRUPLUS_POLYBYTES)
+   , ensures = is_arr_init(hp,0,2 * NTRUPLUS_N)
+   }
+]
+#[ct = "secret × secret × secret × public → secret × secret × secret × public"]
+#[sct="
+{ ptr: transient, val: secret } ×
+{ ptr: transient, val: secret } ×
+{ ptr: transient, val: secret } ×
+{ ptr: transient, val: transient } →
+{ ptr: public, val: secret } ×
+{ ptr: public, val: secret } ×
+{ ptr: public, val: secret } ×
+public
+"]
+export fn jade_ntruplus_ntruplus768_amd64_ref_encap_guard(
+  reg mut ptr u16[NTRUPLUS_N] hp,
+  reg mut ptr u8[NTRUPLUS_POLYBYTES] ct,
+  reg mut ptr u8[NTRUPLUS_SSBYTES] ss,
+  reg const ptr u8[NTRUPLUS_POLYBYTES] pk) ->
+  (reg ptr u16[NTRUPLUS_N], reg ptr u8[NTRUPLUS_POLYBYTES],
+   reg ptr u8[NTRUPLUS_SSBYTES], reg u32)
+{
+  reg u32 status;
+  reg u64 i;
+  reg u64 msf;
+
+  _ = #init_msf();
+  #[inline] hp, status = CheckedDecoder::jade_ntruplus_ntruplus768_amd64_ref_poly_frombytes(hp, pk);
+  msf = #init_msf();
+  status = #protect_32(status, msf);
+  if (status != 0) {
+    i = 0;
+    while (i < NTRUPLUS_POLYBYTES) {
+      ct[i] = 0;
+      i += 1;
+    }
+    i = 0;
+    while (i < NTRUPLUS_SSBYTES) {
+      ss[i] = 0;
+      i += 1;
+    }
+  }
+  return hp, ct, ss, status;
+}

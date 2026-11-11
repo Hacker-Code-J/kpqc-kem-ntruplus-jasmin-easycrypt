@@ -5,7 +5,7 @@ CFLAGS ?= -Wall -Wextra -Werror -O2 -g -ffunction-sections -fdata-sections
 LDFLAGS ?= -Wl,--gc-sections
 SANFLAGS ?= -fsanitize=undefined -fno-sanitize-recover=undefined
 JASMIN_DIR := ../../../ntruplus/jasmin/768/ref
-JASMINC ?= /usr/local/bin/jasminc
+JASMINC ?= jasminc
 JFLAGS ?= -arch x86-64 -call-conv linux -system linux
 SLICE := jade_ntruplus_ntruplus768_amd64_ref_poly_basemul
 OUTDIR := $(if $(OUTDIR),$(OUTDIR),$(shell mktemp -d /tmp/ntruplus768-poly-basemul-test.XXXXXX))

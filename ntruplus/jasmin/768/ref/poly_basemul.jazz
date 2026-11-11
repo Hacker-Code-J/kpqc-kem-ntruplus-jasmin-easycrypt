@@ -129,6 +129,7 @@ inline fn __basemul4(
 #[ct = "secret × secret × secret → secret"]
 #[sct="
 { ptr: transient, val: secret } ×
+{ ptr: transient, val: secret } ×
 { ptr: transient, val: secret } →
 { ptr: public, val: secret }
 "]

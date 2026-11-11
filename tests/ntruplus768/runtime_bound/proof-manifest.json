@@ -1,0 +1,364 @@
+{
+  "schema": 1,
+  "status": "FROZEN",
+  "review_state": "ROOT_REVIEWED_ALPHA_RENAME_NOT_REPLAYED",
+  "mains": [
+    {
+      "source": "kem_runtime_bound/NTRUPlus768RTAdaptive.ec",
+      "source_sha256": "7bf9c6065056ac34d35aa28a9aca83f434ab97d0b6cae95886501f9e75cf1c7d",
+      "semantic_target": "rt_transcript_bound",
+      "module_binders": [
+        "A",
+        "S"
+      ],
+      "sentinel": "\nlemma __runtime_bound_eof_RTAdaptive\n (S<:RTHistory {-SecGHistory,-ROE,-ROF,-ROG,-ROH,-RawXOFStreams})\n (A<:CCAExtendedAdversary {-S,-SecGHistory,-ROE,-ROF,-ROG,-ROH,-RawXOFStreams})\n (view:(glob S)->ah_state)(cost:(glob S)->rt_profile) :\n (forall p pk suffix star,hoare[S.init:cost(glob S)=p /\\ arg=(pk,suffix,star) ==>\n view(glob S)=ah_initial pk suffix star /\\ cost(glob S)=p])=>\n (forall st p ig b,hoare[S.charge_call:view(glob S)=st /\\ cost(glob S)=p /\\ arg=(ig,b) ==>\n view(glob S)=st /\\ cost(glob S)=rt_call p ig b])=>\n (forall st p,hoare[S.snapshot:view(glob S)=st /\\ cost(glob S)=p ==>\n res=st /\\ view(glob S)=st /\\ cost(glob S)=p])=>\n (forall st p x y,hoare[S.record:view(glob S)=st /\\ cost(glob S)=p /\\ input=x /\\ hout=y ==>\n view(glob S)=ah_record_state st x y /\\ cost(glob S)=rt_record_cost st p x])=>\n (forall st p v k c,hoare[S.charge_decap:view(glob S)=st /\\ cost(glob S)=p /\\ arg=(v,k,c) ==>\n view(glob S)=st /\\ cost(glob S)=rt_decap p v k c])=>\n (forall st p,hoare[S.metrics:view(glob S)=st /\\ cost(glob S)=p ==>\n res=p /\\ view(glob S)=st /\\ cost(glob S)=p])=>\n hoare[RTTranscript(S,A).run:cost(glob S)=rt_zero ==>\n rt_transcript_ok res.`1 res.`2 /\\ cost(glob S)=res.`2 /\\ SecGHistory.queries=res.`1].\n\nproof. exact (rt_transcript_bound S A view cost). qed.\n"
+    },
+    {
+      "source": "kem_runtime_bound/NTRUPlus768RTBounds.ec",
+      "source_sha256": "79be8a08e1812d60b84c964799d624750bbf75eb295914548898fbb40ca6111f",
+      "semantic_target": "rtk_charge_bound",
+      "module_binders": [],
+      "sentinel": "\nlemma __runtime_bound_eof_RTBounds c x y : rtk_prices_ok c=>rtk_le x y=>rtk_charge c x<=rtk_charge c y.\n\nproof. exact (rtk_charge_bound c x y). qed.\n"
+    },
+    {
+      "source": "kem_runtime_bound/NTRUPlus768RTCompleteCost.ec",
+      "source_sha256": "207e17852e620cc072fd6edde5009cfa9ece812dff631f9468c729f27519308e",
+      "semantic_target": "rt_complete_bound_values",
+      "module_binders": [],
+      "sentinel": "\nlemma __runtime_bound_eof_RTCompleteCost tA q b :\n rt_complete_di_bound tA q b=tA+10909917*q*q+32450882*q+64*b+17679874 /\\\n rt_complete_do_bound tA q b=tA+10909917*q*q+32450882*q+64*b+10492283 /\\\n rt_complete_co_bound tA q b=tA+10909917*q*q+32450882*q+64*b+18463740.\n\nproof. exact (rt_complete_bound_values tA q b). qed.\n"
+    },
+    {
+      "source": "kem_runtime_bound/NTRUPlus768RTFinal.ec",
+      "source_sha256": "2e7f4659118248b12d2c94ab60ffab8c12dc0615004f1565833cd74d7ad37127",
+      "semantic_target": "rt_original_runtime_bound",
+      "module_binders": [
+        "CO",
+        "D",
+        "DI",
+        "DO",
+        "H"
+      ],
+      "sentinel": "\nlemma __runtime_bound_eof_RTFinal :\n exists(DI<:RTWordNTRUMeasured)(DO<:RTWordNTRUMeasured)(CO<:RTWordRLWEMeasured),\n (forall p0 tA,0<=tA=>\n  hoare[DI.measure:h=ow_coeff_words p0 ==>\n  rt_complete_di_charge tA res.`2 res.`3<=rt_complete_di_bound tA res.`2.`rp_q res.`2.`rp_b]) /\\\n (forall p0 tA,0<=tA=>\n  hoare[DO.measure:h=ow_coeff_words p0 ==>\n  rt_complete_do_charge tA res.`2 res.`3<=rt_complete_do_bound tA res.`2.`rp_q res.`2.`rp_b]) /\\\n (forall p0 q0 tA,0<=tA=>\n  hoare[CO.measure:a=ow_coeff_words p0 /\\ b=ow_coeff_words q0 ==>\n  rt_complete_co_charge tA res.`2 res.`3<=rt_complete_co_bound tA res.`2.`rp_q res.`2.`rp_b]) /\\\n equiv[DI.run ~ DI.measure: ={arg,glob DI} ==>res{1}=res{2}.`1] /\\\n equiv[DO.run ~ DO.measure: ={arg,glob DO} ==>res{1}=res{2}.`1] /\\\n equiv[CO.run ~ CO.measure: ={arg,glob CO} ==>res{1}=res{2}.`1] /\\\n (forall &m qE q0 qH qC,\n0<=q0=>FOBudgetState.limit{m}=q0=>0<=qH=>0<=qC=>\n (forall(H<:CCAExtendedOraclePort {-A})(D<:CCADecapPort {-A}),\n  islossless H.e=>islossless H.f=>islossless H.g=>islossless H.h=>islossless H.raw=>\n  islossless D.decap=>islossless A(H,D).guess)=>\n hoare[CountedA(A,SharedCCAExtendedOracles,CCADecapOracle).guess:\n EBudgetState.requests=0 /\\ EBudgetState.forwarded=0 /\\ EBudgetState.limit=qE /\\\n !EBudgetState.overflow /\\ EBudgetState.queries=[] ==>EBudgetState.requests<=qE]=>\n erasure_budget_initial qE EBudgetState.requests{m} EBudgetState.forwarded{m}\n EBudgetState.limit{m} EBudgetState.overflow{m} EBudgetState.queries{m}=>\n hoare[FOCountedA(A,FOHashView(FONativePlainBackend),FODecapView(FONativePlainBackend)).guess:\n fo_budget_initial q0 FOBudgetState.nH FOBudgetState.nD FOBudgetState.limit FOBudgetState.overflow ==>\n fo_query_count FOBudgetState.nH FOBudgetState.nD<=q0]=>\n hoare[FOCountedA(A,FOHashView(FOFullPlainBackend),FODecapView(FOFullPlainBackend)).guess:\n fo_budget_initial q0 FOBudgetState.nH FOBudgetState.nD FOBudgetState.limit FOBudgetState.overflow ==>\n fo_query_count FOBudgetState.nH FOBudgetState.nD<=q0]=>\n (forall(H<:CCAExtendedOraclePort {-A,-FOBudgetState})(D<:CCADecapPort {-A,-FOBudgetState}),\n hoare[FOCountedA(A,H,D).guess:FOBudgetState.nD=0 ==>FOBudgetState.nD<=max 0 budget])=>\n hoare[SimPublicCountedA(A,FOHashView(SimKnownPublicBackend),FODecapView(SimKnownPublicBackend)).guess:\n sim_public_budget_initial qH SimPublicBudget.nh SimPublicBudget.limit SimPublicBudget.overflow ==>\n SimPublicBudget.nh<=qH]=>\n hoare[CPAPhase(A).run:true ==>fsize SimHistory.h<=qC]=>\n `|Pr[CCAOriginalGame(A).run()@&m:res]-1%r/2%r| <=\n ((130820%r+512%r*qE%r)/(2%r^256)+q0%r/(2%r^353))+\n ((max 0 budget)%r/(2%r^768)+(qH+max 0 budget)%r/(2%r^353))+\n (2%r*(((Pr[RTWordNTRURealGame(DI).run()@&m:res]-\n Pr[RTWordNTRUUniformGame(DI).run()@&m:res]+\n (1%r/(2%r^244)))/ow_alpha_g)+\n ((Pr[RTWordNTRURealGame(DO).run()@&m:res]-\n Pr[RTWordNTRUUniformGame(DO).run()@&m:res]+\n Pr[RTWordRLWEGame(CO).run()@&m:res])/ow_alpha_g))+qC%r/(2%r^768))+2%r*(qC%r/(2%r^353))).\n\nproof. exact (rt_original_runtime_bound). qed.\n"
+    },
+    {
+      "source": "kem_runtime_bound/NTRUPlus768RTFixedBaseinv.ec",
+      "source_sha256": "c48f37daa163ff06beb350bc8d21c1c708a0ade9fb341110e088014fde03af88",
+      "semantic_target": "rt_fixed_baseinv_bound_cost",
+      "module_binders": [],
+      "sentinel": "\nlemma __runtime_bound_eof_RTFixedBaseinv : hoare[RTFixedBaseinv.__poly_baseinv_core : true ==>0<=res.`2<=rt_fixed_baseinv_bound].\n\nproof. exact (rt_fixed_baseinv_bound_cost). qed.\n"
+    },
+    {
+      "source": "kem_runtime_bound/NTRUPlus768RTFixedBasemul.ec",
+      "source_sha256": "ad50c0b94f305554bab467ed319a33d02bb87a32cd115357691903d9ecbac723",
+      "semantic_target": "rt_fixed_basemul_bound_cost",
+      "module_binders": [],
+      "sentinel": "\nlemma __runtime_bound_eof_RTFixedBasemul : hoare[RTFixedBasemul.jade_ntruplus_ntruplus768_amd64_ref_poly_basemul : true ==>0<=res.`2<=rt_fixed_basemul_bound].\n\nproof. exact (rt_fixed_basemul_bound_cost). qed.\n"
+    },
+    {
+      "source": "kem_runtime_bound/NTRUPlus768RTFixedCBD.ec",
+      "source_sha256": "f8e9ad00c0c10682ab793876bfd9bc9f768c6cf84348ddf73973bdf4937db5a6",
+      "semantic_target": "rt_fixed_cbd_bound_cost",
+      "module_binders": [],
+      "sentinel": "\nlemma __runtime_bound_eof_RTFixedCBD : hoare[RTFixedCBD.jade_ntruplus_ntruplus768_amd64_ref_poly_cbd1 : true ==>0<=res.`2<=rt_fixed_cbd_bound].\n\nproof. exact (rt_fixed_cbd_bound_cost). qed.\n"
+    },
+    {
+      "source": "kem_runtime_bound/NTRUPlus768RTFixedCenteredAdd.ec",
+      "source_sha256": "5421009cd4d94296061e519b22226eb9adbd88c67c089909f665d84a61d5d71d",
+      "semantic_target": "rt_fixed_centeredadd_bound_cost",
+      "module_binders": [],
+      "sentinel": "\nlemma __runtime_bound_eof_RTFixedCenteredAdd : hoare[RTFixedCenteredAdd.jade_ntruplus_ntruplus768_amd64_ref_poly_centered_add : true ==>0<=res.`2<=rt_fixed_centeredadd_bound].\n\nproof. exact (rt_fixed_centeredadd_bound_cost). qed.\n"
+    },
+    {
+      "source": "kem_runtime_bound/NTRUPlus768RTFixedDecapR2.ec",
+      "source_sha256": "b58b1ffd9bde7db6cdf130cfd85707bf1b5b9a5dcd80be973996d966d1303877",
+      "semantic_target": "rt_fixed_decapr2_bound_cost",
+      "module_binders": [],
+      "sentinel": "\nlemma __runtime_bound_eof_RTFixedDecapR2 : hoare[RTFixedDecapR2.jade_ntruplus_ntruplus768_amd64_ref_decap_r2 : true ==>0<=res.`2<=rt_fixed_decapr2_bound].\n\nproof. exact (rt_fixed_decapr2_bound_cost). qed.\n"
+    },
+    {
+      "source": "kem_runtime_bound/NTRUPlus768RTFixedFromBytes.ec",
+      "source_sha256": "83a882b625ad2af4b9d0272569aadfa3c5341b751b299e0a3e802e0c76829173",
+      "semantic_target": "rt_fixed_frombytes_bound_cost",
+      "module_binders": [],
+      "sentinel": "\nlemma __runtime_bound_eof_RTFixedFromBytes : hoare[RTFixedFromBytes.jade_ntruplus_ntruplus768_amd64_ref_poly_frombytes : true ==>0<=res.`2<=rt_fixed_frombytes_bound].\n\nproof. exact (rt_fixed_frombytes_bound_cost). qed.\n"
+    },
+    {
+      "source": "kem_runtime_bound/NTRUPlus768RTFixedGPrepare.ec",
+      "source_sha256": "afbc6ecf387900b0654bc88d23a89088bdfc094e13b549601d017f1e65542f17",
+      "semantic_target": "rt_fixed_gprepare_bound_cost",
+      "module_binders": [],
+      "sentinel": "\nlemma __runtime_bound_eof_RTFixedGPrepare : hoare[RTFixedGPrepare.jade_ntruplus_ntruplus768_amd64_ref_decap_message_prepare : true ==>0<=res.`2<=rt_fixed_gprepare_bound].\n\nproof. exact (rt_fixed_gprepare_bound_cost). qed.\n"
+    },
+    {
+      "source": "kem_runtime_bound/NTRUPlus768RTFixedInvNTT.ec",
+      "source_sha256": "15d375c83dcce18cead60b3a43e5009dd033f4fa74e794e9559261123692a0bb",
+      "semantic_target": "rt_fixed_invntt_bound_cost",
+      "module_binders": [],
+      "sentinel": "\nlemma __runtime_bound_eof_RTFixedInvNTT : hoare[RTFixedInvNTT.jade_ntruplus_ntruplus768_amd64_ref_invntt : true ==>0<=res.`2<=rt_fixed_invntt_bound].\n\nproof. exact (rt_fixed_invntt_bound_cost). qed.\n"
+    },
+    {
+      "source": "kem_runtime_bound/NTRUPlus768RTFixedNTT.ec",
+      "source_sha256": "25ac5b0dda4f1fc2e3ccab489924ded477fde048de4b930436e0c9030f9f957f",
+      "semantic_target": "rt_fixed_ntt_bound_cost",
+      "module_binders": [],
+      "sentinel": "\nlemma __runtime_bound_eof_RTFixedNTT : hoare[RTFixedNTT.jade_ntruplus_ntruplus768_amd64_ref_ntt : true ==>0<=res.`2<=rt_fixed_ntt_bound].\n\nproof. exact (rt_fixed_ntt_bound_cost). qed.\n"
+    },
+    {
+      "source": "kem_runtime_bound/NTRUPlus768RTFixedPolySub.ec",
+      "source_sha256": "a6692ff4f44ce82addcbb570cb443664d7708c303ae931aecfd590c0b311fadd",
+      "semantic_target": "rt_fixed_polysub_bound_cost",
+      "module_binders": [],
+      "sentinel": "\nlemma __runtime_bound_eof_RTFixedPolySub : hoare[RTFixedPolySub.jade_ntruplus_ntruplus768_amd64_ref_poly_sub : true ==>0<=res.`2<=rt_fixed_polysub_bound].\n\nproof. exact (rt_fixed_polysub_bound_cost). qed.\n"
+    },
+    {
+      "source": "kem_runtime_bound/NTRUPlus768RTFixedSOTPEncode.ec",
+      "source_sha256": "b1703c0481c6534ac1d9fc92210aa30ff8928c85c6e05ee47fe9b76b01a4bef5",
+      "semantic_target": "rt_fixed_sotpencode_bound_cost",
+      "module_binders": [],
+      "sentinel": "\nlemma __runtime_bound_eof_RTFixedSOTPEncode : hoare[RTFixedSOTPEncode.jade_ntruplus_ntruplus768_amd64_ref_poly_sotp_encode : true ==>0<=res.`2<=rt_fixed_sotpencode_bound].\n\nproof. exact (rt_fixed_sotpencode_bound_cost). qed.\n"
+    },
+    {
+      "source": "kem_runtime_bound/NTRUPlus768RTFixedToBytes.ec",
+      "source_sha256": "f4fb5df52b015b16b0aa96d7ea08ec5842c97d9264f56793d4190668a62e52e8",
+      "semantic_target": "rt_fixed_tobytes_bound_cost",
+      "module_binders": [],
+      "sentinel": "\nlemma __runtime_bound_eof_RTFixedToBytes : hoare[RTFixedToBytes.jade_ntruplus_ntruplus768_amd64_ref_poly_tobytes : true ==>0<=res.`2<=rt_fixed_tobytes_bound].\n\nproof. exact (rt_fixed_tobytes_bound_cost). qed.\n"
+    },
+    {
+      "source": "kem_runtime_bound/NTRUPlus768RTFixedWordChecks.ec",
+      "source_sha256": "0c38679a6fb71b2c774f5252755fb9686e9f6cd4dbb799436ee243707186bd3e",
+      "semantic_target": "rt_fixed_trit_bound_cost",
+      "module_binders": [],
+      "sentinel": "\nlemma __runtime_bound_eof_RTFixedWordChecks :\n hoare[RTFixedWordChecks.trit:true ==>0<=res.`2<=rt_fixed_trit_bound].\n\nproof. exact (rt_fixed_trit_bound_cost). qed.\n"
+    },
+    {
+      "source": "kem_runtime_bound/NTRUPlus768RTKernelCosts.ec",
+      "source_sha256": "a917d1516479751a9b92f76c149633be7ac609a65fff9bc5e77aa0ef2b467c9c",
+      "semantic_target": "rt_kernel_candidate_cost",
+      "module_binders": [],
+      "sentinel": "\nlemma __runtime_bound_eof_RTKernelCosts :\n hoare[RTKernelCandidate.run:true ==>0<=res.`2<=rt_kernel_candidate_bound].\n\nproof. exact (rt_kernel_candidate_cost). qed.\n"
+    },
+    {
+      "source": "kem_runtime_bound/NTRUPlus768RTKernelCostsCalls.ec",
+      "source_sha256": "6299b2b92d328d7b9ff793d08112bfd816e25d769f68ca6fcbd09b3d2c17dbb1",
+      "semantic_target": "rt_kernel_candidate_cost_correct",
+      "module_binders": [],
+      "sentinel": "\nlemma __runtime_bound_eof_RTKernelCostsCalls :\n phoare[RTKernelCandidate.run:true ==>0<=res.`2<=rt_kernel_candidate_bound]=1%r.\n\nproof. exact (rt_kernel_candidate_cost_correct). qed.\n"
+    },
+    {
+      "source": "kem_runtime_bound/NTRUPlus768RTKernelCostsSim.ec",
+      "source_sha256": "375808c0ea90c443c7576be1d58b31b2263e9e3792679b829c63a1943251e58f",
+      "semantic_target": "rt_kernel_sim_encrypt_cost_correct",
+      "module_binders": [
+        "G"
+      ],
+      "sentinel": "\nlemma __runtime_bound_eof_RTKernelCostsSim (G<:RTKernelCostGPort) Cg :\n islossless G.get=>hoare[G.get:true ==>0<=res.`2<=Cg]=>\n phoare[RTKernelSimEncrypt(G).run:true ==>\n 0<=res.`2<=rt_kernel_sim_encrypt_bound+Cg]=1%r.\n\nproof. exact (rt_kernel_sim_encrypt_cost_correct G Cg). qed.\n"
+    },
+    {
+      "source": "kem_runtime_bound/NTRUPlus768RTKernelTypes.ec",
+      "source_sha256": "2a3f88d0f30d9509e9beb38b2ce1acadec858627adf7f7dd24d4b5a08fdedda3",
+      "semantic_target": "rtk_add_zero",
+      "module_binders": [],
+      "sentinel": "\nlemma __runtime_bound_eof_RTKernelTypes x : rtk_add x(rtk_profile 0 0 0 0 0 0 0 0 0 0)=x.\n\nproof. exact (rtk_add_zero x). qed.\n"
+    },
+    {
+      "source": "kem_runtime_bound/NTRUPlus768RTKernels.ec",
+      "source_sha256": "0958cce058a36b07449fe41b6b2dc9444c277c67e446230c6b5722119c4e0649",
+      "semantic_target": "rt_rlwe_profile",
+      "module_binders": [
+        "B"
+      ],
+      "sentinel": "\nlemma __runtime_bound_eof_RTKernels(B<:SecOWAdversary) :\n hoare[RTOWRLWESolver(B).run:true ==>\n rtk_le res.`2(rtk_profile 0 1 2 1 0 0 0 0 0 1)].\n\nproof. exact (rt_rlwe_profile B). qed.\n"
+    },
+    {
+      "source": "kem_runtime_bound/NTRUPlus768RTModel.ec",
+      "source_sha256": "5008f5c9055c7d9a8064c61415a4bc115f592a32bfc91ebcad4e27e1c820bee3",
+      "semantic_target": "rt_one_extraction_bound",
+      "module_binders": [],
+      "sentinel": "\nlemma __runtime_bound_eof_RTModel p : rt_cost_ok p=>p.`rp_xcalls<=1=>\n p.`rp_xvisits<=p.`rp_g+p.`rp_d*p.`rp_size /\\\n 0<=rt_visits p<=p.`rp_h*(p.`rp_h-1)+p.`rp_g+2*p.`rp_d*p.`rp_size.\n\nproof. exact (rt_one_extraction_bound p). qed.\n"
+    },
+    {
+      "source": "kem_runtime_bound/NTRUPlus768RTOracles.ec",
+      "source_sha256": "93a549357e96b5a0078195d2d0adc991041093123ddb5032fa88a90e6d3cb9d8",
+      "semantic_target": "rt_call_raw_summary",
+      "module_binders": [
+        "S"
+      ],
+      "sentinel": "\nlemma __runtime_bound_eof_RTOracles\n (S<:RTHistory {-SecGHistory,-ROE,-ROF,-ROG,-ROH,-RawXOFStreams})\n (view:(glob S)->ah_state)(cost:(glob S)->rt_profile) st0 p0 input0 outlen0 n0 :\n (forall st p ig b,hoare[S.charge_call:view(glob S)=st /\\ cost(glob S)=p /\\ arg=(ig,b) ==>\n view(glob S)=st /\\ cost(glob S)=rt_call p ig b])=>\n (forall st p x y,hoare[S.record:view(glob S)=st /\\ cost(glob S)=p /\\ input=x /\\ hout=y ==>\n view(glob S)=ah_record_state st x y /\\ cost(glob S)=rt_record_cost st p x])=>\n hoare[RTOracles(S,AHActualOracles(SecGLogged(FOGActual))).raw:\n view(glob S)=st0 /\\ cost(glob S)=p0 /\\ input=input0 /\\ outlen=outlen0 /\\ size SecGHistory.queries=n0 ==>\n rt_raw_effect st0 p0 input0 outlen0 (view(glob S)) (cost(glob S)) /\\\n size SecGHistory.queries=n0+b2i(rt_raw_g input0 outlen0)].\n\nproof. exact (rt_call_raw_summary S view cost st0 p0 input0 outlen0 n0). qed.\n"
+    },
+    {
+      "source": "kem_runtime_bound/NTRUPlus768RTOuterCost.ec",
+      "source_sha256": "7536c9210dd5e906fb336c649c6ae3364c918c4dc900e45a75a99a72634a72fa",
+      "semantic_target": "rt_outer_bound_values",
+      "module_binders": [],
+      "sentinel": "\nlemma __runtime_bound_eof_RTOuterCost tA :\n rt_outer_di_bound tA=tA+17307270 /\\\n rt_outer_do_bound tA=tA+10119679 /\\\n rt_outer_co_bound tA=tA+18084223.\n\nproof. exact (rt_outer_bound_values tA). qed.\n"
+    },
+    {
+      "source": "kem_runtime_bound/NTRUPlus768RTPhaseCost.ec",
+      "source_sha256": "7b0e83ea99aa35168659c7d4cd5d24d67308988c8cfb37df0867bde839102526",
+      "semantic_target": "rt_concrete_phase_price_values",
+      "module_binders": [],
+      "sentinel": "\nlemma __runtime_bound_eof_RTPhaseCost :\n rt_concrete_phase_prices.`pc_call=27058600 /\\\n rt_concrete_phase_prices.`pc_input=64 /\\\n rt_concrete_phase_prices.`pc_visit=65536 /\\\n rt_concrete_phase_prices.`pc_compare=21 /\\\n rt_concrete_phase_prices.`pc_cons=3470 /\\\n rt_concrete_phase_prices.`pc_encrypt=5381077 /\\\n rt_concrete_phase_prices.`pc_candidate=5299084 /\\\n rt_concrete_phase_prices.`pc_extract_init=370295.\n\nproof. exact (rt_concrete_phase_price_values). qed.\n"
+    },
+    {
+      "source": "kem_runtime_bound/NTRUPlus768RTPrimitiveCost.ec",
+      "source_sha256": "6c6f9004995143f0063a52a492af657079fe9b654ed0ca9ea12fe79c68d1a627",
+      "semantic_target": "rt_primitive_copy768_correct",
+      "module_binders": [],
+      "sentinel": "\nlemma __runtime_bound_eof_RTPrimitiveCost x0 :\n phoare[RTPrimitive.copy768:x=x0 ==>res=(x0,rt_copy_steps 768)]=1%r.\n\nproof. exact (rt_primitive_copy768_correct x0). qed.\n"
+    },
+    {
+      "source": "kem_runtime_bound/NTRUPlus768RTProjection.ec",
+      "source_sha256": "bb191e24f9533dc9cb6968fdb7621d103b9e5ad01f13892b02c3f9a542a3ab8c",
+      "semantic_target": "rt_ow_aux_profile",
+      "module_binders": [
+        "A",
+        "S"
+      ],
+      "sentinel": "\nlemma __runtime_bound_eof_RTProjection\n (S<:RTHistory {-ROE,-ROF,-ROG,-ROH,-RawXOFStreams,-SecGHistory})\n (A<:CCAExtendedAdversary {-S,-ROE,-ROF,-ROG,-ROH,-RawXOFStreams,-SecGHistory})\n (view:(glob S)->ah_state)(cost:(glob S)->rt_profile) :\n (forall st p n,hoare[S.charge_extract:\n view(glob S)=st /\\ cost(glob S)=p /\\ visits=n ==>\n view(glob S)=st /\\ cost(glob S)=rt_extract p n])=>\n hoare[RTTranscript(S,A).run:cost(glob S)=rt_zero ==>\n rt_transcript_ok res.`1 res.`2 /\\ cost(glob S)=res.`2 /\\ SecGHistory.queries=res.`1]=>\n hoare[RTAuxOW(S,A).run:cost(glob S)=rt_zero ==>rt_reducer_profile(cost(glob S))].\n\nproof. exact (rt_ow_aux_profile S A view cost). qed.\n"
+    },
+    {
+      "source": "kem_runtime_bound/NTRUPlus768RTPsiSampler.ec",
+      "source_sha256": "96e9232368231349bcff874b5f39feb4d59edf3eec8253cb073f3c71b90ba110",
+      "semantic_target": "rt_key32_sampler_measure_cost",
+      "module_binders": [],
+      "sentinel": "\nlemma __runtime_bound_eof_RTPsiSampler :\n hoare[RTKey32Sampler.measure:true ==>res.`2=162 /\\ res.`3=32 /\\ res.`2+res.`3=194].\n\nproof. exact (rt_key32_sampler_measure_cost). qed.\n"
+    },
+    {
+      "source": "kem_runtime_bound/NTRUPlus768RTReduction.ec",
+      "source_sha256": "1b19b9afa794e26de6106857989b6e1a243e67f20a9390b1542e24d42b8359a9",
+      "semantic_target": "rt_co_rlwe_probability",
+      "module_binders": [
+        "A",
+        "S"
+      ],
+      "sentinel": "\nlemma __runtime_bound_eof_RTReduction\n (S<:RTHistory {-ROE,-ROF,-ROG,-ROH,-RawXOFStreams,-SecGHistory})\n (A<:CCAExtendedAdversary {-S,-ROE,-ROF,-ROG,-ROH,-RawXOFStreams,-SecGHistory})\n (view:(glob S)->ah_state) &m :\n equiv[RT_CO(S,A).run ~ AHActual_CO(S,A).run:\n ={arg,glob A,ROE.m,ROF.m,ROG.m,ROH.m,glob RawXOFStreams,SecGHistory.queries} /\\ view(glob S){1}=view(glob S){2} ==>\n ={res,glob A,ROE.m,ROF.m,ROG.m,ROH.m,glob RawXOFStreams,SecGHistory.queries} /\\ view(glob S){1}=view(glob S){2}]=>\n Pr[OWRLWEGame(RT_CO(S,A)).run()@&m:res]=\n Pr[OWRLWEGame(AHActual_CO(S,A)).run()@&m:res].\n\nproof. exact (rt_co_rlwe_probability S A view &m). qed.\n"
+    },
+    {
+      "source": "kem_runtime_bound/NTRUPlus768RTStepSemantics.ec",
+      "source_sha256": "38aed464b9586ba33d12996ae8efff25d34a10dd1ae78f152c07324a4806a2d7",
+      "semantic_target": "rt_total_from_self_and_overhead",
+      "module_binders": [],
+      "sentinel": "\nlemma __runtime_bound_eof_RTStepSemantics w tr tA overhead :\n rt_trace_cost w(rt_self_trace tr)<=tA=>\n rt_trace_cost w(rt_overhead_trace tr)<=overhead=>\n rt_trace_cost w(rt_all_trace tr)<=tA+overhead.\n\nproof. exact (rt_total_from_self_and_overhead w tr tA overhead). qed.\n"
+    },
+    {
+      "source": "kem_runtime_bound/NTRUPlus768RTStore.ec",
+      "source_sha256": "d350623d4b55444490003128139351ee51d8379c2e85307dda2c8ddef1a7899d",
+      "semantic_target": "rt_ops_record_invariant",
+      "module_binders": [],
+      "sentinel": "\nlemma __runtime_bound_eof_RTStore st0 p0 input0 hout0 : rt_store_ok st0 p0=>\n phoare[RTStoreOps.record:st=st0 /\\ p=p0 /\\ input=input0 /\\ hout=hout0 ==>\n rt_store_ok res.`1 res.`2]=1%r.\n\nproof. exact (rt_ops_record_invariant st0 p0 input0 hout0). qed.\n"
+    },
+    {
+      "source": "kem_runtime_bound/NTRUPlus768RTView.ec",
+      "source_sha256": "8c4b76ab0a126abae0fd389a76c7e5b3e9eb1fe09b3bdfa277b6c3d69e753ece",
+      "semantic_target": "rt_transcript_projection",
+      "module_binders": [
+        "A",
+        "S"
+      ],
+      "sentinel": "\nlemma __runtime_bound_eof_RTView\n (S<:RTHistory {-ROE,-ROF,-ROG,-ROH,-RawXOFStreams,-SecGHistory})\n (A<:CCAExtendedAdversary {-S,-ROE,-ROF,-ROG,-ROH,-RawXOFStreams,-SecGHistory})\n (view:(glob S)->ah_state)(cost:(glob S)->rt_profile) :\n islossless S.init=>islossless S.snapshot=>islossless S.record=>\n islossless S.charge_call=>islossless S.charge_decap=>islossless S.metrics=>\n (forall p pk suffix star,hoare[S.init:cost(glob S)=p /\\ arg=(pk,suffix,star) ==>\n view(glob S)=ah_initial pk suffix star /\\ cost(glob S)=p])=>\n (forall st p ig b,hoare[S.charge_call:view(glob S)=st /\\ cost(glob S)=p /\\ arg=(ig,b) ==>\n view(glob S)=st /\\ cost(glob S)=rt_call p ig b])=>\n (forall st p,hoare[S.snapshot:view(glob S)=st /\\ cost(glob S)=p ==>\n res=st /\\ view(glob S)=st /\\ cost(glob S)=p])=>\n (forall st p x y,hoare[S.record:view(glob S)=st /\\ cost(glob S)=p /\\ input=x /\\ hout=y ==>\n view(glob S)=ah_record_state st x y /\\ cost(glob S)=rt_record_cost st p x])=>\n (forall st p v k c,hoare[S.charge_decap:view(glob S)=st /\\ cost(glob S)=p /\\ arg=(v,k,c) ==>\n view(glob S)=st /\\ cost(glob S)=rt_decap p v k c])=>\n (forall st p,hoare[S.metrics:view(glob S)=st /\\ cost(glob S)=p ==>\n res=p /\\ view(glob S)=st /\\ cost(glob S)=p])=>\n equiv[RTTranscript(S,A).run ~ AHActualTranscript(S,A).run:\n ={arg,glob A,ROE.m,ROF.m,ROG.m,ROH.m,glob RawXOFStreams,SecGHistory.queries} /\\\n view(glob S){1}=view(glob S){2} ==>\n res{1}.`1=res{2} /\\ ={glob A,ROE.m,ROF.m,ROG.m,ROH.m,glob RawXOFStreams,SecGHistory.queries} /\\\n view(glob S){1}=view(glob S){2}].\n\nproof. exact (rt_transcript_projection S A view cost). qed.\n"
+    },
+    {
+      "source": "kem_runtime_bound/NTRUPlus768RTWordCodec.ec",
+      "source_sha256": "1713c886dc650addba4fc0c73f054165907867263b4a0ac58d01e3bee0083977",
+      "semantic_target": "rt_word_scale3_measure_cost",
+      "module_binders": [],
+      "sentinel": "\nlemma __runtime_bound_eof_RTWordCodec :\n hoare[RTWordScale3.measure:true ==>16132<=res.`2<=19204].\n\nproof. exact (rt_word_scale3_measure_cost). qed.\n"
+    },
+    {
+      "source": "kem_runtime_bound/NTRUPlus768RTWordGames.ec",
+      "source_sha256": "6fe4e2a703e61e1fe685365d75780a92bf961cc9765e889d48256fee7a68a1a9",
+      "semantic_target": "rt_word_rlwe_probability",
+      "module_binders": [
+        "C"
+      ],
+      "sentinel": "\nlemma __runtime_bound_eof_RTWordGames (C<:RTWordRLWEAdversary) &m :\n Pr[RTWordRLWEGame(C).run()@&m:res]=Pr[OWRLWEGame(RTPolyRLWEAdapter(C)).run()@&m:res].\n\nproof. exact (rt_word_rlwe_probability C &m). qed.\n"
+    },
+    {
+      "source": "kem_runtime_bound/NTRUPlus768RTWordKernels.ec",
+      "source_sha256": "2ae373cb087f107b7b51a74ddeea1eb87328e0107a7301a7680364d6f66ab446",
+      "semantic_target": "rt_word_rlwe_projection",
+      "module_binders": [
+        "B"
+      ],
+      "sentinel": "\nlemma __runtime_bound_eof_RTWordKernels (B<:SecOWAdversary) :\n equiv[RTWordOWRLWESolver(B).run ~ RTOWRLWESolver(B).run:\n a{1}=ow_coeff_words a{2} /\\ b{1}=ow_coeff_words b{2} /\\ ={glob B} ==>\n input_poly res{1}.`1=res{2}.`1 /\\ res{1}.`2=res{2}.`2 /\\ ={glob B}].\n\nproof. exact (rt_word_rlwe_projection B). qed.\n"
+    },
+    {
+      "source": "kem_runtime_bound/NTRUPlus768RTWordReduction.ec",
+      "source_sha256": "13fa332d8495770975145a96653db6c197c9f3c88606cd6e8868ce915abd8b3b",
+      "semantic_target": "rt_word_co_run_measure",
+      "module_binders": [
+        "A",
+        "S"
+      ],
+      "sentinel": "\nlemma __runtime_bound_eof_RTWordReduction\n (S<:RTHistory {-ROE,-ROF,-ROG,-ROH,-RawXOFStreams,-SecGHistory})\n (A<:CCAExtendedAdversary {-S,-ROE,-ROF,-ROG,-ROH,-RawXOFStreams,-SecGHistory}) a0 b0 answer &m :\n Pr[RTWord_CO(S,A).run(a0,b0)@&m:input_poly res=answer]=\n Pr[RTWord_CO(S,A).measure(a0,b0)@&m:input_poly res.`1=answer].\n\nproof. exact (rt_word_co_run_measure S A a0 b0 answer &m). qed.\n"
+    }
+  ],
+  "contracts": [],
+  "export_audit": {
+    "source": "kem_runtime_bound/NTRUPlus768RTFinal.ec",
+    "theorem": "rt_original_runtime_bound",
+    "module_witness_count": 3,
+    "expected_type": "forall (A <: CCAExtendedAdversary {-ROE,-ROF,-ROG,-ROH,-RawXOFStreams,-CCADecapOracle,-FOPublicKey,\n  -FOContext,-FOBadState,-FOBudgetState,-FOGRO.RO,-FOGRO.FRO,-SimPublic,-SimHistory,-SimBad,\n  -SimPhaseInput,-SimSelectedFixed,-SimPublicBudget,-SimHRO.RO,-SimHRO.FRO,-SimGRO.RO,-SimGRO.FRO,\n  -SH.HB.Count,-SH.HB.HybOrcl,-ErasureSeedLog,-ErasureHit,-ErasureSeedPool,-EBudgetState,-ErasureTape,\n  -CPAReduction,-CPAHitState,-SecGHistory,-SecGMark}),\nexists(DI<:RTWordNTRUMeasured)(DO<:RTWordNTRUMeasured)(CO<:RTWordRLWEMeasured),\n (forall p0 tA,0<=tA=>\n  hoare[DI.measure:h=ow_coeff_words p0 ==>\n  rt_complete_di_charge tA res.`2 res.`3<=rt_complete_di_bound tA res.`2.`rp_q res.`2.`rp_b]) /\\\n (forall p0 tA,0<=tA=>\n  hoare[DO.measure:h=ow_coeff_words p0 ==>\n  rt_complete_do_charge tA res.`2 res.`3<=rt_complete_do_bound tA res.`2.`rp_q res.`2.`rp_b]) /\\\n (forall p0 q0 tA,0<=tA=>\n  hoare[CO.measure:a=ow_coeff_words p0 /\\ b=ow_coeff_words q0 ==>\n  rt_complete_co_charge tA res.`2 res.`3<=rt_complete_co_bound tA res.`2.`rp_q res.`2.`rp_b]) /\\\n equiv[DI.run ~ DI.measure: ={arg,glob DI} ==>res{1}=res{2}.`1] /\\\n equiv[DO.run ~ DO.measure: ={arg,glob DO} ==>res{1}=res{2}.`1] /\\\n equiv[CO.run ~ CO.measure: ={arg,glob CO} ==>res{1}=res{2}.`1] /\\\n (forall &m qE q0 qH qC,\n0<=q0=>FOBudgetState.limit{m}=q0=>0<=qH=>0<=qC=>\n (forall(H<:CCAExtendedOraclePort {-A})(D<:CCADecapPort {-A}),\n  islossless H.e=>islossless H.f=>islossless H.g=>islossless H.h=>islossless H.raw=>\n  islossless D.decap=>islossless A(H,D).guess)=>\n hoare[CountedA(A,SharedCCAExtendedOracles,CCADecapOracle).guess:\n EBudgetState.requests=0 /\\ EBudgetState.forwarded=0 /\\ EBudgetState.limit=qE /\\\n !EBudgetState.overflow /\\ EBudgetState.queries=[] ==>EBudgetState.requests<=qE]=>\n erasure_budget_initial qE EBudgetState.requests{m} EBudgetState.forwarded{m}\n EBudgetState.limit{m} EBudgetState.overflow{m} EBudgetState.queries{m}=>\n hoare[FOCountedA(A,FOHashView(FONativePlainBackend),FODecapView(FONativePlainBackend)).guess:\n fo_budget_initial q0 FOBudgetState.nH FOBudgetState.nD FOBudgetState.limit FOBudgetState.overflow ==>\n fo_query_count FOBudgetState.nH FOBudgetState.nD<=q0]=>\n hoare[FOCountedA(A,FOHashView(FOFullPlainBackend),FODecapView(FOFullPlainBackend)).guess:\n fo_budget_initial q0 FOBudgetState.nH FOBudgetState.nD FOBudgetState.limit FOBudgetState.overflow ==>\n fo_query_count FOBudgetState.nH FOBudgetState.nD<=q0]=>\n (forall(H<:CCAExtendedOraclePort {-A,-FOBudgetState})(D<:CCADecapPort {-A,-FOBudgetState}),\n hoare[FOCountedA(A,H,D).guess:FOBudgetState.nD=0 ==>FOBudgetState.nD<=max 0 budget])=>\n hoare[SimPublicCountedA(A,FOHashView(SimKnownPublicBackend),FODecapView(SimKnownPublicBackend)).guess:\n sim_public_budget_initial qH SimPublicBudget.nh SimPublicBudget.limit SimPublicBudget.overflow ==>\n SimPublicBudget.nh<=qH]=>\n hoare[CPAPhase(A).run:true ==>fsize SimHistory.h<=qC]=>\n `|Pr[CCAOriginalGame(A).run()@&m:res]-1%r/2%r| <=\n ((130820%r+512%r*qE%r)/(2%r^256)+q0%r/(2%r^353))+\n ((max 0 budget)%r/(2%r^768)+(qH+max 0 budget)%r/(2%r^353))+\n (2%r*(((Pr[RTWordNTRURealGame(DI).run()@&m:res]-\n Pr[RTWordNTRUUniformGame(DI).run()@&m:res]+\n (1%r/(2%r^244)))/ow_alpha_g)+\n ((Pr[RTWordNTRURealGame(DO).run()@&m:res]-\n Pr[RTWordNTRUUniformGame(DO).run()@&m:res]+\n Pr[RTWordRLWEGame(CO).run()@&m:res])/ow_alpha_g))+qC%r/(2%r^768))+2%r*(qC%r/(2%r^353))).",
+    "expected_printed_type": "forall (A(H : CCAExtendedOraclePort, D : CCADecapPort) <:\n           CCAExtendedAdversary{-ROE, -ROF, -ROG, -ROH, -FOContext, -FOBadState, -FOBudgetState, -RawXOFStreams, -CCADecapOracle, -FOGRO.RO, -FOGRO.FRO, -FOPublicKey, -SimPublic, -SimHistory, -SimBad, -SimHRO.RO, -SimHRO.FRO, -SimGRO.RO, -SimGRO.FRO, -SimPhaseInput, -SimSelectedFixed, -SH.HB.Count, -SH.HB.HybOrcl, -SimPublicBudget, -ErasureSeedLog, -ErasureHit, -ErasureSeedPool, -EBudgetState, -ErasureTape, -CPAReduction, -CPAHitState, -SecGHistory, -SecGMark}),\n    exists (DI DO <: RTWordNTRUMeasured) (CO <: RTWordRLWEMeasured),\n      (forall (p0 : NTRUPlus768CyclotomicFactorization.NTRUPoly.poly)\n         (tA : int),\n         0 <= tA =>\n         hoare[ DI.measure :\n                 arg = ow_coeff_words p0 ==>\n                 rt_complete_di_charge tA res.`2 res.`3 <=\n                 rt_complete_di_bound tA res.`2.`rp_q res.`2.`rp_b ]) /\\\n      (forall (p0 : NTRUPlus768CyclotomicFactorization.NTRUPoly.poly)\n         (tA : int),\n         0 <= tA =>\n         hoare[ DO.measure :\n                 arg = ow_coeff_words p0 ==>\n                 rt_complete_do_charge tA res.`2 res.`3 <=\n                 rt_complete_do_bound tA res.`2.`rp_q res.`2.`rp_b ]) /\\\n      (forall (p0 q0 : NTRUPlus768CyclotomicFactorization.NTRUPoly.poly)\n         (tA : int),\n         0 <= tA =>\n         hoare[ CO.measure :\n                 a = ow_coeff_words p0 /\\ b = ow_coeff_words q0 ==>\n                 rt_complete_co_charge tA res.`2 res.`3 <=\n                 rt_complete_co_bound tA res.`2.`rp_q res.`2.`rp_b ]) /\\\n      equiv[ DI.run  ~ DI.measure :\n              arg{1} = arg{2} /\\ (glob DI){1} = (glob DI){2} ==>\n              res{1} = res{2}.`1] /\\\n      equiv[ DO.run  ~ DO.measure :\n              arg{1} = arg{2} /\\ (glob DO){1} = (glob DO){2} ==>\n              res{1} = res{2}.`1] /\\\n      equiv[ CO.run  ~ CO.measure :\n              arg{1} = arg{2} /\\ (glob CO){1} = (glob CO){2} ==>\n              res{1} = res{2}.`1] /\\\n      forall &m (qE q0 qH qC : int),\n        0 <= q0 =>\n        FOBudgetState.limit{m} = q0 =>\n        0 <= qH =>\n        0 <= qC =>\n        (forall (H <: CCAExtendedOraclePort{-A}) (D <: CCADecapPort{-A}),\n           islossless H.e =>\n           islossless H.f =>\n           islossless H.g =>\n           islossless H.h =>\n           islossless H.raw => islossless D.decap => islossless A(H, D).guess) =>\n        hoare[ CountedA(A, SharedCCAExtendedOracles, CCADecapOracle).guess :\n                EBudgetState.requests = 0 /\\\n                EBudgetState.forwarded = 0 /\\\n                EBudgetState.limit = qE /\\\n                !EBudgetState.overflow /\\ EBudgetState.queries = [] ==>\n                EBudgetState.requests <= qE ] =>\n        erasure_budget_initial qE EBudgetState.requests{m}\n          EBudgetState.forwarded{m} EBudgetState.limit{m}\n          EBudgetState.overflow{m} EBudgetState.queries{m} =>\n        hoare[\n                FOCountedA(A, FOHashView(FONativePlainBackend),\n                  FODecapView(FONativePlainBackend)).guess :\n                fo_budget_initial q0 FOBudgetState.nH FOBudgetState.nD\n                  FOBudgetState.limit FOBudgetState.overflow ==>\n                fo_query_count FOBudgetState.nH FOBudgetState.nD <= q0 ] =>\n        hoare[\n                FOCountedA(A, FOHashView(FOFullPlainBackend),\n                  FODecapView(FOFullPlainBackend)).guess :\n                fo_budget_initial q0 FOBudgetState.nH FOBudgetState.nD\n                  FOBudgetState.limit FOBudgetState.overflow ==>\n                fo_query_count FOBudgetState.nH FOBudgetState.nD <= q0 ] =>\n        (forall (H <: CCAExtendedOraclePort{-FOBudgetState, -A})\n           (D <: CCADecapPort{-FOBudgetState, -A}),\n           hoare[ FOCountedA(A, H, D).guess :\n                   FOBudgetState.nD = 0 ==> FOBudgetState.nD <= max 0 budget ]) =>\n        hoare[\n                SimPublicCountedA(A, FOHashView(SimKnownPublicBackend),\n                  FODecapView(SimKnownPublicBackend)).guess :\n                sim_public_budget_initial qH SimPublicBudget.nh\n                  SimPublicBudget.limit SimPublicBudget.overflow ==>\n                SimPublicBudget.nh <= qH ] =>\n        hoare[ CPAPhase(A).run : true ==> fsize SimHistory.h <= qC ] =>\n        `|Pr[CCAOriginalGame(A).run() @ &m : res] - 1%r / 2%r| <=\n        (130820%r + 512%r * qE%r) / 2%r ^ 256 + q0%r / 2%r ^ 353 +\n        ((max 0 budget)%r / 2%r ^ 768 + (qH + max 0 budget)%r / 2%r ^ 353) +\n        (2%r *\n         ((Pr[RTWordNTRURealGame(DI).run() @ &m : res] -\n           Pr[RTWordNTRUUniformGame(DI).run() @ &m : res] + 1%r / 2%r ^ 244) /\n          ow_alpha_g +\n          (Pr[RTWordNTRURealGame(DO).run() @ &m : res] -\n           Pr[RTWordNTRUUniformGame(DO).run() @ &m : res] +\n           Pr[RTWordRLWEGame(CO).run() @ &m : res]) /\n          ow_alpha_g) +\n         qC%r / 2%r ^ 768) +\n        2%r * (qC%r / 2%r ^ 353).",
+    "reviewed_statement_sha256": "253ee3ccf1b3ec8198561f1b30265de08f5db0a6c3112e3b070dfba9b7aac98a",
+    "preamble": "require import AllCore List Distr FMap.\nfrom Jasmin require import JWord.\nrequire import Array32 Array224 Array1152.\nrequire import NTRUPlus768AHState.\nrequire import NTRUPlus768RTModel NTRUPlus768RTStore.\nrequire import NTRUPlus768ROMOracles NTRUPlus768RawXOFStreams NTRUPlus768RawXOF.\nrequire import NTRUPlus768CCAGame NTRUPlus768CCADecapOracle.\nrequire import NTRUPlus768FOModel NTRUPlus768FOQueryBudget NTRUPlus768FOEagerG NTRUPlus768FOKEMGame.\nrequire import NTRUPlus768SimModel NTRUPlus768SimPorts NTRUPlus768SimSelected NTRUPlus768SimPublicBound.\nrequire import NTRUPlus768ErasureModel NTRUPlus768ErasureBudget NTRUPlus768ErasureSeedTape.\nrequire import NTRUPlus768CPAModel NTRUPlus768CPAHitOracles NTRUPlus768SecGOracles.\nimport SimSelectedBudget.\nrequire import StdOrder.\nrequire import NTRUPlus768RTAdaptive NTRUPlus768RTView NTRUPlus768RTProjection NTRUPlus768RTReduction.\nrequire import NTRUPlus768RTKernelTypes NTRUPlus768RTWordReduction NTRUPlus768RTWordGames.\nrequire import NTRUPlus768AHAdapter NTRUPlus768AHActualReduction NTRUPlus768AHCPABound NTRUPlus768AHFinal.\nrequire import NTRUPlus768CPAFinal NTRUPlus768CPAReduction NTRUPlus768CCAOraclePorts.\nrequire import NTRUPlus768FOGameCapRemoval NTRUPlus768SimPublicInstances NTRUPlus768SimSampling.\nrequire import NTRUPlus768OWGames NTRUPlus768OWCodec NTRUPlus768OWKeyConditioning.\nrequire import NTRUPlus768ErasureGames.\nrequire import NTRUPlus768FOCapRemoval NTRUPlus768SimPublicCapRemoval.\nrequire import NTRUPlus768RTCompleteCost.\nimport RealOrder RField.\nrequire import NTRUPlus768RTFinal."
+  },
+  "runtime_cost_audit": {
+    "model": "owned-array-word-ram-v1",
+    "required_calibration_kinds": [
+      "fixed",
+      "primitive",
+      "wordchecks",
+      "sampling",
+      "kernels",
+      "sim",
+      "phase",
+      "outer"
+    ],
+    "actual_word_endpoints": [
+      "ntruplus/proof/768/ref/kem_runtime_bound/NTRUPlus768RTWordReduction.ec:RTWord_DI.run",
+      "ntruplus/proof/768/ref/kem_runtime_bound/NTRUPlus768RTWordReduction.ec:RTWord_DO.run",
+      "ntruplus/proof/768/ref/kem_runtime_bound/NTRUPlus768RTWordReduction.ec:RTWord_CO.run"
+    ],
+    "source_calibration_files": [
+      "tests/ntruplus768/runtime_bound/calibration/manifest.json",
+      "tests/ntruplus768/runtime_bound/calibration/manual-kernels.json",
+      "tests/ntruplus768/runtime_bound/calibration/manual-sim.json",
+      "tests/ntruplus768/runtime_bound/calibration/manual-phase.json",
+      "tests/ntruplus768/runtime_bound/calibration/manual-outer.json"
+    ],
+    "calibrated_final_theorems": [
+      {
+        "source": "ntruplus/proof/768/ref/kem_runtime_bound/NTRUPlus768RTFinal.ec",
+        "theorem": "rt_original_runtime_bound",
+        "expected_declaration": "lemmart_original_runtime_bound:exists(DI<:RTWordNTRUMeasured)(DO<:RTWordNTRUMeasured)(CO<:RTWordRLWEMeasured),(forallp0tA,0<=tA=>hoare[DI.measure:h=ow_coeff_wordsp0==>rt_complete_di_chargetAres.`2res.`3<=rt_complete_di_boundtAres.`2.`rp_qres.`2.`rp_b])/\\(forallp0tA,0<=tA=>hoare[DO.measure:h=ow_coeff_wordsp0==>rt_complete_do_chargetAres.`2res.`3<=rt_complete_do_boundtAres.`2.`rp_qres.`2.`rp_b])/\\(forallp0q0tA,0<=tA=>hoare[CO.measure:a=ow_coeff_wordsp0/\\b=ow_coeff_wordsq0==>rt_complete_co_chargetAres.`2res.`3<=rt_complete_co_boundtAres.`2.`rp_qres.`2.`rp_b])/\\equiv[DI.run~DI.measure:={arg,globDI}==>res{1}=res{2}.`1]/\\equiv[DO.run~DO.measure:={arg,globDO}==>res{1}=res{2}.`1]/\\equiv[CO.run~CO.measure:={arg,globCO}==>res{1}=res{2}.`1]/\\(forall&mqEq0qHqC,0<=q0=>FOBudgetState.limit{m}=q0=>0<=qH=>0<=qC=>(forall(H<:CCAExtendedOraclePort{-A})(D<:CCADecapPort{-A}),islosslessH.e=>islosslessH.f=>islosslessH.g=>islosslessH.h=>islosslessH.raw=>islosslessD.decap=>islosslessA(H,D).guess)=>hoare[CountedA(A,SharedCCAExtendedOracles,CCADecapOracle).guess:EBudgetState.requests=0/\\EBudgetState.forwarded=0/\\EBudgetState.limit=qE/\\!EBudgetState.overflow/\\EBudgetState.queries=[]==>EBudgetState.requests<=qE]=>erasure_budget_initialqEEBudgetState.requests{m}EBudgetState.forwarded{m}EBudgetState.limit{m}EBudgetState.overflow{m}EBudgetState.queries{m}=>hoare[FOCountedA(A,FOHashView(FONativePlainBackend),FODecapView(FONativePlainBackend)).guess:fo_budget_initialq0FOBudgetState.nHFOBudgetState.nDFOBudgetState.limitFOBudgetState.overflow==>fo_query_countFOBudgetState.nHFOBudgetState.nD<=q0]=>hoare[FOCountedA(A,FOHashView(FOFullPlainBackend),FODecapView(FOFullPlainBackend)).guess:fo_budget_initialq0FOBudgetState.nHFOBudgetState.nDFOBudgetState.limitFOBudgetState.overflow==>fo_query_countFOBudgetState.nHFOBudgetState.nD<=q0]=>(forall(H<:CCAExtendedOraclePort{-A,-FOBudgetState})(D<:CCADecapPort{-A,-FOBudgetState}),hoare[FOCountedA(A,H,D).guess:FOBudgetState.nD=0==>FOBudgetState.nD<=max0budget])=>hoare[SimPublicCountedA(A,FOHashView(SimKnownPublicBackend),FODecapView(SimKnownPublicBackend)).guess:sim_public_budget_initialqHSimPublicBudget.nhSimPublicBudget.limitSimPublicBudget.overflow==>SimPublicBudget.nh<=qH]=>hoare[CPAPhase(A).run:true==>fsizeSimHistory.h<=qC]=>`|Pr[CCAOriginalGame(A).run()@&m:res]-1%r/2%r|<=((130820%r+512%r*qE%r)/(2%r^256)+q0%r/(2%r^353))+((max0budget)%r/(2%r^768)+(qH+max0budget)%r/(2%r^353))+(2%r*(((Pr[RTWordNTRURealGame(DI).run()@&m:res]-Pr[RTWordNTRUUniformGame(DI).run()@&m:res]+(1%r/(2%r^244)))/ow_alpha_g)+((Pr[RTWordNTRURealGame(DO).run()@&m:res]-Pr[RTWordNTRUUniformGame(DO).run()@&m:res]+Pr[RTWordRLWEGame(CO).run()@&m:res])/ow_alpha_g))+qC%r/(2%r^768))+2%r*(qC%r/(2%r^353)))."
+      },
+      {
+        "source": "ntruplus/proof/768/ref/kem_runtime_bound/NTRUPlus768RTCompleteCost.ec",
+        "theorem": "rt_complete_bound_values",
+        "expected_declaration": "lemmart_complete_bound_valuestAqb:rt_complete_di_boundtAqb=tA+10909917*q*q+32450882*q+64*b+17679874/\\rt_complete_do_boundtAqb=tA+10909917*q*q+32450882*q+64*b+10492283/\\rt_complete_co_boundtAqb=tA+10909917*q*q+32450882*q+64*b+18463740."
+      },
+      {
+        "source": "ntruplus/proof/768/ref/kem_runtime_bound/NTRUPlus768RTCompleteCost.ec",
+        "theorem": "rt_complete_di_cap",
+        "expected_declaration": "lemmart_complete_di_captApk:0<=tA=>rt_invocation_profilek.`rtk_adversaryp=>rtk_lekrt_di_kernel_bound=>rt_complete_di_chargetApk<=rt_complete_di_boundtAp.`rp_qp.`rp_b."
+      },
+      {
+        "source": "ntruplus/proof/768/ref/kem_runtime_bound/NTRUPlus768RTCompleteCost.ec",
+        "theorem": "rt_complete_do_cap",
+        "expected_declaration": "lemmart_complete_do_captApk:0<=tA=>rt_invocation_profilek.`rtk_adversaryp=>rtk_lekrt_do_kernel_bound=>rt_complete_do_chargetApk<=rt_complete_do_boundtAp.`rp_qp.`rp_b."
+      },
+      {
+        "source": "ntruplus/proof/768/ref/kem_runtime_bound/NTRUPlus768RTCompleteCost.ec",
+        "theorem": "rt_complete_co_cap",
+        "expected_declaration": "lemmart_complete_co_captApk:0<=tA=>rt_invocation_profilek.`rtk_adversaryp=>rtk_lekrt_co_kernel_bound=>rt_complete_co_chargetApk<=rt_complete_co_boundtAp.`rp_qp.`rp_b."
+      },
+      {
+        "source": "ntruplus/proof/768/ref/kem_runtime_bound/NTRUPlus768RTCompleteCost.ec",
+        "theorem": "rt_run_dispatcher_values",
+        "expected_declaration": "lemmart_run_dispatcher_values:rt_run_di_overhead=2309/\\rt_run_do_overhead=2309/\\rt_run_co_overhead=9222."
+      }
+    ]
+  }
+}

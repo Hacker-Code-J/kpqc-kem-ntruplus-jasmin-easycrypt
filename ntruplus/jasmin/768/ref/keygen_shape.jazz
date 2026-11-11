@@ -1,0 +1,65 @@
+param int NTRUPLUS_N = 768;
+
+// In-place coefficient shaping. The sole array must be u16-aligned and
+// fully initialized. Arithmetic is modulo 2^16 for every possible input.
+
+#[safety =
+   { requires = is_arr_init(rp,0,2 * NTRUPLUS_N)
+   , ensures = is_arr_init(rp,0,2 * NTRUPLUS_N)
+   }
+]
+#[ct = "secret → secret"]
+#[sct="
+{ ptr: transient, val: secret } →
+{ ptr: public, val: secret }
+"]
+export fn jade_ntruplus_ntruplus768_amd64_ref_keygen_shape_f(
+  reg mut ptr u16[NTRUPLUS_N] rp) -> reg ptr u16[NTRUPLUS_N]
+{
+  reg u64 i;
+  reg u16 x, y;
+
+  _ = #init_msf();
+  i = 0;
+  while (i < NTRUPLUS_N) {
+    x = rp[i];
+    y = x;
+    x += x;
+    x += y;
+    rp[i] = x;
+    i += 1;
+  }
+  x = rp[0];
+  x += 1;
+  rp[0] = x;
+  return rp;
+}
+
+#[safety =
+   { requires = is_arr_init(rp,0,2 * NTRUPLUS_N)
+   , ensures = is_arr_init(rp,0,2 * NTRUPLUS_N)
+   }
+]
+#[ct = "secret → secret"]
+#[sct="
+{ ptr: transient, val: secret } →
+{ ptr: public, val: secret }
+"]
+export fn jade_ntruplus_ntruplus768_amd64_ref_keygen_shape_g(
+  reg mut ptr u16[NTRUPLUS_N] rp) -> reg ptr u16[NTRUPLUS_N]
+{
+  reg u64 i;
+  reg u16 x, y;
+
+  _ = #init_msf();
+  i = 0;
+  while (i < NTRUPLUS_N) {
+    x = rp[i];
+    y = x;
+    x += x;
+    x += y;
+    rp[i] = x;
+    i += 1;
+  }
+  return rp;
+}

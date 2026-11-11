@@ -1,0 +1,5 @@
+RUN: bash /home/hacker-code-j/Desktop/2026/HAETAE/kpqc-kem-ntruplus-jasmin-easycrypt/scripts/verify-ntruplus768-baseline.sh
+PASS: NTRU+768 functional test reported count: 0
+PASS: regenerated KAT matches reference byte-for-byte
+INFO: generated rsp sha256 22c72039845361ff142273150a59785bada5146c04018ce0a8b67b99a647eaa8
+Completed requested baseline commands; retain each verifier's scope and evidence.

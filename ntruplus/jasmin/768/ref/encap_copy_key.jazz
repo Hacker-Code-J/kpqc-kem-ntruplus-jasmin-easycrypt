@@ -1,0 +1,25 @@
+param int NTRUPLUS_SSBYTES = 32;
+param int NTRUPLUS_HASH_H_OUTBYTES = 224;
+
+// Disjoint byte regions. Return the candidate shared key after acceptance.
+#[safety = { requires = is_arr_init(hash_output,0,NTRUPLUS_HASH_H_OUTBYTES)
+           , ensures = is_arr_init(ss,0,NTRUPLUS_SSBYTES) }]
+#[ct = "secret × secret → secret"]
+#[sct="{ ptr: transient, val: secret } × { ptr: transient, val: secret } →
+{ ptr: public, val: secret }"]
+export fn jade_ntruplus_ntruplus768_amd64_ref_encap_copy_key(
+  reg mut ptr u8[NTRUPLUS_SSBYTES] ss,
+  reg const ptr u8[NTRUPLUS_HASH_H_OUTBYTES] hash_output) ->
+  reg ptr u8[NTRUPLUS_SSBYTES]
+{
+  reg u64 i;
+  reg u8 b;
+  _ = #init_msf();
+  i = 0;
+  while (i < NTRUPLUS_SSBYTES) {
+    b = hash_output[i];
+    ss[i] = b;
+    i += 1;
+  }
+  return ss;
+}

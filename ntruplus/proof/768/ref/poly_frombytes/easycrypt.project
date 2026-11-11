@@ -1,4 +1,5 @@
 [general]
+rdirs = Jasmin:../../../compat/jasmin
 timeout = 30
 
 rdirs = .
@@ -29,3 +30,6 @@ rdirs = ../ntt_schedule
 rdirs = ../../../../../external/formosa-mlkem/crypto-specs/arrays
 rdirs = ../../../../../external/formosa-mlkem/proof/eclib
 rdirs = ../../../../../external/formosa-mlkem/crypto-specs/common
+
+rdirs = ../poly_tobytes
+rdirs = ../poly_tobytes/extracted

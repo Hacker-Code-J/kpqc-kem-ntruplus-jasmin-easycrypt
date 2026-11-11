@@ -1,0 +1,353 @@
+{
+  "schema": 1,
+  "status": "FROZEN",
+  "mains": [
+    {
+      "source": "kem_adaptive_history/NTRUPlus768AHState.ec",
+      "source_sha256": "b766d953478bb3a2b82e2ccdccf8f7542a408e60084601b29cb46ed749747310",
+      "semantic_target": "ah_record_get",
+      "module_binders": [],
+      "sentinel": "\nlemma __adaptive_history_eof_AHState st input hout key :\n hist_get key(ah_record_state st input hout).`ah_rows=\n if key=input then Some hout else hist_get key st.`ah_rows.\nproof. exact (ah_record_get st input hout key). qed.\n"
+    },
+    {
+      "source": "kem_adaptive_history/NTRUPlus768AHAdapter.ec",
+      "source_sha256": "15f93c3aed8d7f548667574b39fdff8a3381a62a9eebdf5f25a6f185a9a84f4d",
+      "semantic_target": "ah_raw_zero_h_view",
+      "module_binders": [
+        "O",
+        "S"
+      ],
+      "sentinel": "\nlemma __adaptive_history_eof_AHAdapter (S<:AHStore)(O<:CCAExtendedOraclePort {-S})\n (view:(glob S)->ah_state) st0 input0 :\n (forall st x y,hoare[S.record:view(glob S)=st /\\ input=x /\\ hout=y ==>\n view(glob S)=ah_record_state st x y]) =>\n hoare[AHOracles(S,O).raw:\n view(glob S)=st0 /\\ input=raw_query(H input0) /\\ outlen=0 ==>\n (exists hout,view(glob S)=ah_record_state st0 input0 hout) /\\ res=Some []].\nproof. exact (ah_raw_zero_h_view S O view st0 input0). qed.\n"
+    },
+    {
+      "source": "kem_adaptive_history/NTRUPlus768AHFreshBound.ec",
+      "source_sha256": "bb0ff0d50f7247ae4b722b548a012e50dbaca9b8451f76c1ded6e95e2ecd1d3e",
+      "semantic_target": "ah_fresh_phase_ph",
+      "module_binders": [
+        "A"
+      ],
+      "sentinel": "\nlemma __adaptive_history_eof_AHFreshBound\n (A<:CCAExtendedAdversary {-ROE,-ROF,-ROG,-ROH,-RawXOFStreams,-SimPublic,-SimHistory,-FOContext,-SimBad})\n w g qC : 0<=qC=>\n hoare[CPAPhase(A).run:true ==>fsize SimHistory.h<=qC]=>\n phoare[AHFreshPhase(A).run:w0=w /\\ g0=g /\\ ROH.m=empty ==>SimBad.corr]\n <=(qC%r*fo_error w g).\nproof. exact (ah_fresh_phase_ph A w g qC). qed.\n"
+    },
+    {
+      "source": "kem_adaptive_history/NTRUPlus768AHCallbacks.ec",
+      "source_sha256": "dc9bffe9a6e02f18a6ab9120dfaaabc82e0dc0083f08aac30cf676b5d003fb94",
+      "semantic_target": "ah_record_h_latched",
+      "module_binders": [
+        "S"
+      ],
+      "sentinel": "\nlemma __adaptive_history_eof_AHCallbacks\n (S<:AHStore {-ROE,-ROF,-ROG,-ROH,-RawXOFStreams,-FOContext,-SimPublic,-SimHistory,-SimBad}) :\n hoare[AHOracles(S,AHFreshOracles).h:SimBad.corr ==>SimBad.corr].\nproof. exact (ah_record_h_latched S). qed.\n"
+    },
+    {
+      "source": "kem_adaptive_history/NTRUPlus768AHRawCallbacks.ec",
+      "source_sha256": "8d1c59e66b09871672be70c46b617e9038ab662131e4ef8846cbe1ac169c17f4",
+      "semantic_target": "ah_raw_coupling",
+      "module_binders": [
+        "S"
+      ],
+      "sentinel": "\nlemma __adaptive_history_eof_AHRawCallbacks\n (S<:AHStore {-ROE,-ROF,-ROG,-ROH,-RawXOFStreams,-FOContext,-SimPublic,-SimHistory,-SimBad})\n (view:(glob S)->ah_state) w g pk suffix star :\n islossless S.record=>\n (forall st x y,hoare[S.record:view(glob S)=st /\\ input=x /\\ hout=y ==>\n view(glob S)=ah_record_state st x y])=>\n equiv[AHFreshOracles.raw ~ AHOracles(S,AHFreshOracles).raw:\n ={arg,ROE.m,ROF.m,ROG.m,ROH.m,glob RawXOFStreams,SimHistory.h,\n   FOContext.w,FOContext.g,FOContext.challenge_h,SimBad.corr} /\\\n FOContext.w{1}=w /\\ FOContext.g{1}=g /\\ FOContext.challenge_h{1}=None /\\\n ah_view_rep(view(glob S){2}) pk suffix star SimHistory.h{1} /\\\n acwc2_cache_matches g ROG.m{1} /\\\n ah_fresh_inv w g (FOContext.w{1},FOContext.g{1},FOContext.challenge_h{1},SimHistory.h{1},ROH.m{1}) SimBad.corr{1} ==>\n ={res,ROE.m,ROF.m,ROG.m,ROH.m,glob RawXOFStreams,SimHistory.h,\n   FOContext.w,FOContext.g,FOContext.challenge_h,SimBad.corr} /\\\n FOContext.w{1}=w /\\ FOContext.g{1}=g /\\ FOContext.challenge_h{1}=None /\\\n ah_view_rep(view(glob S){2}) pk suffix star SimHistory.h{1} /\\\n acwc2_cache_matches g ROG.m{1} /\\\n ah_fresh_inv w g (FOContext.w{1},FOContext.g{1},FOContext.challenge_h{1},SimHistory.h{1},ROH.m{1}) SimBad.corr{1}].\nproof. exact (ah_raw_coupling S view w g pk suffix star). qed.\n"
+    },
+    {
+      "source": "kem_adaptive_history/NTRUPlus768AHCoupling.ec",
+      "source_sha256": "173ef3bffff5ba508955a0be0bf29c0c8d16195add95f2c8ab8ce422c6b6075c",
+      "semantic_target": "ah_phase_coupling",
+      "module_binders": [
+        "A",
+        "D",
+        "H",
+        "S"
+      ],
+      "sentinel": "\nlemma __adaptive_history_eof_AHCoupling\n (S<:AHStore {-ROE,-ROF,-ROG,-ROH,-RawXOFStreams,-FOContext,-SimPublic,-SimHistory,-SimBad})\n (A<:CCAExtendedAdversary {-S,-ROE,-ROF,-ROG,-ROH,-RawXOFStreams,-FOContext,-SimPublic,-SimHistory,-SimBad})\n (view:(glob S)->ah_state) w g :\n pke_key_relation w=>islossless S.init=>islossless S.snapshot=>islossless S.record=>\n (forall pk suffix star,hoare[S.init:arg=(pk,suffix,star) ==>\n view(glob S)=ah_initial pk suffix star])=>\n (forall st,hoare[S.snapshot:view(glob S)=st ==>res=st /\\ view(glob S)=st])=>\n (forall st x y,hoare[S.record:view(glob S)=st /\\ input=x /\\ hout=y ==>\n view(glob S)=ah_record_state st x y])=>\n (forall (H<:CCAExtendedOraclePort {-A})(D<:CCADecapPort {-A}),\n islossless H.e=>islossless H.f=>islossless H.g=>islossless H.h=>islossless H.raw=>\n islossless D.decap=>islossless A(H,D).guess)=>\n equiv[AHFreshPhase(A).run ~ AHFreshPhase(AHWrapper(S,A)).run:\n ={pk,ct,key,glob A,ROE.m,ROF.m,ROG.m,ROH.m,glob RawXOFStreams} /\\\n w0{1}=w /\\ g0{1}=g /\\ w0{2}=w /\\ g0{2}=g /\\ pk{1}=w.`kg_pk /\\\n ROF.m{1}.[w.`kg_pk]=Some(complete_sk_suffix w.`kg_sk) /\\\n ROH.m{1}=empty /\\ acwc2_cache_matches g ROG.m{1} ==>\n ={SimBad.corr} /\\ (!SimBad.corr{1}=>\n ={res,glob A,ROE.m,ROF.m,ROG.m,ROH.m,glob RawXOFStreams,SimHistory.h,SimPublic.pk,SimPublic.suffix,SimPublic.cstar})].\nproof. exact (ah_phase_coupling S A view w g). qed.\n"
+    },
+    {
+      "source": "kem_adaptive_history/NTRUPlus768AHCPAGames.ec",
+      "source_sha256": "d9fb321bb6ca10c3e66922c213a83522da879356d7b69fde8d80a3adaca7953b",
+      "semantic_target": "ah_cpa_actual_mu",
+      "module_binders": [
+        "A"
+      ],
+      "sentinel": "\nlemma __adaptive_history_eof_AHCPAGames\n (A<:CCAExtendedAdversary {-CPAReduction,-ROE,-ROF,-ROG,-ROH,-RawXOFStreams,\n  -CCADecapOracle,-SimPublic,-SimHistory,-FOGRO.RO,-FOGRO.FRO}) &m :\n Pr[CPAGame(CPAReduction(A)).run()@&m:res]=\n mu1(dlet(mk(fun s=>Pr[FOSetupSource.guess(witness)@&m:res=s]))\n  (fun s=>mk(fun b=>Pr[AHCPAKernel(A).guess(s)@&m:res=b])))true.\nproof. exact (ah_cpa_actual_mu A &m). qed.\n"
+    },
+    {
+      "source": "kem_adaptive_history/NTRUPlus768AHCPABound.ec",
+      "source_sha256": "0019de991197a02033a1231c9b5ad1582b2a24f540c3fdcfbf5b432c920a22a4",
+      "semantic_target": "ah_cpa_distance",
+      "module_binders": [
+        "A",
+        "D",
+        "H",
+        "S"
+      ],
+      "sentinel": "\nlemma __adaptive_history_eof_AHCPABound\n (S<:AHStore {-CPAReduction,-ROE,-ROF,-ROG,-ROH,-RawXOFStreams,\n  -CCADecapOracle,-SimPublic,-SimHistory,-FOGRO.RO,-FOGRO.FRO,-FOContext,-SimBad})\n (A<:CCAExtendedAdversary {-S,-CPAReduction,-ROE,-ROF,-ROG,-ROH,-RawXOFStreams,\n  -CCADecapOracle,-SimPublic,-SimHistory,-FOGRO.RO,-FOGRO.FRO,-FOContext,-SimBad})\n (view:(glob S)->ah_state) qC &m :\n islossless S.init=>islossless S.snapshot=>islossless S.record=>\n (forall pk suffix star,hoare[S.init:arg=(pk,suffix,star) ==>\n  view(glob S)=ah_initial pk suffix star])=>\n (forall st,hoare[S.snapshot:view(glob S)=st ==>\n  res=st /\\ view(glob S)=st])=>\n (forall st x y,hoare[S.record:view(glob S)=st /\\ input=x /\\ hout=y ==>\n  view(glob S)=ah_record_state st x y])=>\n (forall(H<:CCAExtendedOraclePort {-A})(D<:CCADecapPort {-A}),\n  islossless H.e=>islossless H.f=>islossless H.g=>islossless H.h=>islossless H.raw=>\n  islossless D.decap=>islossless A(H,D).guess)=>\n 0<=qC=>hoare[CPAPhase(A).run:true ==>fsize SimHistory.h<=qC]=>\n `|Pr[CPAGame(CPAReduction(A)).run()@&m:res]-\n   Pr[CPAGame(CPAReduction(AHWrapper(S,A))).run()@&m:res]|\n <=qC%r/(2%r^353).\nproof. exact (ah_cpa_distance S A view qC &m). qed.\n"
+    },
+    {
+      "source": "kem_adaptive_history/NTRUPlus768AHReduction.ec",
+      "source_sha256": "e3bbfde2af2b378e8695a8b77ff8053b5fcf1b16b8010e43ab9fb1a6a707e095",
+      "semantic_target": "ah_cpa_hardness",
+      "module_binders": [
+        "A",
+        "D",
+        "H",
+        "S"
+      ],
+      "sentinel": "\nlemma __adaptive_history_eof_AHReduction\n (S<:AHStore {-CPAReduction,-ROE,-ROF,-ROG,-ROH,-RawXOFStreams,\n -SimPublic,-SimHistory,-SecGHistory,-SecGMark})\n (A<:CCAExtendedAdversary {-S,-CPAReduction,-ROE,-ROF,-ROG,-ROH,-RawXOFStreams,\n -SimPublic,-SimHistory,-SecGHistory,-SecGMark}) &m :\n islossless S.init=>islossless S.snapshot=>islossless S.record=>\n (forall(H<:CCAExtendedOraclePort {-A})(D<:CCADecapPort {-A}),\n islossless H.e=>islossless H.f=>islossless H.g=>islossless H.h=>islossless H.raw=>\n islossless D.decap=>islossless A(H,D).guess)=>\n `|Pr[CPAGame(CPAReduction(AHWrapper(S,A))).run()@&m:res]-1%r/2%r|<=\n (Pr[OWNTRURealGame(AH_DI(S,A)).run()@&m:res]-\n  Pr[OWNTRUUniformGame(AH_DI(S,A)).run()@&m:res]+1%r/(2%r^244))/ow_alpha_g+\n (Pr[OWNTRURealGame(AH_DO(S,A)).run()@&m:res]-\n  Pr[OWNTRUUniformGame(AH_DO(S,A)).run()@&m:res]+\n  Pr[OWRLWEGame(AH_CO(S,A)).run()@&m:res])/ow_alpha_g.\nproof. exact (ah_cpa_hardness S A &m). qed.\n"
+    },
+    {
+      "source": "kem_adaptive_history/NTRUPlus768AHActualReduction.ec",
+      "source_sha256": "b1c87a07c0b81239606fc8003d3adbdefeb3f15f71db2d9a4e4582faee58405d",
+      "semantic_target": "ah_actual_cpa_hardness",
+      "module_binders": [
+        "A",
+        "D",
+        "H",
+        "S"
+      ],
+      "sentinel": "\nlemma __adaptive_history_eof_AHActualReduction\n (S<:AHStore {-CPAReduction,-ROE,-ROF,-ROG,-ROH,-RawXOFStreams,\n -SimPublic,-SimHistory,-SecGHistory,-SecGMark})\n (A<:CCAExtendedAdversary {-S,-CPAReduction,-ROE,-ROF,-ROG,-ROH,-RawXOFStreams,\n -SimPublic,-SimHistory,-SecGHistory,-SecGMark}) &m :\n islossless S.init=>islossless S.snapshot=>islossless S.record=>\n (forall(H<:CCAExtendedOraclePort {-A})(D<:CCADecapPort {-A}),\n islossless H.e=>islossless H.f=>islossless H.g=>islossless H.h=>islossless H.raw=>\n islossless D.decap=>islossless A(H,D).guess)=>\n `|Pr[CPAGame(CPAReduction(AHWrapper(S,A))).run()@&m:res]-1%r/2%r|<=\n (Pr[OWNTRURealGame(AHActual_DI(S,A)).run()@&m:res]-\n  Pr[OWNTRUUniformGame(AHActual_DI(S,A)).run()@&m:res]+1%r/(2%r^244))/ow_alpha_g+\n (Pr[OWNTRURealGame(AHActual_DO(S,A)).run()@&m:res]-\n  Pr[OWNTRUUniformGame(AHActual_DO(S,A)).run()@&m:res]+\n  Pr[OWRLWEGame(AHActual_CO(S,A)).run()@&m:res])/ow_alpha_g.\nproof. exact (ah_actual_cpa_hardness S A &m). qed.\n"
+    },
+    {
+      "source": "kem_adaptive_history/NTRUPlus768AHFinal.ec",
+      "source_sha256": "fb11df94a257fcc9870aeabdcdbf9d6d84da8b39ed48b5598b1ba901165ad963",
+      "semantic_target": "ah_original_adaptive_history",
+      "module_binders": [
+        "CO",
+        "D",
+        "DI",
+        "DO",
+        "H"
+      ],
+      "sentinel": "\nlemma __adaptive_history_eof_AHFinal :\n exists(DI<:OWNTRUAdversary)(DO<:OWNTRUAdversary)(CO<:OWRLWEAdversary),\n forall &m qE q0 qH qC,\n 0<=q0=>FOBudgetState.limit{m}=q0=>0<=qH=>0<=qC=>\n (forall(H<:CCAExtendedOraclePort {-A})(D<:CCADecapPort {-A}),\n  islossless H.e=>islossless H.f=>islossless H.g=>islossless H.h=>islossless H.raw=>\n  islossless D.decap=>islossless A(H,D).guess)=>\n hoare[CountedA(A,SharedCCAExtendedOracles,CCADecapOracle).guess:\n EBudgetState.requests=0 /\\ EBudgetState.forwarded=0 /\\ EBudgetState.limit=qE /\\\n !EBudgetState.overflow /\\ EBudgetState.queries=[] ==>EBudgetState.requests<=qE]=>\n erasure_budget_initial qE EBudgetState.requests{m} EBudgetState.forwarded{m}\n EBudgetState.limit{m} EBudgetState.overflow{m} EBudgetState.queries{m}=>\n hoare[FOCountedA(A,FOHashView(FONativePlainBackend),FODecapView(FONativePlainBackend)).guess:\n fo_budget_initial q0 FOBudgetState.nH FOBudgetState.nD FOBudgetState.limit FOBudgetState.overflow ==>\n fo_query_count FOBudgetState.nH FOBudgetState.nD<=q0]=>\n hoare[FOCountedA(A,FOHashView(FOFullPlainBackend),FODecapView(FOFullPlainBackend)).guess:\n fo_budget_initial q0 FOBudgetState.nH FOBudgetState.nD FOBudgetState.limit FOBudgetState.overflow ==>\n fo_query_count FOBudgetState.nH FOBudgetState.nD<=q0]=>\n (forall(H<:CCAExtendedOraclePort {-A,-FOBudgetState})(D<:CCADecapPort {-A,-FOBudgetState}),\n hoare[FOCountedA(A,H,D).guess:FOBudgetState.nD=0 ==>FOBudgetState.nD<=max 0 budget])=>\n hoare[SimPublicCountedA(A,FOHashView(SimKnownPublicBackend),FODecapView(SimKnownPublicBackend)).guess:\n sim_public_budget_initial qH SimPublicBudget.nh SimPublicBudget.limit SimPublicBudget.overflow ==>\n SimPublicBudget.nh<=qH]=>\n hoare[CPAPhase(A).run:true ==>fsize SimHistory.h<=qC]=>\n `|Pr[CCAOriginalGame(A).run()@&m:res]-1%r/2%r| <=\n ((130820%r+512%r*qE%r)/(2%r^256)+q0%r/(2%r^353))+\n ((max 0 budget)%r/(2%r^768)+(qH+max 0 budget)%r/(2%r^353))+\n (2%r*(((Pr[OWNTRURealGame(DI).run()@&m:res]-\n Pr[OWNTRUUniformGame(DI).run()@&m:res]+\n (1%r/(2%r^244)))/ow_alpha_g)+\n ((Pr[OWNTRURealGame(DO).run()@&m:res]-\n Pr[OWNTRUUniformGame(DO).run()@&m:res]+\n Pr[OWRLWEGame(CO).run()@&m:res])/ow_alpha_g))+qC%r/(2%r^768))+2%r*(qC%r/(2%r^353)).\nproof. exact (ah_original_adaptive_history). qed.\n"
+    }
+  ],
+  "contracts": [
+    {
+      "source": "kem_adaptive_history/NTRUPlus768AHState.ec",
+      "ordered": [
+        "type ah_state",
+        "ah_rows:hist_table",
+        "ah_pk:W8.t Array1152.t",
+        "ah_suffix:W8.t Array32.t",
+        "ah_cstar:W8.t Array1152.t option",
+        "module type AHStore",
+        "proc init",
+        "proc snapshot():ah_state",
+        "proc record",
+        "lemma ah_record_rep",
+        "hist_rep(ah_record_state st input hout).`ah_rows table.[input<-hout]"
+      ]
+    },
+    {
+      "source": "kem_adaptive_history/NTRUPlus768AHAdapter.ec",
+      "ordered": [
+        "module AHPublicG(O:CCAExtendedOraclePort)",
+        "result<@O.g(input);return result;",
+        "module AHRecordH(S:AHStore,O:CCAExtendedOraclePort)",
+        "hout<@O.h(input);S.record(input,hout);return hout;",
+        "module AHOracles",
+        "proc e=O.e",
+        "proc f=O.f",
+        "proc g=O.g",
+        "proc h=AHRecordH(S,O).get",
+        "if(0<=outlen<=raw_xof_max_output)",
+        "match decode_typed input with",
+        "None => {result<@O.raw(input,outlen);}",
+        "E seed => {result<@O.raw(input,outlen);}",
+        "F pk => {result<@O.raw(input,outlen);}",
+        "G serialized => {result<@O.raw(input,outlen);}",
+        "H payload =>",
+        "hout<@AHRecordH(S,O).get(payload);",
+        "result<-Some(raw_xof_output outlen hout);",
+        "else{result<@O.raw(input,outlen);}",
+        "module AHDecap",
+        "st<@S.snapshot();",
+        "result<@HistLookup(AHPublicG(O)).run(st.`ah_rows,st.`ah_pk,st.`ah_suffix,st.`ah_cstar,ct);",
+        "return result.`1;",
+        "module AHWrapper",
+        "suffix<@O.f(pk);S.init(pk,suffix,Some ct);",
+        "answer<@A(AHOracles(S,O),AHDecap(S,O)).guess(pk,ct,key);",
+        "lemma ah_record_h_ll",
+        "islossless O.h=>islossless S.record=>",
+        "lemma ah_raw_zero_h_view",
+        "view(glob S)=ah_record_state st0 input0 hout",
+        "res=Some []"
+      ]
+    },
+    {
+      "source": "kem_adaptive_history/NTRUPlus768AHFreshBound.ec",
+      "ordered": [
+        "op ah_fresh_full",
+        "decode_typed input=Some(H x) /\\ x \\notin log",
+        "op ah_fresh_raw",
+        "0<=outlen<=raw_xof_max_output /\\ ah_fresh_full input log",
+        "op ah_fresh_inv",
+        "!bad=>fo_hcache_good w g None s.`4",
+        "module AHFreshPhase",
+        "SimBad.corr<-false;",
+        "answer<@A(AHFreshOracles,SimLookup(FOGActual)).guess(pk,ct,key)",
+        "lemma ah_fresh_h_rank",
+        "fsize log0+b2i(x0 \\notin log0)",
+        "x0 \\in log0=>SimBad.corr=b0",
+        "lemma ah_fresh_raw_rank",
+        "fsize log0+b2i(ah_fresh_raw input0 outlen0 log0)"
+      ]
+    },
+    {
+      "source": "kem_adaptive_history/NTRUPlus768AHCallbacks.ec",
+      "ordered": [
+        "op [opaque] ah_view_rep",
+        "hist_rep st.`ah_rows log /\\ ah_context st=(pk,suffix,star)",
+        "lemma ah_h_coupling",
+        "islossless S.record =>",
+        "view(glob S)=ah_record_state st x y",
+        "lemma ah_decap_coupling",
+        "pke_key_relation w=>islossless S.snapshot=>",
+        "res=st /\\ view(glob S)=st",
+        "fo_hcache_good w g None SimHistory.h{1}",
+        "acwc2_cache_matches g ROG.m{1}"
+      ]
+    },
+    {
+      "source": "kem_adaptive_history/NTRUPlus768AHRawCallbacks.ec",
+      "ordered": [
+        "lemma ah_raw_non_h_forward",
+        "!(0<=n0<=raw_xof_max_output) \\/ forall x,decode_typed input0<>Some(H x)",
+        "equiv[AHOracles(S,O).raw ~ O.raw",
+        "lemma ah_raw_coupling",
+        "islossless S.record=>",
+        "view(glob S)=ah_record_state st x y",
+        "equiv[AHFreshOracles.raw ~ AHOracles(S,AHFreshOracles).raw",
+        "acwc2_cache_matches g ROG.m{1}",
+        "ah_fresh_inv w g"
+      ]
+    },
+    {
+      "source": "kem_adaptive_history/NTRUPlus768AHCoupling.ec",
+      "ordered": [
+        "lemma ah_adversary_coupling",
+        "pke_key_relation w=>islossless S.snapshot=>islossless S.record=>",
+        "res=st /\\ view(glob S)=st",
+        "view(glob S)=ah_record_state st x y",
+        "islossless D.decap=>islossless A(H,D).guess",
+        "equiv[A(AHFreshOracles,SimLookup(FOGActual)).guess ~ A(AHOracles(S,AHFreshOracles),AHDecap(S,AHFreshOracles)).guess",
+        "!SimBad.corr{1}",
+        "!SimBad.corr{1}=> ={res,glob A}",
+        "lemma ah_phase_coupling",
+        "pke_key_relation w=>islossless S.init=>islossless S.snapshot=>islossless S.record=>",
+        "view(glob S)=ah_initial pk suffix star",
+        "ROH.m{1}=empty /\\ acwc2_cache_matches g ROG.m{1}"
+      ]
+    },
+    {
+      "source": "kem_adaptive_history/NTRUPlus768AHCPAGames.ec",
+      "ordered": [
+        "module AHCPAContext",
+        "target<$uniform96;other<$uniform96;bit<$dbool;hout<$uniform224;",
+        "enc<@SimEncrypt(G).run(out.`1.`kg_pk,if bit then other else target,hout);",
+        "guess<@SecRun(A,G).run(out.`1.`kg_pk,oget enc,target);",
+        "return guess=bit;",
+        "module AHCPAKernel",
+        "ROF.m<-s.`2;ROG.m<-acwc2_g_cache s.`3;",
+        "module AHCPAJointGame",
+        "s<@FOSetupSource.guess(witness);win<@AHCPAKernel(A).guess(s);",
+        "lemma ah_cpa_actual_mu",
+        "Pr[CPAGame(CPAReduction(A)).run()@&m:res]"
+      ]
+    },
+    {
+      "source": "kem_adaptive_history/NTRUPlus768AHCPABound.ec",
+      "ordered": [
+        "lemma ah_cpa_setup_facts",
+        "fo_setup_valid s=>",
+        "module AHCPAMonitoredKernel",
+        "lemma ah_cpa_monitored_bad",
+        "lemma ah_cpa_monitored_coupling",
+        "lemma ah_cpa_distance",
+        "islossless S.init=>islossless S.snapshot=>islossless S.record=>",
+        "view(glob S)=ah_initial pk suffix star",
+        "res=st /\\ view(glob S)=st",
+        "view(glob S)=ah_record_state st x y",
+        "islossless D.decap=>islossless A(H,D).guess",
+        "0<=qC=>hoare[CPAPhase(A).run:true ==>fsize SimHistory.h<=qC]=>",
+        "Pr[CPAGame(CPAReduction(A)).run()@&m:res]",
+        "Pr[CPAGame(CPAReduction(AHWrapper(S,A))).run()@&m:res]",
+        "<=qC%r/(2%r^353)",
+        "fo_setup_law_support",
+        "sim_setup_distance_average"
+      ]
+    },
+    {
+      "source": "kem_adaptive_history/NTRUPlus768AHReduction.ec",
+      "ordered": [
+        "module AH_DI",
+        "INJNTRUReduction(SecINJAuxAdapter(SecINJReducer(AHWrapper(S,A))))",
+        "module AH_DO",
+        "OWNTRUReduction(SecOWAuxAdapter(SecOWReducer(AHWrapper(S,A))))",
+        "module AH_CO",
+        "OWRLWESolver(SecOWAuxAdapter(SecOWReducer(AHWrapper(S,A))))",
+        "lemma ah_wrapper_lossless",
+        "islossless S.init=>islossless S.snapshot=>islossless S.record=>",
+        "islossless D0.decap=>islossless A(H,D0).guess",
+        "lemma ah_cpa_hardness"
+      ]
+    },
+    {
+      "source": "kem_adaptive_history/NTRUPlus768AHActualReduction.ec",
+      "ordered": [
+        "module AHActualOracles",
+        "proc h=ROH.get",
+        "proc raw=FOGRaw(G).get",
+        "module AHRejectD",
+        "return None;",
+        "module AHActualPhase",
+        "AHWrapper(S,A,AHActualOracles(G),AHRejectD).guess(pk,ct,key)",
+        "module AHActualTranscript",
+        "SecGHistory.init();key<$uniform32;",
+        "AHActualPhase(S,A,SecGLogged(FOGActual)).run(pk,ct,key)",
+        "return SecGHistory.queries;",
+        "module AHActualINJReducer",
+        "queries<@AHActualTranscript(S,A).run(pk,ct);",
+        "out<@SecExtract.run(pk,ct,Some r,queries);",
+        "module AHActualOWReducer",
+        "queries<@AHActualTranscript(S,A).run(pk,ct);out<@SecExtract.run(pk,ct,None,queries);",
+        "module AHActual_DI",
+        "INJNTRUReduction(SecINJAuxAdapter(AHActualINJReducer(S,A)))",
+        "module AHActual_DO",
+        "OWNTRUReduction(SecOWAuxAdapter(AHActualOWReducer(S,A)))",
+        "module AHActual_CO",
+        "OWRLWESolver(SecOWAuxAdapter(AHActualOWReducer(S,A)))",
+        "lemma ah_actual_transcript_projection",
+        "lemma ah_actual_cpa_hardness"
+      ]
+    },
+    {
+      "source": "kem_adaptive_history/NTRUPlus768AHFinal.ec",
+      "ordered": [
+        "section.",
+        "declare module A <: CCAExtendedAdversary",
+        "local module AHPrivateStore : AHStore = {",
+        "var st:ah_state",
+        "st<-{|ah_rows=[];ah_pk=pk;ah_suffix=suffix;ah_cstar=cstar|};",
+        "proc snapshot():ah_state = {return st;}",
+        "updated<@HistTable.put(input,hout,st.`ah_rows);",
+        "st<-{|ah_rows=updated.`1;ah_pk=st.`ah_pk;ah_suffix=st.`ah_suffix;ah_cstar=st.`ah_cstar|};",
+        "local lemma ah_private_init_ll",
+        "local lemma ah_private_snapshot_ll",
+        "local lemma ah_private_record_ll",
+        "local lemma ah_private_init",
+        "local lemma ah_private_snapshot",
+        "local lemma ah_private_record",
+        "local lemma ah_private_frame"
+      ]
+    }
+  ],
+  "export_audit": {
+    "source": "kem_adaptive_history/NTRUPlus768AHFinal.ec",
+    "theorem": "ah_original_adaptive_history",
+    "expected_type": "forall (A <: CCAExtendedAdversary {-ROE,-ROF,-ROG,-ROH,-RawXOFStreams,-CCADecapOracle,-FOPublicKey,-FOContext,-FOBadState,-FOBudgetState,-FOGRO.RO,-FOGRO.FRO,-SimPublic,-SimHistory,-SimBad,-SimPhaseInput,-SimSelectedFixed,-SimPublicBudget,-SimHRO.RO,-SimHRO.FRO,-SimGRO.RO,-SimGRO.FRO,-SH.HB.Count,-SH.HB.HybOrcl,-ErasureSeedLog,-ErasureHit,-ErasureSeedPool,-EBudgetState,-ErasureTape,-CPAReduction,-CPAHitState,-SecGHistory,-SecGMark}),\nexists(DI<:OWNTRUAdversary)(DO<:OWNTRUAdversary)(CO<:OWRLWEAdversary),\nforall &m qE q0 qH qC,\n0<=q0=>FOBudgetState.limit{m}=q0=>0<=qH=>0<=qC=>\n (forall(H<:CCAExtendedOraclePort {-A})(D<:CCADecapPort {-A}),\n  islossless H.e=>islossless H.f=>islossless H.g=>islossless H.h=>islossless H.raw=>\n  islossless D.decap=>islossless A(H,D).guess)=>\n hoare[CountedA(A,SharedCCAExtendedOracles,CCADecapOracle).guess:\n EBudgetState.requests=0 /\\ EBudgetState.forwarded=0 /\\ EBudgetState.limit=qE /\\\n !EBudgetState.overflow /\\ EBudgetState.queries=[] ==>EBudgetState.requests<=qE]=>\n erasure_budget_initial qE EBudgetState.requests{m} EBudgetState.forwarded{m}\n EBudgetState.limit{m} EBudgetState.overflow{m} EBudgetState.queries{m}=>\n hoare[FOCountedA(A,FOHashView(FONativePlainBackend),FODecapView(FONativePlainBackend)).guess:\n fo_budget_initial q0 FOBudgetState.nH FOBudgetState.nD FOBudgetState.limit FOBudgetState.overflow ==>\n fo_query_count FOBudgetState.nH FOBudgetState.nD<=q0]=>\n hoare[FOCountedA(A,FOHashView(FOFullPlainBackend),FODecapView(FOFullPlainBackend)).guess:\n fo_budget_initial q0 FOBudgetState.nH FOBudgetState.nD FOBudgetState.limit FOBudgetState.overflow ==>\n fo_query_count FOBudgetState.nH FOBudgetState.nD<=q0]=>\n (forall(H<:CCAExtendedOraclePort {-A,-FOBudgetState})(D<:CCADecapPort {-A,-FOBudgetState}),\n hoare[FOCountedA(A,H,D).guess:FOBudgetState.nD=0 ==>FOBudgetState.nD<=max 0 budget])=>\n hoare[SimPublicCountedA(A,FOHashView(SimKnownPublicBackend),FODecapView(SimKnownPublicBackend)).guess:\n sim_public_budget_initial qH SimPublicBudget.nh SimPublicBudget.limit SimPublicBudget.overflow ==>\n SimPublicBudget.nh<=qH]=>\n hoare[CPAPhase(A).run:true ==>fsize SimHistory.h<=qC]=>\n `|Pr[CCAOriginalGame(A).run()@&m:res]-1%r/2%r| <=\n ((130820%r+512%r*qE%r)/(2%r^256)+q0%r/(2%r^353))+\n ((max 0 budget)%r/(2%r^768)+(qH+max 0 budget)%r/(2%r^353))+\n (2%r*(((Pr[OWNTRURealGame(DI).run()@&m:res]-\n Pr[OWNTRUUniformGame(DI).run()@&m:res]+\n (1%r/(2%r^244)))/ow_alpha_g)+\n ((Pr[OWNTRURealGame(DO).run()@&m:res]-\n Pr[OWNTRUUniformGame(DO).run()@&m:res]+\n Pr[OWRLWEGame(CO).run()@&m:res])/ow_alpha_g))+qC%r/(2%r^768))+2%r*(qC%r/(2%r^353)).",
+    "expected_printed_type": "forall (A(H : CCAExtendedOraclePort, D : CCADecapPort) <:\n           CCAExtendedAdversary{-ROE, -ROF, -ROG, -ROH, -FOContext, -FOBadState, -FOBudgetState, -RawXOFStreams, -CCADecapOracle, -FOPublicKey, -FOGRO.RO, -FOGRO.FRO, -ErasureSeedLog, -ErasureHit, -ErasureSeedPool, -EBudgetState, -ErasureTape, -SimPublic, -SimHistory, -SimBad, -SimHRO.RO, -SimHRO.FRO, -SimGRO.RO, -SimGRO.FRO, -SimPhaseInput, -SimSelectedFixed, -SH.HB.Count, -SH.HB.HybOrcl, -SimPublicBudget, -CPAReduction, -CPAHitState, -SecGHistory, -SecGMark}),\n    exists (DI DO <: OWNTRUAdversary) (CO <: OWRLWEAdversary),\n      forall &m (qE q0 qH qC : int),\n        0 <= q0 =>\n        FOBudgetState.limit{m} = q0 =>\n        0 <= qH =>\n        0 <= qC =>\n        (forall (H <: CCAExtendedOraclePort{-A}) (D <: CCADecapPort{-A}),\n           islossless H.e =>\n           islossless H.f =>\n           islossless H.g =>\n           islossless H.h =>\n           islossless H.raw => islossless D.decap => islossless A(H, D).guess) =>\n        hoare[ CountedA(A, SharedCCAExtendedOracles, CCADecapOracle).guess :\n                EBudgetState.requests = 0 /\\\n                EBudgetState.forwarded = 0 /\\\n                EBudgetState.limit = qE /\\\n                !EBudgetState.overflow /\\ EBudgetState.queries = [] ==>\n                EBudgetState.requests <= qE ] =>\n        erasure_budget_initial qE EBudgetState.requests{m}\n          EBudgetState.forwarded{m} EBudgetState.limit{m}\n          EBudgetState.overflow{m} EBudgetState.queries{m} =>\n        hoare[\n                FOCountedA(A, FOHashView(FONativePlainBackend),\n                  FODecapView(FONativePlainBackend)).guess :\n                fo_budget_initial q0 FOBudgetState.nH FOBudgetState.nD\n                  FOBudgetState.limit FOBudgetState.overflow ==>\n                fo_query_count FOBudgetState.nH FOBudgetState.nD <= q0 ] =>\n        hoare[\n                FOCountedA(A, FOHashView(FOFullPlainBackend),\n                  FODecapView(FOFullPlainBackend)).guess :\n                fo_budget_initial q0 FOBudgetState.nH FOBudgetState.nD\n                  FOBudgetState.limit FOBudgetState.overflow ==>\n                fo_query_count FOBudgetState.nH FOBudgetState.nD <= q0 ] =>\n        (forall (H <: CCAExtendedOraclePort{-FOBudgetState, -A})\n           (D <: CCADecapPort{-FOBudgetState, -A}),\n           hoare[ FOCountedA(A, H, D).guess :\n                   FOBudgetState.nD = 0 ==> FOBudgetState.nD <= max 0 budget ]) =>\n        hoare[\n                SimPublicCountedA(A, FOHashView(SimKnownPublicBackend),\n                  FODecapView(SimKnownPublicBackend)).guess :\n                sim_public_budget_initial qH SimPublicBudget.nh\n                  SimPublicBudget.limit SimPublicBudget.overflow ==>\n                SimPublicBudget.nh <= qH ] =>\n        hoare[ CPAPhase(A).run : true ==> fsize SimHistory.h <= qC ] =>\n        `|Pr[CCAOriginalGame(A).run() @ &m : res] - 1%r / 2%r| <=\n        (130820%r + 512%r * qE%r) / 2%r ^ 256 + q0%r / 2%r ^ 353 +\n        ((max 0 budget)%r / 2%r ^ 768 + (qH + max 0 budget)%r / 2%r ^ 353) +\n        (2%r *\n         ((Pr[OWNTRURealGame(DI).run() @ &m : res] -\n           Pr[OWNTRUUniformGame(DI).run() @ &m : res] + 1%r / 2%r ^ 244) /\n          ow_alpha_g +\n          (Pr[OWNTRURealGame(DO).run() @ &m : res] -\n           Pr[OWNTRUUniformGame(DO).run() @ &m : res] +\n           Pr[OWRLWEGame(CO).run() @ &m : res]) /\n          ow_alpha_g) +\n         qC%r / 2%r ^ 768) +\n        2%r * (qC%r / 2%r ^ 353).",
+    "preamble": "require import AllCore StdOrder.\nimport RealOrder RField.\nrequire import AllCore List Distr FMap SDist StdOrder.\nrequire import Array32 Array192 Array1152 Array14466.\nrequire import NTRUPlus768FOModel NTRUPlus768FOQueryBudget NTRUPlus768FOCapRemoval NTRUPlus768FOGameCapRemoval.\nrequire import NTRUPlus768FOEagerG NTRUPlus768FOGAdapters NTRUPlus768FOJointGames NTRUPlus768FOMonitorProjection.\nrequire import NTRUPlus768FOFixedGames NTRUPlus768FOSetupDistribution NTRUPlus768FOKEMGame.\nrequire import NTRUPlus768ROMOracles NTRUPlus768FreshRetryLaw NTRUPlus768CCAGame NTRUPlus768CCASetupGame.\nrequire import NTRUPlus768CCAOraclePorts NTRUPlus768CCADecapOracle NTRUPlus768RawXOFStreams NTRUPlus768RawXOF.\nrequire import NTRUPlus768FOGameAverage NTRUPlus768FOGameHop NTRUPlus768FOSetupExpectation.\nrequire import NTRUPlus768ErasureModel NTRUPlus768ErasureBudget NTRUPlus768ErasureSeedTape.\nrequire import NTRUPlus768ErasureGames NTRUPlus768ErasureSecurity.\nrequire import AllCore Distr FMap StdOrder.\nrequire import NTRUPlus768FOModel NTRUPlus768FOEagerG NTRUPlus768FOGAdapters NTRUPlus768FOKEMGame NTRUPlus768FOJointGames.\nrequire import NTRUPlus768FOSetupDistribution NTRUPlus768FOSetupExpectation NTRUPlus768FOQueryBudget.\nrequire import NTRUPlus768ROMOracles NTRUPlus768RawXOFStreams NTRUPlus768RawXOF NTRUPlus768CCAGame NTRUPlus768CCADecapOracle.\nrequire import NTRUPlus768SimModel NTRUPlus768SimPorts NTRUPlus768SimGames NTRUPlus768SimPublicGames.\nrequire import NTRUPlus768SimSelected NTRUPlus768SimPublicBound NTRUPlus768SimPublicInstances NTRUPlus768SimAverage NTRUPlus768SimKernelBound.\nrequire import NTRUPlus768SimPublicCapRemoval.\nrequire import NTRUPlus768FOSecurity NTRUPlus768SimFinal NTRUPlus768ErasureSecurity NTRUPlus768ErasureBudget NTRUPlus768ErasureModel.\nrequire import NTRUPlus768CPAModel NTRUPlus768CPAReduction NTRUPlus768CPACrossHit.\nrequire import NTRUPlus768CPAChallenge NTRUPlus768CPAChallengeBridge NTRUPlus768CPAUnbiased.\nrequire import NTRUPlus768CPAHitOracles NTRUPlus768CPAProgramming NTRUPlus768CPAProgrammingBridge.\nrequire import NTRUPlus768SimGames NTRUPlus768SimModel NTRUPlus768SimSampling NTRUPlus768SimOracles NTRUPlus768SimLookup.\nrequire import NTRUPlus768ROMOracles NTRUPlus768RawXOFStreams NTRUPlus768RawXOF.\nrequire import NTRUPlus768CCAGame NTRUPlus768CCAOraclePorts NTRUPlus768CCADecapOracle.\nrequire import NTRUPlus768FOGAdapters NTRUPlus768FOEagerG.\nrequire import NTRUPlus768CPAFinal.\nrequire import NTRUPlus768SecModel NTRUPlus768SecGames NTRUPlus768SecGOracles.\nrequire import NTRUPlus768SecProgramming NTRUPlus768SecChallengeBridge NTRUPlus768SecHiding.\nrequire import NTRUPlus768SecExtractModel NTRUPlus768SecExtract NTRUPlus768SecReduction.\nrequire import NTRUPlus768SecKeygen NTRUPlus768SecBaseGames.\nimport RealOrder RField SimSelectedBudget.\nrequire import NTRUPlus768SecFinal NTRUPlus768OWGames NTRUPlus768OWReduction NTRUPlus768OWKeyConditioning.\nrequire import NTRUPlus768OWFinal NTRUPlus768INJGames NTRUPlus768INJReduction NTRUPlus768INJExistence.\nrequire import NTRUPlus768INJFinal NTRUPlus768SRBound.\nfrom Jasmin require import JWord.\nrequire import Array224 NTRUPlus768HistModel.\nrequire import NTRUPlus768AHState NTRUPlus768AHAdapter NTRUPlus768HistTable.\nrequire import NTRUPlus768AHCPABound NTRUPlus768AHActualReduction.\nrequire import NTRUPlus768AHFinal.",
+    "witness_terms": [
+      "AHActual_DI(AHPrivateStore,A)",
+      "AHActual_DO(AHPrivateStore,A)",
+      "AHActual_CO(AHPrivateStore,A)"
+    ]
+  }
+}

@@ -1,0 +1,41 @@
+{
+  "status": "LOCAL_RELEASE_CANDIDATE_NOT_PUBLISHED",
+  "recorded_at": "2026-11-11T10:04:24.800442+00:00",
+  "fresh_runtime_bound": {
+    "status": "PASS",
+    "proof_mains": 37,
+    "unfinished_proof_controls": 37,
+    "commands": 105,
+    "actual_exported_type": "PASS",
+    "source_audit_unchanged": true,
+    "external_audit_unchanged": true,
+    "wall_time": "23:32.23",
+    "maximum_rss_kib": 2696728,
+    "raw_evidence_archive": {
+      "archive": "ntru-runtime-bound-replay-20261111.tar.gz",
+      "sha256": "2850b17b8fb8fc995afea8b7b66a6ccd8abba46e1415091e21c915fc15712348",
+      "bytes": 569715
+    },
+    "scope": "Fresh runtime-bound target; imported theorem prerequisites authenticated through pinned prior evidence, not all freshly replayed."
+  },
+  "public_tool_tests": 57,
+  "source_smoke": "PASS",
+  "c_functional_and_deterministic_kat": "PASS",
+  "preserved_home_source_controls": "SOURCE_CHECK_ONLY",
+  "captured_tool_probe": "PASS_WITH_TRAILING_DECLARATION_SENTINEL",
+  "environment": {
+    "platform": "Linux-5.15.0-179-generic-x86_64-with-glibc2.35",
+    "cpu": "AMD Ryzen 7 5800X3D 8-Core Processor",
+    "logical_cpus": 16,
+    "audited_inputs": 3109,
+    "supplemental_observed_eca_sources": 36,
+    "standalone_os_image": false
+  },
+  "not_claimed": [
+    "whole-repository fresh proof replay",
+    "full runtime replay using the public preserved-home launcher",
+    "clean-machine OS installation",
+    "hosted GitHub Actions run",
+    "public release or DOI"
+  ]
+}

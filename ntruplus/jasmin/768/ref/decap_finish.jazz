@@ -1,0 +1,69 @@
+param int NTRUPLUS_POLYBYTES = 1152;
+param int NTRUPLUS_HASH_H_BYTES = 224;
+param int NTRUPLUS_SHAREDKEYBYTES = 32;
+
+fn verify_bytes(
+  reg const ptr u8[NTRUPLUS_POLYBYTES] recovered,
+  reg const ptr u8[NTRUPLUS_POLYBYTES] regenerated) -> reg u64
+{
+  reg u64 i, result;
+  reg u8 acc, x;
+
+  acc = 0;
+  i = 0;
+  while (i < NTRUPLUS_POLYBYTES) {
+    x = recovered[i];
+    x ^= regenerated[i];
+    acc |= x;
+    i += 1;
+  }
+  result = (64u) acc;
+  result = -result;
+  result >>= 63;
+  return result;
+}
+
+// Disjoint byte-array regions. decode_fail is the binary SOTP result.
+// Every output byte is assigned independently of its incoming value.
+#[safety =
+   { requires = is_arr_init(hashout,0,NTRUPLUS_HASH_H_BYTES) &&
+                is_arr_init(recovered,0,NTRUPLUS_POLYBYTES) &&
+                is_arr_init(regenerated,0,NTRUPLUS_POLYBYTES)
+   , ensures = is_arr_init(ss,0,NTRUPLUS_SHAREDKEYBYTES)
+   }
+]
+#[ct = "secret × secret × secret × secret × secret → secret × secret"]
+#[sct="
+{ ptr: transient, val: secret } ×
+{ ptr: transient, val: secret } ×
+{ ptr: transient, val: secret } ×
+{ ptr: transient, val: secret } ×
+secret → { ptr: public, val: secret } × secret
+"]
+export fn jade_ntruplus_ntruplus768_amd64_ref_decap_finish(
+  reg mut ptr u8[NTRUPLUS_SHAREDKEYBYTES] ss,
+  reg const ptr u8[NTRUPLUS_HASH_H_BYTES] hashout,
+  reg const ptr u8[NTRUPLUS_POLYBYTES] recovered,
+  reg const ptr u8[NTRUPLUS_POLYBYTES] regenerated,
+  reg u32 decode_fail) -> (reg ptr u8[NTRUPLUS_SHAREDKEYBYTES], reg u32)
+{
+  reg u64 comparison, i;
+  reg u32 failed, mask;
+  reg u8 b;
+
+  _ = #init_msf();
+  #[inline] comparison = verify_bytes(recovered, regenerated);
+  failed = (32u) comparison;
+  failed |= decode_fail;
+  mask = failed;
+  mask = -mask;
+  mask = !mask;
+  i = 0;
+  while (i < NTRUPLUS_SHAREDKEYBYTES) {
+    b = hashout[i];
+    b &= (8u) mask;
+    ss[i] = b;
+    i += 1;
+  }
+  return ss, failed;
+}

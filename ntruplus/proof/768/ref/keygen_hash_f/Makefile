@@ -20,3 +20,9 @@ light bridge-proof:
 
 concrete concrete-proof:
 	$(EASYCRYPT) compile $(EASYCRYPT_FLAGS) $(CONCRETE_PROOF)
+
+.PHONY: check-model-compatibility
+check-model-compatibility:
+	python3 ../../../../../tests/ntruplus768/toolchain/check_model_compatibility.py --source-only
+
+heavy hash-f-proof light bridge-proof concrete concrete-proof: check-model-compatibility

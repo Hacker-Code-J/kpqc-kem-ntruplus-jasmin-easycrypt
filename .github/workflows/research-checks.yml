@@ -1,0 +1,30 @@
+name: Research source and C baseline checks
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  source-and-baseline:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+        with:
+          persist-credentials: false
+      - name: Test public reproduction tools
+        run: |
+          python3 -m unittest discover -s tests -p test_reproduce.py -v
+          python3 -m unittest discover -s tests -p test_public_evidence.py -v
+          python3 -m unittest discover -s tests -p test_export_public_evidence.py -v
+          python3 -m unittest discover -s tests -p test_preserved_runtime.py -v
+      - name: Source smoke check (not formal proof replay)
+        run: python3 scripts/reproduce.py smoke
+      - name: Inventory historical evidence requirements (no proof replay)
+        run: python3 scripts/check_public_evidence.py
+      - name: Compile C reference and reproduce deterministic KAT
+        run: python3 scripts/reproduce.py baseline

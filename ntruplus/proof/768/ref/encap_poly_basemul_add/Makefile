@@ -16,3 +16,9 @@ algebra:
 
 bridge:
 	$(EASYCRYPT) compile $(EASYCRYPT_FLAGS) $(BRIDGE_PROOF)
+
+.PHONY: check-model-compatibility
+check-model-compatibility:
+	python3 ../../../../../tests/ntruplus768/toolchain/check_model_compatibility.py --source-only
+
+algebra bridge: check-model-compatibility

@@ -4,6 +4,8 @@ set -euo pipefail
 
 SCRIPT_DIR=$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)
 REPO_ROOT=$(cd -- "$SCRIPT_DIR/.." && pwd)
+
+python3 "$REPO_ROOT/tests/ntruplus768/toolchain/check_model_compatibility.py" --source-only
 JASMIN_SOURCE="$REPO_ROOT/ntruplus/jasmin/768/ref/poly_basemul.jazz"
 TEST_DIR="$REPO_ROOT/tests/ntruplus768/poly_basemul"
 PROOF_DIR="$REPO_ROOT/ntruplus/proof/768/ref/poly_basemul"
@@ -97,7 +99,7 @@ compile_easycrypt() {
     fail "Why3 server did not accept the $tag proof after three attempts"
   fi
 
-  if ! easycrypt compile -no-eco -p Z3 -timeout 5 -max-provers 1 \
+  if ! easycrypt compile -I "Jasmin:$REPO_ROOT/ntruplus/proof/compat/jasmin" -no-eco -p Z3 -timeout 5 -max-provers 1 \
     -server "$socket" \
     -I "$GENERATED_DIR" \
     -I "$PROOF_DIR" \
@@ -176,6 +178,7 @@ main() {
   local generated_list="$WORKDIR/generated-extracted.txt"
 
   require_command make
+  require_command python3
   require_command jasminc
   require_command jasmin-ct
   require_command jasmin2ec
@@ -190,6 +193,7 @@ main() {
     fail "missing Why3 server next to the EasyCrypt installation: $WHY3SERVER_BIN"
 
   [[ -f "$JASMIN_SOURCE" ]] || fail "missing Jasmin source: $JASMIN_SOURCE"
+  python3 "$TEST_DIR/check_poly_basemul_policy.py" "$JASMIN_SOURCE" --selftest
   [[ -f "$FORMOSA_ECLIB/W16extra.ec" ]] ||
     fail "Formosa proof dependency is missing; initialize recursive submodules"
   [[ -f "$FORMOSA_COMMON/JWord_extra.ec" ]] ||

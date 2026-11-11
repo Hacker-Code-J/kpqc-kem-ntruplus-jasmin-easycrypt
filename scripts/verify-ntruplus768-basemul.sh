@@ -4,6 +4,8 @@ set -euo pipefail
 
 SCRIPT_DIR=$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)
 REPO_ROOT=$(cd -- "$SCRIPT_DIR/.." && pwd)
+
+python3 "$REPO_ROOT/tests/ntruplus768/toolchain/check_model_compatibility.py" --source-only
 JASMIN_DIR="$REPO_ROOT/ntruplus/jasmin/768/ref"
 TEST_DIR="$REPO_ROOT/tests/ntruplus768/basemul"
 PROOF_DIR="$REPO_ROOT/ntruplus/proof/768/ref/basemul"
@@ -65,10 +67,10 @@ main() {
     -o "$generated_dir/NTRUPlus768Basemul.ec" -f "$SLICE"
   compare_extraction "$generated_dir"
 
-  easycrypt compile -no-eco -I "$generated_dir" -I "$PROOF_DIR" \
+  easycrypt compile -I "Jasmin:$REPO_ROOT/ntruplus/proof/compat/jasmin" -no-eco -I "$generated_dir" -I "$PROOF_DIR" \
     -I "$FORMOSA_ECLIB" -I "$FORMOSA_COMMON" \
     "$PROOF_DIR/NTRUPlus768BasemulProof.ec"
-  easycrypt compile -no-eco -I "$generated_dir" -I "$PROOF_DIR" \
+  easycrypt compile -I "Jasmin:$REPO_ROOT/ntruplus/proof/compat/jasmin" -no-eco -I "$generated_dir" -I "$PROOF_DIR" \
     -I "$FORMOSA_ECLIB" -I "$FORMOSA_COMMON" \
     "$PROOF_DIR/NTRUPlus768BasemulAlgebra.ec"
 

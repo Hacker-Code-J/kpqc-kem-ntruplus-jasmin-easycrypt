@@ -1,0 +1,6 @@
+{
+  "shared_file": "NTTComposition.ec",
+  "shared_sha256": "61ad40c725798ce6a3cecaf324be066dd07bd06c89a4cc8ebd0a4ce4f45bd393",
+  "counterpart": "kpqc-sig-haetae-jasmin-easycrypt/haetae-1.2.0-easycrypt/theories/NTTComposition.ec",
+  "scope": "Generic four-call total-correctness composition; premises are proved by each concrete instance."
+}

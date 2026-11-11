@@ -1,0 +1,167 @@
+[general]
+timeout = 60
+rdirs = Jasmin:../../../compat/jasmin
+rdirs = .
+rdirs = ../kem_e_erasure
+rdirs = ../keygen_gen_law
+rdirs = ../kem_cca_setup
+rdirs = ../linear_rrec
+rdirs = ../poly_frombytes_checked
+rdirs = ../poly_frombytes_checked/extracted
+rdirs = ../poly_frombytes
+rdirs = ../basemul
+rdirs = ../basemul/extracted
+rdirs = ../poly_basemul
+rdirs = ../poly_basemul/extracted
+rdirs = ../poly_basemul_invntt
+rdirs = ../ntt_radix2_64
+rdirs = ../ntt_radix2_64/extracted
+rdirs = ../invntt_radix2_4
+rdirs = ../invntt_radix2_4/extracted
+rdirs = ../invntt_radix2_8
+rdirs = ../invntt_radix2_8/extracted
+rdirs = ../invntt_radix2_16
+rdirs = ../invntt_radix2_16/extracted
+rdirs = ../invntt_radix2_32
+rdirs = ../invntt_radix2_32/extracted
+rdirs = ../invntt_radix2_64
+rdirs = ../invntt_radix2_64/extracted
+rdirs = ../invntt_radix3
+rdirs = ../invntt_radix3/extracted
+rdirs = ../invntt_final
+rdirs = ../invntt_final/extracted
+rdirs = ../invntt
+rdirs = ../invntt/extracted
+rdirs = ../ntt_schedule
+rdirs = ../../../../../external/formosa-mlkem/crypto-specs/arrays
+rdirs = ../../../../../external/formosa-mlkem/proof/eclib
+rdirs = ../../../../../external/formosa-mlkem/crypto-specs/common
+rdirs = ../poly_tobytes
+rdirs = ../poly_tobytes/extracted
+rdirs = ../encap_guard
+rdirs = ../ntt_stage1
+rdirs = ../ntt_stage1/extracted
+rdirs = ../crepmod3
+rdirs = ../crepmod3/extracted
+rdirs = ../decap_guard
+rdirs = ../decap_guard/extracted
+rdirs = ../poly_sub
+rdirs = ../poly_sub/extracted
+rdirs = ../ntt
+rdirs = ../ntt/extracted
+rdirs = ../ntt_radix3
+rdirs = ../ntt_radix3/extracted
+rdirs = ../ntt_radix2_32
+rdirs = ../ntt_radix2_32/extracted
+rdirs = ../ntt_radix2_16
+rdirs = ../ntt_radix2_16/extracted
+rdirs = ../ntt_radix2_8
+rdirs = ../ntt_radix2_8/extracted
+rdirs = ../ntt_radix2_4
+rdirs = ../ntt_radix2_4/extracted
+rdirs = ../decap_candidate
+rdirs = ../decap_candidate/extracted
+rdirs = ../decap_r2
+idirs = JazzEC:../../../../../external/formosa-mlkem/crypto-specs/arrays
+rdirs = CryptoSpecs:../../../../../external/formosa-mlkem/crypto-specs/fips202
+rdirs = CryptoSpecs:../../../../../external/formosa-mlkem/crypto-specs/fips202/properties
+rdirs = ../decap_r2_tobytes
+rdirs = ../../../../../external/formosa-mlkem/crypto-specs/fips202
+rdirs = ../../../../../external/formosa-mlkem/crypto-specs/fips202/properties
+rdirs = ../decap_r2_comp
+rdirs = ../decap_r2_comp/extracted
+rdirs = ../poly_sotp_decode
+rdirs = ../poly_sotp_decode_checked
+rdirs = ../poly_sotp_decode_checked/extracted
+rdirs = ../decap_hash_g
+rdirs = ../decap_message
+rdirs = ../decap_message/extracted
+rdirs = ../decap_hash_h
+rdirs = ../decap_poly_cbd1
+rdirs = ../decap_r1_ntt
+rdirs = ../decap_r1_tobytes
+rdirs = ../decap_mask
+rdirs = ../decap_hash_h_prepare_checked
+rdirs = ../decap_hash_h_prepare_checked/extracted
+rdirs = ../decap_clear_checked
+rdirs = ../decap_clear_checked/extracted
+rdirs = ../decap_finish_checked
+rdirs = ../decap_finish_checked/extracted
+rdirs = ../poly_cbd1_checked
+rdirs = ../poly_cbd1_checked/extracted
+rdirs = ../decap_verify
+rdirs = ../decap_fail
+rdirs = ../decap_terminal
+rdirs = ../keygen_secret_f
+rdirs = ../keygen_public_key
+rdirs = ../keygen_h
+rdirs = ../keygen_inverse
+rdirs = ../keygen_sampler
+rdirs = ../encap_poly_basemul_add
+rdirs = ../poly_sotp_roundtrip
+rdirs = ../baseinv
+rdirs = ../poly_baseinv_jasmin
+rdirs = ../poly_baseinv_jasmin/extracted
+rdirs = ../baseinv_jasmin
+rdirs = ../baseinv_jasmin/extracted
+rdirs = ../fqinv
+rdirs = ../fqinv_jasmin
+rdirs = ../fqinv_jasmin/extracted
+rdirs = ../ring_semantics
+rdirs = ../valid_key_m1_recovery
+rdirs = ../decap_complete
+rdirs = ../valid_key_r2_recovery
+rdirs = ../keygen_hash_f
+rdirs = ../encap_complete
+rdirs = ../poly_centered_add_checked
+rdirs = ../poly_centered_add_checked/extracted
+rdirs = ../poly_sotp_encode_checked
+rdirs = ../poly_sotp_encode_checked/extracted
+rdirs = ../encap_hash_f_prepare_checked
+rdirs = ../encap_hash_f_prepare_checked/extracted
+rdirs = ../encap_copy_key_checked
+rdirs = ../encap_copy_key_checked/extracted
+rdirs = ../encap_clear_checked
+rdirs = ../encap_clear_checked/extracted
+rdirs = ../encap_clear_coins_checked
+rdirs = ../encap_clear_coins_checked/extracted
+
+rdirs = ../kem_agreement
+rdirs = ../keygen_complete
+rdirs = ../keygen_shape_checked
+rdirs = ../keygen_shape_checked/extracted
+rdirs = ../keygen_pack_sk_checked
+rdirs = ../keygen_pack_sk_checked/extracted
+rdirs = ../keygen_clear_checked
+rdirs = ../keygen_clear_checked/extracted
+
+rdirs = ../keygen_complete
+rdirs = ../keygen_retry
+
+rdirs = ../kem_rom_oracle
+rdirs = ../kem_failure_bound
+
+rdirs = ../kem_rom_bridge
+rdirs = ../kem_rom_collision
+rdirs = ../kem_rom_sampling
+rdirs = ../keygen_retry
+
+rdirs = ../kem_stopped_rom
+
+rdirs = ../keygen_acceptance
+
+idirs = ../kem_numerical_dfr
+
+idirs = ../kem_indcca_game
+
+idirs = ../pke_average_correctness
+
+idirs = ../acwc2_contracts
+
+idirs = ../acwc2_correctness
+
+idirs=../kem_modified_fo
+
+idirs=../kem_spreadness
+
+idirs=../kem_fo_simulation

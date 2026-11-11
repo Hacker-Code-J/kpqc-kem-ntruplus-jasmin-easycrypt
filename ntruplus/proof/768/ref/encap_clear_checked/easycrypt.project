@@ -1,0 +1,5 @@
+[general]
+rdirs = Jasmin:../../../compat/jasmin
+timeout = 60
+rdirs = .
+rdirs = extracted

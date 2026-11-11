@@ -1,0 +1,17 @@
+cff-version: 1.2.0
+message: "If you use these research artifacts, cite this repository and the exact commit or validated release used."
+type: software
+title: "NTRU+768 in Jasmin and EasyCrypt"
+authors:
+  - family-names: "Ji"
+    given-names: "Yonghyeon"
+repository-code: "https://github.com/Hacker-Code-J/kpqc-kem-ntruplus-jasmin-easycrypt"
+url: "https://github.com/Hacker-Code-J/kpqc-kem-ntruplus-jasmin-easycrypt"
+license: MIT
+abstract: "Research artifacts for NTRU+768 Jasmin implementations, EasyCrypt correctness proofs, classical-ROM security reductions, and source-calibrated reduction costs. Claims are limited to the documented targets and models."
+keywords:
+  - NTRU+
+  - Jasmin
+  - EasyCrypt
+  - formal verification
+  - post-quantum cryptography

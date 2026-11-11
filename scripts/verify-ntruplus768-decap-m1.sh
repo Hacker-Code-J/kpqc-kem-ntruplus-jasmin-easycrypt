@@ -4,6 +4,8 @@ set -euo pipefail
 
 SCRIPT_DIR=$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)
 REPO_ROOT=$(cd -- "$SCRIPT_DIR/.." && pwd)
+
+python3 "$REPO_ROOT/tests/ntruplus768/toolchain/check_model_compatibility.py" --source-only
 PROOF="$REPO_ROOT/ntruplus/proof/768/ref/poly_frombytes/NTRUPlus768PolyFromBytesAlgebra.ec"
 POLY_FROMBYTES_VERIFIER="$REPO_ROOT/scripts/verify-ntruplus768-poly-frombytes.sh"
 INVNTT_VERIFIER="$REPO_ROOT/scripts/verify-ntruplus768-invntt.sh"

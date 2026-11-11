@@ -20,3 +20,9 @@ bridge-proof:
 
 source-bridge-proof:
 	$(EASYCRYPT) compile $(EASYCRYPT_FLAGS) $(SOURCE_BRIDGE_PROOF)
+
+.PHONY: check-model-compatibility
+check-model-compatibility:
+	python3 ../../../../../tests/ntruplus768/toolchain/check_model_compatibility.py --source-only
+
+mask-proof bridge-proof source-bridge-proof: check-model-compatibility

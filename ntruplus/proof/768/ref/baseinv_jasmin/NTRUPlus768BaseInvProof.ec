@@ -306,8 +306,8 @@ lemma baseinv_pretrace_functional
     zeta_0 = zeta_word ==>
     res = exact_pretrace_result a zeta_word].
 proof.
-  rewrite -(word_pretrace_result_exact a zeta_word).
-  exact (baseinv_pretrace_word_functional a zeta_word).
+  conseq (baseinv_pretrace_word_functional a zeta_word) => //.
+  by move=> &m; rewrite word_pretrace_result_exact.
 qed.
 
 lemma baseinv_success_functional
@@ -454,9 +454,9 @@ proof.
   rewrite /exact_state /= in Hiff.
   case (exact_state5 a zeta_word = W16.zero) => Hzero.
   + move: Hiff; rewrite Hzero => Hiff.
-    split => //; smt().
+    split => //; smt(baseinv_w64_zero_neq_one).
   move: Hiff; rewrite Hzero => Hiff.
-  split => //; smt().
+  split => //; smt(baseinv_w64_zero_neq_one).
 qed.
 
 lemma exact_success_inverse_relation

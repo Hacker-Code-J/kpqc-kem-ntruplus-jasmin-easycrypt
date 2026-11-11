@@ -1,0 +1,83 @@
+RUN: bash first
+test_all_prior_harnesses_are_exposed (test_reproduce.ReproduceTests) ... ok
+test_current_inventory_matches_all_shell_entries (test_reproduce.ReproduceTests) ... ok
+test_invalid_selection_rejected (test_reproduce.ReproduceTests) ... ok
+test_missing_evidence_directory_rejected (test_reproduce.ReproduceTests) ... ok
+test_missing_executable_rejected (test_reproduce.ReproduceTests) ... ok
+test_only_accepting_target_receives_evidence_option (test_reproduce.ReproduceTests) ... ok
+test_prior_requires_explicit_root_before_any_launch (test_reproduce.ReproduceTests) ... ok
+test_process_failure_stops_following_commands (test_reproduce.ReproduceTests) ... FAILED: verifier exited with code 7
+ok
+test_unrecognized_python_wrapper_fails_closed (test_reproduce.ReproduceTests) ... ok
+
+----------------------------------------------------------------------
+Ran 9 tests in 0.318s
+
+OK
+
+test_byte_tampering (test_public_evidence.EvidenceTests) ... ok
+test_cli_failure_exit_code (test_public_evidence.EvidenceTests) ... ok
+test_cli_inventory_does_not_read_evidence (test_public_evidence.EvidenceTests) ... ok
+test_conflicting_pins (test_public_evidence.EvidenceTests) ... ok
+test_directory_symlink (test_public_evidence.EvidenceTests) ... ok
+test_empty_inventory_fails (test_public_evidence.EvidenceTests) ... ok
+test_file_symlink (test_public_evidence.EvidenceTests) ... ok
+test_incomplete_external_audit (test_public_evidence.EvidenceTests) ... ok
+test_inventory_deduplicates_and_records_consumers (test_public_evidence.EvidenceTests) ... ok
+test_missing_summary (test_public_evidence.EvidenceTests) ... ok
+test_non_pass_even_if_pinned (test_public_evidence.EvidenceTests) ... ok
+test_noncanonical_paths (test_public_evidence.EvidenceTests) ... ok
+test_unstable_source_even_if_pinned (test_public_evidence.EvidenceTests) ... ok
+test_valid_external_audit (test_public_evidence.EvidenceTests) ... ok
+test_valid_legacy_summary (test_public_evidence.EvidenceTests) ... ok
+
+----------------------------------------------------------------------
+Ran 15 tests in 0.011s
+
+OK
+
+test_exact_bytes_inventory_and_checksums (test_export_public_evidence.ExportTests) ... ok
+test_existing_destination_is_untouched (test_export_public_evidence.ExportTests) ... ok
+test_invalid_specification_path_or_digest (test_export_public_evidence.ExportTests) ... ok
+test_missing_input_creates_no_bundle (test_export_public_evidence.ExportTests) ... ok
+test_missing_source_root (test_export_public_evidence.ExportTests) ... ok
+test_output_cannot_overlap_inputs_or_repository (test_export_public_evidence.ExportTests) ... ok
+test_pinned_non_pass_summary_is_rejected (test_export_public_evidence.ExportTests) ... ok
+test_repeat_exports_are_deterministic (test_export_public_evidence.ExportTests) ... ok
+test_source_symlink_is_rejected (test_export_public_evidence.ExportTests) ... ok
+test_specification_schema_is_exact (test_export_public_evidence.ExportTests) ... ok
+test_symlinked_destination_parent_is_rejected (test_export_public_evidence.ExportTests) ... ok
+test_symlinked_source_root_is_rejected (test_export_public_evidence.ExportTests) ... ok
+test_tampered_specification_creates_no_bundle (test_export_public_evidence.ExportTests) ... ok
+
+----------------------------------------------------------------------
+Ran 13 tests in 0.026s
+
+OK
+
+test_cli_propagates_verifier_status_without_shell (test_preserved_runtime.PreservedRuntimeTests) ... ok
+test_cli_validation_failure_never_launches (test_preserved_runtime.PreservedRuntimeTests) ... Replay refused: bad
+ok
+test_existing_output_is_preserved (test_preserved_runtime.PreservedRuntimeTests) ... ok
+test_explicit_tools_and_config_support_different_host_home (test_preserved_runtime.PreservedRuntimeTests) ... ok
+test_external_why3_server_is_rejected (test_preserved_runtime.PreservedRuntimeTests) ... ok
+test_extra_payload_is_rejected (test_preserved_runtime.PreservedRuntimeTests) ... ok
+test_full_command_has_fixed_mounts_and_explicit_paths (test_preserved_runtime.PreservedRuntimeTests) ... ok
+test_invalid_evidence_is_rejected (test_preserved_runtime.PreservedRuntimeTests) ... ok
+test_missing_bwrap_is_rejected (test_preserved_runtime.PreservedRuntimeTests) ... ok
+test_missing_output_parent_is_rejected (test_preserved_runtime.PreservedRuntimeTests) ... ok
+test_missing_payload_is_rejected (test_preserved_runtime.PreservedRuntimeTests) ... ok
+test_package_manifest_cannot_replace_trusted_inventory (test_preserved_runtime.PreservedRuntimeTests) ... ok
+test_payload_mode_tampering_is_rejected (test_preserved_runtime.PreservedRuntimeTests) ... ok
+test_payload_symlink_is_rejected (test_preserved_runtime.PreservedRuntimeTests) ... ok
+test_payload_tampering_is_rejected (test_preserved_runtime.PreservedRuntimeTests) ... ok
+test_source_only_is_explicit (test_preserved_runtime.PreservedRuntimeTests) ... ok
+test_supplied_parent_traversal_is_rejected (test_preserved_runtime.PreservedRuntimeTests) ... ok
+test_symlinked_input_or_output_parent_is_rejected (test_preserved_runtime.PreservedRuntimeTests) ... ok
+test_unsafe_manifest_paths_are_rejected_even_if_identical (test_preserved_runtime.PreservedRuntimeTests) ... ok
+test_writable_output_parent_cannot_expose_input_tree (test_preserved_runtime.PreservedRuntimeTests) ... ok
+
+----------------------------------------------------------------------
+Ran 20 tests in 0.060s
+
+OK

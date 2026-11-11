@@ -1,0 +1,26 @@
+param int NTRUPLUS_POLYBYTES = 1152;
+param int NTRUPLUS_HASH_F_INPUTBYTES = 1153;
+
+// Disjoint byte regions. Build the exact HashF domain-separated input.
+#[safety = { requires = is_arr_init(pk,0,NTRUPLUS_POLYBYTES)
+           , ensures = is_arr_init(input,0,NTRUPLUS_HASH_F_INPUTBYTES) }]
+#[ct = "secret × secret → secret"]
+#[sct="{ ptr: transient, val: secret } × { ptr: transient, val: secret } →
+{ ptr: public, val: secret }"]
+export fn jade_ntruplus_ntruplus768_amd64_ref_encap_hash_f_prepare(
+  reg mut ptr u8[NTRUPLUS_HASH_F_INPUTBYTES] input,
+  reg const ptr u8[NTRUPLUS_POLYBYTES] pk) ->
+  reg ptr u8[NTRUPLUS_HASH_F_INPUTBYTES]
+{
+  reg u64 i;
+  reg u8 b;
+  _ = #init_msf();
+  input[0] = 0;
+  i = 0;
+  while (i < NTRUPLUS_POLYBYTES) {
+    b = pk[i];
+    input[i + 1] = b;
+    i += 1;
+  }
+  return input;
+}

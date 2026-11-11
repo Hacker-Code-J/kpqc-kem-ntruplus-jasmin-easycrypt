@@ -1,0 +1,43 @@
+param int NTRUPLUS_MESSAGEBYTES = 96;
+param int NTRUPLUS_SYMBYTES = 32;
+param int NTRUPLUS_HASH_H_INPUTBYTES = 129;
+
+// Three disjoint regions. Construct the exact official HashH input;
+// the suffix is the final 32 bytes of the 2336-byte secret key.
+#[safety =
+   { requires = is_arr_init(msg,0,NTRUPLUS_MESSAGEBYTES) &&
+                is_arr_init(suffix,0,NTRUPLUS_SYMBYTES)
+   , ensures = is_arr_init(input,0,NTRUPLUS_HASH_H_INPUTBYTES)
+   }
+]
+#[ct = "secret × secret × secret → secret"]
+#[sct="
+{ ptr: transient, val: secret } ×
+{ ptr: transient, val: secret } ×
+{ ptr: transient, val: secret } →
+{ ptr: public, val: secret }
+"]
+export fn jade_ntruplus_ntruplus768_amd64_ref_decap_hash_h_prepare(
+  reg mut ptr u8[NTRUPLUS_HASH_H_INPUTBYTES] input,
+  reg const ptr u8[NTRUPLUS_MESSAGEBYTES] msg,
+  reg const ptr u8[NTRUPLUS_SYMBYTES] suffix) ->
+  reg ptr u8[NTRUPLUS_HASH_H_INPUTBYTES]
+{
+  reg u64 i;
+  reg u8 b;
+  _ = #init_msf();
+  input[0] = 2;
+  i = 0;
+  while (i < NTRUPLUS_MESSAGEBYTES) {
+    b = msg[i];
+    input[i + 1] = b;
+    i += 1;
+  }
+  i = 0;
+  while (i < NTRUPLUS_SYMBYTES) {
+    b = suffix[i];
+    input[i + 97] = b;
+    i += 1;
+  }
+  return input;
+}

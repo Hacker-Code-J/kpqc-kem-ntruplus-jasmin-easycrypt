@@ -1,0 +1,15 @@
+{
+  "upstream_commit": "3991b2ae08d6f0008d37e41b8aceaaab27b4ec89",
+  "origin": "Reference_Implementation/NTRU+768; LICENSE at upstream root",
+  "files": {
+    "poly.c": "923990d51c526f2c46d1a40dc6fb6ef4e50ada35f74647ad73fd597a25fda592",
+    "poly.h": "9a3ac9414dd75412d7dbc888aab82cf7659531b7993256123eee687e85f1d743",
+    "params.h": "420bef5432154798239e1f09b18f31947e3afff248ff98d4e83346b84d27ebb8",
+    "ntt.h": "1edc2346f1705cc98af0f64b2f0ac974f3d58ab9b6603ebbfa415f4e135f5851",
+    "symmetric.h": "d56d67dbf50c7b89de87eb5acbcfb11ece0fe90e7744762c0bc9a47350d80f65",
+    "util.h": "561a5b1e0611985890d9eff695f1ac34f88605631dcef620100ab6aed1b1276d",
+    "api.h": "1912c6a38e7f1449321520570020266836a4cace70f7e5901d0e8c172a707865",
+    "LICENSE": "fc50cdff5695ed2aedde871816fbd86cb0e33a3b315b25948489418dacd9c81a"
+  },
+  "scope": "Unmodified official C source linked directly for standalone checked-decoder differential tests. Not a C-AST equivalence or full KEM/IND-CCA proof."
+}

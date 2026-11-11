@@ -1,0 +1,4 @@
+RUN: /usr/bin/python3 /home/hacker-code-j/Desktop/2026/HAETAE/kpqc-kem-ntruplus-jasmin-easycrypt/tests/ntruplus768/toolchain/check_model_compatibility.py --source-only --selftest
+PASS: compatibility source gate rejects eight model/assumption mutations
+PASS: compatibility shim contains only the installed-model export
+Completed requested smoke commands; retain each verifier's scope and evidence.

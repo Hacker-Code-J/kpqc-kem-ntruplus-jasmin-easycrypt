@@ -1,0 +1,140 @@
+{
+  "schema": 1,
+  "status": "FROZEN",
+  "mains": [
+    {
+      "source": "kem_acwc2_security/NTRUPlus768MRecCalls.ec",
+      "source_sha256": "57d2da3135e338c4677ec66cc2d20c84d175a74f15cfccf18b28b01d4aae160c",
+      "semantic_target": "mrec_call_vcmr",
+      "module_binders": [],
+      "sentinel": "\nlemma __acwc2_security_eof_MRecCalls pk0 m0 r0 ct0 : encap_key_canonical pk0=>pke_domain m0=>pke_domain r0=>\n pke_enc_spec pk0 m0 r0=Some ct0=>\n phoare[MRec.run:pk=pk0 /\\ r=r0 /\\ ct=ct0 ==>res=Some m0]=1%r.\nproof. exact(mrec_call_vcmr pk0 m0 r0 ct0). qed.\n"
+    },
+    {
+      "source": "kem_acwc2_security/NTRUPlus768MRecDecode.ec",
+      "source_sha256": "b58da2eb33378b03bf8493fe90da1150d8554cb68f18c902f81e98c0c7ca0623",
+      "semantic_target": "mrec_decode_correct",
+      "module_binders": [],
+      "sentinel": "\nlemma __acwc2_security_eof_MRecDecode query0 :\n phoare[MRecDecode.run:query=query0 ==>res=mrec_decode_randomness query0]=1%r.\nproof. exact(mrec_decode_correct query0). qed.\n"
+    },
+    {
+      "source": "kem_acwc2_security/NTRUPlus768MRecModel.ec",
+      "source_sha256": "6f16de3d4f8c613ba36a2e8afdb909b2be1753a8a55b2d31e3cac8ffec35db0d",
+      "semantic_target": "mrec_spec_reject_randomness",
+      "module_binders": [],
+      "sentinel": "\nlemma __acwc2_security_eof_MRecModel pk r ct : !pke_domain r=>mrec_spec pk r ct=None.\nproof. exact(mrec_spec_reject_randomness pk r ct). qed.\n"
+    },
+    {
+      "source": "kem_acwc2_security/NTRUPlus768MRecProof.ec",
+      "source_sha256": "70dc5651f728654bc8a2e11b41dc3065ceb3bea7e47a128da1a21f381c935624",
+      "semantic_target": "mrec_generated_forward",
+      "module_binders": [],
+      "sentinel": "\nlemma __acwc2_security_eof_MRecProof w m r : pke_key_relation w=>pke_domain m=>pke_domain r=>\n mrec_spec w.`kg_pk r (pke_ciphertext w.`kg_pk m r)=Some m.\nproof. exact(mrec_generated_forward w m r). qed.\n"
+    },
+    {
+      "source": "kem_acwc2_security/NTRUPlus768SecBaseGames.ec",
+      "source_sha256": "075d1d28dda6f2ca400c5c02cfc6e812e7365cdfdc093998815e3abcac13ecfc",
+      "semantic_target": "sec_ow_base_probability",
+      "module_binders": [
+        "A"
+      ],
+      "sentinel": "\nlemma __acwc2_security_eof_SecBaseGames (A<:CCAExtendedAdversary {-ROE,-ROF,-ROG,-ROH,-RawXOFStreams,-SimPublic,-SimHistory,-SecGHistory,-SecGMark}) &m :\n Pr[SecOWGame(SecOWReducer(A)).run()@&m:res]=Pr[SecBaseOWGame(SecOWAuxAdapter(SecOWReducer(A))).run()@&m:res].\nproof. exact(sec_ow_base_probability A &m). qed.\n"
+    },
+    {
+      "source": "kem_acwc2_security/NTRUPlus768SecChallengeBridge.ec",
+      "source_sha256": "7cfbc18f4c32fb3864933cdbb45d8f1a244761d5ec163587fbfcdc78bb370aa0",
+      "semantic_target": "sec_cpa_programmed_probability",
+      "module_binders": [
+        "A"
+      ],
+      "sentinel": "\nlemma __acwc2_security_eof_SecChallengeBridge\n (A<:CCAExtendedAdversary {-CPAReduction,-ROE,-ROF,-ROG,-ROH,-RawXOFStreams,-SimPublic,-SimHistory,-SecGHistory,-SecGMark}) &m :\n Pr[CPAGame(CPAReduction(A)).run()@&m:res]=Pr[SecGame(A).run(true)@&m:res.`so_win].\nproof. exact(sec_cpa_programmed_probability A &m). qed.\n"
+    },
+    {
+      "source": "kem_acwc2_security/NTRUPlus768SecExtract.ec",
+      "source_sha256": "39b57065a0b8f8368f58b53356ef86cf317fbfee5e80bf1f38f1b39c996d3d48",
+      "semantic_target": "sec_extract_correct",
+      "module_binders": [],
+      "sentinel": "\nlemma __acwc2_security_eof_SecExtract pk0 ct0 excluded0 queries0 :\n phoare[SecExtract.run:pk=pk0 /\\ ct=ct0 /\\ excluded=excluded0 /\\ queries=queries0 ==>\n res=sec_extract_spec pk0 ct0 excluded0 queries0]=1%r.\nproof. exact(sec_extract_correct pk0 ct0 excluded0 queries0). qed.\n"
+    },
+    {
+      "source": "kem_acwc2_security/NTRUPlus768SecExtractModel.ec",
+      "source_sha256": "d319816cb4082e1e9e1f7256184ad36c33518c59651a05eaf4669c10755eaa5d",
+      "semantic_target": "sec_hit_good_ow",
+      "module_binders": [],
+      "sentinel": "\nlemma __acwc2_security_eof_SecExtractModel s : sec_valid s=>sec_hit s=>!sec_bad2 s=>sec_ow_output s=s.`so_code.\nproof. exact(sec_hit_good_ow s). qed.\n"
+    },
+    {
+      "source": "kem_acwc2_security/NTRUPlus768SecFinal.ec",
+      "source_sha256": "6faf7ec499ab3856081e260ae8688a9a9730a8ce63965fa7cfba4640bcc29850",
+      "semantic_target": "sec_original_inj_ow",
+      "module_binders": [
+        "A",
+        "H",
+        "D",
+        "H",
+        "D"
+      ],
+      "sentinel": "\nlemma __acwc2_security_eof_SecFinal\n (A<:CCAExtendedAdversary {-ROE,-ROF,-ROG,-ROH,-RawXOFStreams,-CCADecapOracle,-FOPublicKey,\n  -FOContext,-FOBadState,-FOBudgetState,-FOGRO.RO,-FOGRO.FRO,-SimPublic,-SimHistory,-SimBad,\n  -SimPhaseInput,-SimSelectedFixed,-SimPublicBudget,-SimHRO.RO,-SimHRO.FRO,-SimGRO.RO,-SimGRO.FRO,\n  -SH.HB.Count,-SH.HB.HybOrcl,-ErasureSeedLog,-ErasureHit,-ErasureSeedPool,-EBudgetState,-ErasureTape,\n  -CPAReduction,-CPAHitState,-SecGHistory,-SecGMark}) &m qE q0 qH qC :\n 0<=q0=>FOBudgetState.limit{m}=q0=>0<=qH=>0<=qC=>\n (forall(H<:CCAExtendedOraclePort {-A})(D<:CCADecapPort {-A}),\n  islossless H.e=>islossless H.f=>islossless H.g=>islossless H.h=>islossless H.raw=>\n  islossless D.decap=>islossless A(H,D).guess)=>\n hoare[CountedA(A,SharedCCAExtendedOracles,CCADecapOracle).guess:\n EBudgetState.requests=0 /\\ EBudgetState.forwarded=0 /\\ EBudgetState.limit=qE /\\\n !EBudgetState.overflow /\\ EBudgetState.queries=[] ==>EBudgetState.requests<=qE]=>\n erasure_budget_initial qE EBudgetState.requests{m} EBudgetState.forwarded{m}\n EBudgetState.limit{m} EBudgetState.overflow{m} EBudgetState.queries{m}=>\n hoare[FOCountedA(A,FOHashView(FONativePlainBackend),FODecapView(FONativePlainBackend)).guess:\n fo_budget_initial q0 FOBudgetState.nH FOBudgetState.nD FOBudgetState.limit FOBudgetState.overflow ==>\n fo_query_count FOBudgetState.nH FOBudgetState.nD<=q0]=>\n hoare[FOCountedA(A,FOHashView(FOFullPlainBackend),FODecapView(FOFullPlainBackend)).guess:\n fo_budget_initial q0 FOBudgetState.nH FOBudgetState.nD FOBudgetState.limit FOBudgetState.overflow ==>\n fo_query_count FOBudgetState.nH FOBudgetState.nD<=q0]=>\n (forall(H<:CCAExtendedOraclePort {-A,-FOBudgetState})(D<:CCADecapPort {-A,-FOBudgetState}),\n hoare[FOCountedA(A,H,D).guess:FOBudgetState.nD=0 ==>FOBudgetState.nD<=max 0 budget])=>\n hoare[SimPublicCountedA(A,FOHashView(SimKnownPublicBackend),FODecapView(SimKnownPublicBackend)).guess:\n sim_public_budget_initial qH SimPublicBudget.nh SimPublicBudget.limit SimPublicBudget.overflow ==>\n SimPublicBudget.nh<=qH]=>\n hoare[CPAPhase(A).run:true ==>fsize SimHistory.h<=qC]=>\n `|Pr[CCAOriginalGame(A).run()@&m:res]-1%r/2%r| <=\n ((130820%r+512%r*qE%r)/(2%r^256)+q0%r/(2%r^353))+\n ((max 0 budget)%r/(2%r^768)+(qH+max 0 budget)%r/(2%r^353))+\n (2%r*(Pr[SecBaseINJGame(SecINJAuxAdapter(SecINJReducer(A))).run()@&m:res]+\n Pr[SecBaseOWGame(SecOWAuxAdapter(SecOWReducer(A))).run()@&m:res])+qC%r/(2%r^768)).\nproof. exact(sec_original_inj_ow A &m qE q0 qH qC). qed.\n"
+    },
+    {
+      "source": "kem_acwc2_security/NTRUPlus768SecGOracles.ec",
+      "source_sha256": "196cf578d11a1ac2f5bf22b1d1ce5bbd3817dbb13fe31035e7a6dbf7005c1ce1",
+      "semantic_target": "sec_g_context_coupling",
+      "module_binders": [
+        "C",
+        "G"
+      ],
+      "sentinel": "\nlemma __acwc2_security_eof_SecGOracles (C<:SecGContext {-ROG,-SecGMark,-SecGHistory}) :\n (forall(G<:FOGPort {-C}),islossless G.get=>islossless C(G).run)=>\n equiv[C(SecGMarked(FOGActual)).run ~ C(SecGMarked(FOGActual)).run :\n ={arg,glob C,glob SecGMark,SecGHistory.queries} /\\\n sec_g_outside SecGMark.target{1} ROG.m{1} ROG.m{2} ==>\n ={SecGMark.hit} /\\ (!SecGMark.hit{2}=>\n ={res,glob C,glob SecGMark,SecGHistory.queries} /\\\n sec_g_outside SecGMark.target{1} ROG.m{1} ROG.m{2})].\nproof. exact(sec_g_context_coupling C). qed.\n"
+    },
+    {
+      "source": "kem_acwc2_security/NTRUPlus768SecGames.ec",
+      "source_sha256": "5dc5ecd665bed40ba858073e227d36c7755b9f2d097d06340af0cbdad923c30e",
+      "semantic_target": "sec_hit_record",
+      "module_binders": [],
+      "sentinel": "\nlemma __acwc2_security_eof_SecGames w pk ct code r queries :\n sec_hit {|so_win=w;so_pk=pk;so_ct=ct;so_code=code;so_r=r;so_queries=queries|}=\n (rr_G_input r \\in queries).\nproof. exact(sec_hit_record w pk ct code r queries). qed.\n"
+    },
+    {
+      "source": "kem_acwc2_security/NTRUPlus768SecHiding.ec",
+      "source_sha256": "68798f7f1d71ca5b89c4f0c59dd2e91cb248b0d96fec9c55d7b0ec564468e4b5",
+      "semantic_target": "sec_random_unbiased",
+      "module_binders": [
+        "A",
+        "H",
+        "D"
+      ],
+      "sentinel": "\nlemma __acwc2_security_eof_SecHiding\n (A<:CCAExtendedAdversary {-ROE,-ROF,-ROG,-ROH,-RawXOFStreams,-SimPublic,-SimHistory,-SecGHistory,-SecGMark}) &m :\n (forall(H<:CCAExtendedOraclePort {-A})(D<:CCADecapPort {-A}),\n islossless H.e=>islossless H.f=>islossless H.g=>islossless H.h=>islossless H.raw=>\n islossless D.decap=>islossless A(H,D).guess)=>\n Pr[SecRandomGame(A).run()@&m:res.`so_win]=(1%r/2%r).\nproof. exact(sec_random_unbiased A &m). qed.\n"
+    },
+    {
+      "source": "kem_acwc2_security/NTRUPlus768SecKeygen.ec",
+      "source_sha256": "92f4a97a598607d6e7866a716703da9cdb957af3feb6f7a4936c3aca1f586804",
+      "semantic_target": "sec_base_keygen_ll",
+      "module_binders": [],
+      "sentinel": "\nlemma __acwc2_security_eof_SecKeygen : islossless SecBaseKeygen.run.\nproof. exact(sec_base_keygen_ll). qed.\n"
+    },
+    {
+      "source": "kem_acwc2_security/NTRUPlus768SecModel.ec",
+      "source_sha256": "d8378961632dc94a38aa4c68918918c93bbafbcd6faa86b585706a7e24914fcc",
+      "semantic_target": "sec_inj_witness",
+      "module_binders": [],
+      "sentinel": "\nlemma __acwc2_security_eof_SecModel pk m m' r r' ct :\n pke_domain m=>pke_domain m'=>pke_domain r=>pke_domain r'=>r<>r'=>\n pke_enc_spec pk m r=Some ct=>pke_enc_spec pk m' r'=Some ct=>\n sec_inj_win pk (m,m',r,r').\nproof. exact(sec_inj_witness pk m m' r r' ct). qed.\n"
+    },
+    {
+      "source": "kem_acwc2_security/NTRUPlus768SecProgramming.ec",
+      "source_sha256": "482f2bbed55ef8e16468966ca6a6bc9ccccaae29dfea99eeb8682eb58509508a",
+      "semantic_target": "sec_programming_distance",
+      "module_binders": [
+        "A",
+        "G"
+      ],
+      "sentinel": "\nlemma __acwc2_security_eof_SecProgramming\n (A<:CCAExtendedAdversary {-ROE,-ROF,-ROG,-ROH,-RawXOFStreams,-SimPublic,-SimHistory,-SecGHistory,-SecGMark}) &m :\n (forall(G<:FOGPort {-SecRun(A)}),islossless G.get=>islossless SecRun(A,G).run)=>\n `|Pr[SecGame(A).run(true)@&m:res.`so_win]-Pr[SecGame(A).run(false)@&m:res.`so_win]|\n <=Pr[SecGame(A).run(false)@&m:sec_hit res].\nproof. exact(sec_programming_distance A &m). qed.\n"
+    },
+    {
+      "source": "kem_acwc2_security/NTRUPlus768SecReduction.ec",
+      "source_sha256": "3dd8cd7e91e20fbda5fa625091f4933309119d8c8313eaf417a1d6ea8060a8e5",
+      "semantic_target": "sec_hit_reduction",
+      "module_binders": [
+        "A"
+      ],
+      "sentinel": "\nlemma __acwc2_security_eof_SecReduction\n (A<:CCAExtendedAdversary {-ROE,-ROF,-ROG,-ROH,-RawXOFStreams,-SimPublic,-SimHistory,-SecGHistory,-SecGMark}) &m :\n Pr[SecRandomGame(A).run()@&m:sec_hit res]<=\n Pr[SecINJGame(SecINJReducer(A)).run()@&m:res]+Pr[SecOWGame(SecOWReducer(A)).run()@&m:res].\nproof. exact(sec_hit_reduction A &m). qed.\n"
+    }
+  ]
+}

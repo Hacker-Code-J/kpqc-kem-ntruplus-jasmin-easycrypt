@@ -4,7 +4,7 @@ CC ?= /usr/bin/gcc
 CFLAGS ?= -Wall -Wextra -Werror -O2 -g
 SANFLAGS ?= -fsanitize=undefined -fno-sanitize-recover=undefined
 JASMIN_DIR := ../../../ntruplus/jasmin/768/ref
-JASMINC ?= /usr/local/bin/jasminc
+JASMINC ?= jasminc
 JFLAGS ?= -arch x86-64 -call-conv linux -system linux
 SLICE := jade_ntruplus_ntruplus768_amd64_ref_basemul
 OUTDIR := $(if $(OUTDIR),$(OUTDIR),$(shell mktemp -d /tmp/ntruplus768-basemul-test.XXXXXX))

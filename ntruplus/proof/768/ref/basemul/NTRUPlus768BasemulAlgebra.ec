@@ -760,30 +760,31 @@ proof.
     smt().
   have Hsmod : -R %/ 2 <= s < R %/ 2.
   + rewrite /s.
-    exact (NTRUPlusMontgomery.smod_bnd (a * qinv) R _ _).
-    - by rewrite /R.
-    by rewrite /R.
+    by apply (NTRUPlusMontgomery.smod_bnd (a * qinv) R); rewrite /R.
   have Hneq : coeff (montgomery_reduce (W32.of_int a)) <> -q.
   + rewrite /coeff montgomery_reduce_exact Hsmall.
     rewrite /NTRUPlusMontgomery.SREDC /= NTRUPlusMontgomery.smod_div.
-    have Hinner : -R * R %/ 2 <= a - s * q < R * R %/ 2
-      by rewrite /R /=; smt(ler_lt_sub ltr_add).
-    rewrite (NTRUPlusMontgomery.smod_small (a - s * q)); first exact Hinner.
+    have Hinner : -R * R %/ 2 <= a - s * q < R * R %/ 2.
+    + move: Ha Hsmod.
+      rewrite /R /q /=.
+      smt().
+    have HRsq : 1 < R * R by rewrite /R.
+    rewrite (NTRUPlusMontgomery.smod_small (a - s * q) (R * R) HRsq Hinner).
     rewrite (NTRUPlusMontgomery.smod_sq (a - s * q)).
-    rewrite (NTRUPlusMontgomery.smod_small ((a - s * q) %/ R)); first by smt().
-    move=> Heq.
+    have HRgt1 : 1 < R by rewrite /R.
+    have Hquot : -R %/ 2 <= (a - s * q) %/ R < R %/ 2.
+    + move: Hinner; rewrite /R /=; smt().
+    rewrite (NTRUPlusMontgomery.smod_small ((a - s * q) %/ R) R HRgt1 Hquot).
+    apply negP => Heq.
     have Hsqmod : (s * q) %% R = a %% R.
-    + rewrite /s -modzMmr NTRUPlusMontgomery.smod_congr modzMmr.
+    + rewrite /s -modzMml NTRUPlusMontgomery.smod_congr modzMml.
       rewrite (_ : (a * qinv) * q = a * (qinv * q)); first by ring.
-      rewrite -modzMml NTRUPlusMontgomery.qqinv modzMml /=.
+      rewrite -modzMmr NTRUPlusMontgomery.qqinv modzMmr /=.
       done.
-    have Hdiv : R %| a - s * q.
-    + apply dvdz_eq.
-      rewrite (_ : a - s * q = a + (-(s * q))); first by ring.
-      rewrite -modzDml -modzNm Hsqmod modzNm.
-      done.
+    have Hdiv : R %| (a - s * q).
+    + by rewrite dvdzE -modzBm Hsqmod subrr mod0z.
     have Hnum : a - s * q = -q * R.
-    + have := divzK Hdiv.
+    + have := divzK R (a - s * q) Hdiv.
       rewrite Heq.
       smt().
     move: Ha Hsmod Hnum.
@@ -803,12 +804,23 @@ proof.
   + move=> Hmod.
     have Hstrict := montgomery_reduce_of_int_strict a Ha.
     have Hcoeff0 : coeff (montgomery_reduce (W32.of_int a)) = 0.
-    + move: Hstrict Hmod.
+    + have Hdivision := edivzP (coeff (montgomery_reduce (W32.of_int a))) q.
+      clear Ha.
+      move: Hstrict Hmod Hdivision.
+      move: (coeff (montgomery_reduce (W32.of_int a))) => c.
       rewrite /q.
-      smt(edivzP).
+      smt().
     have -> : montgomery_reduce (W32.of_int a) =
         W16.of_int (coeff (montgomery_reduce (W32.of_int a))).
-    + by rewrite /coeff W16.of_sintK.
+    + rewrite /coeff.
+      move: (montgomery_reduce (W32.of_int a)) => w.
+      apply W16.to_uint_eq.
+      rewrite W16.of_uintK W16.to_sintE /W16.smod.
+      case (2 ^ (16 - 1) <= W16.to_uint w) => Hsign.
+      - rewrite (modz_sub_dvd (W16.to_uint w) W16.modulus W16.modulus).
+        + by rewrite modzz.
+        by rewrite W16.to_uint_mod.
+      by rewrite W16.to_uint_mod.
     by rewrite Hcoeff0.
   move=> ->.
   rewrite /coeff /= /W16.to_sint /=.

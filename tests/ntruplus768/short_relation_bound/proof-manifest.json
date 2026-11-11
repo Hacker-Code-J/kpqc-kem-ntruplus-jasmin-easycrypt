@@ -1,0 +1,231 @@
+{
+  "schema": 1,
+  "status": "FROZEN",
+  "mains": [
+    {
+      "source": "kem_short_relation_bound/NTRUPlus768SRBound.ec",
+      "source_sha256": "c6175360e4af6ec25a0453940bb702c8272afa7f650b4362239027af227cf8fa",
+      "semantic_target": "sr_uniform_bad_mass_244",
+      "module_binders": [],
+      "sentinel": "\nlemma __short_relation_bound_eof_SRBound : inj_uniform_bad_mass<1%r/(2%r^244).\nproof. exact(sr_uniform_bad_mass_244). qed.\n"
+    },
+    {
+      "source": "kem_short_relation_bound/NTRUPlus768SRFinal.ec",
+      "source_sha256": "63a63fc07ef44df8a13090c8e60a199be7a759d40c076e7a26f3c3ae87ae0d40",
+      "semantic_target": "sr_original_numerical",
+      "module_binders": [
+        "A",
+        "H",
+        "D",
+        "H",
+        "D"
+      ],
+      "sentinel": "\nlemma __short_relation_bound_eof_SRFinal\n (A<:CCAExtendedAdversary {-ROE,-ROF,-ROG,-ROH,-RawXOFStreams,-CCADecapOracle,-FOPublicKey,\n  -FOContext,-FOBadState,-FOBudgetState,-FOGRO.RO,-FOGRO.FRO,-SimPublic,-SimHistory,-SimBad,\n  -SimPhaseInput,-SimSelectedFixed,-SimPublicBudget,-SimHRO.RO,-SimHRO.FRO,-SimGRO.RO,-SimGRO.FRO,\n  -SH.HB.Count,-SH.HB.HybOrcl,-ErasureSeedLog,-ErasureHit,-ErasureSeedPool,-EBudgetState,-ErasureTape,\n  -CPAReduction,-CPAHitState,-SecGHistory,-SecGMark}) &m qE q0 qH qC :\n 0<=q0=>FOBudgetState.limit{m}=q0=>0<=qH=>0<=qC=>\n (forall(H<:CCAExtendedOraclePort {-A})(D<:CCADecapPort {-A}),\n  islossless H.e=>islossless H.f=>islossless H.g=>islossless H.h=>islossless H.raw=>\n  islossless D.decap=>islossless A(H,D).guess)=>\n hoare[CountedA(A,SharedCCAExtendedOracles,CCADecapOracle).guess:\n EBudgetState.requests=0 /\\ EBudgetState.forwarded=0 /\\ EBudgetState.limit=qE /\\\n !EBudgetState.overflow /\\ EBudgetState.queries=[] ==>EBudgetState.requests<=qE]=>\n erasure_budget_initial qE EBudgetState.requests{m} EBudgetState.forwarded{m}\n EBudgetState.limit{m} EBudgetState.overflow{m} EBudgetState.queries{m}=>\n hoare[FOCountedA(A,FOHashView(FONativePlainBackend),FODecapView(FONativePlainBackend)).guess:\n fo_budget_initial q0 FOBudgetState.nH FOBudgetState.nD FOBudgetState.limit FOBudgetState.overflow ==>\n fo_query_count FOBudgetState.nH FOBudgetState.nD<=q0]=>\n hoare[FOCountedA(A,FOHashView(FOFullPlainBackend),FODecapView(FOFullPlainBackend)).guess:\n fo_budget_initial q0 FOBudgetState.nH FOBudgetState.nD FOBudgetState.limit FOBudgetState.overflow ==>\n fo_query_count FOBudgetState.nH FOBudgetState.nD<=q0]=>\n (forall(H<:CCAExtendedOraclePort {-A,-FOBudgetState})(D<:CCADecapPort {-A,-FOBudgetState}),\n hoare[FOCountedA(A,H,D).guess:FOBudgetState.nD=0 ==>FOBudgetState.nD<=max 0 budget])=>\n hoare[SimPublicCountedA(A,FOHashView(SimKnownPublicBackend),FODecapView(SimKnownPublicBackend)).guess:\n sim_public_budget_initial qH SimPublicBudget.nh SimPublicBudget.limit SimPublicBudget.overflow ==>\n SimPublicBudget.nh<=qH]=>\n hoare[CPAPhase(A).run:true ==>fsize SimHistory.h<=qC]=>\n `|Pr[CCAOriginalGame(A).run()@&m:res]-1%r/2%r| <=\n ((130820%r+512%r*qE%r)/(2%r^256)+q0%r/(2%r^353))+\n ((max 0 budget)%r/(2%r^768)+(qH+max 0 budget)%r/(2%r^353))+\n (2%r*(((Pr[OWNTRURealGame(INJNTRUReduction(SecINJAuxAdapter(SecINJReducer(A)))).run()@&m:res]-\n Pr[OWNTRUUniformGame(INJNTRUReduction(SecINJAuxAdapter(SecINJReducer(A)))).run()@&m:res]+\n (1%r/(2%r^244)))/ow_alpha_g)+\n ((Pr[OWNTRURealGame(OWNTRUReduction(SecOWAuxAdapter(SecOWReducer(A)))).run()@&m:res]-\n Pr[OWNTRUUniformGame(OWNTRUReduction(SecOWAuxAdapter(SecOWReducer(A)))).run()@&m:res]+\n Pr[OWRLWEGame(OWRLWESolver(SecOWAuxAdapter(SecOWReducer(A)))).run()@&m:res])/ow_alpha_g))+qC%r/(2%r^768)).\nproof. exact(sr_original_numerical A &m qE q0 qH qC). qed.\n"
+    },
+    {
+      "source": "kem_short_relation_bound/NTRUPlus768SRMatrixCounting.ec",
+      "source_sha256": "ab6aa4a377f8eb1f907d4604c48ce00819531f4723def1cc8236d47bc91392ee",
+      "semantic_target": "sr_matrix_fiber_bound",
+      "module_binders": [],
+      "sentinel": "\nlemma __short_relation_bound_eof_SRMatrixCounting (m:int->int->int) (b:int->int) (xss:int list list) :\n sr_integer_kernel_trivial m=>sr_matrix_rows_bounded m=>\n uniq xss=>\n (forall xs,xs \\in xss=>size xs=768 /\\ all(fun x=>0<=x<3457)xs)=>\n size(filter(sr_matrix_list_equation m b)xss)<=12288^384.\nproof. exact(sr_matrix_fiber_bound m b xss). qed.\n"
+    },
+    {
+      "source": "kem_short_relation_bound/NTRUPlus768SRMultiplication.ec",
+      "source_sha256": "fee1d634dee5f65948802286ba83adb0ecaa88f19a201b010e109a9a4edc1177",
+      "semantic_target": "sr_mul_matrix_row_bound",
+      "module_binders": [],
+      "sentinel": "\nlemma __short_relation_bound_eof_SRMultiplication v k : inj_short v=>sr_row_sqnorm(sr_mul_matrix v)k<=12288.\nproof. exact(sr_mul_matrix_row_bound v k). qed.\n"
+    },
+    {
+      "source": "kem_short_relation_bound/NTRUPlus768SRMultiplicationField.ec",
+      "source_sha256": "42e71092f47243f8ee803f14e68db95e8e822624764078ea387d60e125911ca2",
+      "semantic_target": "sr_field_relation_matrix_iff",
+      "module_binders": [],
+      "sentinel": "\nlemma __short_relation_bound_eof_SRMultiplicationField h v w : ow_rq_domain h=>\n (inj_relation h v w <=>\n  (forall k,0<=k<768=>((sr_matvec(sr_mul_matrix v)(sr_field_vector h)).[k]+w.[k])%%q=0)).\nproof. exact(sr_field_relation_matrix_iff h v w). qed.\n"
+    },
+    {
+      "source": "kem_short_relation_bound/NTRUPlus768SRMultiplicationKernel.ec",
+      "source_sha256": "8f796de8eed55910f440a8f59b6b11dbcd8b597124e56e9acdb228496fcd913b",
+      "semantic_target": "sr_mul_kernel_trivial",
+      "module_binders": [],
+      "sentinel": "\nlemma __short_relation_bound_eof_SRMultiplicationKernel v : v<>inj_zero=>sr_integer_kernel_trivial(sr_mul_matrix v).\nproof. exact(sr_mul_kernel_trivial v). qed.\n"
+    },
+    {
+      "source": "kem_short_relation_bound/NTRUPlus768SRMultiplicationProof.ec",
+      "source_sha256": "2b8aca7fe9d307d1da092a3e08877e5e43ab3630613e8b66d9dc140915a8cf03",
+      "semantic_target": "sr_relation_coefficients",
+      "module_binders": [],
+      "sentinel": "\nlemma __short_relation_bound_eof_SRMultiplicationProof a v w : inj_relation(int_poly a)v w=>\n forall k,0<=k<768=>((sr_matvec(sr_mul_matrix v)a).[k]+w.[k])%%q=0.\nproof. exact(sr_relation_coefficients a v w). qed.\n"
+    },
+    {
+      "source": "kem_short_relation_bound/NTRUPlus768SRNumerical.ec",
+      "source_sha256": "0c2ad3b72502843912cd1185ac6d454e844781de426a8a63e2304e77c2c79a70",
+      "semantic_target": "sr_union_numeric_integer_bound",
+      "module_binders": [],
+      "sentinel": "\nlemma __short_relation_bound_eof_SRNumerical :\n 25%r^768*((12288^384)%r/(3457^768)%r)<1%r/(2%r^244).\nproof. exact(sr_union_numeric_integer_bound). qed.\n"
+    },
+    {
+      "source": "kem_short_relation_bound/NTRUPlus768SRProbability.ec",
+      "source_sha256": "ce04d5fabb86b262b22784d3fe7736678d97d247a8eab1214aeb6edc174358a9",
+      "semantic_target": "sr_uniform_fixed_pair_height",
+      "module_binders": [],
+      "sentinel": "\nlemma __short_relation_bound_eof_SRProbability v w :\n size(sr_equation_lists(sr_mul_matrix v)w)<=12288^384=>\n mu ow_uniform_rq(fun h=>inj_relation h v w)<=(12288^384)%r/(3457^768)%r.\nproof. exact(sr_uniform_fixed_pair_height v w). qed.\n"
+    },
+    {
+      "source": "kem_short_relation_bound/NTRUPlus768SRUnion.ec",
+      "source_sha256": "0c815f617a92e62687152a92b41e32c3350846c4c45bfc6a07fabe9f9e7a0bd9",
+      "semantic_target": "sr_uniform_from_pair_bound",
+      "module_binders": [],
+      "sentinel": "\nlemma __short_relation_bound_eof_SRUnion epsilon : 0%r<=epsilon=>\n (forall (z:inj_pair),inj_short z.`1=>inj_short z.`2=>inj_pair_nonzero z.`1 z.`2=>\n  mu ow_uniform_rq(fun a=>inj_relation a z.`1 z.`2)<=epsilon)=>\n inj_uniform_bad_mass<=25%r^768*epsilon.\nproof. exact(sr_uniform_from_pair_bound epsilon). qed.\n"
+    },
+    {
+      "source": "kem_short_relation_bound/NTRUPlus768SRUnionModel.ec",
+      "source_sha256": "d4976c2efdf526eb01aa13fe0d30378018a85ea0e74e57d1e8fefa5ed427a555",
+      "semantic_target": "sr_short_pairs_size_real",
+      "module_binders": [],
+      "sentinel": "\nlemma __short_relation_bound_eof_SRUnionModel : (size sr_short_pairs)%r=25%r^768.\nproof. exact(sr_short_pairs_size_real). qed.\n"
+    }
+  ],
+  "coq": {
+    "helpers": [
+      {
+        "source": "ntruplus/proof/768/ref/kem_short_relation_bound/coq/SRCountingBase.v",
+        "source_sha256": "ae102cd6906b98c91641c6b8e16c34377d7bb96021f409e4f7547f68bdc6bcd2",
+        "module": "SRCountingBase",
+        "exports": [
+          "sr_Zsum_big"
+        ]
+      },
+      {
+        "source": "ntruplus/proof/768/ref/kem_short_relation_bound/coq/SRFiber.v",
+        "source_sha256": "f44518c49babdff0ebbf693cfbd5fc27bcea0fb12020f1a7b15d01e7f9b39cc4",
+        "module": "SRFiber",
+        "exports": [
+          "sr_Z_3457_matrix_fiber_bound"
+        ]
+      },
+      {
+        "source": "ntruplus/proof/768/ref/kem_short_relation_bound/coq/SRFiberKernel.v",
+        "source_sha256": "c2a24d228ad6887721a498537f8069207c3d6576eb45fcf2a0b863a974285ac8",
+        "module": "SRFiberKernel",
+        "exports": [
+          "sr_Z_kernel_det_nonzero"
+        ]
+      },
+      {
+        "source": "ntruplus/proof/768/ref/kem_short_relation_bound/coq/SRFiberEncoding.v",
+        "source_sha256": "e0f4bcaf2fd2a71ab093b75f582123418c008831f9bbaad267835cbd7a2639b5",
+        "module": "SRFiberEncoding",
+        "exports": [
+          "sr_encoded_list_fiber_bound_Z"
+        ]
+      },
+      {
+        "source": "ntruplus/proof/768/ref/kem_short_relation_bound/coq/SRHadamard.v",
+        "source_sha256": "ba670c041708031cc38b41deac04c753bee1420b0cfb62210dc697c532fbeba1",
+        "module": "SRHadamard",
+        "exports": [
+          "sr_gram_hadamard",
+          "sr_hadamard_Z768"
+        ]
+      },
+      {
+        "source": "ntruplus/proof/768/ref/kem_short_relation_bound/coq/SRCountingBridge.v",
+        "source_sha256": "b8753b57065c547809a7ada3efe8eed104214db216454d4746ef87f0392410b5",
+        "module": "SRCountingBridge",
+        "exports": [
+          "sr_Z_solution_count_bound"
+        ]
+      },
+      {
+        "source": "ntruplus/proof/768/ref/kem_short_relation_bound/coq/SRIrreducibleBase.v",
+        "source_sha256": "849374462cfe85eaaea7f07fcc19df176aeb3fb8b50b1a9b160789b2c7af1630",
+        "module": "SRIrreducibleBase",
+        "exports": [
+          "sri_g_monic",
+          "sri_phi_size",
+          "sri_phi_monic"
+        ]
+      },
+      {
+        "source": "ntruplus/proof/768/ref/kem_short_relation_bound/coq/SRIrreducibleRing.v",
+        "source_sha256": "3abd0c95a7779ca2400acfd0a3002f66c3f4a0f848fb3a25d8995e8936d8e766",
+        "module": "SRIrreducibleRing",
+        "exports": [
+          "sri_bool_poly_morph",
+          "sri_bezout13_alg"
+        ]
+      },
+      {
+        "source": "ntruplus/proof/768/ref/kem_short_relation_bound/coq/SRIrreducibleFactor.v",
+        "source_sha256": "ffc3ac9749edb6e5e6ae047bcbeff33f4175d579e2dbbbe1fed05abf5a051bf9",
+        "module": "SRIrreducibleFactor",
+        "exports": [
+          "sri_schoenemann"
+        ]
+      },
+      {
+        "source": "ntruplus/proof/768/ref/kem_short_relation_bound/coq/SRIrreducibleConcrete.v",
+        "source_sha256": "fb73a6178fdbab5ca1e02b8ac6cf69afef775a8781f6e9f8dba79143b5fcc362",
+        "module": "SRIrreducibleConcrete",
+        "exports": [
+          "sri_phi_mod2",
+          "sri_phi_not_ideal4"
+        ]
+      },
+      {
+        "source": "ntruplus/proof/768/ref/kem_short_relation_bound/coq/SRIrreducible.v",
+        "source_sha256": "3ce74a25fbea69473ba2f34c99f027fb64de3244ff53127efa08635cd3e590dc",
+        "module": "SRIrreducible",
+        "exports": [
+          "sri_g_irred_mod2",
+          "sri_phi_irreducible_Q"
+        ]
+      },
+      {
+        "source": "ntruplus/proof/768/ref/kem_short_relation_bound/coq/SRMultiplicationBridge.v",
+        "source_sha256": "b20f414d18fa24249023789cf5cc131e8eec233e703dfd6a746fc9887f92e213",
+        "module": "SRMultiplicationBridge",
+        "exports": [
+          "srm_Zconvolution_kernel"
+        ]
+      }
+    ],
+    "natives": {
+      "kem_short_relation_bound/NTRUPlus768SRMatrixCounting.ec": {
+        "scripts": [
+          {
+            "name": "sr_solution_list_bound",
+            "source": "ntruplus/proof/768/ref/kem_short_relation_bound/.interactive/sr_solution_list_bound.v",
+            "source_sha256": "6961deaa72ef7d22f406855d9ed3b581030633fc4957614498d4d2fac87471cd"
+          }
+        ],
+        "changed_goal": {
+          "old": "size xss<=12288^384.",
+          "new": "size xss<0."
+        }
+      },
+      "kem_short_relation_bound/NTRUPlus768SRMultiplicationKernel.ec": {
+        "scripts": [
+          {
+            "name": "sr_convolution_kernel",
+            "source": "ntruplus/proof/768/ref/kem_short_relation_bound/.interactive/sr_convolution_kernel.v",
+            "source_sha256": "e05ceb7a83262c57a9d91d614807153f3503976598c029ef8026aa7ccafeae8f"
+          }
+        ],
+        "changed_goal": {
+          "old": "forall i,0<=i<768=>a i=0.",
+          "new": "forall i,0<=i<768=>a i=1."
+        }
+      }
+    },
+    "support": [
+      "BuiltIn.v",
+      "HighOrd.v",
+      "int/Int.v",
+      "int/Abs.v",
+      "int/EuclideanDivision.v",
+      "map/Map.v"
+    ]
+  }
+}

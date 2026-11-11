@@ -1,0 +1,132 @@
+{
+  "schema": "rt-kernel-sim-cost-calibration-v1",
+  "file": "ntruplus/proof/768/ref/kem_runtime_bound/NTRUPlus768RTKernelCostsSim.ec",
+  "rules": {
+    "owned_array_clone": "3*N",
+    "call": "2+arity+scratch_alloc+3*result_cells",
+    "return": "1+3*result_cells",
+    "guard": "comparison+branch",
+    "copy_iteration": "offsetadd+load+store+transfer+increment_add+increment_transfer+guard_compare+guard_branch"
+  },
+  "copy_procedures": [
+    {
+      "module": "RTKernelBytes",
+      "procedure": "tail",
+      "input_cells": 224,
+      "output_cells": 192,
+      "index_offset": 32,
+      "initial_costs": {
+        "input_clone": 672,
+        "scratch_alloc_and_transfer": 193,
+        "index_init": 1,
+        "guard": 2
+      },
+      "loop_costs": {
+        "output_assignment": 4,
+        "index_increment": 2,
+        "guard": 2
+      },
+      "return_cost": 577,
+      "bound_op": "rt_kernel_tail_bound",
+      "current_bound": 2981
+    },
+    {
+      "module": "RTKernelBytes",
+      "procedure": "peel",
+      "input_cells": 1153,
+      "output_cells": 1152,
+      "index_offset": 1,
+      "initial_costs": {
+        "input_clone": 3459,
+        "scratch_alloc_and_transfer": 1153,
+        "index_init": 1,
+        "guard": 2
+      },
+      "loop_costs": {
+        "output_assignment": 4,
+        "index_increment": 2,
+        "guard": 2
+      },
+      "return_cost": 3457,
+      "bound_op": "rt_kernel_peel_bound",
+      "current_bound": 17288
+    }
+  ],
+  "sim_encrypt": {
+    "module": "RTKernelSimEncrypt",
+    "entry_cells": 1472,
+    "entry_cost": 4416,
+    "result_cells": 1152,
+    "return_cost": 3457,
+    "backend": "G.get exact returned cost; not a fixed local price",
+    "calls": [
+      {
+        "procedure": "RTKernelBytes.tail",
+        "arity": 1,
+        "scratch_cells": 0,
+        "result_cells": 192,
+        "caller_cost": 579,
+        "callee_bound_op": "rt_kernel_tail_bound"
+      },
+      {
+        "procedure": "RTFixedCBD.jade_ntruplus_ntruplus768_amd64_ref_poly_cbd1",
+        "arity": 2,
+        "scratch_cells": 768,
+        "result_cells": 768,
+        "caller_cost": 3076,
+        "callee_bound_op": "rt_fixed_cbd_bound"
+      },
+      {
+        "procedure": "RTFixedNTT.jade_ntruplus_ntruplus768_amd64_ref_ntt",
+        "arity": 2,
+        "scratch_cells": 768,
+        "result_cells": 768,
+        "caller_cost": 3076,
+        "callee_bound_op": "rt_fixed_ntt_bound"
+      },
+      {
+        "procedure": "RTFixedGPrepare.jade_ntruplus_ntruplus768_amd64_ref_decap_message_prepare",
+        "arity": 3,
+        "scratch_cells": 2305,
+        "result_cells": 2305,
+        "caller_cost": 9225,
+        "callee_bound_op": "rt_fixed_gprepare_bound"
+      },
+      {
+        "procedure": "RTKernelBytes.peel",
+        "arity": 1,
+        "scratch_cells": 0,
+        "result_cells": 1152,
+        "caller_cost": 3459,
+        "callee_bound_op": "rt_kernel_peel_bound"
+      },
+      {
+        "procedure": "G.get",
+        "arity": 1,
+        "scratch_cells": 0,
+        "result_cells": 192,
+        "caller_cost": 579,
+        "callee_bound_op": null
+      },
+      {
+        "procedure": "RTFixedSOTPEncode.jade_ntruplus_ntruplus768_amd64_ref_poly_sotp_encode",
+        "arity": 3,
+        "scratch_cells": 768,
+        "result_cells": 768,
+        "caller_cost": 3077,
+        "callee_bound_op": "rt_fixed_sotpencode_bound"
+      },
+      {
+        "procedure": "RTKernelPKEEnc.run",
+        "arity": 3,
+        "scratch_cells": 0,
+        "result_cells": 1152,
+        "caller_cost": 3461,
+        "callee_bound_op": "rt_kernel_pkeenc_bound"
+      }
+    ],
+    "bound_op": "rt_kernel_sim_encrypt_bound",
+    "current_bound": 5318618
+  },
+  "source_sha256": "375808c0ea90c443c7576be1d58b31b2263e9e3792679b829c63a1943251e58f"
+}

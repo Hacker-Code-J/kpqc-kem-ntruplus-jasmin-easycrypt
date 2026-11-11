@@ -4,6 +4,8 @@ set -euo pipefail
 
 SCRIPT_DIR=$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)
 REPO_ROOT=$(cd -- "$SCRIPT_DIR/.." && pwd)
+
+python3 "$REPO_ROOT/tests/ntruplus768/toolchain/check_model_compatibility.py" --source-only
 JASMIN_SOURCE="$REPO_ROOT/ntruplus/jasmin/768/ref/poly_sub.jazz"
 TEST_DIR="$REPO_ROOT/tests/ntruplus768/poly_sub"
 PROOF_ROOT="$REPO_ROOT/ntruplus/proof/768/ref"
@@ -158,7 +160,7 @@ compile_easycrypt() {
   local proof=$1
   local tag=$2
 
-  if ! easycrypt compile -no-eco -p Z3 -timeout 5 -max-provers 1 \
+  if ! easycrypt compile -I "Jasmin:$REPO_ROOT/ntruplus/proof/compat/jasmin" -no-eco -p Z3 -timeout 5 -max-provers 1 \
     -server "$WHY3_SOCKET" \
     -I "$GENERATED_DIR" \
     "${EASYCRYPT_INCLUDES[@]}" \

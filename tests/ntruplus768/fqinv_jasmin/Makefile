@@ -2,7 +2,7 @@
 
 CC ?= /usr/bin/gcc
 PYTHON ?= python3
-JASMINC ?= /usr/local/bin/jasminc
+JASMINC ?= jasminc
 CFLAGS ?= -std=c11 -Wall -Wextra -Wpedantic -Werror -O2 -g
 SANFLAGS ?= -fsanitize=undefined -fno-sanitize-recover=undefined
 JFLAGS ?= -arch x86-64 -call-conv linux -system linux

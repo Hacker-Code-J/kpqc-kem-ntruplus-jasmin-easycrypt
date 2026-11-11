@@ -1,0 +1,24 @@
+[general]
+rdirs = Jasmin:../../../compat/jasmin
+timeout = 60
+idirs = JazzEC:../../../../../external/formosa-mlkem/crypto-specs/arrays
+rdirs = .
+rdirs = ../kem_rom_oracle
+rdirs = ../basemul
+rdirs = ../basemul/extracted
+rdirs = ../crepmod3
+rdirs = ../poly_sotp_decode
+rdirs = ../ntt_stage1
+rdirs = ../ntt_stage1/extracted
+rdirs = ../ntt_schedule
+rdirs = ../../../../../external/formosa-mlkem/crypto-specs/arrays
+rdirs = ../../../../../external/formosa-mlkem/crypto-specs/common
+rdirs = ../../../../../external/formosa-mlkem/proof/eclib
+rdirs = ../decap_poly_cbd1
+rdirs = ../poly_cbd1_checked
+rdirs = ../poly_cbd1_checked/extracted
+rdirs = ../poly_sotp_roundtrip
+rdirs = ../poly_sotp_encode_checked
+rdirs = ../poly_sotp_encode_checked/extracted
+rdirs = ../encap_hash_f_prepare_checked/extracted
+rdirs = ../decap_hash_h_prepare_checked/extracted

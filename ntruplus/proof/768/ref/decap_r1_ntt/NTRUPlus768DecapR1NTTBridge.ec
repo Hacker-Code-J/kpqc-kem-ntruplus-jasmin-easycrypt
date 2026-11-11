@@ -109,8 +109,8 @@ lemma decap_r1_ntt_value_flow_inplace_functional
     rp = r1_pre /\ ap = r1_pre ==> res = r1_post].
 proof.
   move=> [_ Hr1_post].
-  rewrite Hr1_post.
-  exact (decap_r1_ntt_inplace_functional r1_pre).
+  conseq (decap_r1_ntt_inplace_functional r1_pre) => //.
+  by move=> &m; rewrite Hr1_post.
 qed.
 
 lemma decap_r1_ntt_value_flow_inplace_correct
@@ -124,8 +124,8 @@ lemma decap_r1_ntt_value_flow_inplace_correct
     rp = r1_pre /\ ap = r1_pre ==> res = r1_post] = 1%r.
 proof.
   move=> [_ Hr1_post].
-  rewrite Hr1_post.
-  exact (decap_r1_ntt_inplace_correct r1_pre).
+  conseq (decap_r1_ntt_inplace_correct r1_pre) => //.
+  by move=> &m; rewrite Hr1_post.
 qed.
 
 lemma decap_r1_ntt_algebra

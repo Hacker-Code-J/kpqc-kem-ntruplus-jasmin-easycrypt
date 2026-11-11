@@ -1,0 +1,7 @@
+[general]
+rdirs = .
+rdirs = ../../../compat/jasmin
+rdirs = ../../../../../external/formosa-mlkem/crypto-specs/arrays
+rdirs = ../encap_hash_f_prepare_checked/extracted
+rdirs = ../decap_hash_h_prepare_checked/extracted
+timeout = 60

@@ -1,0 +1,23 @@
+	Command being timed: "bwrap --die-with-parent --ro-bind / / --bind /tmp /tmp --bind /home/hacker-code-j/Desktop/2026/HAETAE/artifact-release-preparation/ntru /home/hacker-code-j/Desktop/2026/HAETAE/artifact-release-preparation/ntru --ro-bind /tmp/ntruplus-python-pinned/usr/bin/python3.10 /usr/bin/python3.10 --proc /proc --dev /dev --chdir /home/hacker-code-j/Desktop/2026/HAETAE/kpqc-kem-ntruplus-jasmin-easycrypt /usr/bin/python3.10 tests/ntruplus768/runtime_bound/verify_runtime_bound.py --prior-evidence-root /home/hacker-code-j/Desktop/2026/HAETAE/artifact-release-preparation/ntruplus-prior-evidence-20261111 --output /home/hacker-code-j/Desktop/2026/HAETAE/artifact-release-preparation/ntru/runtime-bound-pinned-python"
+	User time (seconds): 1821.39
+	System time (seconds): 295.46
+	Percent of CPU this job got: 149%
+	Elapsed (wall clock) time (h:mm:ss or m:ss): 23:32.23
+	Average shared text size (kbytes): 0
+	Average unshared data size (kbytes): 0
+	Average stack size (kbytes): 0
+	Average total size (kbytes): 0
+	Maximum resident set size (kbytes): 2696728
+	Average resident set size (kbytes): 0
+	Major (requiring I/O) page faults: 34
+	Minor (reclaiming a frame) page faults: 38106754
+	Voluntary context switches: 22737
+	Involuntary context switches: 13745
+	Swaps: 0
+	File system inputs: 42696
+	File system outputs: 710736
+	Socket messages sent: 0
+	Socket messages received: 0
+	Signals delivered: 0
+	Page size (bytes): 4096
+	Exit status: 0

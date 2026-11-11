@@ -55,7 +55,7 @@ proof.
   move=> Hsem.
   have H := Hsem 0 _; first smt().
   have Hsched := radix2_64_schedule_exp_terminalE 0 _; first smt().
-  rewrite (radix2_64_schedule_exp6E 0) 1:/# in Hsched.
+  rewrite (radix2_64_schedule_exp6E 0) 1:/# radix2_64_schedule_exps6E /= in Hsched.
   move: Hsched H; smt().
 qed.
 
@@ -69,7 +69,7 @@ proof.
   move=> Hsem.
   have H := Hsem 1 _; first smt().
   have Hsched := radix2_64_schedule_exp_terminalE 1 _; first smt().
-  rewrite (radix2_64_schedule_exp6E 1) 1:/# in Hsched.
+  rewrite (radix2_64_schedule_exp6E 1) 1:/# radix2_64_schedule_exps6E /= in Hsched.
   move: Hsched H; smt().
 qed.
 
@@ -83,7 +83,7 @@ proof.
   move=> Hsem.
   have H := Hsem 2 _; first smt().
   have Hsched := radix2_64_schedule_exp_terminalE 2 _; first smt().
-  rewrite (radix2_64_schedule_exp6E 2) 1:/# in Hsched.
+  rewrite (radix2_64_schedule_exp6E 2) 1:/# radix2_64_schedule_exps6E /= in Hsched.
   move: Hsched H; smt().
 qed.
 
@@ -97,7 +97,7 @@ proof.
   move=> Hsem.
   have H := Hsem 3 _; first smt().
   have Hsched := radix2_64_schedule_exp_terminalE 3 _; first smt().
-  rewrite (radix2_64_schedule_exp6E 3) 1:/# in Hsched.
+  rewrite (radix2_64_schedule_exp6E 3) 1:/# radix2_64_schedule_exps6E /= in Hsched.
   move: Hsched H; smt().
 qed.
 
@@ -111,7 +111,7 @@ proof.
   move=> Hsem.
   have H := Hsem 4 _; first smt().
   have Hsched := radix2_64_schedule_exp_terminalE 4 _; first smt().
-  rewrite (radix2_64_schedule_exp6E 4) 1:/# in Hsched.
+  rewrite (radix2_64_schedule_exp6E 4) 1:/# radix2_64_schedule_exps6E /= in Hsched.
   move: Hsched H; smt().
 qed.
 
@@ -125,7 +125,7 @@ proof.
   move=> Hsem.
   have H := Hsem 5 _; first smt().
   have Hsched := radix2_64_schedule_exp_terminalE 5 _; first smt().
-  rewrite (radix2_64_schedule_exp6E 5) 1:/# in Hsched.
+  rewrite (radix2_64_schedule_exp6E 5) 1:/# radix2_64_schedule_exps6E /= in Hsched.
   move: Hsched H; smt().
 qed.
 

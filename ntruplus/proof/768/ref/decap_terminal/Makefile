@@ -17,3 +17,9 @@ terminal-proof:
 
 bridge-proof:
 	$(EASYCRYPT) compile $(EASYCRYPT_FLAGS) $(EASYCRYPT_INCLUDES) $(BRIDGE_PROOF)
+
+.PHONY: check-model-compatibility
+check-model-compatibility:
+	python3 ../../../../../tests/ntruplus768/toolchain/check_model_compatibility.py --source-only
+
+terminal-proof bridge-proof: check-model-compatibility

@@ -1,0 +1,107 @@
+{
+  "schema": 1,
+  "checked_on": "2026-11-11",
+  "scope": "Publication-preparation checks only; not full formal verification or release approval",
+  "base_commit": "831523ef562905e5789c4bc5df76e59ab04a90e2",
+  "working_tree": "Dirty; pre-existing research changes preserved, not committed by this preparation",
+  "checks": [
+    {
+      "command": "python3 -m unittest discover -s tests -p test_reproduce.py -v",
+      "result": "PASS",
+      "tests": 9
+    },
+    {
+      "command": "python3 -m unittest discover -s tests -p test_public_evidence.py -v",
+      "result": "PASS",
+      "tests": 15
+    },
+    {
+      "command": "python3 scripts/reproduce.py smoke",
+      "result": "PASS",
+      "scope": "Exact compatibility-shim source plus eight mutation controls; no proofs"
+    },
+    {
+      "command": "python3 scripts/reproduce.py baseline",
+      "result": "PASS",
+      "functional_count": 0,
+      "kat_rsp_sha256": "22c72039845361ff142273150a59785bada5146c04018ce0a8b67b99a647eaa8"
+    },
+    {
+      "command": "python3 scripts/check_public_evidence.py --evidence-root <local-evidence-root>",
+      "result": "PASS",
+      "historical_summaries": 26,
+      "scope": "Pinned bytes and recorded audits; not a new proof run"
+    },
+    {
+      "command": "ruff --no-cache scripts/reproduce.py scripts/check_public_evidence.py tests/test_reproduce.py tests/test_public_evidence.py",
+      "result": "PASS",
+      "tool_version": "0.0.194"
+    },
+    {
+      "check": "Python AST syntax",
+      "result": "PASS",
+      "files": 4
+    },
+    {
+      "check": "Local Markdown destinations in README and publication guides",
+      "result": "PASS"
+    },
+    {
+      "check": "README preservation",
+      "result": "PASS",
+      "scope": "Full original text retained; header and relocated Markdown destinations only"
+    },
+    {
+      "check": "CITATION.cff and workflow YAML parse/basic fields",
+      "result": "PASS",
+      "scope": "Not full schema validation; hosted workflow not run"
+    },
+    {
+      "check": "Private local path ignore rules",
+      "result": "PASS"
+    },
+    {
+      "check": "Limited credential pattern scan",
+      "result": "NO_MATCHES",
+      "history_blobs_checked": 703,
+      "working_files_checked": 1850,
+      "patterns": [
+        "private-key",
+        "github-token",
+        "aws-access-key",
+        "slack-token"
+      ],
+      "limits": "High-confidence pattern scan only; excludes submodule histories, unreachable objects and ignored local files. Does not certify absence of secrets."
+    },
+    {
+      "check": "Independent bounded review",
+      "result": "No material findings; Python minimum-version documentation aligned"
+    }
+  ],
+  "not_performed": [
+    "Full formal proof dependency replay",
+    "Clean-machine installation",
+    "Hosted GitHub Actions run",
+    "Python static typechecking",
+    "Complete secret audit including submodule histories",
+    "Commit, tag, push, release publication or DOI registration"
+  ],
+  "reviewed_file_sha256": {
+    "README.md": "9140857cdabbe653a492b0e6978593a6b1b751b39e493241c76ac246dcb34591",
+    ".gitignore": "152a881f68ad967d582846b4597951e9324de28e749e498bef4e1c04d8199200",
+    "CITATION.cff": "e66d353df38d31af964385342431c096aaa2e7bc371c9cf3737037b4f58530e2",
+    ".github/workflows/research-checks.yml": "5fab13b5541d2bfc297b3871a9351bdb336a41a3c3d1042931c6c72af8383e5a",
+    "scripts/reproduce.py": "ddea57402f5e0019da14890deca04444702b59c3840bad99d0f902bd957fa6e1",
+    "scripts/check_public_evidence.py": "82aa74653fa971f576ca7927774bcfd46d0d91654b571ee6a7909bc1eac748e3",
+    "tests/test_reproduce.py": "e3319f13fc992901ec9d1b271200613d72088092b55b8d14d292649c8ed02c54",
+    "tests/test_public_evidence.py": "771a941ae8522e831b14c862caa81519adb5d5f98c41c28525c0fe3d2bf7ad34",
+    "docs/claims.md": "4cb8238ae54fb3b594ce481a2163e7f8cdc17072a839ae8fdf7082ccbec4df4f",
+    "docs/development-record.md": "60e6fe3fa30349be376f3aaa7ad4ab174c721a670acef996803bbd341ab569c8",
+    "docs/reproduction.md": "df033311bcabeb769e4c6e958524621b17a8d43277fa957204962c15bf90c30a",
+    "docs/evidence.md": "b8f733a391732e92de67c9d2c5b7f8bff0ed56dde21975c34867557e2e4da629",
+    "docs/release.md": "735a845c26eadbc688b7f5048c0d30b2a6680d84e51967f0609e0a5082aa4252",
+    "docs/toolchain-observed.json": "d0c35a8b4c388538de39d6041e2e9b779f9c715f6f2e7f59e4216e3286837ca7",
+    "tests/ntruplus768/runtime_bound/README.md": "d4cc4fff410c4a786edd0c2a221f71c14ed61c72daa41af2761073d00a5ed8a9",
+    "docs/ntruplus768-short-relation-bound.md": "21f8b0500c27e5942300cdb0b252e6582a4e5e48798904f3c3ad96abb909aa68"
+  }
+}

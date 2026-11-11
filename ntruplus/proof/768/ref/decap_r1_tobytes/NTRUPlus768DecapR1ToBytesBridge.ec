@@ -165,8 +165,9 @@ proof.
   have Hfunctional :=
     decap_r1_tobytes_functional
       predecessor_flow buf3_prefix cbd1_input r1_pre r1_post buf2 rp0 Hflow.
-  move: Hflow => [_ ->].
-  exact Hfunctional.
+  move: Hflow => [_ Hbuf2].
+  conseq Hfunctional => //.
+  by move=> &m; rewrite Hbuf2.
 qed.
 
 lemma decap_r1_tobytes_value_flow_correct
@@ -184,8 +185,9 @@ proof.
   have Hcorrect :=
     decap_r1_tobytes_correct
       predecessor_flow buf3_prefix cbd1_input r1_pre r1_post buf2 rp0 Hflow.
-  move: Hflow => [_ ->].
-  exact Hcorrect.
+  move: Hflow => [_ Hbuf2].
+  conseq Hcorrect => //.
+  by move=> &m; rewrite Hbuf2.
 qed.
 
 lemma decap_terminal_r1_tobytes_functional

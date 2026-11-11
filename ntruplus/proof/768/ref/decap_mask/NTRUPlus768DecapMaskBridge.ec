@@ -91,7 +91,7 @@ lemma decap_mask_value_flow_fail_zero_iff
   (failv = W8.of_int 0 <=> ! failed).
 proof.
   move=> [_ [_ [-> _]]].
-  case failed; smt(fail_byte_false fail_byte_true).
+  case failed; by rewrite /fail_byte /= ?W8.to_uint_eq.
 qed.
 
 lemma decap_mask_value_flow_fail_one_iff
@@ -106,7 +106,7 @@ lemma decap_mask_value_flow_fail_one_iff
   (failv = W8.of_int 1 <=> failed).
 proof.
   move=> [_ [_ [-> _]]].
-  case failed; smt(fail_byte_false fail_byte_true).
+  case failed; by rewrite /fail_byte /= ?W8.to_uint_eq.
 qed.
 
 lemma decap_mask_value_flow_selection
@@ -191,8 +191,9 @@ lemma decap_mask_procedure_functional
   hoare [DecapMask.mask_ss :
     arg = (buf3_prefix, failv) ==> res = ss].
 proof.
-  move=> [_ [_ [_ ->]]].
-  exact (decap_mask_functional buf3_prefix failv).
+  move=> [_ [_ [_ Hss]]].
+  conseq (decap_mask_functional buf3_prefix failv) => //.
+  by move=> &m; rewrite Hss.
 qed.
 
 lemma decap_mask_procedure_correct
@@ -207,6 +208,7 @@ lemma decap_mask_procedure_correct
   phoare [DecapMask.mask_ss :
     arg = (buf3_prefix, failv) ==> res = ss] = 1%r.
 proof.
-  move=> [_ [_ [_ ->]]].
-  exact (decap_mask_correct buf3_prefix failv).
+  move=> [_ [_ [_ Hss]]].
+  conseq (decap_mask_correct buf3_prefix failv) => //.
+  by move=> &m; rewrite Hss.
 qed.

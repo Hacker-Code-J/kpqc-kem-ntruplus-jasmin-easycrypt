@@ -1,0 +1,276 @@
+"""Static endpoint contracts; additions of premises or loss of shared state are rejected."""
+
+RULES = [('ntruplus/proof/768/ref/kem_modified_fo/NTRUPlus768FONativeBridge.ec',
+  'frozen-declaration-fo_monitored_decaps_equiv',
+  'lemma fo_monitored_decaps_equiv w g ex hs cs ct0 :\n'
+  ' pke_key_relation w=>ct0<>cs=>\n'
+  ' equiv[CompleteDecaps(SHAKEGROM,FOSHAKEH).run ~ FODecaps(SHAKEGROM,FOSHAKEH).run:\n'
+  ' ct{1}=ct0 /\\ ct{2}=ct0 /\\ sk{1}=w.`kg_sk /\\ sk{2}=w.`kg_sk /\\ pk{2}=w.`kg_pk /\\\n'
+  ' ={workspace,ROG.m,ROH.m,glob FOContext,glob FOBadState} /\\\n'
+  ' FOContext.w{1}=w /\\ FOContext.g{1}=g /\\ FOContext.challenge_h{1}=ex /\\\n'
+  ' (!FOBadState.bad{1}=>fo_hcache_good w g ex ROH.m{1}) /\\\n'
+  ' fo_challenge_invariant w g ex hs cs ROH.m{1} /\\ acwc2_cache_matches g ROG.m{1} ==>\n'
+  ' ={ROG.m,ROH.m,glob FOContext,glob FOBadState} /\\\n'
+  ' FOContext.w{1}=w /\\ FOContext.g{1}=g /\\ FOContext.challenge_h{1}=ex /\\\n'
+  ' (!FOBadState.bad{1}=>fo_hcache_good w g ex ROH.m{1}) /\\\n'
+  ' fo_challenge_invariant w g ex hs cs ROH.m{1} /\\ acwc2_cache_matches g ROG.m{1} /\\\n'
+  ' res.`3{1}=clear_zero_spec /\\ res.`3{2}=clear_zero_spec /\\ (!FOBadState.bad{1}=>res{1}=res{2})].'),
+ ('ntruplus/proof/768/ref/kem_modified_fo/NTRUPlus768FOGameCapRemoval.ec',
+  'frozen-declaration-fo_native_configured_event',
+  'lemma fo_native_configured_event\n'
+  ' (A<:CCAExtendedAdversary '
+  '{-ROE,-ROF,-ROG,-ROH,-RawXOFStreams,-CCADecapOracle,-FOPublicKey,-FOBudgetState}) &m q0 '
+  '(event:bool->bool) :\n'
+  ' 0<=q0=>FOBudgetState.limit{m}=q0=>\n'
+  ' (forall (H<:CCAExtendedOraclePort {-A}) (D<:CCADecapPort {-A}),\n'
+  '  islossless H.e=>islossless H.f=>islossless H.g=>islossless H.h=>islossless H.raw=>\n'
+  '  islossless D.decap=>islossless A(H,D).guess)=>\n'
+  ' hoare[FOCountedA(A,FOHashView(FONativePlainBackend),FODecapView(FONativePlainBackend)).guess:\n'
+  ' fo_budget_initial q0 FOBudgetState.nH FOBudgetState.nD FOBudgetState.limit FOBudgetState.overflow ==>\n'
+  ' fo_query_count FOBudgetState.nH FOBudgetState.nD<=q0]=>\n'
+  ' Pr[CCASharedSetupGame(FreshExpand,FOConfiguredA(A)).run() @ &m:event res]=\n'
+  ' Pr[CCASharedSetupGame(FreshExpand,A).run() @ &m:event res].'),
+ ('ntruplus/proof/768/ref/kem_modified_fo/NTRUPlus768FOGameCapRemoval.ec',
+  'frozen-declaration-fo_full_configured_event',
+  'lemma fo_full_configured_event\n'
+  ' (A<:CCAExtendedAdversary '
+  '{-ROE,-ROF,-ROG,-ROH,-RawXOFStreams,-CCADecapOracle,-FOPublicKey,-FOBudgetState}) &m q0 '
+  '(event:bool->bool) :\n'
+  ' 0<=q0=>FOBudgetState.limit{m}=q0=>\n'
+  ' (forall (H<:CCAExtendedOraclePort {-A}) (D<:CCADecapPort {-A}),\n'
+  '  islossless H.e=>islossless H.f=>islossless H.g=>islossless H.h=>islossless H.raw=>\n'
+  '  islossless D.decap=>islossless A(H,D).guess)=>\n'
+  ' hoare[FOCountedA(A,FOHashView(FOFullPlainBackend),FODecapView(FOFullPlainBackend)).guess:\n'
+  ' fo_budget_initial q0 FOBudgetState.nH FOBudgetState.nD FOBudgetState.limit FOBudgetState.overflow ==>\n'
+  ' fo_query_count FOBudgetState.nH FOBudgetState.nD<=q0]=>\n'
+  ' Pr[FOFreshReencryptGame(FOConfiguredA(A)).run() @ &m:event res]=\n'
+  ' Pr[FOFreshReencryptGame(A).run() @ &m:event res].'),
+ ('ntruplus/proof/768/ref/kem_modified_fo/NTRUPlus768FOGCompletion.ec',
+  'frozen-declaration-fo_g_completion_iid',
+  'lemma fo_g_completion_iid :\n'
+  ' equiv[FOGComplete(FOGRO.RO).run ~ FOGIIDSetup.run:\n'
+  ' FOGRO.RO.m{1}=empty /\\ ROG.m{2}=empty ==>\n'
+  ' FOGRO.RO.m{1}=ROG.m{2} /\\ ROG.m{2}=acwc2_g_cache res{2} /\\\n'
+  ' size res{2}=size acwc2_r_enum].'),
+ ('ntruplus/proof/768/ref/kem_modified_fo/NTRUPlus768FOSetupDistribution.ec',
+  'actual-key-F-joint-observation',
+  'ROF.init();\n'
+  '  out <@ KeygenInstrumented(UniformSeedRNG,FreshExpand,SHAKEFROM).run(workspace);\n'
+  '  return(out,ROF.m);')]
+
+MUTATIONS = [('native-full-needs-challenge-exclusion',
+  'ntruplus/proof/768/ref/kem_modified_fo/NTRUPlus768FONativeBridge.ec',
+  'lemma fo_monitored_decaps_equiv w g ex hs cs ct0 :\n'
+  ' pke_key_relation w=>ct0<>cs=>\n'
+  ' equiv[CompleteDecaps(SHAKEGROM,FOSHAKEH).run ~ FODecaps(SHAKEGROM,FOSHAKEH).run:\n'
+  ' ct{1}=ct0 /\\ ct{2}=ct0 /\\ sk{1}=w.`kg_sk /\\ sk{2}=w.`kg_sk /\\ pk{2}=w.`kg_pk /\\\n'
+  ' ={workspace,ROG.m,ROH.m,glob FOContext,glob FOBadState} /\\\n'
+  ' FOContext.w{1}=w /\\ FOContext.g{1}=g /\\ FOContext.challenge_h{1}=ex /\\\n'
+  ' (!FOBadState.bad{1}=>fo_hcache_good w g ex ROH.m{1}) /\\\n'
+  ' fo_challenge_invariant w g ex hs cs ROH.m{1} /\\ acwc2_cache_matches g ROG.m{1} ==>\n'
+  ' ={ROG.m,ROH.m,glob FOContext,glob FOBadState} /\\\n'
+  ' FOContext.w{1}=w /\\ FOContext.g{1}=g /\\ FOContext.challenge_h{1}=ex /\\\n'
+  ' (!FOBadState.bad{1}=>fo_hcache_good w g ex ROH.m{1}) /\\\n'
+  ' fo_challenge_invariant w g ex hs cs ROH.m{1} /\\ acwc2_cache_matches g ROG.m{1} /\\\n'
+  ' res.`3{1}=clear_zero_spec /\\ res.`3{2}=clear_zero_spec /\\ (!FOBadState.bad{1}=>res{1}=res{2})].',
+  'lemma fo_monitored_decaps_equiv w g ex hs cs ct0 :\n'
+  ' pke_key_relation w=>\n'
+  ' equiv[CompleteDecaps(SHAKEGROM,FOSHAKEH).run ~ FODecaps(SHAKEGROM,FOSHAKEH).run:\n'
+  ' ct{1}=ct0 /\\ ct{2}=ct0 /\\ sk{1}=w.`kg_sk /\\ sk{2}=w.`kg_sk /\\ pk{2}=w.`kg_pk /\\\n'
+  ' ={workspace,ROG.m,ROH.m,glob FOContext,glob FOBadState} /\\\n'
+  ' FOContext.w{1}=w /\\ FOContext.g{1}=g /\\ FOContext.challenge_h{1}=ex /\\\n'
+  ' (!FOBadState.bad{1}=>fo_hcache_good w g ex ROH.m{1}) /\\\n'
+  ' fo_challenge_invariant w g ex hs cs ROH.m{1} /\\ acwc2_cache_matches g ROG.m{1} ==>\n'
+  ' ={ROG.m,ROH.m,glob FOContext,glob FOBadState} /\\\n'
+  ' FOContext.w{1}=w /\\ FOContext.g{1}=g /\\ FOContext.challenge_h{1}=ex /\\\n'
+  ' (!FOBadState.bad{1}=>fo_hcache_good w g ex ROH.m{1}) /\\\n'
+  ' fo_challenge_invariant w g ex hs cs ROH.m{1} /\\ acwc2_cache_matches g ROG.m{1} /\\\n'
+  ' res.`3{1}=clear_zero_spec /\\ res.`3{2}=clear_zero_spec /\\ (!FOBadState.bad{1}=>res{1}=res{2})].'),
+ ('native-full-needs-prepared-G',
+  'ntruplus/proof/768/ref/kem_modified_fo/NTRUPlus768FONativeBridge.ec',
+  'lemma fo_monitored_decaps_equiv w g ex hs cs ct0 :\n'
+  ' pke_key_relation w=>ct0<>cs=>\n'
+  ' equiv[CompleteDecaps(SHAKEGROM,FOSHAKEH).run ~ FODecaps(SHAKEGROM,FOSHAKEH).run:\n'
+  ' ct{1}=ct0 /\\ ct{2}=ct0 /\\ sk{1}=w.`kg_sk /\\ sk{2}=w.`kg_sk /\\ pk{2}=w.`kg_pk /\\\n'
+  ' ={workspace,ROG.m,ROH.m,glob FOContext,glob FOBadState} /\\\n'
+  ' FOContext.w{1}=w /\\ FOContext.g{1}=g /\\ FOContext.challenge_h{1}=ex /\\\n'
+  ' (!FOBadState.bad{1}=>fo_hcache_good w g ex ROH.m{1}) /\\\n'
+  ' fo_challenge_invariant w g ex hs cs ROH.m{1} /\\ acwc2_cache_matches g ROG.m{1} ==>\n'
+  ' ={ROG.m,ROH.m,glob FOContext,glob FOBadState} /\\\n'
+  ' FOContext.w{1}=w /\\ FOContext.g{1}=g /\\ FOContext.challenge_h{1}=ex /\\\n'
+  ' (!FOBadState.bad{1}=>fo_hcache_good w g ex ROH.m{1}) /\\\n'
+  ' fo_challenge_invariant w g ex hs cs ROH.m{1} /\\ acwc2_cache_matches g ROG.m{1} /\\\n'
+  ' res.`3{1}=clear_zero_spec /\\ res.`3{2}=clear_zero_spec /\\ (!FOBadState.bad{1}=>res{1}=res{2})].',
+  'lemma fo_monitored_decaps_equiv w g ex hs cs ct0 :\n'
+  ' pke_key_relation w=>ct0<>cs=>\n'
+  ' equiv[CompleteDecaps(SHAKEGROM,FOSHAKEH).run ~ FODecaps(SHAKEGROM,FOSHAKEH).run:\n'
+  ' ct{1}=ct0 /\\ ct{2}=ct0 /\\ sk{1}=w.`kg_sk /\\ sk{2}=w.`kg_sk /\\ pk{2}=w.`kg_pk /\\\n'
+  ' ={workspace,ROG.m,ROH.m,glob FOContext,glob FOBadState} /\\\n'
+  ' FOContext.w{1}=w /\\ FOContext.g{1}=g /\\ FOContext.challenge_h{1}=ex /\\\n'
+  ' (!FOBadState.bad{1}=>fo_hcache_good w g ex ROH.m{1}) /\\\n'
+  ' fo_challenge_invariant w g ex hs cs ROH.m{1} /\\ true ==>\n'
+  ' ={ROG.m,ROH.m,glob FOContext,glob FOBadState} /\\\n'
+  ' FOContext.w{1}=w /\\ FOContext.g{1}=g /\\ FOContext.challenge_h{1}=ex /\\\n'
+  ' (!FOBadState.bad{1}=>fo_hcache_good w g ex ROH.m{1}) /\\\n'
+  ' fo_challenge_invariant w g ex hs cs ROH.m{1} /\\ acwc2_cache_matches g ROG.m{1} /\\\n'
+  ' res.`3{1}=clear_zero_spec /\\ res.`3{2}=clear_zero_spec /\\ (!FOBadState.bad{1}=>res{1}=res{2})].'),
+ ('native-full-equality-only-when-not-bad',
+  'ntruplus/proof/768/ref/kem_modified_fo/NTRUPlus768FONativeBridge.ec',
+  'lemma fo_monitored_decaps_equiv w g ex hs cs ct0 :\n'
+  ' pke_key_relation w=>ct0<>cs=>\n'
+  ' equiv[CompleteDecaps(SHAKEGROM,FOSHAKEH).run ~ FODecaps(SHAKEGROM,FOSHAKEH).run:\n'
+  ' ct{1}=ct0 /\\ ct{2}=ct0 /\\ sk{1}=w.`kg_sk /\\ sk{2}=w.`kg_sk /\\ pk{2}=w.`kg_pk /\\\n'
+  ' ={workspace,ROG.m,ROH.m,glob FOContext,glob FOBadState} /\\\n'
+  ' FOContext.w{1}=w /\\ FOContext.g{1}=g /\\ FOContext.challenge_h{1}=ex /\\\n'
+  ' (!FOBadState.bad{1}=>fo_hcache_good w g ex ROH.m{1}) /\\\n'
+  ' fo_challenge_invariant w g ex hs cs ROH.m{1} /\\ acwc2_cache_matches g ROG.m{1} ==>\n'
+  ' ={ROG.m,ROH.m,glob FOContext,glob FOBadState} /\\\n'
+  ' FOContext.w{1}=w /\\ FOContext.g{1}=g /\\ FOContext.challenge_h{1}=ex /\\\n'
+  ' (!FOBadState.bad{1}=>fo_hcache_good w g ex ROH.m{1}) /\\\n'
+  ' fo_challenge_invariant w g ex hs cs ROH.m{1} /\\ acwc2_cache_matches g ROG.m{1} /\\\n'
+  ' res.`3{1}=clear_zero_spec /\\ res.`3{2}=clear_zero_spec /\\ (!FOBadState.bad{1}=>res{1}=res{2})].',
+  'lemma fo_monitored_decaps_equiv w g ex hs cs ct0 :\n'
+  ' pke_key_relation w=>ct0<>cs=>\n'
+  ' equiv[CompleteDecaps(SHAKEGROM,FOSHAKEH).run ~ FODecaps(SHAKEGROM,FOSHAKEH).run:\n'
+  ' ct{1}=ct0 /\\ ct{2}=ct0 /\\ sk{1}=w.`kg_sk /\\ sk{2}=w.`kg_sk /\\ pk{2}=w.`kg_pk /\\\n'
+  ' ={workspace,ROG.m,ROH.m,glob FOContext,glob FOBadState} /\\\n'
+  ' FOContext.w{1}=w /\\ FOContext.g{1}=g /\\ FOContext.challenge_h{1}=ex /\\\n'
+  ' (!FOBadState.bad{1}=>fo_hcache_good w g ex ROH.m{1}) /\\\n'
+  ' fo_challenge_invariant w g ex hs cs ROH.m{1} /\\ acwc2_cache_matches g ROG.m{1} ==>\n'
+  ' ={ROG.m,ROH.m,glob FOContext,glob FOBadState} /\\\n'
+  ' FOContext.w{1}=w /\\ FOContext.g{1}=g /\\ FOContext.challenge_h{1}=ex /\\\n'
+  ' (!FOBadState.bad{1}=>fo_hcache_good w g ex ROH.m{1}) /\\\n'
+  ' fo_challenge_invariant w g ex hs cs ROH.m{1} /\\ acwc2_cache_matches g ROG.m{1} /\\\n'
+  ' res.`3{1}=clear_zero_spec /\\ res.`3{2}=clear_zero_spec /\\ (res{1}=res{2})].'),
+ ('cap-removal-native-requires-robust-A-losslessness',
+  'ntruplus/proof/768/ref/kem_modified_fo/NTRUPlus768FOGameCapRemoval.ec',
+  'lemma fo_native_configured_event\n'
+  ' (A<:CCAExtendedAdversary '
+  '{-ROE,-ROF,-ROG,-ROH,-RawXOFStreams,-CCADecapOracle,-FOPublicKey,-FOBudgetState}) &m q0 '
+  '(event:bool->bool) :\n'
+  ' 0<=q0=>FOBudgetState.limit{m}=q0=>\n'
+  ' (forall (H<:CCAExtendedOraclePort {-A}) (D<:CCADecapPort {-A}),\n'
+  '  islossless H.e=>islossless H.f=>islossless H.g=>islossless H.h=>islossless H.raw=>\n'
+  '  islossless D.decap=>islossless A(H,D).guess)=>\n'
+  ' hoare[FOCountedA(A,FOHashView(FONativePlainBackend),FODecapView(FONativePlainBackend)).guess:\n'
+  ' fo_budget_initial q0 FOBudgetState.nH FOBudgetState.nD FOBudgetState.limit FOBudgetState.overflow ==>\n'
+  ' fo_query_count FOBudgetState.nH FOBudgetState.nD<=q0]=>\n'
+  ' Pr[CCASharedSetupGame(FreshExpand,FOConfiguredA(A)).run() @ &m:event res]=\n'
+  ' Pr[CCASharedSetupGame(FreshExpand,A).run() @ &m:event res].',
+  'lemma fo_native_configured_event\n'
+  ' (A<:CCAExtendedAdversary '
+  '{-ROE,-ROF,-ROG,-ROH,-RawXOFStreams,-CCADecapOracle,-FOPublicKey,-FOBudgetState}) &m q0 '
+  '(event:bool->bool) :\n'
+  ' 0<=q0=>FOBudgetState.limit{m}=q0=>\n'
+  ' (forall (H<:CCAExtendedOraclePort {-A}) (D<:CCADecapPort {-A}),\n'
+  '  islossless H.e=>islossless H.f=>islossless H.g=>islossless H.h=>islossless H.raw=>\n'
+  '  true)=>\n'
+  ' hoare[FOCountedA(A,FOHashView(FONativePlainBackend),FODecapView(FONativePlainBackend)).guess:\n'
+  ' fo_budget_initial q0 FOBudgetState.nH FOBudgetState.nD FOBudgetState.limit FOBudgetState.overflow ==>\n'
+  ' fo_query_count FOBudgetState.nH FOBudgetState.nD<=q0]=>\n'
+  ' Pr[CCASharedSetupGame(FreshExpand,FOConfiguredA(A)).run() @ &m:event res]=\n'
+  ' Pr[CCASharedSetupGame(FreshExpand,A).run() @ &m:event res].'),
+ ('cap-removal-native-requires-universal-counted-query-bound',
+  'ntruplus/proof/768/ref/kem_modified_fo/NTRUPlus768FOGameCapRemoval.ec',
+  'lemma fo_native_configured_event\n'
+  ' (A<:CCAExtendedAdversary '
+  '{-ROE,-ROF,-ROG,-ROH,-RawXOFStreams,-CCADecapOracle,-FOPublicKey,-FOBudgetState}) &m q0 '
+  '(event:bool->bool) :\n'
+  ' 0<=q0=>FOBudgetState.limit{m}=q0=>\n'
+  ' (forall (H<:CCAExtendedOraclePort {-A}) (D<:CCADecapPort {-A}),\n'
+  '  islossless H.e=>islossless H.f=>islossless H.g=>islossless H.h=>islossless H.raw=>\n'
+  '  islossless D.decap=>islossless A(H,D).guess)=>\n'
+  ' hoare[FOCountedA(A,FOHashView(FONativePlainBackend),FODecapView(FONativePlainBackend)).guess:\n'
+  ' fo_budget_initial q0 FOBudgetState.nH FOBudgetState.nD FOBudgetState.limit FOBudgetState.overflow ==>\n'
+  ' fo_query_count FOBudgetState.nH FOBudgetState.nD<=q0]=>\n'
+  ' Pr[CCASharedSetupGame(FreshExpand,FOConfiguredA(A)).run() @ &m:event res]=\n'
+  ' Pr[CCASharedSetupGame(FreshExpand,A).run() @ &m:event res].',
+  'lemma fo_native_configured_event\n'
+  ' (A<:CCAExtendedAdversary '
+  '{-ROE,-ROF,-ROG,-ROH,-RawXOFStreams,-CCADecapOracle,-FOPublicKey,-FOBudgetState}) &m q0 '
+  '(event:bool->bool) :\n'
+  ' 0<=q0=>FOBudgetState.limit{m}=q0=>\n'
+  ' (forall (H<:CCAExtendedOraclePort {-A}) (D<:CCADecapPort {-A}),\n'
+  '  islossless H.e=>islossless H.f=>islossless H.g=>islossless H.h=>islossless H.raw=>\n'
+  '  islossless D.decap=>islossless A(H,D).guess)=>\n'
+  ' hoare[FOCountedA(A,FOHashView(FONativePlainBackend),FODecapView(FONativePlainBackend)).guess:\n'
+  ' fo_budget_initial q0 FOBudgetState.nH FOBudgetState.nD FOBudgetState.limit FOBudgetState.overflow ==>\n'
+  ' true]=>\n'
+  ' Pr[CCASharedSetupGame(FreshExpand,FOConfiguredA(A)).run() @ &m:event res]=\n'
+  ' Pr[CCASharedSetupGame(FreshExpand,A).run() @ &m:event res].'),
+ ('cap-removal-full-requires-robust-A-losslessness',
+  'ntruplus/proof/768/ref/kem_modified_fo/NTRUPlus768FOGameCapRemoval.ec',
+  'lemma fo_full_configured_event\n'
+  ' (A<:CCAExtendedAdversary '
+  '{-ROE,-ROF,-ROG,-ROH,-RawXOFStreams,-CCADecapOracle,-FOPublicKey,-FOBudgetState}) &m q0 '
+  '(event:bool->bool) :\n'
+  ' 0<=q0=>FOBudgetState.limit{m}=q0=>\n'
+  ' (forall (H<:CCAExtendedOraclePort {-A}) (D<:CCADecapPort {-A}),\n'
+  '  islossless H.e=>islossless H.f=>islossless H.g=>islossless H.h=>islossless H.raw=>\n'
+  '  islossless D.decap=>islossless A(H,D).guess)=>\n'
+  ' hoare[FOCountedA(A,FOHashView(FOFullPlainBackend),FODecapView(FOFullPlainBackend)).guess:\n'
+  ' fo_budget_initial q0 FOBudgetState.nH FOBudgetState.nD FOBudgetState.limit FOBudgetState.overflow ==>\n'
+  ' fo_query_count FOBudgetState.nH FOBudgetState.nD<=q0]=>\n'
+  ' Pr[FOFreshReencryptGame(FOConfiguredA(A)).run() @ &m:event res]=\n'
+  ' Pr[FOFreshReencryptGame(A).run() @ &m:event res].',
+  'lemma fo_full_configured_event\n'
+  ' (A<:CCAExtendedAdversary '
+  '{-ROE,-ROF,-ROG,-ROH,-RawXOFStreams,-CCADecapOracle,-FOPublicKey,-FOBudgetState}) &m q0 '
+  '(event:bool->bool) :\n'
+  ' 0<=q0=>FOBudgetState.limit{m}=q0=>\n'
+  ' (forall (H<:CCAExtendedOraclePort {-A}) (D<:CCADecapPort {-A}),\n'
+  '  islossless H.e=>islossless H.f=>islossless H.g=>islossless H.h=>islossless H.raw=>\n'
+  '  true)=>\n'
+  ' hoare[FOCountedA(A,FOHashView(FOFullPlainBackend),FODecapView(FOFullPlainBackend)).guess:\n'
+  ' fo_budget_initial q0 FOBudgetState.nH FOBudgetState.nD FOBudgetState.limit FOBudgetState.overflow ==>\n'
+  ' fo_query_count FOBudgetState.nH FOBudgetState.nD<=q0]=>\n'
+  ' Pr[FOFreshReencryptGame(FOConfiguredA(A)).run() @ &m:event res]=\n'
+  ' Pr[FOFreshReencryptGame(A).run() @ &m:event res].'),
+ ('cap-removal-full-requires-universal-counted-query-bound',
+  'ntruplus/proof/768/ref/kem_modified_fo/NTRUPlus768FOGameCapRemoval.ec',
+  'lemma fo_full_configured_event\n'
+  ' (A<:CCAExtendedAdversary '
+  '{-ROE,-ROF,-ROG,-ROH,-RawXOFStreams,-CCADecapOracle,-FOPublicKey,-FOBudgetState}) &m q0 '
+  '(event:bool->bool) :\n'
+  ' 0<=q0=>FOBudgetState.limit{m}=q0=>\n'
+  ' (forall (H<:CCAExtendedOraclePort {-A}) (D<:CCADecapPort {-A}),\n'
+  '  islossless H.e=>islossless H.f=>islossless H.g=>islossless H.h=>islossless H.raw=>\n'
+  '  islossless D.decap=>islossless A(H,D).guess)=>\n'
+  ' hoare[FOCountedA(A,FOHashView(FOFullPlainBackend),FODecapView(FOFullPlainBackend)).guess:\n'
+  ' fo_budget_initial q0 FOBudgetState.nH FOBudgetState.nD FOBudgetState.limit FOBudgetState.overflow ==>\n'
+  ' fo_query_count FOBudgetState.nH FOBudgetState.nD<=q0]=>\n'
+  ' Pr[FOFreshReencryptGame(FOConfiguredA(A)).run() @ &m:event res]=\n'
+  ' Pr[FOFreshReencryptGame(A).run() @ &m:event res].',
+  'lemma fo_full_configured_event\n'
+  ' (A<:CCAExtendedAdversary '
+  '{-ROE,-ROF,-ROG,-ROH,-RawXOFStreams,-CCADecapOracle,-FOPublicKey,-FOBudgetState}) &m q0 '
+  '(event:bool->bool) :\n'
+  ' 0<=q0=>FOBudgetState.limit{m}=q0=>\n'
+  ' (forall (H<:CCAExtendedOraclePort {-A}) (D<:CCADecapPort {-A}),\n'
+  '  islossless H.e=>islossless H.f=>islossless H.g=>islossless H.h=>islossless H.raw=>\n'
+  '  islossless D.decap=>islossless A(H,D).guess)=>\n'
+  ' hoare[FOCountedA(A,FOHashView(FOFullPlainBackend),FODecapView(FOFullPlainBackend)).guess:\n'
+  ' fo_budget_initial q0 FOBudgetState.nH FOBudgetState.nD FOBudgetState.limit FOBudgetState.overflow ==>\n'
+  ' true]=>\n'
+  ' Pr[FOFreshReencryptGame(FOConfiguredA(A)).run() @ &m:event res]=\n'
+  ' Pr[FOFreshReencryptGame(A).run() @ &m:event res].'),
+ ('iid-completion-needs-empty-G',
+  'ntruplus/proof/768/ref/kem_modified_fo/NTRUPlus768FOGCompletion.ec',
+  'lemma fo_g_completion_iid :\n'
+  ' equiv[FOGComplete(FOGRO.RO).run ~ FOGIIDSetup.run:\n'
+  ' FOGRO.RO.m{1}=empty /\\ ROG.m{2}=empty ==>\n'
+  ' FOGRO.RO.m{1}=ROG.m{2} /\\ ROG.m{2}=acwc2_g_cache res{2} /\\\n'
+  ' size res{2}=size acwc2_r_enum].',
+  'lemma fo_g_completion_iid :\n'
+  ' equiv[FOGComplete(FOGRO.RO).run ~ FOGIIDSetup.run:\n'
+  ' true ==>\n'
+  ' FOGRO.RO.m{1}=ROG.m{2} /\\ ROG.m{2}=acwc2_g_cache res{2} /\\\n'
+  ' size res{2}=size acwc2_r_enum].'),
+ ('key-F-correlation-retained',
+  'ntruplus/proof/768/ref/kem_modified_fo/NTRUPlus768FOSetupDistribution.ec',
+  'ROF.init();\n'
+  '  out <@ KeygenInstrumented(UniformSeedRNG,FreshExpand,SHAKEFROM).run(workspace);\n'
+  '  return(out,ROF.m);',
+  'ROF.init();\n'
+  '  out <@ KeygenInstrumented(UniformSeedRNG,FreshExpand,SHAKEFROM).run(workspace);\n'
+  '  return(out,empty);')]

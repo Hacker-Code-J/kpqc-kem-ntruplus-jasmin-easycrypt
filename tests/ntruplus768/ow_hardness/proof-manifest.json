@@ -1,0 +1,118 @@
+{
+  "schema": 1,
+  "status": "FROZEN",
+  "mains": [
+    {
+      "source": "kem_ow_hardness/NTRUPlus768OWAlgebra.ec",
+      "source_sha256": "637f74ba4e4898f85e1e3047d8ff8d68f2ea6e6d2c0464b3e976946e26233b65",
+      "semantic_target": "ow_unit_mul",
+      "module_binders": [],
+      "sentinel": "\nlemma __ow_hardness_eof_OWAlgebra p q :\n pke_rq_unit(p*q) <=> pke_rq_unit p /\\ pke_rq_unit q.\nproof. exact(ow_unit_mul p q). qed.\n"
+    },
+    {
+      "source": "kem_ow_hardness/NTRUPlus768OWCodec.ec",
+      "source_sha256": "f13c857a61c89a4549198d256161ad09f180b633a196618755572044e96eed82",
+      "semantic_target": "ow_decode_poly",
+      "module_binders": [],
+      "sentinel": "\nlemma __ow_hardness_eof_OWCodec bytes : ow_key_poly bytes=gen_inverse_poly(decoded_poly bytes).\nproof. exact(ow_decode_poly bytes). qed.\n"
+    },
+    {
+      "source": "kem_ow_hardness/NTRUPlus768OWCodecCalls.ec",
+      "source_sha256": "7e7f0f35c50fb20a951ac007a37b4bd803fb709c114c6cd41e898c7b41d3c4d0",
+      "semantic_target": "ow_recover_rlwe_call",
+      "module_binders": [],
+      "sentinel": "\nlemma __ow_hardness_eof_OWCodecCalls a0 secret error :\n ow_rq_domain a0=>pke_domain secret=>pke_domain error=>ow_unit_test a0=>\n phoare[OWRecover.run:a=a0 /\\ b=ow_rlwe_value a0 secret error /\\ code=error ==>res=input_poly secret]=1%r.\nproof. exact(ow_recover_rlwe_call a0 secret error). qed.\n"
+    },
+    {
+      "source": "kem_ow_hardness/NTRUPlus768OWCodecProof.ec",
+      "source_sha256": "cc9b233c62abba17082b38422b94885227d906d133951e27b6fbf71a874d3d94",
+      "semantic_target": "ow_recover_equation",
+      "module_binders": [],
+      "sentinel": "\nlemma __ow_hardness_eof_OWCodecProof a b secret error :\n ow_rq_domain a=>ow_rq_domain b=>pke_domain secret=>pke_domain error=>pke_rq_unit a=>\n eqm_global b (a*input_poly secret+input_poly error)=>\n ow_recover a b error=input_poly secret.\nproof. exact(ow_recover_equation a b secret error). qed.\n"
+    },
+    {
+      "source": "kem_ow_hardness/NTRUPlus768OWFinal.ec",
+      "source_sha256": "f66f7f68e6ad9889b64843a8f016396e95fa90a73f6bc60e8e4123c0aba948fd",
+      "semantic_target": "ow_original_hardness",
+      "module_binders": [
+        "A",
+        "H",
+        "D",
+        "H",
+        "D"
+      ],
+      "sentinel": "\nlemma __ow_hardness_eof_OWFinal\n (A<:CCAExtendedAdversary {-ROE,-ROF,-ROG,-ROH,-RawXOFStreams,-CCADecapOracle,-FOPublicKey,\n  -FOContext,-FOBadState,-FOBudgetState,-FOGRO.RO,-FOGRO.FRO,-SimPublic,-SimHistory,-SimBad,\n  -SimPhaseInput,-SimSelectedFixed,-SimPublicBudget,-SimHRO.RO,-SimHRO.FRO,-SimGRO.RO,-SimGRO.FRO,\n  -SH.HB.Count,-SH.HB.HybOrcl,-ErasureSeedLog,-ErasureHit,-ErasureSeedPool,-EBudgetState,-ErasureTape,\n  -CPAReduction,-CPAHitState,-SecGHistory,-SecGMark}) &m qE q0 qH qC :\n 0<=q0=>FOBudgetState.limit{m}=q0=>0<=qH=>0<=qC=>\n (forall(H<:CCAExtendedOraclePort {-A})(D<:CCADecapPort {-A}),\n  islossless H.e=>islossless H.f=>islossless H.g=>islossless H.h=>islossless H.raw=>\n  islossless D.decap=>islossless A(H,D).guess)=>\n hoare[CountedA(A,SharedCCAExtendedOracles,CCADecapOracle).guess:\n EBudgetState.requests=0 /\\ EBudgetState.forwarded=0 /\\ EBudgetState.limit=qE /\\\n !EBudgetState.overflow /\\ EBudgetState.queries=[] ==>EBudgetState.requests<=qE]=>\n erasure_budget_initial qE EBudgetState.requests{m} EBudgetState.forwarded{m}\n EBudgetState.limit{m} EBudgetState.overflow{m} EBudgetState.queries{m}=>\n hoare[FOCountedA(A,FOHashView(FONativePlainBackend),FODecapView(FONativePlainBackend)).guess:\n fo_budget_initial q0 FOBudgetState.nH FOBudgetState.nD FOBudgetState.limit FOBudgetState.overflow ==>\n fo_query_count FOBudgetState.nH FOBudgetState.nD<=q0]=>\n hoare[FOCountedA(A,FOHashView(FOFullPlainBackend),FODecapView(FOFullPlainBackend)).guess:\n fo_budget_initial q0 FOBudgetState.nH FOBudgetState.nD FOBudgetState.limit FOBudgetState.overflow ==>\n fo_query_count FOBudgetState.nH FOBudgetState.nD<=q0]=>\n (forall(H<:CCAExtendedOraclePort {-A,-FOBudgetState})(D<:CCADecapPort {-A,-FOBudgetState}),\n hoare[FOCountedA(A,H,D).guess:FOBudgetState.nD=0 ==>FOBudgetState.nD<=max 0 budget])=>\n hoare[SimPublicCountedA(A,FOHashView(SimKnownPublicBackend),FODecapView(SimKnownPublicBackend)).guess:\n sim_public_budget_initial qH SimPublicBudget.nh SimPublicBudget.limit SimPublicBudget.overflow ==>\n SimPublicBudget.nh<=qH]=>\n hoare[CPAPhase(A).run:true ==>fsize SimHistory.h<=qC]=>\n `|Pr[CCAOriginalGame(A).run()@&m:res]-1%r/2%r| <=\n ((130820%r+512%r*qE%r)/(2%r^256)+q0%r/(2%r^353))+\n ((max 0 budget)%r/(2%r^768)+(qH+max 0 budget)%r/(2%r^353))+\n (2%r*(Pr[SecBaseINJGame(SecINJAuxAdapter(SecINJReducer(A))).run()@&m:res]+\n ((Pr[OWNTRURealGame(OWNTRUReduction(SecOWAuxAdapter(SecOWReducer(A)))).run()@&m:res]-\n Pr[OWNTRUUniformGame(OWNTRUReduction(SecOWAuxAdapter(SecOWReducer(A)))).run()@&m:res]+\n Pr[OWRLWEGame(OWRLWESolver(SecOWAuxAdapter(SecOWReducer(A)))).run()@&m:res])/ow_alpha_g))+qC%r/(2%r^768)).\nproof. exact(ow_original_hardness A &m qE q0 qH qC). qed.\n"
+    },
+    {
+      "source": "kem_ow_hardness/NTRUPlus768OWGames.ec",
+      "source_sha256": "8b1ef1582d1324187508f39a05e0affa1f432331489e50ab54cd8ba05e36fa7a",
+      "semantic_target": "ow_kernel_same",
+      "module_binders": [
+        "K"
+      ],
+      "sentinel": "\nlemma __ow_hardness_eof_OWGames(K<:OWByteKernelPort):equiv[K.run ~ K.run: ={arg,glob K} ==> ={res,glob K}].\nproof. exact(ow_kernel_same K). qed.\n"
+    },
+    {
+      "source": "kem_ow_hardness/NTRUPlus768OWKeyAlgebra.ec",
+      "source_sha256": "091b1bd7cfbf8b827d8194b65fc866a262871883e8d720db6c31c00e42ccd970",
+      "semantic_target": "ow_gen_public_unit",
+      "module_binders": [],
+      "sentinel": "\nlemma __ow_hardness_eof_OWKeyAlgebra f g : f \\in gen_f_law=>g \\in pke_field_psi1=>\n (pke_rq_unit(gen_public_key f g)<=>pke_rq_unit g).\nproof. exact(ow_gen_public_unit f g). qed.\n"
+    },
+    {
+      "source": "kem_ow_hardness/NTRUPlus768OWKeyConditioning.ec",
+      "source_sha256": "9c99fb3069c34c3b3d30f74615295c23c3700f39b99bab8971ec3c73a293f475",
+      "semantic_target": "ow_conditioned_expectation",
+      "module_binders": [],
+      "sentinel": "\nlemma __ow_hardness_eof_OWKeyConditioning (kernel:NTRUPoly.poly*NTRUPoly.poly->real) :\n ow_alpha_g*E gen_fg_law kernel=\n E ow_raw_fg_law(fun fg=>if ow_g_unit fg then kernel fg else 0%r).\nproof. exact(ow_conditioned_expectation kernel). qed.\n"
+    },
+    {
+      "source": "kem_ow_hardness/NTRUPlus768OWKeyLaw.ec",
+      "source_sha256": "288e6137c758a76deef57b8fe819dcb80cb78c771b8da267c12ebc1cfab85783",
+      "semantic_target": "ow_base_keygen_sample",
+      "module_binders": [],
+      "sentinel": "\nlemma __ow_hardness_eof_OWKeyLaw :\n equiv[SecBaseKeygen.run ~ OWKeySample.run:true ==> ={res}].\nproof. exact(ow_base_keygen_sample). qed.\n"
+    },
+    {
+      "source": "kem_ow_hardness/NTRUPlus768OWReduction.ec",
+      "source_sha256": "866a5bfbcb5f390e3e661101868213cc7532f299804e055d72d95f528ae8a8fc",
+      "semantic_target": "ow_base_hardness",
+      "module_binders": [
+        "B"
+      ],
+      "sentinel": "\nlemma __ow_hardness_eof_OWReduction(B<:SecOWAdversary) &m :\n Pr[SecBaseOWGame(B).run()@&m:res]<=\n (Pr[OWNTRURealGame(OWNTRUReduction(B)).run()@&m:res]-\n  Pr[OWNTRUUniformGame(OWNTRUReduction(B)).run()@&m:res]+\n  Pr[OWRLWEGame(OWRLWESolver(B)).run()@&m:res])/ow_alpha_g.\nproof. exact(ow_base_hardness B &m). qed.\n"
+    },
+    {
+      "source": "kem_ow_hardness/NTRUPlus768OWReductionReal.ec",
+      "source_sha256": "93999e5ec632c6528b9fa8b6b40eabf5903893177a78c4bdade654545acd1792",
+      "semantic_target": "ow_ntru_real_identity",
+      "module_binders": [
+        "B"
+      ],
+      "sentinel": "\nlemma __ow_hardness_eof_OWReductionReal(B<:SecOWAdversary) &m :\n Pr[OWNTRURealGame(OWNTRUReduction(B)).run()@&m:res]=\n ow_alpha_g*Pr[SecBaseOWGame(B).run()@&m:res].\nproof. exact(ow_ntru_real_identity B &m). qed.\n"
+    },
+    {
+      "source": "kem_ow_hardness/NTRUPlus768OWReductionUniform.ec",
+      "source_sha256": "5efba5d05f5260f7cbb73ffa388b333552ddfffe7f747d38d93429e24e0acfff",
+      "semantic_target": "ow_uniform_rlwe_bound",
+      "module_binders": [
+        "B"
+      ],
+      "sentinel": "\nlemma __ow_hardness_eof_OWReductionUniform(B<:SecOWAdversary) &m :\n Pr[OWNTRUUniformGame(OWNTRUReduction(B)).run()@&m:res]<=\n Pr[OWRLWEGame(OWRLWESolver(B)).run()@&m:res].\nproof. exact(ow_uniform_rlwe_bound B &m). qed.\n"
+    },
+    {
+      "source": "kem_ow_hardness/NTRUPlus768OWUniform.ec",
+      "source_sha256": "80245d815ca1e67f31216f656f717b863072c5ba6ce92c2a9c9724fc4653620f",
+      "semantic_target": "ow_rq_domain_finite",
+      "module_binders": [],
+      "sentinel": "\nlemma __ow_hardness_eof_OWUniform : is_finite ow_rq_domain.\nproof. exact(ow_rq_domain_finite). qed.\n"
+    },
+    {
+      "source": "kem_ow_hardness/NTRUPlus768OWUniformScale.ec",
+      "source_sha256": "a7be290310bbdd3fb2b1913802d0d7e0a5f4a267c11c999a872587faa261fdb0",
+      "semantic_target": "ow_uniform_sampler_scale3",
+      "module_binders": [],
+      "sentinel": "\nlemma __ow_hardness_eof_OWUniformScale :\n equiv[OWUniformSampler.scale3 ~ OWUniformSampler.sample:true ==> ={res}].\nproof. exact(ow_uniform_sampler_scale3). qed.\n"
+    }
+  ]
+}

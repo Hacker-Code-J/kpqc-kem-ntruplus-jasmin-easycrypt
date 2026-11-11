@@ -112,9 +112,9 @@ lemma coeff_uint_small (w : W16.t) :
   0 <= W16.to_uint w < 2^15 =>
   W16.to_sint w = W16.to_uint w.
 proof.
-  move=> Hw.
+  move=> /= Hw.
   apply W16.to_sint_unsigned.
-  rewrite W16.to_sintE /W16.smod ifF.
+  rewrite W16.to_sintE /W16.smod /= ifF.
   + smt().
   smt(W16.to_uint_cmp).
 qed.

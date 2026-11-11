@@ -1,0 +1,55 @@
+{
+  "schema": 1,
+  "status": "FROZEN",
+  "mains": [
+    {
+      "source": "kem_reduction_cost/NTRUPlus768CostExtract.ec",
+      "source_sha256": "3dbfb522210b38f17baa8a8ccd57ffa2478e26a675bda15f2551b1a16a4c4e56",
+      "semantic_target": "cost_extract_correct",
+      "module_binders": [],
+      "sentinel": "\nlemma __reduction_cost_eof_CostExtract pk0 ct0 excluded0 queries0 :\n phoare[CostExtract.run:pk=pk0 /\\ ct=ct0 /\\ excluded=excluded0 /\\ queries=queries0 ==>\n res.`1=sec_extract_spec pk0 ct0 excluded0 queries0 /\\\n 0<=res.`2<=size queries0 /\\\n res.`2=cost_first_visits(sec_eligible pk0 ct0 excluded0)queries0]=1%r.\nproof. exact (cost_extract_correct pk0 ct0 excluded0 queries0). qed.\n"
+    },
+    {
+      "source": "kem_reduction_cost/NTRUPlus768CostLookup.ec",
+      "source_sha256": "caa37e9cec48593ff853d44148b00bf1fdadf34bd2d52497ee259b5bea21412b",
+      "semantic_target": "cost_lookup_logged_lossless",
+      "module_binders": [],
+      "sentinel": "\nlemma __reduction_cost_eof_CostLookup : islossless CostLookup(SecGLogged(FOGActual)).decap.\nproof. exact (cost_lookup_logged_lossless). qed.\n"
+    },
+    {
+      "source": "kem_reduction_cost/NTRUPlus768CostRaw.ec",
+      "source_sha256": "ea578afbb871bc43ee864ccbef5e8c80e5741c0a2a31dc51c9f9053fea7f92a9",
+      "semantic_target": "cost_raw_zero_h_inserts",
+      "module_binders": [],
+      "sentinel": "\nlemma __reduction_cost_eof_CostRaw x0 :\n phoare[CostRaw(SimGActual,SimHActual).get:\n input=raw_query(H x0) /\\ outlen=0 /\\ SimHistory.h=empty ==>\n res.`1=Some [] /\\ x0 \\in SimHistory.h /\\ res.`3=0]=1%r.\nproof. exact (cost_raw_zero_h_inserts x0). qed.\n"
+    },
+    {
+      "source": "kem_reduction_cost/NTRUPlus768CostBounds.ec",
+      "source_sha256": "008e84bda7be6c0427a456aeeb881aa9a4aea59568f4460eb97e8edb1041be50",
+      "semantic_target": "cost_extract_trace_budget",
+      "module_binders": [],
+      "sentinel": "\nlemma __reduction_cost_eof_CostBounds pk0 ct0 excluded0 qs h d g xs :\n 0<=h=>0<=g=>size xs<=d=>cost_trace_valid h xs=>\n size qs=g+cost_encryptions xs=>\n hoare[CostExtract.run:\n pk=pk0 /\\ ct=ct0 /\\ excluded=excluded0 /\\ queries=qs ==>\n res.`2<=g+d*h /\\ cost_visits xs+res.`2<=g+2*d*h].\nproof. exact (cost_extract_trace_budget pk0 ct0 excluded0 qs h d g xs). qed.\n"
+    },
+    {
+      "source": "kem_reduction_cost/NTRUPlus768CostProjection.ec",
+      "source_sha256": "0a9f9f9912fda9619f7e389f39db4376c4d565d2722440f119d5542b6137a620",
+      "semantic_target": "cost_rlwe_probability",
+      "module_binders": [
+        "A"
+      ],
+      "sentinel": "\nlemma __reduction_cost_eof_CostProjection (A<:CCAExtendedAdversary {-ROE,-ROF,-ROG,-ROH,-RawXOFStreams,-SimPublic,-SimHistory,-SecGHistory,-SecGMark}) &m :\n Pr[OWRLWEGame(CostRLWE(A)).run()@&m:res]=\n Pr[OWRLWEGame(OWRLWESolver(SecOWAuxAdapter(SecOWReducer(A)))).run()@&m:res].\nproof. exact (cost_rlwe_probability A &m). qed.\n"
+    },
+    {
+      "source": "kem_reduction_cost/NTRUPlus768CostFinal.ec",
+      "source_sha256": "7b0cee4c1d42e974064c00474e9c5a3165e664e545afe738eed21aef0b6f8bc7",
+      "semantic_target": "cost_original_numerical",
+      "module_binders": [
+        "A",
+        "H",
+        "D"
+      ],
+      "sentinel": "\nlemma __reduction_cost_eof_CostFinal\n (A<:CCAExtendedAdversary {-ROE,-ROF,-ROG,-ROH,-RawXOFStreams,-CCADecapOracle,-FOPublicKey,\n  -FOContext,-FOBadState,-FOBudgetState,-FOGRO.RO,-FOGRO.FRO,-SimPublic,-SimHistory,-SimBad,\n  -SimPhaseInput,-SimSelectedFixed,-SimPublicBudget,-SimHRO.RO,-SimHRO.FRO,-SimGRO.RO,-SimGRO.FRO,\n  -SH.HB.Count,-SH.HB.HybOrcl,-ErasureSeedLog,-ErasureHit,-ErasureSeedPool,-EBudgetState,-ErasureTape,\n  -CPAReduction,-CPAHitState,-SecGHistory,-SecGMark}) &m qE q0 qH qC :\n 0<=q0=>FOBudgetState.limit{m}=q0=>0<=qH=>0<=qC=>\n (forall(H<:CCAExtendedOraclePort {-A})(D<:CCADecapPort {-A}),\n  islossless H.e=>islossless H.f=>islossless H.g=>islossless H.h=>islossless H.raw=>\n  islossless D.decap=>islossless A(H,D).guess)=>\n hoare[CountedA(A,SharedCCAExtendedOracles,CCADecapOracle).guess:\n EBudgetState.requests=0 /\\ EBudgetState.forwarded=0 /\\ EBudgetState.limit=qE /\\\n !EBudgetState.overflow /\\ EBudgetState.queries=[] ==>EBudgetState.requests<=qE]=>\n erasure_budget_initial qE EBudgetState.requests{m} EBudgetState.forwarded{m}\n EBudgetState.limit{m} EBudgetState.overflow{m} EBudgetState.queries{m}=>\n hoare[FOCountedA(A,FOHashView(FONativePlainBackend),FODecapView(FONativePlainBackend)).guess:\n fo_budget_initial q0 FOBudgetState.nH FOBudgetState.nD FOBudgetState.limit FOBudgetState.overflow ==>\n fo_query_count FOBudgetState.nH FOBudgetState.nD<=q0]=>\n hoare[FOCountedA(A,FOHashView(FOFullPlainBackend),FODecapView(FOFullPlainBackend)).guess:\n fo_budget_initial q0 FOBudgetState.nH FOBudgetState.nD FOBudgetState.limit FOBudgetState.overflow ==>\n fo_query_count FOBudgetState.nH FOBudgetState.nD<=q0]=>\n (forall(H<:CCAExtendedOraclePort {-A,-FOBudgetState})(D<:CCADecapPort {-A,-FOBudgetState}),\n hoare[FOCountedA(A,H,D).guess:FOBudgetState.nD=0 ==>FOBudgetState.nD<=max 0 budget])=>\n hoare[SimPublicCountedA(A,FOHashView(SimKnownPublicBackend),FODecapView(SimKnownPublicBackend)).guess:\n sim_public_budget_initial qH SimPublicBudget.nh SimPublicBudget.limit SimPublicBudget.overflow ==>\n SimPublicBudget.nh<=qH]=>\n hoare[CPAPhase(A).run:true ==>fsize SimHistory.h<=qC]=>\n `|Pr[CCAOriginalGame(A).run()@&m:res]-1%r/2%r| <=\n ((130820%r+512%r*qE%r)/(2%r^256)+q0%r/(2%r^353))+\n ((max 0 budget)%r/(2%r^768)+(qH+max 0 budget)%r/(2%r^353))+\n (2%r*(((Pr[OWNTRURealGame(CostINJNTRU(A)).run()@&m:res]-\n Pr[OWNTRUUniformGame(CostINJNTRU(A)).run()@&m:res]+\n (1%r/(2%r^244)))/ow_alpha_g)+\n ((Pr[OWNTRURealGame(CostOWNTRU(A)).run()@&m:res]-\n Pr[OWNTRUUniformGame(CostOWNTRU(A)).run()@&m:res]+\n Pr[OWRLWEGame(CostRLWE(A)).run()@&m:res])/ow_alpha_g))+qC%r/(2%r^768)).\nproof. exact (cost_original_numerical A &m qE q0 qH qC). qed.\n"
+    }
+  ],
+  "contracts": []
+}

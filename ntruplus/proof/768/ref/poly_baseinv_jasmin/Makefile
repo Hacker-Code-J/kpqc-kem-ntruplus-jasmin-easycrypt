@@ -54,3 +54,9 @@ check: extract
 	cd $(REPO_ROOT) && \
 	  $(EASYCRYPT) compile $(EASYCRYPT_FLAGS) $(EASYCRYPT_ROOT_INCLUDES) \
 	    $(ROOT_PROOF)
+
+.PHONY: check-model-compatibility
+check-model-compatibility:
+	python3 ../../../../../tests/ntruplus768/toolchain/check_model_compatibility.py --source-only
+
+check: check-model-compatibility

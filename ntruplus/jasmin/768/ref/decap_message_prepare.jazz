@@ -1,0 +1,46 @@
+namespace Serialize {
+  require "poly_tobytes.jazz"
+}
+
+param int NTRUPLUS_N = 768;
+param int NTRUPLUS_POLYBYTES = 1152;
+param int NTRUPLUS_HASH_G_INPUTBYTES = 1153;
+
+// Serialize r2 and prepend the official HashG domain byte. The three
+// external regions are disjoint; r2 is u16-aligned with initialized signed
+// coefficients in [-3457,3457). Both byte outputs remain available to callers.
+#[safety =
+   { requires = is_arr_init(r2,0,2 * NTRUPLUS_N)
+   , ensures = is_arr_init(serialized,0,NTRUPLUS_POLYBYTES) &&
+               is_arr_init(input,0,NTRUPLUS_HASH_G_INPUTBYTES)
+   }
+]
+#[ct = "secret × secret × secret → secret × secret"]
+#[sct="
+{ ptr: transient, val: secret } ×
+{ ptr: transient, val: secret } ×
+{ ptr: transient, val: secret } →
+{ ptr: public, val: secret } ×
+{ ptr: public, val: secret }
+"]
+export fn jade_ntruplus_ntruplus768_amd64_ref_decap_message_prepare(
+  reg mut ptr u8[NTRUPLUS_POLYBYTES] serialized,
+  reg mut ptr u8[NTRUPLUS_HASH_G_INPUTBYTES] input,
+  reg const ptr u16[NTRUPLUS_N] r2) ->
+  (reg ptr u8[NTRUPLUS_POLYBYTES], reg ptr u8[NTRUPLUS_HASH_G_INPUTBYTES])
+{
+  reg u64 i;
+  reg u8 b;
+
+  _ = #init_msf();
+  #[inline] serialized = Serialize::jade_ntruplus_ntruplus768_amd64_ref_poly_tobytes(serialized, r2);
+  input[0] = 1;
+  i = 0;
+  while (i < NTRUPLUS_POLYBYTES) {
+    b = serialized[i];
+    input[i + 1] = b;
+    i += 1;
+  }
+
+  return serialized, input;
+}

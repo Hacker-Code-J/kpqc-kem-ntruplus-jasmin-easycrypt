@@ -1,0 +1,29 @@
+{
+  "result": "PASS",
+  "tests": [
+    {
+      "test_file": "test_reproduce.py",
+      "tests": 9,
+      "exit_code": 0
+    },
+    {
+      "test_file": "test_public_evidence.py",
+      "tests": 15,
+      "exit_code": 0
+    },
+    {
+      "test_file": "test_export_public_evidence.py",
+      "tests": 13,
+      "exit_code": 0
+    },
+    {
+      "test_file": "test_preserved_runtime.py",
+      "tests": 20,
+      "exit_code": 0
+    }
+  ],
+  "total_tests": 57,
+  "ruff_exit_code": 0,
+  "python_ast": "PASS",
+  "typecheck": "No configured static Python typechecker was run."
+}

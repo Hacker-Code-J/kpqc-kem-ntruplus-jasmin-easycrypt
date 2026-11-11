@@ -1,0 +1,10 @@
+{
+  "contract": {
+    "path": "handoff/verification/ntruplus-keygen-gen-law-20261014/specification-contract.json",
+    "sha256": "3fd881289a924c421f1815bfa5918fd82ca64a2a49eef1ca51696082391230a9"
+  },
+  "source_text": {
+    "path": "handoff/verification/ntruplus-classical-rom-20261013/research/ntruplus-specification.txt",
+    "sha256": "2e19833445d3c2fcb0abb226234c86b960058b10441e1093657ecf550fc0be27"
+  }
+}

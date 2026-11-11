@@ -1,0 +1,2573 @@
+{
+  "schema": "rt-outer-source-calibration-v1",
+  "file": "ntruplus/proof/768/ref/kem_runtime_bound/NTRUPlus768RTOuterCost.ec",
+  "status": "STRICT_PASS",
+  "rules": {
+    "array_owned_clone": "3*cells",
+    "call": "2+arity+3*result_cells+selectors+constructor+constructor_payload_clone",
+    "branch": "source guard ops+1",
+    "option_match": "tag+branch+Some payload clone",
+    "zero_array": "actual RTOuterZero loop plus caller frame and result copy",
+    "list_passing": "immutable tails shared; pointer transfer included in arity",
+    "ghost_erasure": "only local profiles/counters plus reset_cost/metrics/charge_extract; data-bearing calls retained"
+  },
+  "external_buckets": {
+    "adaptive_phase": "RTTranscript body and public callbacks; RTPhaseCost; excludes A own instructions",
+    "setup_phase": "SecAuxSetup body; included in RTPhaseCost.pc_extract_init even when Q=0",
+    "extraction_phase": "CostExtract body and candidate iterations; RTPhaseCost",
+    "attacker_self": "only A own primitive steps excluding oracle bodies; t_A once when rtk_adversary=1"
+  },
+  "kernel_prices": {
+    "scale": 21511,
+    "unit": 4724206,
+    "encode": 1659715,
+    "recover": 9956046,
+    "encrypt": 3517914,
+    "trit": 14600,
+    "poly_compare": 12297,
+    "cipher_compare": 20745,
+    "psi_draw": 44942
+  },
+  "kernel_profile_order": [
+    "scale",
+    "unit",
+    "encode",
+    "recover",
+    "encrypt",
+    "trit",
+    "poly_compare",
+    "cipher_compare",
+    "psi_draw",
+    "attacker"
+  ],
+  "procedures": [
+    {
+      "key": "top_di",
+      "file": "kem_runtime_bound/NTRUPlus768RTWordReduction.ec",
+      "source_proc": "RTWord_DI.measure",
+      "header": "proc measure(h:pke_poly):bool*rt_profile*rt_kernel_profile = ",
+      "body": "\n  var out:bool*rt_kernel_profile;var profile:rt_profile;\n  S.reset_cost();out<@RTWordINJNTRUReduction(RTAuxINJ(S,A)).run(h);\n  profile<@S.metrics();return(out.`1,profile,rt_inj_complete_profile out.`2);\n ",
+      "source_sha256": "13fa332d8495770975145a96653db6c197c9f3c88606cd6e8868ce915abd8b3b",
+      "source_body_sha256": "68c18e28a9269dd73f8bfe3bc4ddecf28b08b0c31f9b3d2f275482dc0e8c729d",
+      "input_cells": 768,
+      "return_cells": 0,
+      "entry_fee": 2304,
+      "ghost_variables": [
+        "profile"
+      ],
+      "body_nodes": [
+        {
+          "kind": "call",
+          "lhs": null,
+          "target": "S.reset_cost",
+          "args": "",
+          "source_statement": "S.reset_cost();",
+          "bucket": "ghost_erasure",
+          "reason": "ledger observation/update only",
+          "local_fee": 0
+        },
+        {
+          "kind": "call",
+          "lhs": "out",
+          "target": "RTWordINJNTRUReduction(RTAuxINJ(S,A)).run",
+          "args": "h",
+          "source_statement": "out<@RTWordINJNTRUReduction(RTAuxINJ(S,A)).run(h);",
+          "bucket": "fixed_callee",
+          "callee_key": "word_inj",
+          "return_cells": 0,
+          "fee_parts": {
+            "call_frame": 2,
+            "arguments": 1,
+            "result_clone": 0,
+            "selectors": 0,
+            "constructor": 0,
+            "constructor_payload_clone": 0
+          },
+          "local_fee": 3
+        },
+        {
+          "kind": "call",
+          "lhs": "profile",
+          "target": "S.metrics",
+          "args": "",
+          "source_statement": "profile<@S.metrics();",
+          "bucket": "ghost_erasure",
+          "reason": "ledger observation/update only",
+          "local_fee": 0
+        },
+        {
+          "kind": "return",
+          "expr": "(out.`1,profile,rt_inj_complete_profile out.`2)",
+          "source_statement": "return(out.`1,profile,rt_inj_complete_profile out.`2);",
+          "bucket": "fixed",
+          "data_expression": "out.`1",
+          "fee_parts": {
+            "return": 1,
+            "result_clone": 0,
+            "selectors": 1
+          },
+          "local_fee": 2
+        }
+      ],
+      "fixed_subtotal": 2309,
+      "bound_op": "rt_outer_top_di",
+      "bound_expression": "rt_outer_copy 768+rt_outer_frame 1 0+2",
+      "direct_kernel_profile": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "fixed_callee_edges": [
+        "word_inj"
+      ],
+      "source_body_ast_exact": true
+    },
+    {
+      "key": "top_do",
+      "file": "kem_runtime_bound/NTRUPlus768RTWordReduction.ec",
+      "source_proc": "RTWord_DO.measure",
+      "header": "proc measure(h:pke_poly):bool*rt_profile*rt_kernel_profile = ",
+      "body": "\n  var out:bool*rt_kernel_profile;var profile:rt_profile;\n  S.reset_cost();out<@RTWordOWNTRUReduction(RTAuxOW(S,A)).run(h);\n  profile<@S.metrics();return(out.`1,profile,out.`2);\n ",
+      "source_sha256": "13fa332d8495770975145a96653db6c197c9f3c88606cd6e8868ce915abd8b3b",
+      "source_body_sha256": "0a2be49a6e174fa0af01a7b5b7fbe743377bc3833c12c9ff7d3dfcfe08611df7",
+      "input_cells": 768,
+      "return_cells": 0,
+      "entry_fee": 2304,
+      "ghost_variables": [
+        "profile"
+      ],
+      "body_nodes": [
+        {
+          "kind": "call",
+          "lhs": null,
+          "target": "S.reset_cost",
+          "args": "",
+          "source_statement": "S.reset_cost();",
+          "bucket": "ghost_erasure",
+          "reason": "ledger observation/update only",
+          "local_fee": 0
+        },
+        {
+          "kind": "call",
+          "lhs": "out",
+          "target": "RTWordOWNTRUReduction(RTAuxOW(S,A)).run",
+          "args": "h",
+          "source_statement": "out<@RTWordOWNTRUReduction(RTAuxOW(S,A)).run(h);",
+          "bucket": "fixed_callee",
+          "callee_key": "word_ow",
+          "return_cells": 0,
+          "fee_parts": {
+            "call_frame": 2,
+            "arguments": 1,
+            "result_clone": 0,
+            "selectors": 0,
+            "constructor": 0,
+            "constructor_payload_clone": 0
+          },
+          "local_fee": 3
+        },
+        {
+          "kind": "call",
+          "lhs": "profile",
+          "target": "S.metrics",
+          "args": "",
+          "source_statement": "profile<@S.metrics();",
+          "bucket": "ghost_erasure",
+          "reason": "ledger observation/update only",
+          "local_fee": 0
+        },
+        {
+          "kind": "return",
+          "expr": "(out.`1,profile,out.`2)",
+          "source_statement": "return(out.`1,profile,out.`2);",
+          "bucket": "fixed",
+          "data_expression": "out.`1",
+          "fee_parts": {
+            "return": 1,
+            "result_clone": 0,
+            "selectors": 1
+          },
+          "local_fee": 2
+        }
+      ],
+      "fixed_subtotal": 2309,
+      "bound_op": "rt_outer_top_do",
+      "bound_expression": "rt_outer_copy 768+rt_outer_frame 1 0+2",
+      "direct_kernel_profile": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "fixed_callee_edges": [
+        "word_ow"
+      ],
+      "source_body_ast_exact": true
+    },
+    {
+      "key": "top_co",
+      "file": "kem_runtime_bound/NTRUPlus768RTWordReduction.ec",
+      "source_proc": "RTWord_CO.measure",
+      "header": "proc measure(a b:pke_poly):pke_poly*rt_profile*rt_kernel_profile = ",
+      "body": "\n  var out:pke_poly*rt_kernel_profile;var profile:rt_profile;\n  S.reset_cost();out<@RTWordOWRLWESolver(RTAuxOW(S,A)).run(a,b);\n  profile<@S.metrics();return(out.`1,profile,out.`2);\n ",
+      "source_sha256": "13fa332d8495770975145a96653db6c197c9f3c88606cd6e8868ce915abd8b3b",
+      "source_body_sha256": "d050c5d689bea4238dd081f37b70b392ed9a4b0517f5d2169bebd1680f4bb933",
+      "input_cells": 1536,
+      "return_cells": 768,
+      "entry_fee": 4608,
+      "ghost_variables": [
+        "profile"
+      ],
+      "body_nodes": [
+        {
+          "kind": "call",
+          "lhs": null,
+          "target": "S.reset_cost",
+          "args": "",
+          "source_statement": "S.reset_cost();",
+          "bucket": "ghost_erasure",
+          "reason": "ledger observation/update only",
+          "local_fee": 0
+        },
+        {
+          "kind": "call",
+          "lhs": "out",
+          "target": "RTWordOWRLWESolver(RTAuxOW(S,A)).run",
+          "args": "a,b",
+          "source_statement": "out<@RTWordOWRLWESolver(RTAuxOW(S,A)).run(a,b);",
+          "bucket": "fixed_callee",
+          "callee_key": "word_rlwe",
+          "return_cells": 768,
+          "fee_parts": {
+            "call_frame": 2,
+            "arguments": 2,
+            "result_clone": 2304,
+            "selectors": 0,
+            "constructor": 0,
+            "constructor_payload_clone": 0
+          },
+          "local_fee": 2308
+        },
+        {
+          "kind": "call",
+          "lhs": "profile",
+          "target": "S.metrics",
+          "args": "",
+          "source_statement": "profile<@S.metrics();",
+          "bucket": "ghost_erasure",
+          "reason": "ledger observation/update only",
+          "local_fee": 0
+        },
+        {
+          "kind": "return",
+          "expr": "(out.`1,profile,out.`2)",
+          "source_statement": "return(out.`1,profile,out.`2);",
+          "bucket": "fixed",
+          "data_expression": "out.`1",
+          "fee_parts": {
+            "return": 1,
+            "result_clone": 2304,
+            "selectors": 1
+          },
+          "local_fee": 2306
+        }
+      ],
+      "fixed_subtotal": 9222,
+      "bound_op": "rt_outer_top_co",
+      "bound_expression": "rt_outer_copy(2*768)+rt_outer_frame 2 768+2+rt_outer_copy 768",
+      "direct_kernel_profile": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "fixed_callee_edges": [
+        "word_rlwe"
+      ],
+      "source_body_ast_exact": true
+    },
+    {
+      "key": "word_inj",
+      "file": "kem_runtime_bound/NTRUPlus768RTWordKernels.ec",
+      "source_proc": "RTWordINJNTRUReduction.run",
+      "header": "proc run(h:pke_poly):bool*rt_kernel_profile = ",
+      "body": "\n  var a:pke_poly;var pk:W8.t Array1152.t;var collision:sec_collision;\n  var accept,win:bool;var checked:bool*rt_kernel_profile;\n  var scales,units,encodes,calls:int;var profile:rt_kernel_profile;\n  scales<-0;units<-0;encodes<-0;calls<-0;win<-false;\n  profile<-rtk_profile 0 0 0 0 0 0 0 0 0 0;\n  a<@RTWordScale3.run(h);scales<-scales+1;\n  accept<@RTWordUnit.run(a);units<-units+1;\n  if(accept){\n   pk<@RTWordEncode.run(a);encodes<-encodes+1;\n   collision<@B.run(pk);calls<-calls+1;\n   checked<@RTINJCheck.run(pk,collision);win<-checked.`1;profile<-checked.`2;\n  }\n  return(win,rtk_add profile(rtk_profile scales units encodes 0 0 0 0 0 0 calls));\n ",
+      "source_sha256": "2ae373cb087f107b7b51a74ddeea1eb87328e0107a7301a7680364d6f66ab446",
+      "source_body_sha256": "11aa213c8eb9e5be3a3726735896692477ac70aed1796d8bbde4e3b392cbb9eb",
+      "input_cells": 768,
+      "return_cells": 0,
+      "entry_fee": 2304,
+      "ghost_variables": [
+        "scales",
+        "units",
+        "encodes",
+        "calls",
+        "profile"
+      ],
+      "body_nodes": [
+        {
+          "kind": "assign",
+          "lhs": "scales",
+          "expr": "0",
+          "source_statement": "scales<-0;",
+          "bucket": "ghost_erasure",
+          "reason": "local returned-certificate computation only",
+          "local_fee": 0
+        },
+        {
+          "kind": "assign",
+          "lhs": "units",
+          "expr": "0",
+          "source_statement": "units<-0;",
+          "bucket": "ghost_erasure",
+          "reason": "local returned-certificate computation only",
+          "local_fee": 0
+        },
+        {
+          "kind": "assign",
+          "lhs": "encodes",
+          "expr": "0",
+          "source_statement": "encodes<-0;",
+          "bucket": "ghost_erasure",
+          "reason": "local returned-certificate computation only",
+          "local_fee": 0
+        },
+        {
+          "kind": "assign",
+          "lhs": "calls",
+          "expr": "0",
+          "source_statement": "calls<-0;",
+          "bucket": "ghost_erasure",
+          "reason": "local returned-certificate computation only",
+          "local_fee": 0
+        },
+        {
+          "kind": "assign",
+          "lhs": "win",
+          "expr": "false",
+          "source_statement": "win<-false;",
+          "bucket": "fixed",
+          "fee_parts": {
+            "transfer": 1,
+            "selectors": 0,
+            "result_clone": 0
+          },
+          "local_fee": 1
+        },
+        {
+          "kind": "assign",
+          "lhs": "profile",
+          "expr": "rtk_profile 0 0 0 0 0 0 0 0 0 0",
+          "source_statement": "profile<-rtk_profile 0 0 0 0 0 0 0 0 0 0;",
+          "bucket": "ghost_erasure",
+          "reason": "local returned-certificate computation only",
+          "local_fee": 0
+        },
+        {
+          "kind": "call",
+          "lhs": "a",
+          "target": "RTWordScale3.run",
+          "args": "h",
+          "source_statement": "a<@RTWordScale3.run(h);",
+          "bucket": "kernel_profile",
+          "field": "scale",
+          "multiplicity": 1,
+          "selector_fee": 0,
+          "local_fee": 0
+        },
+        {
+          "kind": "assign",
+          "lhs": "scales",
+          "expr": "scales+1",
+          "source_statement": "scales<-scales+1;",
+          "bucket": "ghost_erasure",
+          "reason": "local returned-certificate computation only",
+          "local_fee": 0
+        },
+        {
+          "kind": "call",
+          "lhs": "accept",
+          "target": "RTWordUnit.run",
+          "args": "a",
+          "source_statement": "accept<@RTWordUnit.run(a);",
+          "bucket": "kernel_profile",
+          "field": "unit",
+          "multiplicity": 1,
+          "selector_fee": 0,
+          "local_fee": 0
+        },
+        {
+          "kind": "assign",
+          "lhs": "units",
+          "expr": "units+1",
+          "source_statement": "units<-units+1;",
+          "bucket": "ghost_erasure",
+          "reason": "local returned-certificate computation only",
+          "local_fee": 0
+        },
+        {
+          "kind": "if",
+          "cond": "accept",
+          "body": [
+            {
+              "kind": "call",
+              "lhs": "pk",
+              "target": "RTWordEncode.run",
+              "args": "a",
+              "source_statement": "pk<@RTWordEncode.run(a);",
+              "bucket": "kernel_profile",
+              "field": "encode",
+              "multiplicity": 1,
+              "selector_fee": 0,
+              "local_fee": 0
+            },
+            {
+              "kind": "assign",
+              "lhs": "encodes",
+              "expr": "encodes+1",
+              "source_statement": "encodes<-encodes+1;",
+              "bucket": "ghost_erasure",
+              "reason": "local returned-certificate computation only",
+              "local_fee": 0
+            },
+            {
+              "kind": "call",
+              "lhs": "collision",
+              "target": "B.run",
+              "args": "pk",
+              "source_statement": "collision<@B.run(pk);",
+              "bucket": "fixed_callee",
+              "callee_key": "aux_inj",
+              "return_cells": 3072,
+              "fee_parts": {
+                "call_frame": 2,
+                "arguments": 1,
+                "result_clone": 9216,
+                "selectors": 0,
+                "constructor": 0,
+                "constructor_payload_clone": 0
+              },
+              "attacker_profile_increment": 1,
+              "local_fee": 9219
+            },
+            {
+              "kind": "assign",
+              "lhs": "calls",
+              "expr": "calls+1",
+              "source_statement": "calls<-calls+1;",
+              "bucket": "ghost_erasure",
+              "reason": "local returned-certificate computation only",
+              "local_fee": 0
+            },
+            {
+              "kind": "call",
+              "lhs": "checked",
+              "target": "RTINJCheck.run",
+              "args": "pk,collision",
+              "source_statement": "checked<@RTINJCheck.run(pk,collision);",
+              "bucket": "fixed_callee",
+              "callee_key": "inj_check",
+              "return_cells": 0,
+              "fee_parts": {
+                "call_frame": 2,
+                "arguments": 2,
+                "result_clone": 0,
+                "selectors": 0,
+                "constructor": 0,
+                "constructor_payload_clone": 0
+              },
+              "local_fee": 4
+            },
+            {
+              "kind": "assign",
+              "lhs": "win",
+              "expr": "checked.`1",
+              "source_statement": "win<-checked.`1;",
+              "bucket": "fixed",
+              "fee_parts": {
+                "transfer": 1,
+                "selectors": 1,
+                "result_clone": 0
+              },
+              "local_fee": 2
+            },
+            {
+              "kind": "assign",
+              "lhs": "profile",
+              "expr": "checked.`2",
+              "source_statement": "profile<-checked.`2;",
+              "bucket": "ghost_erasure",
+              "reason": "local returned-certificate computation only",
+              "local_fee": 0
+            }
+          ],
+          "source_statement": "if(accept){\n   pk<@RTWordEncode.run(a);encodes<-encodes+1;\n   collision<@B.run(pk);calls<-calls+1;\n   checked<@RTINJCheck.run(pk,collision);win<-checked.`1;profile<-checked.`2;\n  }",
+          "bucket": "fixed",
+          "guard_fee": 1,
+          "branch_bound": 9225,
+          "local_fee": 9226
+        },
+        {
+          "kind": "return",
+          "expr": "(win,rtk_add profile(rtk_profile scales units encodes 0 0 0 0 0 0 calls))",
+          "source_statement": "return(win,rtk_add profile(rtk_profile scales units encodes 0 0 0 0 0 0 calls));",
+          "bucket": "fixed",
+          "data_expression": "win",
+          "fee_parts": {
+            "return": 1,
+            "result_clone": 0,
+            "selectors": 0
+          },
+          "local_fee": 1
+        }
+      ],
+      "fixed_subtotal": 11532,
+      "bound_op": "rt_outer_word_inj",
+      "bound_expression": "rt_outer_copy 768+1+1+rt_outer_frame 1 (4*768)+rt_outer_frame 2 0+2+1",
+      "direct_kernel_profile": [
+        1,
+        1,
+        1,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        1
+      ],
+      "fixed_callee_edges": [
+        "aux_inj",
+        "inj_check"
+      ],
+      "source_body_ast_exact": true
+    },
+    {
+      "key": "word_ow",
+      "file": "kem_runtime_bound/NTRUPlus768RTWordKernels.ec",
+      "source_proc": "RTWordOWNTRUReduction.run",
+      "header": "proc run(h:pke_poly):bool*rt_kernel_profile = ",
+      "body": "\n  var a:pke_poly;var pk:W8.t Array1152.t;\n  var accept,win:bool;var checked:bool*rt_kernel_profile;\n  var scales,units,encodes:int;var profile:rt_kernel_profile;\n  scales<-0;units<-0;encodes<-0;win<-false;\n  profile<-rtk_profile 0 0 0 0 0 0 0 0 0 0;\n  a<@RTWordScale3.run(h);scales<-scales+1;\n  accept<@RTWordUnit.run(a);units<-units+1;\n  if(accept){\n   pk<@RTWordEncode.run(a);encodes<-encodes+1;\n   checked<@RTOWKernel(B).run(pk);win<-checked.`1;profile<-checked.`2;\n  }\n  return(win,rtk_add profile(rtk_profile scales units encodes 0 0 0 0 0 0 0));\n ",
+      "source_sha256": "2ae373cb087f107b7b51a74ddeea1eb87328e0107a7301a7680364d6f66ab446",
+      "source_body_sha256": "88653e9c9562a3d94e4fa081cc0e733ea6278b1915407f52b0233400c755c08c",
+      "input_cells": 768,
+      "return_cells": 0,
+      "entry_fee": 2304,
+      "ghost_variables": [
+        "scales",
+        "units",
+        "encodes",
+        "profile"
+      ],
+      "body_nodes": [
+        {
+          "kind": "assign",
+          "lhs": "scales",
+          "expr": "0",
+          "source_statement": "scales<-0;",
+          "bucket": "ghost_erasure",
+          "reason": "local returned-certificate computation only",
+          "local_fee": 0
+        },
+        {
+          "kind": "assign",
+          "lhs": "units",
+          "expr": "0",
+          "source_statement": "units<-0;",
+          "bucket": "ghost_erasure",
+          "reason": "local returned-certificate computation only",
+          "local_fee": 0
+        },
+        {
+          "kind": "assign",
+          "lhs": "encodes",
+          "expr": "0",
+          "source_statement": "encodes<-0;",
+          "bucket": "ghost_erasure",
+          "reason": "local returned-certificate computation only",
+          "local_fee": 0
+        },
+        {
+          "kind": "assign",
+          "lhs": "win",
+          "expr": "false",
+          "source_statement": "win<-false;",
+          "bucket": "fixed",
+          "fee_parts": {
+            "transfer": 1,
+            "selectors": 0,
+            "result_clone": 0
+          },
+          "local_fee": 1
+        },
+        {
+          "kind": "assign",
+          "lhs": "profile",
+          "expr": "rtk_profile 0 0 0 0 0 0 0 0 0 0",
+          "source_statement": "profile<-rtk_profile 0 0 0 0 0 0 0 0 0 0;",
+          "bucket": "ghost_erasure",
+          "reason": "local returned-certificate computation only",
+          "local_fee": 0
+        },
+        {
+          "kind": "call",
+          "lhs": "a",
+          "target": "RTWordScale3.run",
+          "args": "h",
+          "source_statement": "a<@RTWordScale3.run(h);",
+          "bucket": "kernel_profile",
+          "field": "scale",
+          "multiplicity": 1,
+          "selector_fee": 0,
+          "local_fee": 0
+        },
+        {
+          "kind": "assign",
+          "lhs": "scales",
+          "expr": "scales+1",
+          "source_statement": "scales<-scales+1;",
+          "bucket": "ghost_erasure",
+          "reason": "local returned-certificate computation only",
+          "local_fee": 0
+        },
+        {
+          "kind": "call",
+          "lhs": "accept",
+          "target": "RTWordUnit.run",
+          "args": "a",
+          "source_statement": "accept<@RTWordUnit.run(a);",
+          "bucket": "kernel_profile",
+          "field": "unit",
+          "multiplicity": 1,
+          "selector_fee": 0,
+          "local_fee": 0
+        },
+        {
+          "kind": "assign",
+          "lhs": "units",
+          "expr": "units+1",
+          "source_statement": "units<-units+1;",
+          "bucket": "ghost_erasure",
+          "reason": "local returned-certificate computation only",
+          "local_fee": 0
+        },
+        {
+          "kind": "if",
+          "cond": "accept",
+          "body": [
+            {
+              "kind": "call",
+              "lhs": "pk",
+              "target": "RTWordEncode.run",
+              "args": "a",
+              "source_statement": "pk<@RTWordEncode.run(a);",
+              "bucket": "kernel_profile",
+              "field": "encode",
+              "multiplicity": 1,
+              "selector_fee": 0,
+              "local_fee": 0
+            },
+            {
+              "kind": "assign",
+              "lhs": "encodes",
+              "expr": "encodes+1",
+              "source_statement": "encodes<-encodes+1;",
+              "bucket": "ghost_erasure",
+              "reason": "local returned-certificate computation only",
+              "local_fee": 0
+            },
+            {
+              "kind": "call",
+              "lhs": "checked",
+              "target": "RTOWKernel(B).run",
+              "args": "pk",
+              "source_statement": "checked<@RTOWKernel(B).run(pk);",
+              "bucket": "fixed_callee",
+              "callee_key": "ow_kernel",
+              "return_cells": 0,
+              "fee_parts": {
+                "call_frame": 2,
+                "arguments": 1,
+                "result_clone": 0,
+                "selectors": 0,
+                "constructor": 0,
+                "constructor_payload_clone": 0
+              },
+              "local_fee": 3
+            },
+            {
+              "kind": "assign",
+              "lhs": "win",
+              "expr": "checked.`1",
+              "source_statement": "win<-checked.`1;",
+              "bucket": "fixed",
+              "fee_parts": {
+                "transfer": 1,
+                "selectors": 1,
+                "result_clone": 0
+              },
+              "local_fee": 2
+            },
+            {
+              "kind": "assign",
+              "lhs": "profile",
+              "expr": "checked.`2",
+              "source_statement": "profile<-checked.`2;",
+              "bucket": "ghost_erasure",
+              "reason": "local returned-certificate computation only",
+              "local_fee": 0
+            }
+          ],
+          "source_statement": "if(accept){\n   pk<@RTWordEncode.run(a);encodes<-encodes+1;\n   checked<@RTOWKernel(B).run(pk);win<-checked.`1;profile<-checked.`2;\n  }",
+          "bucket": "fixed",
+          "guard_fee": 1,
+          "branch_bound": 5,
+          "local_fee": 6
+        },
+        {
+          "kind": "return",
+          "expr": "(win,rtk_add profile(rtk_profile scales units encodes 0 0 0 0 0 0 0))",
+          "source_statement": "return(win,rtk_add profile(rtk_profile scales units encodes 0 0 0 0 0 0 0));",
+          "bucket": "fixed",
+          "data_expression": "win",
+          "fee_parts": {
+            "return": 1,
+            "result_clone": 0,
+            "selectors": 0
+          },
+          "local_fee": 1
+        }
+      ],
+      "fixed_subtotal": 2312,
+      "bound_op": "rt_outer_word_ow",
+      "bound_expression": "rt_outer_copy 768+1+1+rt_outer_frame 1 0+2+1",
+      "direct_kernel_profile": [
+        1,
+        1,
+        1,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "fixed_callee_edges": [
+        "ow_kernel"
+      ],
+      "source_body_ast_exact": true
+    },
+    {
+      "key": "word_rlwe",
+      "file": "kem_runtime_bound/NTRUPlus768RTWordKernels.ec",
+      "source_proc": "RTWordOWRLWESolver.run",
+      "header": "proc run(a b:pke_poly):pke_poly*rt_kernel_profile = ",
+      "body": "\n  var pk,ct:W8.t Array1152.t;var code,answer:pke_poly;var recovered:pke_poly option;var accept:bool;\n  var units,encodes,recovers,calls:int;\n  units<-0;encodes<-0;recovers<-0;calls<-0;answer<-Array768.init(fun _=>W16.zero);\n  accept<@RTWordUnit.run(a);units<-units+1;\n  if(accept){\n   pk<@RTWordEncode.run(a);encodes<-encodes+1;\n   ct<@RTWordEncode.run(b);encodes<-encodes+1;\n   code<@B.run(pk,ct);calls<-calls+1;\n   recovered<@RTWordRecover.run(a,b,code);recovers<-recovers+1;\n   if(recovered<>None){answer<-oget recovered;}\n  }\n  return(answer,rtk_profile 0 units encodes recovers 0 0 0 0 0 calls);\n ",
+      "source_sha256": "2ae373cb087f107b7b51a74ddeea1eb87328e0107a7301a7680364d6f66ab446",
+      "source_body_sha256": "2d363e75b675d95384fc4d018f19a24d4047b321a23c05ddae7ad453dcbbcb3d",
+      "input_cells": 1536,
+      "return_cells": 768,
+      "entry_fee": 4608,
+      "ghost_variables": [
+        "units",
+        "encodes",
+        "recovers",
+        "calls"
+      ],
+      "body_nodes": [
+        {
+          "kind": "assign",
+          "lhs": "units",
+          "expr": "0",
+          "source_statement": "units<-0;",
+          "bucket": "ghost_erasure",
+          "reason": "local returned-certificate computation only",
+          "local_fee": 0
+        },
+        {
+          "kind": "assign",
+          "lhs": "encodes",
+          "expr": "0",
+          "source_statement": "encodes<-0;",
+          "bucket": "ghost_erasure",
+          "reason": "local returned-certificate computation only",
+          "local_fee": 0
+        },
+        {
+          "kind": "assign",
+          "lhs": "recovers",
+          "expr": "0",
+          "source_statement": "recovers<-0;",
+          "bucket": "ghost_erasure",
+          "reason": "local returned-certificate computation only",
+          "local_fee": 0
+        },
+        {
+          "kind": "assign",
+          "lhs": "calls",
+          "expr": "0",
+          "source_statement": "calls<-0;",
+          "bucket": "ghost_erasure",
+          "reason": "local returned-certificate computation only",
+          "local_fee": 0
+        },
+        {
+          "kind": "assign",
+          "lhs": "answer",
+          "expr": "Array768.init(fun _=>W16.zero)",
+          "source_statement": "answer<-Array768.init(fun _=>W16.zero);",
+          "bucket": "fixed",
+          "fee_parts": {
+            "transfer": 1,
+            "zero_lowering": 9991
+          },
+          "lowering": "RTOuterZero.words",
+          "local_fee": 9992
+        },
+        {
+          "kind": "call",
+          "lhs": "accept",
+          "target": "RTWordUnit.run",
+          "args": "a",
+          "source_statement": "accept<@RTWordUnit.run(a);",
+          "bucket": "kernel_profile",
+          "field": "unit",
+          "multiplicity": 1,
+          "selector_fee": 0,
+          "local_fee": 0
+        },
+        {
+          "kind": "assign",
+          "lhs": "units",
+          "expr": "units+1",
+          "source_statement": "units<-units+1;",
+          "bucket": "ghost_erasure",
+          "reason": "local returned-certificate computation only",
+          "local_fee": 0
+        },
+        {
+          "kind": "if",
+          "cond": "accept",
+          "body": [
+            {
+              "kind": "call",
+              "lhs": "pk",
+              "target": "RTWordEncode.run",
+              "args": "a",
+              "source_statement": "pk<@RTWordEncode.run(a);",
+              "bucket": "kernel_profile",
+              "field": "encode",
+              "multiplicity": 1,
+              "selector_fee": 0,
+              "local_fee": 0
+            },
+            {
+              "kind": "assign",
+              "lhs": "encodes",
+              "expr": "encodes+1",
+              "source_statement": "encodes<-encodes+1;",
+              "bucket": "ghost_erasure",
+              "reason": "local returned-certificate computation only",
+              "local_fee": 0
+            },
+            {
+              "kind": "call",
+              "lhs": "ct",
+              "target": "RTWordEncode.run",
+              "args": "b",
+              "source_statement": "ct<@RTWordEncode.run(b);",
+              "bucket": "kernel_profile",
+              "field": "encode",
+              "multiplicity": 1,
+              "selector_fee": 0,
+              "local_fee": 0
+            },
+            {
+              "kind": "assign",
+              "lhs": "encodes",
+              "expr": "encodes+1",
+              "source_statement": "encodes<-encodes+1;",
+              "bucket": "ghost_erasure",
+              "reason": "local returned-certificate computation only",
+              "local_fee": 0
+            },
+            {
+              "kind": "call",
+              "lhs": "code",
+              "target": "B.run",
+              "args": "pk,ct",
+              "source_statement": "code<@B.run(pk,ct);",
+              "bucket": "fixed_callee",
+              "callee_key": "aux_ow",
+              "return_cells": 768,
+              "fee_parts": {
+                "call_frame": 2,
+                "arguments": 2,
+                "result_clone": 2304,
+                "selectors": 0,
+                "constructor": 0,
+                "constructor_payload_clone": 0
+              },
+              "attacker_profile_increment": 1,
+              "local_fee": 2308
+            },
+            {
+              "kind": "assign",
+              "lhs": "calls",
+              "expr": "calls+1",
+              "source_statement": "calls<-calls+1;",
+              "bucket": "ghost_erasure",
+              "reason": "local returned-certificate computation only",
+              "local_fee": 0
+            },
+            {
+              "kind": "call",
+              "lhs": "recovered",
+              "target": "RTWordRecover.run",
+              "args": "a,b,code",
+              "source_statement": "recovered<@RTWordRecover.run(a,b,code);",
+              "bucket": "kernel_profile",
+              "field": "recover",
+              "multiplicity": 1,
+              "selector_fee": 0,
+              "local_fee": 0
+            },
+            {
+              "kind": "assign",
+              "lhs": "recovers",
+              "expr": "recovers+1",
+              "source_statement": "recovers<-recovers+1;",
+              "bucket": "ghost_erasure",
+              "reason": "local returned-certificate computation only",
+              "local_fee": 0
+            },
+            {
+              "kind": "if",
+              "cond": "recovered<>None",
+              "body": [
+                {
+                  "kind": "assign",
+                  "lhs": "answer",
+                  "expr": "oget recovered",
+                  "source_statement": "answer<-oget recovered;",
+                  "bucket": "fixed",
+                  "fee_parts": {
+                    "transfer": 1,
+                    "selectors": 1,
+                    "result_clone": 2304
+                  },
+                  "local_fee": 2306
+                }
+              ],
+              "source_statement": "if(recovered<>None){answer<-oget recovered;}",
+              "bucket": "fixed",
+              "guard_fee": 2,
+              "branch_bound": 2306,
+              "local_fee": 2308
+            }
+          ],
+          "source_statement": "if(accept){\n   pk<@RTWordEncode.run(a);encodes<-encodes+1;\n   ct<@RTWordEncode.run(b);encodes<-encodes+1;\n   code<@B.run(pk,ct);calls<-calls+1;\n   recovered<@RTWordRecover.run(a,b,code);recovers<-recovers+1;\n   if(recovered<>None){answer<-oget recovered;}\n  }",
+          "bucket": "fixed",
+          "guard_fee": 1,
+          "branch_bound": 4616,
+          "local_fee": 4617
+        },
+        {
+          "kind": "return",
+          "expr": "(answer,rtk_profile 0 units encodes recovers 0 0 0 0 0 calls)",
+          "source_statement": "return(answer,rtk_profile 0 units encodes recovers 0 0 0 0 0 calls);",
+          "bucket": "fixed",
+          "data_expression": "answer",
+          "fee_parts": {
+            "return": 1,
+            "result_clone": 2304,
+            "selectors": 0
+          },
+          "local_fee": 2305
+        }
+      ],
+      "fixed_subtotal": 21522,
+      "bound_op": "rt_outer_word_rlwe",
+      "bound_expression": "rt_outer_copy(2*768)+1+rt_outer_zero_call 768+\n rt_outer_frame 2 768+1+2+(2+rt_outer_copy 768)+(1+rt_outer_copy 768)",
+      "direct_kernel_profile": [
+        0,
+        1,
+        2,
+        1,
+        0,
+        0,
+        0,
+        0,
+        0,
+        1
+      ],
+      "fixed_callee_edges": [
+        "aux_ow"
+      ],
+      "source_body_ast_exact": true
+    },
+    {
+      "key": "inj_check",
+      "file": "kem_runtime_bound/NTRUPlus768RTKernels.ec",
+      "source_proc": "RTINJCheck.run",
+      "header": "proc run(pk:W8.t Array1152.t,collision:sec_collision):bool*rt_kernel_profile = ",
+      "body": "\n  var v0,v1,v2,v3,em,er,win:bool;\n  var c0,c1:W8.t Array1152.t option;var cmp:bool*int;\n  var trits,polys,encryptions,ciphers:int;\n  win<-false;trits<-0;polys<-0;encryptions<-0;ciphers<-0;\n  v0<@RRecTrit.check(collision.`1);trits<-trits+1;\n  v1<@RRecTrit.check(collision.`2);trits<-trits+1;\n  v2<@RRecTrit.check(collision.`3);trits<-trits+1;\n  v3<@RRecTrit.check(collision.`4);trits<-trits+1;\n  em<@RTPolyEqual.run(collision.`1,collision.`2);polys<-polys+1;\n  er<@RTPolyEqual.run(collision.`3,collision.`4);polys<-polys+1;\n  if(v0 /\\ v1 /\\ v2 /\\ v3 /\\ !(em /\\ er)){\n   c0<@PKEEnc.run(pk,collision.`1,collision.`3);encryptions<-encryptions+1;\n   c1<@PKEEnc.run(pk,collision.`2,collision.`4);encryptions<-encryptions+1;\n   match c0 with\n   | None => {}\n   | Some x => {\n    match c1 with\n    | None => {}\n    | Some y => {cmp<@HistKey.cipher(x,y);ciphers<-ciphers+1;win<-cmp.`1;}\n    end;\n   }\n   end;\n  }\n  return(win,rtk_profile 0 0 0 0 encryptions trits polys ciphers 0 0);\n ",
+      "source_sha256": "0958cce058a36b07449fe41b6b2dc9444c277c67e446230c6b5722119c4e0649",
+      "source_body_sha256": "249f1da9add54dac6a7966753d7d657981cb64781914f0888721dd93e4dfc3eb",
+      "input_cells": 4224,
+      "return_cells": 0,
+      "entry_fee": 12672,
+      "ghost_variables": [
+        "trits",
+        "polys",
+        "encryptions",
+        "ciphers"
+      ],
+      "body_nodes": [
+        {
+          "kind": "assign",
+          "lhs": "win",
+          "expr": "false",
+          "source_statement": "win<-false;",
+          "bucket": "fixed",
+          "fee_parts": {
+            "transfer": 1,
+            "selectors": 0,
+            "result_clone": 0
+          },
+          "local_fee": 1
+        },
+        {
+          "kind": "assign",
+          "lhs": "trits",
+          "expr": "0",
+          "source_statement": "trits<-0;",
+          "bucket": "ghost_erasure",
+          "reason": "local returned-certificate computation only",
+          "local_fee": 0
+        },
+        {
+          "kind": "assign",
+          "lhs": "polys",
+          "expr": "0",
+          "source_statement": "polys<-0;",
+          "bucket": "ghost_erasure",
+          "reason": "local returned-certificate computation only",
+          "local_fee": 0
+        },
+        {
+          "kind": "assign",
+          "lhs": "encryptions",
+          "expr": "0",
+          "source_statement": "encryptions<-0;",
+          "bucket": "ghost_erasure",
+          "reason": "local returned-certificate computation only",
+          "local_fee": 0
+        },
+        {
+          "kind": "assign",
+          "lhs": "ciphers",
+          "expr": "0",
+          "source_statement": "ciphers<-0;",
+          "bucket": "ghost_erasure",
+          "reason": "local returned-certificate computation only",
+          "local_fee": 0
+        },
+        {
+          "kind": "call",
+          "lhs": "v0",
+          "target": "RRecTrit.check",
+          "args": "collision.`1",
+          "source_statement": "v0<@RRecTrit.check(collision.`1);",
+          "bucket": "kernel_profile",
+          "field": "trit",
+          "multiplicity": 1,
+          "selector_fee": 1,
+          "local_fee": 1
+        },
+        {
+          "kind": "assign",
+          "lhs": "trits",
+          "expr": "trits+1",
+          "source_statement": "trits<-trits+1;",
+          "bucket": "ghost_erasure",
+          "reason": "local returned-certificate computation only",
+          "local_fee": 0
+        },
+        {
+          "kind": "call",
+          "lhs": "v1",
+          "target": "RRecTrit.check",
+          "args": "collision.`2",
+          "source_statement": "v1<@RRecTrit.check(collision.`2);",
+          "bucket": "kernel_profile",
+          "field": "trit",
+          "multiplicity": 1,
+          "selector_fee": 1,
+          "local_fee": 1
+        },
+        {
+          "kind": "assign",
+          "lhs": "trits",
+          "expr": "trits+1",
+          "source_statement": "trits<-trits+1;",
+          "bucket": "ghost_erasure",
+          "reason": "local returned-certificate computation only",
+          "local_fee": 0
+        },
+        {
+          "kind": "call",
+          "lhs": "v2",
+          "target": "RRecTrit.check",
+          "args": "collision.`3",
+          "source_statement": "v2<@RRecTrit.check(collision.`3);",
+          "bucket": "kernel_profile",
+          "field": "trit",
+          "multiplicity": 1,
+          "selector_fee": 1,
+          "local_fee": 1
+        },
+        {
+          "kind": "assign",
+          "lhs": "trits",
+          "expr": "trits+1",
+          "source_statement": "trits<-trits+1;",
+          "bucket": "ghost_erasure",
+          "reason": "local returned-certificate computation only",
+          "local_fee": 0
+        },
+        {
+          "kind": "call",
+          "lhs": "v3",
+          "target": "RRecTrit.check",
+          "args": "collision.`4",
+          "source_statement": "v3<@RRecTrit.check(collision.`4);",
+          "bucket": "kernel_profile",
+          "field": "trit",
+          "multiplicity": 1,
+          "selector_fee": 1,
+          "local_fee": 1
+        },
+        {
+          "kind": "assign",
+          "lhs": "trits",
+          "expr": "trits+1",
+          "source_statement": "trits<-trits+1;",
+          "bucket": "ghost_erasure",
+          "reason": "local returned-certificate computation only",
+          "local_fee": 0
+        },
+        {
+          "kind": "call",
+          "lhs": "em",
+          "target": "RTPolyEqual.run",
+          "args": "collision.`1,collision.`2",
+          "source_statement": "em<@RTPolyEqual.run(collision.`1,collision.`2);",
+          "bucket": "kernel_profile",
+          "field": "poly_compare",
+          "multiplicity": 1,
+          "selector_fee": 2,
+          "local_fee": 2
+        },
+        {
+          "kind": "assign",
+          "lhs": "polys",
+          "expr": "polys+1",
+          "source_statement": "polys<-polys+1;",
+          "bucket": "ghost_erasure",
+          "reason": "local returned-certificate computation only",
+          "local_fee": 0
+        },
+        {
+          "kind": "call",
+          "lhs": "er",
+          "target": "RTPolyEqual.run",
+          "args": "collision.`3,collision.`4",
+          "source_statement": "er<@RTPolyEqual.run(collision.`3,collision.`4);",
+          "bucket": "kernel_profile",
+          "field": "poly_compare",
+          "multiplicity": 1,
+          "selector_fee": 2,
+          "local_fee": 2
+        },
+        {
+          "kind": "assign",
+          "lhs": "polys",
+          "expr": "polys+1",
+          "source_statement": "polys<-polys+1;",
+          "bucket": "ghost_erasure",
+          "reason": "local returned-certificate computation only",
+          "local_fee": 0
+        },
+        {
+          "kind": "if",
+          "cond": "v0 /\\ v1 /\\ v2 /\\ v3 /\\ !(em /\\ er)",
+          "body": [
+            {
+              "kind": "call",
+              "lhs": "c0",
+              "target": "PKEEnc.run",
+              "args": "pk,collision.`1,collision.`3",
+              "source_statement": "c0<@PKEEnc.run(pk,collision.`1,collision.`3);",
+              "bucket": "kernel_profile",
+              "field": "encrypt",
+              "multiplicity": 1,
+              "selector_fee": 2,
+              "local_fee": 2
+            },
+            {
+              "kind": "assign",
+              "lhs": "encryptions",
+              "expr": "encryptions+1",
+              "source_statement": "encryptions<-encryptions+1;",
+              "bucket": "ghost_erasure",
+              "reason": "local returned-certificate computation only",
+              "local_fee": 0
+            },
+            {
+              "kind": "call",
+              "lhs": "c1",
+              "target": "PKEEnc.run",
+              "args": "pk,collision.`2,collision.`4",
+              "source_statement": "c1<@PKEEnc.run(pk,collision.`2,collision.`4);",
+              "bucket": "kernel_profile",
+              "field": "encrypt",
+              "multiplicity": 1,
+              "selector_fee": 2,
+              "local_fee": 2
+            },
+            {
+              "kind": "assign",
+              "lhs": "encryptions",
+              "expr": "encryptions+1",
+              "source_statement": "encryptions<-encryptions+1;",
+              "bucket": "ghost_erasure",
+              "reason": "local returned-certificate computation only",
+              "local_fee": 0
+            },
+            {
+              "kind": "match",
+              "expr": "c0",
+              "branches": [
+                {
+                  "pattern": "None",
+                  "body": [],
+                  "binding_clone": 0,
+                  "body_bound": 0
+                },
+                {
+                  "pattern": "Some x",
+                  "body": [
+                    {
+                      "kind": "match",
+                      "expr": "c1",
+                      "branches": [
+                        {
+                          "pattern": "None",
+                          "body": [],
+                          "binding_clone": 0,
+                          "body_bound": 0
+                        },
+                        {
+                          "pattern": "Some y",
+                          "body": [
+                            {
+                              "kind": "call",
+                              "lhs": "cmp",
+                              "target": "HistKey.cipher",
+                              "args": "x,y",
+                              "source_statement": "cmp<@HistKey.cipher(x,y);",
+                              "bucket": "kernel_profile",
+                              "field": "cipher_compare",
+                              "multiplicity": 1,
+                              "selector_fee": 0,
+                              "local_fee": 0
+                            },
+                            {
+                              "kind": "assign",
+                              "lhs": "ciphers",
+                              "expr": "ciphers+1",
+                              "source_statement": "ciphers<-ciphers+1;",
+                              "bucket": "ghost_erasure",
+                              "reason": "local returned-certificate computation only",
+                              "local_fee": 0
+                            },
+                            {
+                              "kind": "assign",
+                              "lhs": "win",
+                              "expr": "cmp.`1",
+                              "source_statement": "win<-cmp.`1;",
+                              "bucket": "fixed",
+                              "fee_parts": {
+                                "transfer": 1,
+                                "selectors": 1,
+                                "result_clone": 0
+                              },
+                              "local_fee": 2
+                            }
+                          ],
+                          "binding_clone": 3456,
+                          "body_bound": 2
+                        }
+                      ],
+                      "source_statement": "match c1 with\n    | None => {}\n    | Some y => {cmp<@HistKey.cipher(x,y);ciphers<-ciphers+1;win<-cmp.`1;}\n    end;",
+                      "bucket": "fixed",
+                      "tag_and_branch": 2,
+                      "branch_max": 3458,
+                      "local_fee": 3460
+                    }
+                  ],
+                  "binding_clone": 3456,
+                  "body_bound": 3460
+                }
+              ],
+              "source_statement": "match c0 with\n   | None => {}\n   | Some x => {\n    match c1 with\n    | None => {}\n    | Some y => {cmp<@HistKey.cipher(x,y);ciphers<-ciphers+1;win<-cmp.`1;}\n    end;\n   }\n   end;",
+              "bucket": "fixed",
+              "tag_and_branch": 2,
+              "branch_max": 6916,
+              "local_fee": 6918
+            }
+          ],
+          "source_statement": "if(v0 /\\ v1 /\\ v2 /\\ v3 /\\ !(em /\\ er)){\n   c0<@PKEEnc.run(pk,collision.`1,collision.`3);encryptions<-encryptions+1;\n   c1<@PKEEnc.run(pk,collision.`2,collision.`4);encryptions<-encryptions+1;\n   match c0 with\n   | None => {}\n   | Some x => {\n    match c1 with\n    | None => {}\n    | Some y => {cmp<@HistKey.cipher(x,y);ciphers<-ciphers+1;win<-cmp.`1;}\n    end;\n   }\n   end;\n  }",
+          "bucket": "fixed",
+          "guard_fee": 7,
+          "branch_bound": 6922,
+          "local_fee": 6929
+        },
+        {
+          "kind": "return",
+          "expr": "(win,rtk_profile 0 0 0 0 encryptions trits polys ciphers 0 0)",
+          "source_statement": "return(win,rtk_profile 0 0 0 0 encryptions trits polys ciphers 0 0);",
+          "bucket": "fixed",
+          "data_expression": "win",
+          "fee_parts": {
+            "return": 1,
+            "result_clone": 0,
+            "selectors": 0
+          },
+          "local_fee": 1
+        }
+      ],
+      "fixed_subtotal": 19611,
+      "bound_op": "rt_outer_inj_check",
+      "bound_expression": "rt_outer_copy(1152+4*768)+1+4+4+7+4+\n 2*(2+rt_outer_copy 1152)+2+1",
+      "direct_kernel_profile": [
+        0,
+        0,
+        0,
+        0,
+        2,
+        4,
+        2,
+        1,
+        0,
+        0
+      ],
+      "fixed_callee_edges": [],
+      "source_body_ast_exact": true
+    },
+    {
+      "key": "encrypt",
+      "file": "kem_runtime_bound/NTRUPlus768RTKernels.ec",
+      "source_proc": "RTEncrypt.run",
+      "header": "proc run(pk:W8.t Array1152.t,m r:pke_poly):W8.t Array1152.t*rt_kernel_profile = ",
+      "body": "\n  var out:W8.t Array1152.t option;var ct:W8.t Array1152.t;var calls:int;\n  calls<-0;out<@PKEEnc.run(pk,m,r);calls<-calls+1;\n  ct<-if out=None then Array1152.init(fun _=>W8.zero) else oget out;\n  return(ct,rtk_profile 0 0 0 0 calls 0 0 0 0 0);\n ",
+      "source_sha256": "0958cce058a36b07449fe41b6b2dc9444c277c67e446230c6b5722119c4e0649",
+      "source_body_sha256": "24f8d834bae66eb5d100793957de98f277ab1e201e0c56914c0618c0a91aa59e",
+      "input_cells": 2688,
+      "return_cells": 1152,
+      "entry_fee": 8064,
+      "ghost_variables": [
+        "calls"
+      ],
+      "body_nodes": [
+        {
+          "kind": "assign",
+          "lhs": "calls",
+          "expr": "0",
+          "source_statement": "calls<-0;",
+          "bucket": "ghost_erasure",
+          "reason": "local returned-certificate computation only",
+          "local_fee": 0
+        },
+        {
+          "kind": "call",
+          "lhs": "out",
+          "target": "PKEEnc.run",
+          "args": "pk,m,r",
+          "source_statement": "out<@PKEEnc.run(pk,m,r);",
+          "bucket": "kernel_profile",
+          "field": "encrypt",
+          "multiplicity": 1,
+          "selector_fee": 0,
+          "local_fee": 0
+        },
+        {
+          "kind": "assign",
+          "lhs": "calls",
+          "expr": "calls+1",
+          "source_statement": "calls<-calls+1;",
+          "bucket": "ghost_erasure",
+          "reason": "local returned-certificate computation only",
+          "local_fee": 0
+        },
+        {
+          "kind": "assign",
+          "lhs": "ct",
+          "expr": "if out=None then Array1152.init(fun _=>W8.zero) else oget out",
+          "source_statement": "ct<-if out=None then Array1152.init(fun _=>W8.zero) else oget out;",
+          "bucket": "fixed",
+          "fee_parts": {
+            "transfer": 1,
+            "guard": 2,
+            "branch_max": 14983
+          },
+          "lowering": "RTOuterZero.cipher",
+          "local_fee": 14986
+        },
+        {
+          "kind": "return",
+          "expr": "(ct,rtk_profile 0 0 0 0 calls 0 0 0 0 0)",
+          "source_statement": "return(ct,rtk_profile 0 0 0 0 calls 0 0 0 0 0);",
+          "bucket": "fixed",
+          "data_expression": "ct",
+          "fee_parts": {
+            "return": 1,
+            "result_clone": 3456,
+            "selectors": 0
+          },
+          "local_fee": 3457
+        }
+      ],
+      "fixed_subtotal": 26507,
+      "bound_op": "rt_outer_encrypt",
+      "bound_expression": "rt_outer_copy(1152+2*768)+3+rt_outer_zero_call 1152+1+rt_outer_copy 1152",
+      "direct_kernel_profile": [
+        0,
+        0,
+        0,
+        0,
+        1,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "fixed_callee_edges": [],
+      "source_body_ast_exact": true
+    },
+    {
+      "key": "ow_kernel",
+      "file": "kem_runtime_bound/NTRUPlus768RTKernels.ec",
+      "source_proc": "RTOWKernel.run",
+      "header": "proc run(pk:W8.t Array1152.t):bool*rt_kernel_profile = ",
+      "body": "\n  var code,r,answer:pke_poly;var out:W8.t Array1152.t*rt_kernel_profile;\n  var win:bool;var draws,calls,comparisons:int;\n  draws<-0;calls<-0;comparisons<-0;\n  code<$pke_psi1;draws<-draws+1;\n  r<$pke_psi1;draws<-draws+1;\n  out<@RTEncrypt.run(pk,code,r);\n  answer<@B.run(pk,out.`1);calls<-calls+1;\n  win<@RTPolyEqual.run(answer,code);comparisons<-comparisons+1;\n  return(win,rtk_add out.`2(rtk_profile 0 0 0 0 0 0 comparisons 0 draws calls));\n ",
+      "source_sha256": "0958cce058a36b07449fe41b6b2dc9444c277c67e446230c6b5722119c4e0649",
+      "source_body_sha256": "11771ee00877fa108b1e3bea1400e5c0b3f4308a16eccb70012399ecef18b170",
+      "input_cells": 1152,
+      "return_cells": 0,
+      "entry_fee": 3456,
+      "ghost_variables": [
+        "draws",
+        "calls",
+        "comparisons"
+      ],
+      "body_nodes": [
+        {
+          "kind": "assign",
+          "lhs": "draws",
+          "expr": "0",
+          "source_statement": "draws<-0;",
+          "bucket": "ghost_erasure",
+          "reason": "local returned-certificate computation only",
+          "local_fee": 0
+        },
+        {
+          "kind": "assign",
+          "lhs": "calls",
+          "expr": "0",
+          "source_statement": "calls<-0;",
+          "bucket": "ghost_erasure",
+          "reason": "local returned-certificate computation only",
+          "local_fee": 0
+        },
+        {
+          "kind": "assign",
+          "lhs": "comparisons",
+          "expr": "0",
+          "source_statement": "comparisons<-0;",
+          "bucket": "ghost_erasure",
+          "reason": "local returned-certificate computation only",
+          "local_fee": 0
+        },
+        {
+          "kind": "sample",
+          "lhs": "code",
+          "law": "pke_psi1",
+          "source_statement": "code<$pke_psi1;",
+          "bucket": "kernel_profile",
+          "field": "psi_draw",
+          "multiplicity": 1,
+          "lowering": "RTPsiSampler.measure",
+          "distribution_equivalence": "rt_psi_sampler_law",
+          "cost_theorem": "rt_outer_psi_call_cost",
+          "local_fee": 0
+        },
+        {
+          "kind": "assign",
+          "lhs": "draws",
+          "expr": "draws+1",
+          "source_statement": "draws<-draws+1;",
+          "bucket": "ghost_erasure",
+          "reason": "local returned-certificate computation only",
+          "local_fee": 0
+        },
+        {
+          "kind": "sample",
+          "lhs": "r",
+          "law": "pke_psi1",
+          "source_statement": "r<$pke_psi1;",
+          "bucket": "kernel_profile",
+          "field": "psi_draw",
+          "multiplicity": 1,
+          "lowering": "RTPsiSampler.measure",
+          "distribution_equivalence": "rt_psi_sampler_law",
+          "cost_theorem": "rt_outer_psi_call_cost",
+          "local_fee": 0
+        },
+        {
+          "kind": "assign",
+          "lhs": "draws",
+          "expr": "draws+1",
+          "source_statement": "draws<-draws+1;",
+          "bucket": "ghost_erasure",
+          "reason": "local returned-certificate computation only",
+          "local_fee": 0
+        },
+        {
+          "kind": "call",
+          "lhs": "out",
+          "target": "RTEncrypt.run",
+          "args": "pk,code,r",
+          "source_statement": "out<@RTEncrypt.run(pk,code,r);",
+          "bucket": "fixed_callee",
+          "callee_key": "encrypt",
+          "return_cells": 1152,
+          "fee_parts": {
+            "call_frame": 2,
+            "arguments": 3,
+            "result_clone": 3456,
+            "selectors": 0,
+            "constructor": 0,
+            "constructor_payload_clone": 0
+          },
+          "local_fee": 3461
+        },
+        {
+          "kind": "call",
+          "lhs": "answer",
+          "target": "B.run",
+          "args": "pk,out.`1",
+          "source_statement": "answer<@B.run(pk,out.`1);",
+          "bucket": "fixed_callee",
+          "callee_key": "aux_ow",
+          "return_cells": 768,
+          "fee_parts": {
+            "call_frame": 2,
+            "arguments": 2,
+            "result_clone": 2304,
+            "selectors": 1,
+            "constructor": 0,
+            "constructor_payload_clone": 0
+          },
+          "attacker_profile_increment": 1,
+          "local_fee": 2309
+        },
+        {
+          "kind": "assign",
+          "lhs": "calls",
+          "expr": "calls+1",
+          "source_statement": "calls<-calls+1;",
+          "bucket": "ghost_erasure",
+          "reason": "local returned-certificate computation only",
+          "local_fee": 0
+        },
+        {
+          "kind": "call",
+          "lhs": "win",
+          "target": "RTPolyEqual.run",
+          "args": "answer,code",
+          "source_statement": "win<@RTPolyEqual.run(answer,code);",
+          "bucket": "kernel_profile",
+          "field": "poly_compare",
+          "multiplicity": 1,
+          "selector_fee": 0,
+          "local_fee": 0
+        },
+        {
+          "kind": "assign",
+          "lhs": "comparisons",
+          "expr": "comparisons+1",
+          "source_statement": "comparisons<-comparisons+1;",
+          "bucket": "ghost_erasure",
+          "reason": "local returned-certificate computation only",
+          "local_fee": 0
+        },
+        {
+          "kind": "return",
+          "expr": "(win,rtk_add out.`2(rtk_profile 0 0 0 0 0 0 comparisons 0 draws calls))",
+          "source_statement": "return(win,rtk_add out.`2(rtk_profile 0 0 0 0 0 0 comparisons 0 draws calls));",
+          "bucket": "fixed",
+          "data_expression": "win",
+          "fee_parts": {
+            "return": 1,
+            "result_clone": 0,
+            "selectors": 0
+          },
+          "local_fee": 1
+        }
+      ],
+      "fixed_subtotal": 9227,
+      "bound_op": "rt_outer_ow_kernel",
+      "bound_expression": "rt_outer_copy 1152+rt_outer_frame 3 1152+\n rt_outer_frame 2 768+1+1",
+      "direct_kernel_profile": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        1,
+        0,
+        2,
+        1
+      ],
+      "fixed_callee_edges": [
+        "encrypt",
+        "aux_ow"
+      ],
+      "source_body_ast_exact": true
+    },
+    {
+      "key": "aux_inj",
+      "file": "kem_acwc2_security/NTRUPlus768SecBaseGames.ec",
+      "source_proc": "SecINJAuxAdapter.run",
+      "header": "proc run(pk:W8.t Array1152.t) : sec_collision = ",
+      "body": "\n  var out:sec_collision;\n  SecAuxSetup.run(pk);out<@B.run(pk);return out;\n ",
+      "source_sha256": "075d1d28dda6f2ca400c5c02cfc6e812e7365cdfdc093998815e3abcac13ecfc",
+      "source_body_sha256": "43457ce423824394f3b3cad81c36081b4e7e4403733996118f71051016d3b542",
+      "input_cells": 1152,
+      "return_cells": 3072,
+      "entry_fee": 3456,
+      "ghost_variables": [],
+      "body_nodes": [
+        {
+          "kind": "call",
+          "lhs": null,
+          "target": "SecAuxSetup.run",
+          "args": "pk",
+          "source_statement": "SecAuxSetup.run(pk);",
+          "bucket": "setup_phase",
+          "callee_key": "setup",
+          "return_cells": 0,
+          "fee_parts": {
+            "call_frame": 2,
+            "arguments": 1,
+            "result_clone": 0,
+            "selectors": 0,
+            "constructor": 0,
+            "constructor_payload_clone": 0
+          },
+          "local_fee": 3
+        },
+        {
+          "kind": "call",
+          "lhs": "out",
+          "target": "B.run",
+          "args": "pk",
+          "source_statement": "out<@B.run(pk);",
+          "bucket": "fixed_callee",
+          "callee_key": "measured_inj_run",
+          "return_cells": 3072,
+          "fee_parts": {
+            "call_frame": 2,
+            "arguments": 1,
+            "result_clone": 9216,
+            "selectors": 0,
+            "constructor": 0,
+            "constructor_payload_clone": 0
+          },
+          "local_fee": 9219
+        },
+        {
+          "kind": "return",
+          "expr": "out",
+          "source_statement": "return out;",
+          "bucket": "fixed",
+          "data_expression": "out",
+          "fee_parts": {
+            "return": 1,
+            "result_clone": 9216,
+            "selectors": 0
+          },
+          "local_fee": 9217
+        }
+      ],
+      "fixed_subtotal": 21895,
+      "bound_op": "rt_outer_aux_inj",
+      "bound_expression": "rt_outer_copy 1152+rt_outer_frame 1 0+\n rt_outer_frame 1 (4*768)+1+rt_outer_copy(4*768)",
+      "direct_kernel_profile": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "fixed_callee_edges": [
+        "measured_inj_run"
+      ],
+      "source_body_ast_exact": true
+    },
+    {
+      "key": "aux_ow",
+      "file": "kem_acwc2_security/NTRUPlus768SecBaseGames.ec",
+      "source_proc": "SecOWAuxAdapter.run",
+      "header": "proc run(pk ct:W8.t Array1152.t) : pke_poly = ",
+      "body": "\n  var out:pke_poly;\n  SecAuxSetup.run(pk);out<@B.run(pk,ct);return out;\n ",
+      "source_sha256": "075d1d28dda6f2ca400c5c02cfc6e812e7365cdfdc093998815e3abcac13ecfc",
+      "source_body_sha256": "b884f46387f507436591afd6403a770a65b5ac0533ba686b9a55a9f7495f2bcf",
+      "input_cells": 2304,
+      "return_cells": 768,
+      "entry_fee": 6912,
+      "ghost_variables": [],
+      "body_nodes": [
+        {
+          "kind": "call",
+          "lhs": null,
+          "target": "SecAuxSetup.run",
+          "args": "pk",
+          "source_statement": "SecAuxSetup.run(pk);",
+          "bucket": "setup_phase",
+          "callee_key": "setup",
+          "return_cells": 0,
+          "fee_parts": {
+            "call_frame": 2,
+            "arguments": 1,
+            "result_clone": 0,
+            "selectors": 0,
+            "constructor": 0,
+            "constructor_payload_clone": 0
+          },
+          "local_fee": 3
+        },
+        {
+          "kind": "call",
+          "lhs": "out",
+          "target": "B.run",
+          "args": "pk,ct",
+          "source_statement": "out<@B.run(pk,ct);",
+          "bucket": "fixed_callee",
+          "callee_key": "measured_ow",
+          "return_cells": 768,
+          "fee_parts": {
+            "call_frame": 2,
+            "arguments": 2,
+            "result_clone": 2304,
+            "selectors": 0,
+            "constructor": 0,
+            "constructor_payload_clone": 0
+          },
+          "local_fee": 2308
+        },
+        {
+          "kind": "return",
+          "expr": "out",
+          "source_statement": "return out;",
+          "bucket": "fixed",
+          "data_expression": "out",
+          "fee_parts": {
+            "return": 1,
+            "result_clone": 2304,
+            "selectors": 0
+          },
+          "local_fee": 2305
+        }
+      ],
+      "fixed_subtotal": 11528,
+      "bound_op": "rt_outer_aux_ow",
+      "bound_expression": "rt_outer_copy(2*1152)+rt_outer_frame 1 0+\n rt_outer_frame 2 768+1+rt_outer_copy 768",
+      "direct_kernel_profile": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "fixed_callee_edges": [
+        "measured_ow"
+      ],
+      "source_body_ast_exact": true
+    },
+    {
+      "key": "measured_inj_run",
+      "file": "kem_runtime_bound/NTRUPlus768RTProjection.ec",
+      "source_proc": "RTMeasuredINJ.run",
+      "header": "proc run(pk:W8.t Array1152.t):sec_collision = ",
+      "body": "\n  var out:sec_collision*rt_kernel_profile;\n  out<@measure(pk);return out.`1;\n ",
+      "source_sha256": "bb191e24f9533dc9cb6968fdb7621d103b9e5ad01f13892b02c3f9a542a3ab8c",
+      "source_body_sha256": "4bba26ac59d603a0ab99af02c3c29042b2499e7fe17b6de3499432302c7d04fc",
+      "input_cells": 1152,
+      "return_cells": 3072,
+      "entry_fee": 3456,
+      "ghost_variables": [],
+      "body_nodes": [
+        {
+          "kind": "call",
+          "lhs": "out",
+          "target": "measure",
+          "args": "pk",
+          "source_statement": "out<@measure(pk);",
+          "bucket": "fixed_callee",
+          "callee_key": "measured_inj",
+          "return_cells": 3072,
+          "fee_parts": {
+            "call_frame": 2,
+            "arguments": 1,
+            "result_clone": 9216,
+            "selectors": 0,
+            "constructor": 0,
+            "constructor_payload_clone": 0
+          },
+          "local_fee": 9219
+        },
+        {
+          "kind": "return",
+          "expr": "out.`1",
+          "source_statement": "return out.`1;",
+          "bucket": "fixed",
+          "data_expression": "out.`1",
+          "fee_parts": {
+            "return": 1,
+            "result_clone": 9216,
+            "selectors": 1
+          },
+          "local_fee": 9218
+        }
+      ],
+      "fixed_subtotal": 21893,
+      "bound_op": "rt_outer_measured_inj_run",
+      "bound_expression": "rt_outer_copy 1152+rt_outer_frame 1 (4*768)+2+rt_outer_copy(4*768)",
+      "direct_kernel_profile": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "fixed_callee_edges": [
+        "measured_inj"
+      ],
+      "source_body_ast_exact": true
+    },
+    {
+      "key": "measured_inj",
+      "file": "kem_runtime_bound/NTRUPlus768RTProjection.ec",
+      "source_proc": "RTMeasuredINJ.measure",
+      "header": "proc measure(pk:W8.t Array1152.t):sec_collision*rt_kernel_profile = ",
+      "body": "\n  var code,r:pke_poly;var draws:int;var enc:W8.t Array1152.t*rt_kernel_profile;\n  var transcript:W8.t Array1152.t list*rt_profile;\n  var out:(pke_poly*pke_poly) option;var collision:sec_collision;\n  draws<-0;\n  code<$pke_psi1;draws<-draws+1;\n  r<$pke_psi1;draws<-draws+1;\n  enc<@RTEncrypt.run(pk,code,r);\n  transcript<@RTTranscript(S,A).run(pk,enc.`1);\n  out<@RTExtract(S).run(pk,enc.`1,Some r,transcript.`1);\n  collision<-if out=None then (code,code,r,r) else (code,(oget out).`1,r,(oget out).`2);\n  return(collision,rtk_add enc.`2(rtk_profile 0 0 0 0 0 0 0 0 draws 0));\n ",
+      "source_sha256": "bb191e24f9533dc9cb6968fdb7621d103b9e5ad01f13892b02c3f9a542a3ab8c",
+      "source_body_sha256": "a5d7d14155dd335ea6667b06b96910b9a416cc168f0b2e39e1ac1c0dc5da0cb1",
+      "input_cells": 1152,
+      "return_cells": 3072,
+      "entry_fee": 3456,
+      "ghost_variables": [
+        "draws"
+      ],
+      "body_nodes": [
+        {
+          "kind": "assign",
+          "lhs": "draws",
+          "expr": "0",
+          "source_statement": "draws<-0;",
+          "bucket": "ghost_erasure",
+          "reason": "local returned-certificate computation only",
+          "local_fee": 0
+        },
+        {
+          "kind": "sample",
+          "lhs": "code",
+          "law": "pke_psi1",
+          "source_statement": "code<$pke_psi1;",
+          "bucket": "kernel_profile",
+          "field": "psi_draw",
+          "multiplicity": 1,
+          "lowering": "RTPsiSampler.measure",
+          "distribution_equivalence": "rt_psi_sampler_law",
+          "cost_theorem": "rt_outer_psi_call_cost",
+          "local_fee": 0
+        },
+        {
+          "kind": "assign",
+          "lhs": "draws",
+          "expr": "draws+1",
+          "source_statement": "draws<-draws+1;",
+          "bucket": "ghost_erasure",
+          "reason": "local returned-certificate computation only",
+          "local_fee": 0
+        },
+        {
+          "kind": "sample",
+          "lhs": "r",
+          "law": "pke_psi1",
+          "source_statement": "r<$pke_psi1;",
+          "bucket": "kernel_profile",
+          "field": "psi_draw",
+          "multiplicity": 1,
+          "lowering": "RTPsiSampler.measure",
+          "distribution_equivalence": "rt_psi_sampler_law",
+          "cost_theorem": "rt_outer_psi_call_cost",
+          "local_fee": 0
+        },
+        {
+          "kind": "assign",
+          "lhs": "draws",
+          "expr": "draws+1",
+          "source_statement": "draws<-draws+1;",
+          "bucket": "ghost_erasure",
+          "reason": "local returned-certificate computation only",
+          "local_fee": 0
+        },
+        {
+          "kind": "call",
+          "lhs": "enc",
+          "target": "RTEncrypt.run",
+          "args": "pk,code,r",
+          "source_statement": "enc<@RTEncrypt.run(pk,code,r);",
+          "bucket": "fixed_callee",
+          "callee_key": "encrypt",
+          "return_cells": 1152,
+          "fee_parts": {
+            "call_frame": 2,
+            "arguments": 3,
+            "result_clone": 3456,
+            "selectors": 0,
+            "constructor": 0,
+            "constructor_payload_clone": 0
+          },
+          "local_fee": 3461
+        },
+        {
+          "kind": "call",
+          "lhs": "transcript",
+          "target": "RTTranscript(S,A).run",
+          "args": "pk,enc.`1",
+          "source_statement": "transcript<@RTTranscript(S,A).run(pk,enc.`1);",
+          "bucket": "adaptive_phase",
+          "callee_key": "phase",
+          "return_cells": 0,
+          "fee_parts": {
+            "call_frame": 2,
+            "arguments": 2,
+            "result_clone": 0,
+            "selectors": 1,
+            "constructor": 0,
+            "constructor_payload_clone": 0
+          },
+          "local_fee": 5
+        },
+        {
+          "kind": "call",
+          "lhs": "out",
+          "target": "RTExtract(S).run",
+          "args": "pk,enc.`1,Some r,transcript.`1",
+          "source_statement": "out<@RTExtract(S).run(pk,enc.`1,Some r,transcript.`1);",
+          "bucket": "fixed_callee",
+          "callee_key": "extract_wrapper",
+          "return_cells": 1536,
+          "fee_parts": {
+            "call_frame": 2,
+            "arguments": 4,
+            "result_clone": 4608,
+            "selectors": 2,
+            "constructor": 1,
+            "constructor_payload_clone": 2304
+          },
+          "local_fee": 6921
+        },
+        {
+          "kind": "assign",
+          "lhs": "collision",
+          "expr": "if out=None then (code,code,r,r) else (code,(oget out).`1,r,(oget out).`2)",
+          "source_statement": "collision<-if out=None then (code,code,r,r) else (code,(oget out).`1,r,(oget out).`2);",
+          "bucket": "fixed",
+          "fee_parts": {
+            "guard": 2,
+            "tuple_constructor": 3,
+            "selectors": 4,
+            "transfer": 1,
+            "result_clone": 9216
+          },
+          "local_fee": 9226
+        },
+        {
+          "kind": "return",
+          "expr": "(collision,rtk_add enc.`2(rtk_profile 0 0 0 0 0 0 0 0 draws 0))",
+          "source_statement": "return(collision,rtk_add enc.`2(rtk_profile 0 0 0 0 0 0 0 0 draws 0));",
+          "bucket": "fixed",
+          "data_expression": "collision",
+          "fee_parts": {
+            "return": 1,
+            "result_clone": 9216,
+            "selectors": 0
+          },
+          "local_fee": 9217
+        }
+      ],
+      "fixed_subtotal": 32286,
+      "bound_op": "rt_outer_measured_inj",
+      "bound_expression": "rt_outer_copy 1152+rt_outer_frame 3 1152+\n rt_outer_frame 2 0+1+\n rt_outer_frame 4 (2*768)+2+1+rt_outer_copy 768+\n (2+3+4+1+rt_outer_copy(4*768))+1+rt_outer_copy(4*768)",
+      "direct_kernel_profile": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        2,
+        0
+      ],
+      "fixed_callee_edges": [
+        "encrypt",
+        "extract_wrapper"
+      ],
+      "source_body_ast_exact": true
+    },
+    {
+      "key": "measured_ow",
+      "file": "kem_runtime_bound/NTRUPlus768RTProjection.ec",
+      "source_proc": "RTMeasuredOW.run",
+      "header": "proc run(pk ct:W8.t Array1152.t):pke_poly = ",
+      "body": "\n  var transcript:W8.t Array1152.t list*rt_profile;\n  var out:(pke_poly*pke_poly) option;\n  transcript<@RTTranscript(S,A).run(pk,ct);\n  out<@RTExtract(S).run(pk,ct,None,transcript.`1);\n  return if out=None then sec_zero else (oget out).`1;\n ",
+      "source_sha256": "bb191e24f9533dc9cb6968fdb7621d103b9e5ad01f13892b02c3f9a542a3ab8c",
+      "source_body_sha256": "a226c727bdbc69a09c2be91c8c06e5415fb09b0c06401d74db749e2ceacca444",
+      "input_cells": 2304,
+      "return_cells": 768,
+      "entry_fee": 6912,
+      "ghost_variables": [],
+      "body_nodes": [
+        {
+          "kind": "call",
+          "lhs": "transcript",
+          "target": "RTTranscript(S,A).run",
+          "args": "pk,ct",
+          "source_statement": "transcript<@RTTranscript(S,A).run(pk,ct);",
+          "bucket": "adaptive_phase",
+          "callee_key": "phase",
+          "return_cells": 0,
+          "fee_parts": {
+            "call_frame": 2,
+            "arguments": 2,
+            "result_clone": 0,
+            "selectors": 0,
+            "constructor": 0,
+            "constructor_payload_clone": 0
+          },
+          "local_fee": 4
+        },
+        {
+          "kind": "call",
+          "lhs": "out",
+          "target": "RTExtract(S).run",
+          "args": "pk,ct,None,transcript.`1",
+          "source_statement": "out<@RTExtract(S).run(pk,ct,None,transcript.`1);",
+          "bucket": "fixed_callee",
+          "callee_key": "extract_wrapper",
+          "return_cells": 1536,
+          "fee_parts": {
+            "call_frame": 2,
+            "arguments": 4,
+            "result_clone": 4608,
+            "selectors": 1,
+            "constructor": 0,
+            "constructor_payload_clone": 0
+          },
+          "local_fee": 4615
+        },
+        {
+          "kind": "return",
+          "expr": "if out=None then sec_zero else (oget out).`1",
+          "source_statement": "return if out=None then sec_zero else (oget out).`1;",
+          "bucket": "fixed",
+          "fee_parts": {
+            "return": 1,
+            "result_clone": 2304,
+            "guard": 2,
+            "branch_max": 9991
+          },
+          "lowering": "RTOuterZero.words",
+          "false_branch_selectors": 2,
+          "local_fee": 12298
+        }
+      ],
+      "fixed_subtotal": 23829,
+      "bound_op": "rt_outer_measured_ow",
+      "bound_expression": "rt_outer_copy(2*1152)+rt_outer_frame 2 0+\n rt_outer_frame 4 (2*768)+1+1+rt_outer_copy 768+2+rt_outer_zero_call 768",
+      "direct_kernel_profile": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "fixed_callee_edges": [
+        "extract_wrapper"
+      ],
+      "source_body_ast_exact": true
+    },
+    {
+      "key": "extract_wrapper",
+      "file": "kem_runtime_bound/NTRUPlus768RTProjection.ec",
+      "source_proc": "RTExtract.run",
+      "header": "proc run(pk ct:W8.t Array1152.t,excluded:pke_poly option,\n          queries:W8.t Array1152.t list):(pke_poly*pke_poly) option = ",
+      "body": "\n  var out:((pke_poly*pke_poly) option)*int;\n  out<@CostExtract.run(pk,ct,excluded,queries);\n  S.charge_extract(out.`2);\n  return out.`1;\n ",
+      "source_sha256": "bb191e24f9533dc9cb6968fdb7621d103b9e5ad01f13892b02c3f9a542a3ab8c",
+      "source_body_sha256": "3c02b0bafc4437d1b272a1b17b62d33f31c89dc52dd851c401f0620ddf4c1e9f",
+      "input_cells": 3072,
+      "return_cells": 1536,
+      "entry_fee": 9216,
+      "ghost_variables": [],
+      "body_nodes": [
+        {
+          "kind": "call",
+          "lhs": "out",
+          "target": "CostExtract.run",
+          "args": "pk,ct,excluded,queries",
+          "source_statement": "out<@CostExtract.run(pk,ct,excluded,queries);",
+          "bucket": "extraction_phase",
+          "callee_key": "extraction",
+          "return_cells": 1536,
+          "fee_parts": {
+            "call_frame": 2,
+            "arguments": 4,
+            "result_clone": 4608,
+            "selectors": 0,
+            "constructor": 0,
+            "constructor_payload_clone": 0
+          },
+          "local_fee": 4614
+        },
+        {
+          "kind": "call",
+          "lhs": null,
+          "target": "S.charge_extract",
+          "args": "out.`2",
+          "source_statement": "S.charge_extract(out.`2);",
+          "bucket": "ghost_erasure",
+          "reason": "ledger observation/update only",
+          "local_fee": 0
+        },
+        {
+          "kind": "return",
+          "expr": "out.`1",
+          "source_statement": "return out.`1;",
+          "bucket": "fixed",
+          "data_expression": "out.`1",
+          "fee_parts": {
+            "return": 1,
+            "result_clone": 4608,
+            "selectors": 1
+          },
+          "local_fee": 4610
+        }
+      ],
+      "fixed_subtotal": 18440,
+      "bound_op": "rt_outer_extract_wrapper",
+      "bound_expression": "rt_outer_copy(2*1152+768)+rt_outer_frame 4 (2*768)+2+rt_outer_copy(2*768)",
+      "direct_kernel_profile": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "fixed_callee_edges": [],
+      "source_body_ast_exact": true
+    }
+  ],
+  "endpoints": {
+    "di": {
+      "fixed_blocks": [
+        "top_di",
+        "word_inj",
+        "inj_check",
+        "aux_inj",
+        "measured_inj_run",
+        "measured_inj",
+        "extract_wrapper",
+        "encrypt"
+      ],
+      "fixed_total": 154473,
+      "profile_cap": [
+        1,
+        1,
+        1,
+        0,
+        3,
+        4,
+        2,
+        1,
+        2,
+        1
+      ],
+      "kernel_total_without_tA": 17152797,
+      "bound_without_tA": 17307270,
+      "profile_and_fixed_callgraph_reconstructed": true,
+      "actual_endpoint": "RTWord_DI(S,A).measure",
+      "actual_profile_bound": "rt_word_di_kernel_profile",
+      "priced_actual_bound": "rt_outer_word_di_bound"
+    },
+    "do": {
+      "fixed_blocks": [
+        "top_do",
+        "word_ow",
+        "ow_kernel",
+        "aux_ow",
+        "measured_ow",
+        "extract_wrapper",
+        "encrypt"
+      ],
+      "fixed_total": 94152,
+      "profile_cap": [
+        1,
+        1,
+        1,
+        0,
+        1,
+        0,
+        1,
+        0,
+        2,
+        1
+      ],
+      "kernel_total_without_tA": 10025527,
+      "bound_without_tA": 10119679,
+      "profile_and_fixed_callgraph_reconstructed": true,
+      "actual_endpoint": "RTWord_DO(S,A).measure",
+      "actual_profile_bound": "rt_word_do_kernel_profile",
+      "priced_actual_bound": "rt_outer_word_do_bound"
+    },
+    "co": {
+      "fixed_blocks": [
+        "top_co",
+        "word_rlwe",
+        "aux_ow",
+        "measured_ow",
+        "extract_wrapper"
+      ],
+      "fixed_total": 84541,
+      "profile_cap": [
+        0,
+        1,
+        2,
+        1,
+        0,
+        0,
+        0,
+        0,
+        0,
+        1
+      ],
+      "kernel_total_without_tA": 17999682,
+      "bound_without_tA": 18084223,
+      "profile_and_fixed_callgraph_reconstructed": true,
+      "actual_endpoint": "RTWord_CO(S,A).measure",
+      "actual_profile_bound": "rt_word_co_kernel_profile",
+      "priced_actual_bound": "rt_outer_word_co_bound"
+    }
+  },
+  "kernel_callees": {
+    "scale": {
+      "actual": "RTWordScale3.run",
+      "measured": "RTWordScale3.measure",
+      "body_bound": "19204",
+      "arity": 1,
+      "result_cells": 768,
+      "cost_theorem": "rt_outer_scale_call_cost",
+      "projection": "rt_word_scale3_measure_projection"
+    },
+    "unit": {
+      "actual": "RTWordUnit.run",
+      "measured": "RTKernelUnit.run",
+      "body_bound": "rt_kernel_unit_bound",
+      "arity": 1,
+      "result_cells": 0,
+      "cost_theorem": "rt_outer_unit_call_cost",
+      "projection": "rt_kernel_unit_projection"
+    },
+    "encode": {
+      "actual": "RTWordEncode.run",
+      "measured": "RTKernelEncode.run",
+      "body_bound": "rt_kernel_encode_bound",
+      "arity": 1,
+      "result_cells": 1152,
+      "cost_theorem": "rt_outer_encode_call_cost",
+      "projection": "rt_kernel_encode_projection"
+    },
+    "recover": {
+      "actual": "RTWordRecover.run",
+      "measured": "RTKernelRecover.run",
+      "body_bound": "rt_kernel_recover_bound",
+      "arity": 3,
+      "result_cells": 768,
+      "cost_theorem": "rt_outer_recover_call_cost",
+      "projection": "rt_kernel_recover_projection"
+    },
+    "encrypt": {
+      "actual": "PKEEnc.run",
+      "measured": "RTKernelPKEEnc.run",
+      "body_bound": "rt_kernel_pkeenc_bound",
+      "arity": 3,
+      "result_cells": 1152,
+      "cost_theorem": "rt_outer_encrypt_call_cost",
+      "projection": "rt_kernel_pkeenc_projection"
+    },
+    "trit": {
+      "actual": "RRecTrit.check",
+      "measured": "RTFixedWordChecks.trit",
+      "body_bound": "rt_fixed_trit_bound",
+      "arity": 1,
+      "result_cells": 0,
+      "cost_theorem": "rt_outer_trit_call_cost",
+      "projection": "rt_fixed_trit_projection"
+    },
+    "poly_compare": {
+      "actual": "RTPolyEqual.run",
+      "measured": "RTPrimitive.word_equal",
+      "body_bound": "rt_word_compare_steps 768",
+      "arity": 2,
+      "result_cells": 0,
+      "cost_theorem": "rt_outer_poly_compare_call_cost",
+      "projection": "rt_outer_poly_compare_projection"
+    },
+    "cipher_compare": {
+      "actual": "HistKey.cipher",
+      "measured": "RTPrimitive.cipher",
+      "body_bound": "rt_byte_compare_steps 1152",
+      "arity": 2,
+      "result_cells": 0,
+      "cost_theorem": "rt_outer_cipher_compare_call_cost",
+      "projection": "rt_primitive_cipher_projection"
+    },
+    "psi_draw": {
+      "actual": "pke_psi1 distribution",
+      "measured": "RTPsiSampler.measure",
+      "body_bound": "rt_fixed_cbd_bound+5767+192",
+      "arity": 0,
+      "result_cells": 768,
+      "cost_theorem": "rt_outer_psi_call_cost",
+      "distribution_equivalence": "rt_psi_sampler_law",
+      "projection": "rt_psi_sampler_measure_projection"
+    }
+  },
+  "zero_lowerings": [
+    {
+      "procedure": "RTOuterZero.words",
+      "cells": 768,
+      "initial_cost": 772,
+      "loop_guard": "i<768",
+      "iteration_cost": 6,
+      "return_cost": 2305,
+      "cost_result": 7685,
+      "call_with_binding": 9991,
+      "correctness": "rt_outer_zero_words_correct",
+      "header": "proc words():pke_poly*int = ",
+      "body": "\n  var out:pke_poly;var i,work:int;\n  out<-witness;work<-769;\n  i<-0;work<-work+1;work<-work+2;\n  while(i<768){\n   out.[i]<-W16.zero;work<-work+2;\n   i<-i+1;work<-work+2;work<-work+2;\n  }\n  work<-work+2305;return(out,work);\n ",
+      "source_body_sha256": "c31ffe8b6a215c4b1bb1ea13b55ac1cd4c105ab9c67158f95602f533b1da9dcd",
+      "ghost_variable": "work",
+      "initial_parts": {
+        "scratch_alloc_and_transfer": 769,
+        "index_init": 1,
+        "loop_guard": 2
+      },
+      "loop_parts": {
+        "zero_element_store_and_transfer": 2,
+        "index_increment": 2,
+        "loop_guard": 2
+      },
+      "return_parts": {
+        "return": 1,
+        "result_clone": 2304
+      }
+    },
+    {
+      "procedure": "RTOuterZero.cipher",
+      "cells": 1152,
+      "initial_cost": 1156,
+      "loop_guard": "i<1152",
+      "iteration_cost": 6,
+      "return_cost": 3457,
+      "cost_result": 11525,
+      "call_with_binding": 14983,
+      "correctness": "rt_outer_zero_cipher_correct",
+      "header": "proc cipher():W8.t Array1152.t*int = ",
+      "body": "\n  var out:W8.t Array1152.t;var i,work:int;\n  out<-witness;work<-1153;\n  i<-0;work<-work+1;work<-work+2;\n  while(i<1152){\n   out.[i]<-W8.zero;work<-work+2;\n   i<-i+1;work<-work+2;work<-work+2;\n  }\n  work<-work+3457;return(out,work);\n ",
+      "source_body_sha256": "b1c94df8e44f8678de5452d9707e67998cbc026f5d6a0286f102df88d4999b19",
+      "ghost_variable": "work",
+      "initial_parts": {
+        "scratch_alloc_and_transfer": 1153,
+        "index_init": 1,
+        "loop_guard": 2
+      },
+      "loop_parts": {
+        "zero_element_store_and_transfer": 2,
+        "index_increment": 2,
+        "loop_guard": 2
+      },
+      "return_parts": {
+        "return": 1,
+        "result_clone": 3456
+      }
+    }
+  ],
+  "composition_contract": {
+    "DI_inner_counts": "rt_inj_complete_profile already adds 2 psi draws and 1 encryption times the actual B invocation flag; never added again",
+    "measure_only": "Core subtotals price measure; run_dispatchers independently price the actual run call/entry/return boundaries.",
+    "attacker_self": "t_A upper-bounds only the instructions executed by A, excluding oracle bodies and all reduction frames.",
+    "primitive_model": "finite word primitives plus ideal randomness/oracle events; no CPU-cycle/native storage or general PPT claim",
+    "conditional_fixed_work": "Each reachable loopless helper is reserved once, even on rejecting branches; all variable-length work remains in the phase bucket.",
+    "actual_run": "The actual security games call run. Its measured core is executed once and the independently priced dispatcher is added by RTCompleteCost."
+  },
+  "source_sha256": "7536c9210dd5e906fb336c649c6ae3364c918c4dc900e45a75a99a72634a72fa",
+  "diagnostic_report": "/tmp/ntruplus-runtime-bound-4_fndmig/proof-checks/NTRUPlus768RTOuterCost-kxxk36jl/summary.json",
+  "helper_definitions": {
+    "rt_outer_copy": "op rt_outer_copy(n:int)=3*n.",
+    "rt_outer_frame": "op rt_outer_frame(arity cells:int)=2+arity+rt_outer_copy cells.",
+    "rt_outer_zero_steps": "op rt_outer_zero_steps(n:int)=10*n+5.",
+    "rt_outer_zero_call": "op rt_outer_zero_call(n:int)=rt_outer_zero_steps n+rt_outer_frame 0 n."
+  },
+  "strict_report": "/tmp/ntruplus-runtime-bound-4_fndmig/proof-checks/NTRUPlus768RTOuterCost-uchvelyw/summary.json",
+  "lemmas": 28,
+  "independent_harness_review_pending": true,
+  "run_dispatchers": [
+    {
+      "file": "kem_runtime_bound/NTRUPlus768RTWordReduction.ec",
+      "source_proc": "RTWord_DI.run",
+      "source_sha256": "13fa332d8495770975145a96653db6c197c9f3c88606cd6e8868ce915abd8b3b",
+      "body": "\n  var out:bool*rt_profile*rt_kernel_profile;\n  out<@measure(h);return out.`1;\n ",
+      "source_body_sha256": "65904e5323dab3545cb31460799c57089047c03939c4bab5ca5f6128c093c4ef",
+      "input_cells": 768,
+      "result_cells": 0,
+      "arity": 1,
+      "measure_call_count": 1,
+      "measure_target": "RTWord_DI.measure",
+      "fee_parts": {
+        "entry_clone": 2304,
+        "call_frame": 2,
+        "arguments": 1,
+        "call_result_clone": 0,
+        "return": 1,
+        "result_selector": 1,
+        "return_clone": 0
+      },
+      "cost": 2309,
+      "complete_cost_op": "rt_run_di_overhead",
+      "kernel_or_phase_duplicate": false
+    },
+    {
+      "file": "kem_runtime_bound/NTRUPlus768RTWordReduction.ec",
+      "source_proc": "RTWord_DO.run",
+      "source_sha256": "13fa332d8495770975145a96653db6c197c9f3c88606cd6e8868ce915abd8b3b",
+      "body": "\n  var out:bool*rt_profile*rt_kernel_profile;\n  out<@measure(h);return out.`1;\n ",
+      "source_body_sha256": "65904e5323dab3545cb31460799c57089047c03939c4bab5ca5f6128c093c4ef",
+      "input_cells": 768,
+      "result_cells": 0,
+      "arity": 1,
+      "measure_call_count": 1,
+      "measure_target": "RTWord_DO.measure",
+      "fee_parts": {
+        "entry_clone": 2304,
+        "call_frame": 2,
+        "arguments": 1,
+        "call_result_clone": 0,
+        "return": 1,
+        "result_selector": 1,
+        "return_clone": 0
+      },
+      "cost": 2309,
+      "complete_cost_op": "rt_run_do_overhead",
+      "kernel_or_phase_duplicate": false
+    },
+    {
+      "file": "kem_runtime_bound/NTRUPlus768RTWordReduction.ec",
+      "source_proc": "RTWord_CO.run",
+      "source_sha256": "13fa332d8495770975145a96653db6c197c9f3c88606cd6e8868ce915abd8b3b",
+      "body": "\n  var out:pke_poly*rt_profile*rt_kernel_profile;\n  out<@measure(a,b);return out.`1;\n ",
+      "source_body_sha256": "4e5c2107146acc112cc63c4c55762f0688dd0a570da92d7aaf30814daf669621",
+      "input_cells": 1536,
+      "result_cells": 768,
+      "arity": 2,
+      "measure_call_count": 1,
+      "measure_target": "RTWord_CO.measure",
+      "fee_parts": {
+        "entry_clone": 4608,
+        "call_frame": 2,
+        "arguments": 2,
+        "call_result_clone": 2304,
+        "return": 1,
+        "result_selector": 1,
+        "return_clone": 2304
+      },
+      "cost": 9222,
+      "complete_cost_op": "rt_run_co_overhead",
+      "kernel_or_phase_duplicate": false
+    }
+  ]
+}

@@ -1,0 +1,4075 @@
+{
+  "schema": 1,
+  "kind": "manual-phase",
+  "model": "unit-cost-integer-word-ideal-rom-v1",
+  "status": "FROZEN",
+  "entries": [
+    {
+      "source": "ntruplus/proof/768/ref/kem_history_refinement/NTRUPlus768HistTable.ec",
+      "module": "HistKeep",
+      "procedure": "run",
+      "normalized_body_sha256": "b3ea28d52e056461ec2c2cd839763282fe47b216bb1188325c79d5a518c45b99",
+      "source_fragment": "var todo,kept:hist_table;var entry:hist_entry;var cmp:bool*int;\n  var visits,comparisons:int;\n  todo<-xs;kept<-[];visits<-0;comparisons<-0;\n  while(todo<>[]){\n   entry<-head (x,hist_zero_value) todo;todo<-behead todo;\n   cmp<@HistKey.equal(entry.`1,x);\n   visits<-visits+1;comparisons<-comparisons+cmp.`2;\n   if(!cmp.`1){kept<-entry::kept;}\n  }\n  return(kept,visits,comparisons);",
+      "rule_id": "phase-source-block-v1",
+      "allocation": {
+        "entry_fixed_array_cells": 128,
+        "loop_visits": "n",
+        "successful_cons": "k"
+      },
+      "units_expr": "entry/return + n*(rt_phase_keep_visit+rt_key_compare_steps) + k*rt_phase_history_cons",
+      "calls": [
+        {
+          "target": "HistKey.equal",
+          "rule_id": "primitive-key128-verified"
+        }
+      ],
+      "certificate_theorem": "rt_phase_visit_calibration",
+      "blocks": [
+        {
+          "id": "complete-body",
+          "source_fragment": "var todo,kept:hist_table;var entry:hist_entry;var cmp:bool*int;\n  var visits,comparisons:int;\n  todo<-xs;kept<-[];visits<-0;comparisons<-0;\n  while(todo<>[]){\n   entry<-head (x,hist_zero_value) todo;todo<-behead todo;\n   cmp<@HistKey.equal(entry.`1,x);\n   visits<-visits+1;comparisons<-comparisons+cmp.`2;\n   if(!cmp.`1){kept<-entry::kept;}\n  }\n  return(kept,visits,comparisons);",
+          "occurrences": 1,
+          "rule_id": "phase-source-block-v1",
+          "units_expr": "entry/return + n*(rt_phase_keep_visit+rt_key_compare_steps) + k*rt_phase_history_cons"
+        }
+      ],
+      "numeric_rule": "phase-finite-source-token-and-array-bound-v1",
+      "array_value_cells": {
+        "x": 128,
+        "entry": 352
+      },
+      "fixed_breakdown": {
+        "local_scalar_ops": 30,
+        "guards": 1,
+        "list_ops": {
+          "head": 0,
+          "behead": 0,
+          "cons": 0
+        },
+        "array_reference_occurrences": {},
+        "array_copy_cells": 128,
+        "initializer_cells": 0,
+        "initializer_calls": 0,
+        "numeric_local_upper": 415,
+        "array_boundary_cells": {
+          "entry": 128,
+          "return": 0
+        }
+      },
+      "per_visit_breakdown": {
+        "local_scalar_ops": 64,
+        "guards": 2,
+        "list_ops": {
+          "head": 1,
+          "behead": 1,
+          "cons": 1
+        },
+        "array_reference_occurrences": {
+          "x": 2,
+          "entry": 3
+        },
+        "array_copy_cells": 1312,
+        "initializer_cells": 224,
+        "initializer_calls": 1,
+        "numeric_local_upper": 5132
+      },
+      "fixed_local_upper": 415,
+      "per_visit_local_upper": 5132,
+      "loop_count": 1,
+      "calls_excluded": [
+        {
+          "callee": "HistKey.equal",
+          "verified_bucket": "primitive-key128-verified"
+        }
+      ],
+      "price_bucket": "pc_call + pc_visit*put_visits + pc_compare*put_comparisons + pc_cons*put_alloc"
+    },
+    {
+      "source": "ntruplus/proof/768/ref/kem_history_refinement/NTRUPlus768HistTable.ec",
+      "module": "HistReverse",
+      "procedure": "run",
+      "normalized_body_sha256": "59068b460914ed687be304634e10310b884ca9c7025ca6c61ff225f2c077312d",
+      "source_fragment": "var todo,output:hist_table;var entry:hist_entry;var visits:int;\n  todo<-xs;output<-[];visits<-0;\n  while(todo<>[]){\n   entry<-head d todo;todo<-behead todo;\n   output<-entry::output;visits<-visits+1;\n  }\n  return(output,visits);",
+      "rule_id": "phase-source-block-v1",
+      "allocation": {
+        "entry_fixed_array_cells": 352,
+        "loop_visits": "k",
+        "successful_cons": "k"
+      },
+      "units_expr": "entry/return + k*(rt_phase_reverse_visit+rt_phase_history_cons)",
+      "calls": [],
+      "certificate_theorem": "rt_phase_visit_calibration",
+      "blocks": [
+        {
+          "id": "complete-body",
+          "source_fragment": "var todo,output:hist_table;var entry:hist_entry;var visits:int;\n  todo<-xs;output<-[];visits<-0;\n  while(todo<>[]){\n   entry<-head d todo;todo<-behead todo;\n   output<-entry::output;visits<-visits+1;\n  }\n  return(output,visits);",
+          "occurrences": 1,
+          "rule_id": "phase-source-block-v1",
+          "units_expr": "entry/return + k*(rt_phase_reverse_visit+rt_phase_history_cons)"
+        }
+      ],
+      "numeric_rule": "phase-finite-source-token-and-array-bound-v1",
+      "array_value_cells": {
+        "d": 352,
+        "entry": 352
+      },
+      "fixed_breakdown": {
+        "local_scalar_ops": 24,
+        "guards": 1,
+        "list_ops": {
+          "head": 0,
+          "behead": 0,
+          "cons": 0
+        },
+        "array_reference_occurrences": {},
+        "array_copy_cells": 352,
+        "initializer_cells": 0,
+        "initializer_calls": 0,
+        "numeric_local_upper": 1081,
+        "array_boundary_cells": {
+          "entry": 352,
+          "return": 0
+        }
+      },
+      "per_visit_breakdown": {
+        "local_scalar_ops": 27,
+        "guards": 1,
+        "list_ops": {
+          "head": 1,
+          "behead": 1,
+          "cons": 1
+        },
+        "array_reference_occurrences": {
+          "d": 1,
+          "entry": 2
+        },
+        "array_copy_cells": 1056,
+        "initializer_cells": 0,
+        "initializer_calls": 0,
+        "numeric_local_upper": 3198
+      },
+      "fixed_local_upper": 1081,
+      "per_visit_local_upper": 3198,
+      "loop_count": 1,
+      "calls_excluded": [],
+      "price_bucket": "pc_call + pc_visit*put_visits + pc_compare*put_comparisons + pc_cons*put_alloc"
+    },
+    {
+      "source": "ntruplus/proof/768/ref/kem_history_refinement/NTRUPlus768HistTable.ec",
+      "module": "HistTable",
+      "procedure": "put",
+      "normalized_body_sha256": "2c39baf8c7e499d38eceb75ff81fe83833ee56ae1b527daf7e2f96f214aef23b",
+      "source_fragment": "var kept:hist_table*int*int;var ordered:hist_table*int;\n  var output:hist_table;var visits:int;\n  kept<@HistKeep.run(x,xs);\n  ordered<@HistReverse.run((x,y),kept.`1);\n  output<-(x,y)::ordered.`1;visits<-kept.`2+ordered.`2;\n  return(output,visits,kept.`3);",
+      "rule_id": "phase-source-block-v1",
+      "allocation": {
+        "entry_fixed_array_cells": 352,
+        "successful_cons": "1"
+      },
+      "units_expr": "rt_phase_put_body(n,k)",
+      "calls": [
+        {
+          "target": "HistKeep.run",
+          "rule_id": "phase-hist-keep"
+        },
+        {
+          "target": "HistReverse.run",
+          "rule_id": "phase-hist-reverse"
+        }
+      ],
+      "certificate_theorem": "rt_hist_put_source_certificate",
+      "blocks": [
+        {
+          "id": "complete-body",
+          "source_fragment": "var kept:hist_table*int*int;var ordered:hist_table*int;\n  var output:hist_table;var visits:int;\n  kept<@HistKeep.run(x,xs);\n  ordered<@HistReverse.run((x,y),kept.`1);\n  output<-(x,y)::ordered.`1;visits<-kept.`2+ordered.`2;\n  return(output,visits,kept.`3);",
+          "occurrences": 1,
+          "rule_id": "phase-source-block-v1",
+          "units_expr": "rt_phase_put_body(n,k)"
+        }
+      ],
+      "numeric_rule": "phase-finite-source-token-and-array-bound-v1",
+      "array_value_cells": {
+        "x": 128,
+        "y": 224
+      },
+      "fixed_breakdown": {
+        "local_scalar_ops": 66,
+        "guards": 0,
+        "list_ops": {
+          "head": 0,
+          "behead": 0,
+          "cons": 1
+        },
+        "array_reference_occurrences": {
+          "x": 3,
+          "y": 2
+        },
+        "array_copy_cells": 1184,
+        "initializer_cells": 0,
+        "initializer_calls": 0,
+        "numeric_local_upper": 3618,
+        "array_boundary_cells": {
+          "entry": 352,
+          "return": 0
+        }
+      },
+      "per_visit_breakdown": {
+        "local_scalar_ops": 0,
+        "guards": 0,
+        "list_ops": {
+          "head": 0,
+          "behead": 0,
+          "cons": 0
+        },
+        "array_reference_occurrences": {},
+        "array_copy_cells": 0,
+        "initializer_cells": 0,
+        "initializer_calls": 0,
+        "numeric_local_upper": 0
+      },
+      "fixed_local_upper": 3618,
+      "per_visit_local_upper": 0,
+      "loop_count": 0,
+      "calls_excluded": [
+        {
+          "callee": "HistKeep.run",
+          "verified_bucket": "phase-hist-keep"
+        },
+        {
+          "callee": "HistReverse.run",
+          "verified_bucket": "phase-hist-reverse"
+        }
+      ],
+      "price_bucket": "pc_call + pc_visit*put_visits + pc_compare*put_comparisons + pc_cons*put_alloc"
+    },
+    {
+      "source": "ntruplus/proof/768/ref/kem_history_refinement/NTRUPlus768HistLookup.ec",
+      "module": "HistCipherOption",
+      "procedure": "equal",
+      "normalized_body_sha256": "9d229ab7e24fc9aa9095aa2152ec63e2fd0db84bf1cacf62fc14d90d9900b998",
+      "source_fragment": "var same:bool;var compared:int;\n  same<-false;compared<-0;\n  match candidate with\n  | None => {}\n  | Some value => {(same,compared)<@HistKey.cipher(value,ct);}\n  end;\n  return(same,compared);",
+      "rule_id": "phase-source-block-v1",
+      "allocation": {
+        "entry_fixed_array_cells_at_most": 2304
+      },
+      "units_expr": "fixed array boundary + branch/assign/return + (candidate_some ? rt_byte_compare_steps(1152):0)",
+      "calls": [
+        {
+          "target": "HistKey.cipher",
+          "rule_id": "primitive-cipher1152-verified"
+        }
+      ],
+      "certificate_theorem": "rt_phase_compare_calibration",
+      "blocks": [
+        {
+          "id": "complete-body",
+          "source_fragment": "var same:bool;var compared:int;\n  same<-false;compared<-0;\n  match candidate with\n  | None => {}\n  | Some value => {(same,compared)<@HistKey.cipher(value,ct);}\n  end;\n  return(same,compared);",
+          "occurrences": 1,
+          "rule_id": "phase-source-block-v1",
+          "units_expr": "fixed array boundary + branch/assign/return + (candidate_some ? rt_byte_compare_steps(1152):0)"
+        }
+      ],
+      "numeric_rule": "phase-finite-source-token-and-array-bound-v1",
+      "array_value_cells": {
+        "candidate": 1152,
+        "ct": 1152,
+        "value": 1152
+      },
+      "fixed_breakdown": {
+        "local_scalar_ops": 48,
+        "guards": 1,
+        "list_ops": {
+          "head": 0,
+          "behead": 0,
+          "cons": 0
+        },
+        "array_reference_occurrences": {
+          "candidate": 1,
+          "ct": 1,
+          "value": 2
+        },
+        "array_copy_cells": 6912,
+        "initializer_cells": 0,
+        "initializer_calls": 0,
+        "numeric_local_upper": 20785,
+        "array_boundary_cells": {
+          "entry": 2304,
+          "return": 0
+        }
+      },
+      "per_visit_breakdown": {
+        "local_scalar_ops": 0,
+        "guards": 0,
+        "list_ops": {
+          "head": 0,
+          "behead": 0,
+          "cons": 0
+        },
+        "array_reference_occurrences": {},
+        "array_copy_cells": 0,
+        "initializer_cells": 0,
+        "initializer_calls": 0,
+        "numeric_local_upper": 0
+      },
+      "fixed_local_upper": 20785,
+      "per_visit_local_upper": 0,
+      "loop_count": 0,
+      "calls_excluded": [
+        {
+          "callee": "HistKey.cipher",
+          "verified_bucket": "primitive-cipher1152-verified"
+        }
+      ],
+      "price_bucket": "pc_call + pc_visit*decap_visits + pc_compare*decap_comparisons + pc_encrypt*encryptions + pc_cons*encryptions"
+    },
+    {
+      "source": "ntruplus/proof/768/ref/kem_history_refinement/NTRUPlus768HistLookup.ec",
+      "module": "HistLookup",
+      "procedure": "check",
+      "normalized_body_sha256": "eb67af135892c1ce2a8dcefa647c4c1c1cd72974e190b69363d5c5102134d882",
+      "source_fragment": "var answer:cca_reply;var candidate:W8.t Array1152.t option;\n  var matched:bool;var encrypted,compared,n:int;\n  answer<-None;encrypted<-0;\n  (matched,n)<@HistKey.suffix(entry.`1.`2,suffix);compared<-n;\n  if(matched){\n   candidate<@SimEncrypt(G).run(pk,entry.`1.`1,entry.`2);encrypted<-1;\n   (matched,n)<@HistCipherOption.equal(candidate,ct);compared<-compared+n;\n   if(matched){answer<-Some(payload_shared_key entry.`2);}\n  }\n  return(answer,encrypted,compared);",
+      "rule_id": "phase-source-block-v1",
+      "allocation": {
+        "entry_fixed_array_cells": 2688,
+        "loop_visits": "one check",
+        "encryptions_at_most": 1
+      },
+      "units_expr": "rt_phase_lookup_visit+21*actual_comparisons+(C_encrypt+rt_phase_logged_g_fixed+rt_phase_g_cons)*actual_encryptions",
+      "calls": [
+        {
+          "target": "HistKey.suffix",
+          "rule_id": "primitive-suffix32-verified"
+        },
+        {
+          "target": "SimEncrypt(G).run",
+          "rule_id": "free-kernel-encrypt"
+        },
+        {
+          "target": "HistCipherOption.equal",
+          "rule_id": "phase-cipher-option"
+        }
+      ],
+      "certificate_theorem": "rt_phase_lookup_bound",
+      "blocks": [
+        {
+          "id": "complete-body",
+          "source_fragment": "var answer:cca_reply;var candidate:W8.t Array1152.t option;\n  var matched:bool;var encrypted,compared,n:int;\n  answer<-None;encrypted<-0;\n  (matched,n)<@HistKey.suffix(entry.`1.`2,suffix);compared<-n;\n  if(matched){\n   candidate<@SimEncrypt(G).run(pk,entry.`1.`1,entry.`2);encrypted<-1;\n   (matched,n)<@HistCipherOption.equal(candidate,ct);compared<-compared+n;\n   if(matched){answer<-Some(payload_shared_key entry.`2);}\n  }\n  return(answer,encrypted,compared);",
+          "occurrences": 1,
+          "rule_id": "phase-source-block-v1",
+          "units_expr": "rt_phase_lookup_visit+21*actual_comparisons+(C_encrypt+rt_phase_logged_g_fixed+rt_phase_g_cons)*actual_encryptions"
+        }
+      ],
+      "numeric_rule": "phase-finite-source-token-and-array-bound-v1",
+      "array_value_cells": {
+        "entry": 352,
+        "pk": 1152,
+        "suffix": 32,
+        "ct": 1152,
+        "answer": 32,
+        "candidate": 1152
+      },
+      "fixed_breakdown": {
+        "local_scalar_ops": 115,
+        "guards": 2,
+        "list_ops": {
+          "head": 0,
+          "behead": 0,
+          "cons": 0
+        },
+        "array_reference_occurrences": {
+          "entry": 4,
+          "pk": 1,
+          "suffix": 2,
+          "ct": 1,
+          "answer": 3,
+          "candidate": 2
+        },
+        "array_copy_cells": 8896,
+        "initializer_cells": 0,
+        "initializer_calls": 0,
+        "numeric_local_upper": 26805,
+        "array_boundary_cells": {
+          "entry": 2688,
+          "return": 32
+        }
+      },
+      "per_visit_breakdown": {
+        "local_scalar_ops": 0,
+        "guards": 0,
+        "list_ops": {
+          "head": 0,
+          "behead": 0,
+          "cons": 0
+        },
+        "array_reference_occurrences": {},
+        "array_copy_cells": 0,
+        "initializer_cells": 0,
+        "initializer_calls": 0,
+        "numeric_local_upper": 0
+      },
+      "fixed_local_upper": 26805,
+      "per_visit_local_upper": 0,
+      "loop_count": 0,
+      "calls_excluded": [
+        {
+          "callee": "HistKey.suffix",
+          "verified_bucket": "primitive-suffix32-verified"
+        },
+        {
+          "callee": "SimEncrypt(G).run",
+          "verified_bucket": "free-kernel-encrypt"
+        },
+        {
+          "callee": "HistCipherOption.equal",
+          "verified_bucket": "phase-cipher-option"
+        }
+      ],
+      "price_bucket": "pc_call + pc_visit*decap_visits + pc_compare*decap_comparisons + pc_encrypt*encryptions + pc_cons*encryptions"
+    },
+    {
+      "source": "ntruplus/proof/768/ref/kem_history_refinement/NTRUPlus768HistLookup.ec",
+      "module": "HistLookup",
+      "procedure": "run",
+      "normalized_body_sha256": "83317fb9a822e3891ae299fda7fd70b40e51d380f681ca6f3d9482a88edf4ded",
+      "source_fragment": "var todo:hist_table;var entry:hist_entry;var answer:cca_reply;\n  var blocked:bool;var visited,encrypted,compared,n,e,b:int;\n  answer<-None;visited<-0;encrypted<-0;\n  (blocked,n)<@HistCipherOption.equal(cstar,ct);compared<-n;\n  if(!blocked){\n   todo<-xs;\n   while(todo<>[] /\\ answer=None){\n    entry<-head hist_lookup_default todo;todo<-behead todo;visited<-visited+1;\n    (answer,e,b)<@check(entry,pk,suffix,ct);\n    encrypted<-encrypted+e;compared<-compared+b;\n   }\n  }\n  return(answer,visited,encrypted,compared);",
+      "rule_id": "phase-source-block-v1",
+      "allocation": {
+        "entry_fixed_array_cells_at_most": 3488,
+        "loop_visits": "actual res.2",
+        "encryptions": "actual res.3",
+        "comparisons": "actual res.4"
+      },
+      "units_expr": "rt_phase_lookup_body(C_encrypt,res.2,res.3,res.4)",
+      "calls": [
+        {
+          "target": "HistCipherOption.equal",
+          "rule_id": "phase-cipher-option"
+        },
+        {
+          "target": "check",
+          "rule_id": "phase-lookup-check"
+        }
+      ],
+      "certificate_theorem": "rt_hist_lookup_source_certificate",
+      "blocks": [
+        {
+          "id": "complete-body",
+          "source_fragment": "var todo:hist_table;var entry:hist_entry;var answer:cca_reply;\n  var blocked:bool;var visited,encrypted,compared,n,e,b:int;\n  answer<-None;visited<-0;encrypted<-0;\n  (blocked,n)<@HistCipherOption.equal(cstar,ct);compared<-n;\n  if(!blocked){\n   todo<-xs;\n   while(todo<>[] /\\ answer=None){\n    entry<-head hist_lookup_default todo;todo<-behead todo;visited<-visited+1;\n    (answer,e,b)<@check(entry,pk,suffix,ct);\n    encrypted<-encrypted+e;compared<-compared+b;\n   }\n  }\n  return(answer,visited,encrypted,compared);",
+          "occurrences": 1,
+          "rule_id": "phase-source-block-v1",
+          "units_expr": "rt_phase_lookup_body(C_encrypt,res.2,res.3,res.4)"
+        }
+      ],
+      "numeric_rule": "phase-finite-source-token-and-array-bound-v1",
+      "array_value_cells": {
+        "pk": 1152,
+        "suffix": 32,
+        "ct": 1152,
+        "cstar": 1152,
+        "entry": 352,
+        "answer": 32
+      },
+      "fixed_breakdown": {
+        "local_scalar_ops": 61,
+        "guards": 2,
+        "list_ops": {
+          "head": 0,
+          "behead": 0,
+          "cons": 0
+        },
+        "array_reference_occurrences": {
+          "ct": 1,
+          "cstar": 1,
+          "answer": 3
+        },
+        "array_copy_cells": 5920,
+        "initializer_cells": 0,
+        "initializer_calls": 0,
+        "numeric_local_upper": 17823,
+        "array_boundary_cells": {
+          "entry": 3488,
+          "return": 32
+        }
+      },
+      "per_visit_breakdown": {
+        "local_scalar_ops": 56,
+        "guards": 1,
+        "list_ops": {
+          "head": 1,
+          "behead": 1,
+          "cons": 0
+        },
+        "array_reference_occurrences": {
+          "pk": 1,
+          "suffix": 1,
+          "ct": 1,
+          "entry": 2,
+          "answer": 2
+        },
+        "array_copy_cells": 3104,
+        "initializer_cells": 352,
+        "initializer_calls": 1,
+        "numeric_local_upper": 11139
+      },
+      "fixed_local_upper": 17823,
+      "per_visit_local_upper": 11139,
+      "loop_count": 1,
+      "calls_excluded": [
+        {
+          "callee": "HistCipherOption.equal",
+          "verified_bucket": "phase-cipher-option"
+        },
+        {
+          "callee": "check",
+          "verified_bucket": "phase-lookup-check"
+        }
+      ],
+      "price_bucket": "pc_call + pc_visit*decap_visits + pc_compare*decap_comparisons + pc_encrypt*encryptions + pc_cons*encryptions"
+    },
+    {
+      "source": "ntruplus/proof/768/ref/kem_acwc2_security/NTRUPlus768SecExtract.ec",
+      "module": "SecExtract",
+      "procedure": "run",
+      "normalized_body_sha256": "bdffb24524675e2228ad5c29e1854a6888e3ea8b878e7fd16a4358cb60adf084",
+      "source_fragment": "var todo:W8.t Array1152.t list;var query:W8.t Array1152.t;\n  var candidate,answer:(pke_poly*pke_poly) option;\n  todo<-queries;answer<-None;\n  while(todo<>[] /\\ answer=None){\n   query<-head witness todo;todo<-behead todo;\n   candidate<@SecCandidate.run(pk,ct,query);\n   if(candidate<>None /\\ (excluded=None \\/ (oget candidate).`2<>oget excluded)){\n    answer<-candidate;\n   }\n  }\n  return answer;",
+      "rule_id": "phase-source-block-v1",
+      "allocation": {
+        "entry_fixed_array_cells_at_most": 3072,
+        "return_fixed_array_cells_at_most": 1536,
+        "loop_visits": "CostExtract result.2"
+      },
+      "units_expr": "rt_phase_extract_body(C_candidate,visits)",
+      "calls": [
+        {
+          "target": "SecCandidate.run",
+          "rule_id": "free-kernel-candidate"
+        },
+        {
+          "target": "(oget candidate).2 <> oget excluded",
+          "rule_id": "primitive-word768-verified",
+          "calibrated_cost_op": "rt_word_compare_steps 768"
+        }
+      ],
+      "certificate_theorem": "rt_extract_source_certificate",
+      "blocks": [
+        {
+          "id": "complete-body",
+          "source_fragment": "var todo:W8.t Array1152.t list;var query:W8.t Array1152.t;\n  var candidate,answer:(pke_poly*pke_poly) option;\n  todo<-queries;answer<-None;\n  while(todo<>[] /\\ answer=None){\n   query<-head witness todo;todo<-behead todo;\n   candidate<@SecCandidate.run(pk,ct,query);\n   if(candidate<>None /\\ (excluded=None \\/ (oget candidate).`2<>oget excluded)){\n    answer<-candidate;\n   }\n  }\n  return answer;",
+          "occurrences": 1,
+          "rule_id": "phase-source-block-v1",
+          "units_expr": "rt_phase_extract_body(C_candidate,visits)"
+        }
+      ],
+      "numeric_rule": "phase-finite-source-token-and-array-bound-v1",
+      "array_value_cells": {
+        "pk": 1152,
+        "ct": 1152,
+        "excluded": 768,
+        "query": 1152,
+        "candidate": 1536,
+        "answer": 1536
+      },
+      "fixed_breakdown": {
+        "local_scalar_ops": 19,
+        "guards": 1,
+        "list_ops": {
+          "head": 0,
+          "behead": 0,
+          "cons": 0
+        },
+        "array_reference_occurrences": {
+          "answer": 3
+        },
+        "array_copy_cells": 9216,
+        "initializer_cells": 0,
+        "initializer_calls": 0,
+        "numeric_local_upper": 27668,
+        "array_boundary_cells": {
+          "entry": 3072,
+          "return": 1536
+        }
+      },
+      "per_visit_breakdown": {
+        "local_scalar_ops": 61,
+        "guards": 2,
+        "list_ops": {
+          "head": 1,
+          "behead": 1,
+          "cons": 0
+        },
+        "array_reference_occurrences": {
+          "pk": 1,
+          "ct": 1,
+          "excluded": 2,
+          "query": 2,
+          "candidate": 4,
+          "answer": 2
+        },
+        "array_copy_cells": 15360,
+        "initializer_cells": 1152,
+        "initializer_calls": 1,
+        "numeric_local_upper": 51913
+      },
+      "fixed_local_upper": 27668,
+      "per_visit_local_upper": 51913,
+      "loop_count": 1,
+      "calls_excluded": [
+        {
+          "callee": "SecCandidate.run",
+          "verified_bucket": "free-kernel-candidate"
+        },
+        {
+          "callee": "(oget candidate).2 <> oget excluded",
+          "verified_bucket": "rt_word_compare_steps 768"
+        }
+      ],
+      "price_bucket": "pc_extract_init + (pc_visit+pc_candidate)*extract_visits"
+    },
+    {
+      "source": "ntruplus/proof/768/ref/kem_reduction_cost/NTRUPlus768CostExtract.ec",
+      "module": "CostExtract",
+      "procedure": "run",
+      "normalized_body_sha256": "731bbf699fb2c6d2ef0b9f139e505320dd645b5af87babd7ce640cbf030d411a",
+      "source_fragment": "var todo:W8.t Array1152.t list;var query:W8.t Array1152.t;\n  var candidate,answer:(pke_poly*pke_poly) option;var visited:int;\n  todo<-queries;answer<-None;visited<-0;\n  while(todo<>[] /\\ answer=None){\n   query<-head witness todo;todo<-behead todo;\n   candidate<@SecCandidate.run(pk,ct,query);\n   visited<-visited+1;\n   if(candidate<>None /\\ (excluded=None \\/ (oget candidate).`2<>oget excluded)){\n    answer<-candidate;\n   }\n  }\n  return (answer,visited);",
+      "rule_id": "phase-source-block-v1",
+      "allocation": {
+        "entry_fixed_array_cells_at_most": 3072,
+        "return_fixed_array_cells_at_most": 1536,
+        "loop_visits": "res.2",
+        "ghost": [
+          "visited"
+        ]
+      },
+      "units_expr": "rt_phase_extract_body(C_candidate,res.2)",
+      "calls": [
+        {
+          "target": "SecCandidate.run",
+          "rule_id": "free-kernel-candidate"
+        },
+        {
+          "target": "(oget candidate).2 <> oget excluded",
+          "rule_id": "primitive-word768-verified",
+          "calibrated_cost_op": "rt_word_compare_steps 768"
+        }
+      ],
+      "certificate_theorem": "rt_extract_source_certificate",
+      "blocks": [
+        {
+          "id": "complete-body",
+          "source_fragment": "var todo:W8.t Array1152.t list;var query:W8.t Array1152.t;\n  var candidate,answer:(pke_poly*pke_poly) option;var visited:int;\n  todo<-queries;answer<-None;visited<-0;\n  while(todo<>[] /\\ answer=None){\n   query<-head witness todo;todo<-behead todo;\n   candidate<@SecCandidate.run(pk,ct,query);\n   visited<-visited+1;\n   if(candidate<>None /\\ (excluded=None \\/ (oget candidate).`2<>oget excluded)){\n    answer<-candidate;\n   }\n  }\n  return (answer,visited);",
+          "occurrences": 1,
+          "rule_id": "phase-source-block-v1",
+          "units_expr": "rt_phase_extract_body(C_candidate,res.2)"
+        }
+      ],
+      "numeric_rule": "phase-finite-source-token-and-array-bound-v1",
+      "array_value_cells": {
+        "pk": 1152,
+        "ct": 1152,
+        "excluded": 768,
+        "query": 1152,
+        "candidate": 1536,
+        "answer": 1536
+      },
+      "fixed_breakdown": {
+        "local_scalar_ops": 27,
+        "guards": 1,
+        "list_ops": {
+          "head": 0,
+          "behead": 0,
+          "cons": 0
+        },
+        "array_reference_occurrences": {
+          "answer": 3
+        },
+        "array_copy_cells": 9216,
+        "initializer_cells": 0,
+        "initializer_calls": 0,
+        "numeric_local_upper": 27676,
+        "array_boundary_cells": {
+          "entry": 3072,
+          "return": 1536
+        }
+      },
+      "per_visit_breakdown": {
+        "local_scalar_ops": 67,
+        "guards": 2,
+        "list_ops": {
+          "head": 1,
+          "behead": 1,
+          "cons": 0
+        },
+        "array_reference_occurrences": {
+          "pk": 1,
+          "ct": 1,
+          "excluded": 2,
+          "query": 2,
+          "candidate": 4,
+          "answer": 2
+        },
+        "array_copy_cells": 15360,
+        "initializer_cells": 1152,
+        "initializer_calls": 1,
+        "numeric_local_upper": 51919
+      },
+      "fixed_local_upper": 27676,
+      "per_visit_local_upper": 51919,
+      "loop_count": 1,
+      "calls_excluded": [
+        {
+          "callee": "SecCandidate.run",
+          "verified_bucket": "free-kernel-candidate"
+        },
+        {
+          "callee": "(oget candidate).2 <> oget excluded",
+          "verified_bucket": "rt_word_compare_steps 768"
+        }
+      ],
+      "price_bucket": "pc_extract_init + (pc_visit+pc_candidate)*extract_visits"
+    },
+    {
+      "source": "ntruplus/proof/768/ref/kem_adaptive_history/NTRUPlus768AHAdapter.ec",
+      "module": "AHPublicG",
+      "procedure": "get",
+      "normalized_body_sha256": "1d43bc396340f1e129def2970f36b1bf40a05c66378bc88971033c78fbd00034",
+      "source_fragment": "var result;result<@O.g(input);return result;",
+      "rule_id": "phase-source-block-v1",
+      "allocation": {},
+      "units_expr": "rt_phase_logged_g_fixed",
+      "calls": [
+        {
+          "target": "O.g",
+          "rule_id": "ideal-or-logged-G"
+        }
+      ],
+      "certificate_theorem": "rt_phase_fixed_nonnegative",
+      "blocks": [
+        {
+          "id": "complete-body",
+          "source_fragment": "var result;result<@O.g(input);return result;",
+          "occurrences": 1,
+          "rule_id": "phase-source-block-v1",
+          "units_expr": "rt_phase_logged_g_fixed"
+        }
+      ],
+      "numeric_rule": "phase-finite-source-token-and-array-bound-v1",
+      "array_value_cells": {
+        "input": 1152,
+        "result": 192
+      },
+      "fixed_breakdown": {
+        "local_scalar_ops": 12,
+        "guards": 0,
+        "list_ops": {
+          "head": 0,
+          "behead": 0,
+          "cons": 0
+        },
+        "array_reference_occurrences": {
+          "input": 1,
+          "result": 2
+        },
+        "array_copy_cells": 2880,
+        "initializer_cells": 0,
+        "initializer_calls": 0,
+        "numeric_local_upper": 8652,
+        "array_boundary_cells": {
+          "entry": 1152,
+          "return": 192
+        }
+      },
+      "per_visit_breakdown": {
+        "local_scalar_ops": 0,
+        "guards": 0,
+        "list_ops": {
+          "head": 0,
+          "behead": 0,
+          "cons": 0
+        },
+        "array_reference_occurrences": {},
+        "array_copy_cells": 0,
+        "initializer_cells": 0,
+        "initializer_calls": 0,
+        "numeric_local_upper": 0
+      },
+      "fixed_local_upper": 8652,
+      "per_visit_local_upper": 0,
+      "loop_count": 0,
+      "calls_excluded": [
+        {
+          "callee": "O.g",
+          "verified_bucket": "ideal-or-logged-G"
+        }
+      ],
+      "price_bucket": "pc_call (public) or pc_encrypt (internal); pc_cons*Gcalls separately"
+    },
+    {
+      "source": "ntruplus/proof/768/ref/kem_adaptive_history/NTRUPlus768AHAdapter.ec",
+      "module": "AHRecordH",
+      "procedure": "get",
+      "normalized_body_sha256": "c2c8b7bfee26fd12a4fdedb47f6d9373aafe2a86a7ec1da44144c330d4e73fe1",
+      "source_fragment": "var hout;hout<@O.h(input);S.record(input,hout);return hout;",
+      "rule_id": "phase-source-block-v1",
+      "allocation": {},
+      "units_expr": "rt_phase_store_fixed+S.record dynamic history cost",
+      "calls": [
+        {
+          "target": "O.h",
+          "rule_id": "ideal-ROH"
+        },
+        {
+          "target": "S.record",
+          "rule_id": "phase-private-record"
+        }
+      ],
+      "certificate_theorem": "rt_phase_fixed_nonnegative",
+      "blocks": [
+        {
+          "id": "complete-body",
+          "source_fragment": "var hout;hout<@O.h(input);S.record(input,hout);return hout;",
+          "occurrences": 1,
+          "rule_id": "phase-source-block-v1",
+          "units_expr": "rt_phase_store_fixed+S.record dynamic history cost"
+        }
+      ],
+      "numeric_rule": "phase-finite-source-token-and-array-bound-v1",
+      "array_value_cells": {
+        "input": 128,
+        "hout": 224
+      },
+      "fixed_breakdown": {
+        "local_scalar_ops": 21,
+        "guards": 0,
+        "list_ops": {
+          "head": 0,
+          "behead": 0,
+          "cons": 0
+        },
+        "array_reference_occurrences": {
+          "input": 2,
+          "hout": 3
+        },
+        "array_copy_cells": 1280,
+        "initializer_cells": 0,
+        "initializer_calls": 0,
+        "numeric_local_upper": 3861,
+        "array_boundary_cells": {
+          "entry": 128,
+          "return": 224
+        }
+      },
+      "per_visit_breakdown": {
+        "local_scalar_ops": 0,
+        "guards": 0,
+        "list_ops": {
+          "head": 0,
+          "behead": 0,
+          "cons": 0
+        },
+        "array_reference_occurrences": {},
+        "array_copy_cells": 0,
+        "initializer_cells": 0,
+        "initializer_calls": 0,
+        "numeric_local_upper": 0
+      },
+      "fixed_local_upper": 3861,
+      "per_visit_local_upper": 0,
+      "loop_count": 0,
+      "calls_excluded": [
+        {
+          "callee": "O.h",
+          "verified_bucket": "ideal-ROH"
+        },
+        {
+          "callee": "S.record",
+          "verified_bucket": "phase-private-record"
+        }
+      ],
+      "price_bucket": "pc_call + pc_input*raw_input_bytes"
+    },
+    {
+      "source": "ntruplus/proof/768/ref/kem_adaptive_history/NTRUPlus768AHAdapter.ec",
+      "module": "AHOracles",
+      "procedure": "raw",
+      "normalized_body_sha256": "f877f70da89a2351098521752f91bd6bdd0662b41bd12738076138b18022753f",
+      "source_fragment": "var result:W8.t list option;var hout:W8.t Array224.t;\n  if(0<=outlen<=raw_xof_max_output){\n   match decode_typed input with\n   | None => {result<@O.raw(input,outlen);}\n   | Some query => {\n    match query with\n    | E seed => {result<@O.raw(input,outlen);}\n    | F pk => {result<@O.raw(input,outlen);}\n    | G serialized => {result<@O.raw(input,outlen);}\n    | H payload => {\n     hout<@AHRecordH(S,O).get(payload);\n     result<-Some(raw_xof_output outlen hout);\n    }\n    end;\n   }\n   end;\n  }else{result<@O.raw(input,outlen);}\n  return result;",
+      "rule_id": "phase-source-block-v1",
+      "allocation": {},
+      "units_expr": "rt_phase_callback_body(size input)+record/G-cons dynamic costs",
+      "calls": [
+        {
+          "target": "O.raw",
+          "rule_id": "phase-FOGRaw"
+        },
+        {
+          "target": "AHRecordH(S,O).get",
+          "rule_id": "phase-record-H"
+        }
+      ],
+      "certificate_theorem": "rt_phase_raw_linear",
+      "blocks": [
+        {
+          "id": "complete-body",
+          "source_fragment": "var result:W8.t list option;var hout:W8.t Array224.t;\n  if(0<=outlen<=raw_xof_max_output){\n   match decode_typed input with\n   | None => {result<@O.raw(input,outlen);}\n   | Some query => {\n    match query with\n    | E seed => {result<@O.raw(input,outlen);}\n    | F pk => {result<@O.raw(input,outlen);}\n    | G serialized => {result<@O.raw(input,outlen);}\n    | H payload => {\n     hout<@AHRecordH(S,O).get(payload);\n     result<-Some(raw_xof_output outlen hout);\n    }\n    end;\n   }\n   end;\n  }else{result<@O.raw(input,outlen);}\n  return result;",
+          "occurrences": 1,
+          "rule_id": "phase-source-block-v1",
+          "units_expr": "rt_phase_callback_body(size input)+record/G-cons dynamic costs"
+        }
+      ],
+      "numeric_rule": "phase-finite-source-token-and-array-bound-v1",
+      "array_value_cells": {
+        "hout": 224,
+        "query": 1152,
+        "seed": 32,
+        "pk": 1152,
+        "serialized": 1152,
+        "payload": 128
+      },
+      "fixed_breakdown": {
+        "local_scalar_ops": 148,
+        "guards": 3,
+        "list_ops": {
+          "head": 0,
+          "behead": 0,
+          "cons": 0
+        },
+        "array_reference_occurrences": {
+          "hout": 2,
+          "query": 2,
+          "seed": 1,
+          "pk": 1,
+          "serialized": 1,
+          "payload": 2
+        },
+        "array_copy_cells": 5344,
+        "initializer_cells": 0,
+        "initializer_calls": 0,
+        "numeric_local_upper": 16183,
+        "array_boundary_cells": {
+          "entry": 0,
+          "return": 0
+        }
+      },
+      "per_visit_breakdown": {
+        "local_scalar_ops": 0,
+        "guards": 0,
+        "list_ops": {
+          "head": 0,
+          "behead": 0,
+          "cons": 0
+        },
+        "array_reference_occurrences": {},
+        "array_copy_cells": 0,
+        "initializer_cells": 0,
+        "initializer_calls": 0,
+        "numeric_local_upper": 0
+      },
+      "fixed_local_upper": 16183,
+      "per_visit_local_upper": 0,
+      "loop_count": 0,
+      "calls_excluded": [
+        {
+          "callee": "O.raw",
+          "verified_bucket": "phase-FOGRaw"
+        },
+        {
+          "callee": "AHRecordH(S,O).get",
+          "verified_bucket": "phase-record-H"
+        }
+      ],
+      "price_bucket": "pc_call + pc_input*raw_input_bytes"
+    },
+    {
+      "source": "ntruplus/proof/768/ref/kem_adaptive_history/NTRUPlus768AHAdapter.ec",
+      "module": "AHDecap",
+      "procedure": "decap",
+      "normalized_body_sha256": "505c91206a76466d43a0e82a201d2ab9d619e73505567778074cc626c0d96f0e",
+      "source_fragment": "var st:ah_state;var result:cca_reply*int*int*int;\n  st<@S.snapshot();\n  result<@HistLookup(AHPublicG(O)).run(st.`ah_rows,st.`ah_pk,st.`ah_suffix,st.`ah_cstar,ct);\n  return result.`1;",
+      "rule_id": "phase-source-block-v1",
+      "allocation": {},
+      "units_expr": "rt_phase_store_fixed+rt_phase_lookup_body(C_encrypt,V,K,C)",
+      "calls": [
+        {
+          "target": "S.snapshot",
+          "rule_id": "phase-private-snapshot"
+        },
+        {
+          "target": "HistLookup(AHPublicG(O)).run",
+          "rule_id": "phase-lookup"
+        }
+      ],
+      "certificate_theorem": "rt_phase_fixed_nonnegative",
+      "blocks": [
+        {
+          "id": "complete-body",
+          "source_fragment": "var st:ah_state;var result:cca_reply*int*int*int;\n  st<@S.snapshot();\n  result<@HistLookup(AHPublicG(O)).run(st.`ah_rows,st.`ah_pk,st.`ah_suffix,st.`ah_cstar,ct);\n  return result.`1;",
+          "occurrences": 1,
+          "rule_id": "phase-source-block-v1",
+          "units_expr": "rt_phase_store_fixed+rt_phase_lookup_body(C_encrypt,V,K,C)"
+        }
+      ],
+      "numeric_rule": "phase-finite-source-token-and-array-bound-v1",
+      "array_value_cells": {
+        "ct": 1152,
+        "st": 2336,
+        "result": 32
+      },
+      "fixed_breakdown": {
+        "local_scalar_ops": 49,
+        "guards": 0,
+        "list_ops": {
+          "head": 0,
+          "behead": 0,
+          "cons": 0
+        },
+        "array_reference_occurrences": {
+          "ct": 1,
+          "st": 5,
+          "result": 2
+        },
+        "array_copy_cells": 14080,
+        "initializer_cells": 0,
+        "initializer_calls": 0,
+        "numeric_local_upper": 42289,
+        "array_boundary_cells": {
+          "entry": 1152,
+          "return": 32
+        }
+      },
+      "per_visit_breakdown": {
+        "local_scalar_ops": 0,
+        "guards": 0,
+        "list_ops": {
+          "head": 0,
+          "behead": 0,
+          "cons": 0
+        },
+        "array_reference_occurrences": {},
+        "array_copy_cells": 0,
+        "initializer_cells": 0,
+        "initializer_calls": 0,
+        "numeric_local_upper": 0
+      },
+      "fixed_local_upper": 42289,
+      "per_visit_local_upper": 0,
+      "loop_count": 0,
+      "calls_excluded": [
+        {
+          "callee": "S.snapshot",
+          "verified_bucket": "phase-private-snapshot"
+        },
+        {
+          "callee": "HistLookup(AHPublicG(O)).run",
+          "verified_bucket": "phase-lookup"
+        }
+      ],
+      "price_bucket": "pc_call + pc_input*raw_input_bytes"
+    },
+    {
+      "source": "ntruplus/proof/768/ref/kem_adaptive_history/NTRUPlus768AHAdapter.ec",
+      "module": "AHWrapper",
+      "procedure": "guess",
+      "normalized_body_sha256": "2396bbfddef53834c2535a1c14b4fa8bbd4a8c7d5ff93e833cfdc4b4d5933c15",
+      "source_fragment": "var suffix:W8.t Array32.t;var answer:bool;\n  suffix<@O.f(pk);S.init(pk,suffix,Some ct);\n  answer<@A(AHOracles(S,O),AHDecap(S,O)).guess(pk,ct,key);\n  return answer;",
+      "rule_id": "phase-source-block-v1",
+      "allocation": {},
+      "units_expr": "setup portion of rt_phase_setup_fixed",
+      "calls": [
+        {
+          "target": "O.f",
+          "rule_id": "ideal-ROF"
+        },
+        {
+          "target": "S.init",
+          "rule_id": "phase-private-init"
+        },
+        {
+          "target": "A(AHOracles(S,O),AHDecap(S,O)).guess",
+          "rule_id": "attacker-self-and-callback-partition"
+        }
+      ],
+      "certificate_theorem": "rt_phase_fixed_nonnegative",
+      "blocks": [
+        {
+          "id": "complete-body",
+          "source_fragment": "var suffix:W8.t Array32.t;var answer:bool;\n  suffix<@O.f(pk);S.init(pk,suffix,Some ct);\n  answer<@A(AHOracles(S,O),AHDecap(S,O)).guess(pk,ct,key);\n  return answer;",
+          "occurrences": 1,
+          "rule_id": "phase-source-block-v1",
+          "units_expr": "setup portion of rt_phase_setup_fixed"
+        }
+      ],
+      "numeric_rule": "phase-finite-source-token-and-array-bound-v1",
+      "array_value_cells": {
+        "pk": 1152,
+        "ct": 1152,
+        "key": 32,
+        "suffix": 32
+      },
+      "fixed_breakdown": {
+        "local_scalar_ops": 52,
+        "guards": 0,
+        "list_ops": {
+          "head": 0,
+          "behead": 0,
+          "cons": 0
+        },
+        "array_reference_occurrences": {
+          "pk": 3,
+          "ct": 2,
+          "key": 1,
+          "suffix": 2
+        },
+        "array_copy_cells": 8192,
+        "initializer_cells": 0,
+        "initializer_calls": 0,
+        "numeric_local_upper": 24628,
+        "array_boundary_cells": {
+          "entry": 2336,
+          "return": 0
+        }
+      },
+      "per_visit_breakdown": {
+        "local_scalar_ops": 0,
+        "guards": 0,
+        "list_ops": {
+          "head": 0,
+          "behead": 0,
+          "cons": 0
+        },
+        "array_reference_occurrences": {},
+        "array_copy_cells": 0,
+        "initializer_cells": 0,
+        "initializer_calls": 0,
+        "numeric_local_upper": 0
+      },
+      "fixed_local_upper": 24628,
+      "per_visit_local_upper": 0,
+      "loop_count": 0,
+      "calls_excluded": [
+        {
+          "callee": "O.f",
+          "verified_bucket": "ideal-ROF"
+        },
+        {
+          "callee": "S.init",
+          "verified_bucket": "phase-private-init"
+        },
+        {
+          "callee": "A(AHOracles(S,O),AHDecap(S,O)).guess",
+          "verified_bucket": "attacker-self-and-callback-partition"
+        }
+      ],
+      "price_bucket": "pc_extract_init"
+    },
+    {
+      "source": "ntruplus/proof/768/ref/kem_adaptive_history/NTRUPlus768AHFinal.ec",
+      "module": "AHPrivateStore",
+      "procedure": "init",
+      "normalized_body_sha256": "3ca474023413862dcabb955699308360ad5a241fe879f954ec5ae7a865275407",
+      "source_fragment": "st<-{|ah_rows=[];ah_pk=pk;ah_suffix=suffix;ah_cstar=cstar|};",
+      "rule_id": "phase-source-block-v1",
+      "allocation": {
+        "fixed_context_cells_at_most": 2336,
+        "list_spine": "persistent sharing"
+      },
+      "units_expr": "rt_phase_store_fixed + (record ? rt_phase_put_body(n,k):0)",
+      "calls": [],
+      "certificate_theorem": "rt_phase_fixed_nonnegative",
+      "blocks": [
+        {
+          "id": "complete-body",
+          "source_fragment": "st<-{|ah_rows=[];ah_pk=pk;ah_suffix=suffix;ah_cstar=cstar|};",
+          "occurrences": 1,
+          "rule_id": "phase-source-block-v1",
+          "units_expr": "rt_phase_store_fixed + (record ? rt_phase_put_body(n,k):0)"
+        }
+      ],
+      "numeric_rule": "phase-finite-source-token-and-array-bound-v1",
+      "array_value_cells": {
+        "pk": 1152,
+        "suffix": 32,
+        "cstar": 1152,
+        "st": 2336
+      },
+      "fixed_breakdown": {
+        "local_scalar_ops": 23,
+        "guards": 0,
+        "list_ops": {
+          "head": 0,
+          "behead": 0,
+          "cons": 0
+        },
+        "array_reference_occurrences": {
+          "pk": 1,
+          "suffix": 1,
+          "cstar": 1,
+          "st": 1
+        },
+        "array_copy_cells": 7008,
+        "initializer_cells": 0,
+        "initializer_calls": 0,
+        "numeric_local_upper": 21047,
+        "array_boundary_cells": {
+          "entry": 2336,
+          "return": 0
+        }
+      },
+      "per_visit_breakdown": {
+        "local_scalar_ops": 0,
+        "guards": 0,
+        "list_ops": {
+          "head": 0,
+          "behead": 0,
+          "cons": 0
+        },
+        "array_reference_occurrences": {},
+        "array_copy_cells": 0,
+        "initializer_cells": 0,
+        "initializer_calls": 0,
+        "numeric_local_upper": 0
+      },
+      "fixed_local_upper": 21047,
+      "per_visit_local_upper": 0,
+      "loop_count": 0,
+      "calls_excluded": [],
+      "price_bucket": "pc_extract_init"
+    },
+    {
+      "source": "ntruplus/proof/768/ref/kem_adaptive_history/NTRUPlus768AHFinal.ec",
+      "module": "AHPrivateStore",
+      "procedure": "snapshot",
+      "normalized_body_sha256": "3ed89940f62d948a3198d949f8af3a5081ae57d5f1eb9df4af51c25a9a3d0f86",
+      "source_fragment": "return st;",
+      "rule_id": "phase-source-block-v1",
+      "allocation": {
+        "fixed_context_cells_at_most": 2336,
+        "list_spine": "persistent sharing"
+      },
+      "units_expr": "rt_phase_store_fixed + (record ? rt_phase_put_body(n,k):0)",
+      "calls": [],
+      "certificate_theorem": "rt_phase_fixed_nonnegative",
+      "blocks": [
+        {
+          "id": "complete-body",
+          "source_fragment": "return st;",
+          "occurrences": 1,
+          "rule_id": "phase-source-block-v1",
+          "units_expr": "rt_phase_store_fixed + (record ? rt_phase_put_body(n,k):0)"
+        }
+      ],
+      "numeric_rule": "phase-finite-source-token-and-array-bound-v1",
+      "array_value_cells": {
+        "st": 2336
+      },
+      "fixed_breakdown": {
+        "local_scalar_ops": 3,
+        "guards": 0,
+        "list_ops": {
+          "head": 0,
+          "behead": 0,
+          "cons": 0
+        },
+        "array_reference_occurrences": {
+          "st": 1
+        },
+        "array_copy_cells": 4672,
+        "initializer_cells": 0,
+        "initializer_calls": 0,
+        "numeric_local_upper": 14019,
+        "array_boundary_cells": {
+          "entry": 0,
+          "return": 2336
+        }
+      },
+      "per_visit_breakdown": {
+        "local_scalar_ops": 0,
+        "guards": 0,
+        "list_ops": {
+          "head": 0,
+          "behead": 0,
+          "cons": 0
+        },
+        "array_reference_occurrences": {},
+        "array_copy_cells": 0,
+        "initializer_cells": 0,
+        "initializer_calls": 0,
+        "numeric_local_upper": 0
+      },
+      "fixed_local_upper": 14019,
+      "per_visit_local_upper": 0,
+      "loop_count": 0,
+      "calls_excluded": [],
+      "price_bucket": "pc_call + pc_input*raw_input_bytes"
+    },
+    {
+      "source": "ntruplus/proof/768/ref/kem_adaptive_history/NTRUPlus768AHFinal.ec",
+      "module": "AHPrivateStore",
+      "procedure": "record",
+      "normalized_body_sha256": "326ff1a3457a35fd3fb8cba4b5aad74c4a46c14d8b9a54a0b3482d537b1e74c6",
+      "source_fragment": "var updated:hist_table*int*int;\n  updated<@HistTable.put(input,hout,st.`ah_rows);\n  st<-{|ah_rows=updated.`1;ah_pk=st.`ah_pk;ah_suffix=st.`ah_suffix;ah_cstar=st.`ah_cstar|};",
+      "rule_id": "phase-source-block-v1",
+      "allocation": {
+        "fixed_context_cells_at_most": 2336,
+        "list_spine": "persistent sharing"
+      },
+      "units_expr": "rt_phase_store_fixed + (record ? rt_phase_put_body(n,k):0)",
+      "calls": [
+        {
+          "target": "HistTable.put",
+          "rule_id": "phase-hist-put"
+        }
+      ],
+      "certificate_theorem": "rt_phase_fixed_nonnegative",
+      "blocks": [
+        {
+          "id": "complete-body",
+          "source_fragment": "var updated:hist_table*int*int;\n  updated<@HistTable.put(input,hout,st.`ah_rows);\n  st<-{|ah_rows=updated.`1;ah_pk=st.`ah_pk;ah_suffix=st.`ah_suffix;ah_cstar=st.`ah_cstar|};",
+          "occurrences": 1,
+          "rule_id": "phase-source-block-v1",
+          "units_expr": "rt_phase_store_fixed + (record ? rt_phase_put_body(n,k):0)"
+        }
+      ],
+      "numeric_rule": "phase-finite-source-token-and-array-bound-v1",
+      "array_value_cells": {
+        "input": 128,
+        "hout": 224,
+        "st": 2336
+      },
+      "fixed_breakdown": {
+        "local_scalar_ops": 50,
+        "guards": 0,
+        "list_ops": {
+          "head": 0,
+          "behead": 0,
+          "cons": 0
+        },
+        "array_reference_occurrences": {
+          "input": 1,
+          "hout": 1,
+          "st": 5
+        },
+        "array_copy_cells": 12384,
+        "initializer_cells": 0,
+        "initializer_calls": 0,
+        "numeric_local_upper": 37202,
+        "array_boundary_cells": {
+          "entry": 352,
+          "return": 0
+        }
+      },
+      "per_visit_breakdown": {
+        "local_scalar_ops": 0,
+        "guards": 0,
+        "list_ops": {
+          "head": 0,
+          "behead": 0,
+          "cons": 0
+        },
+        "array_reference_occurrences": {},
+        "array_copy_cells": 0,
+        "initializer_cells": 0,
+        "initializer_calls": 0,
+        "numeric_local_upper": 0
+      },
+      "fixed_local_upper": 37202,
+      "per_visit_local_upper": 0,
+      "loop_count": 0,
+      "calls_excluded": [
+        {
+          "callee": "HistTable.put",
+          "verified_bucket": "phase-hist-put"
+        }
+      ],
+      "price_bucket": "pc_call + pc_input*raw_input_bytes"
+    },
+    {
+      "source": "ntruplus/proof/768/ref/kem_modified_fo/NTRUPlus768FOGAdapters.ec",
+      "module": "FOGRawStreams",
+      "procedure": "e",
+      "normalized_body_sha256": "d511351644ce13dedc0d9c614427a63d297896bba8598d2744a1b4f3d9e8db93",
+      "source_fragment": "var prefix,suffix;\n  prefix <@ ROE.get(input);\n  if(input \\notin RawXOFStreams.es){suffix <$ uniform32; RawXOFStreams.es.[input]<-suffix;}\n  return raw_join192(prefix,oget RawXOFStreams.es.[input]);",
+      "rule_id": "phase-source-block-v1",
+      "allocation": {},
+      "units_expr": "rt_phase_stream_fixed + (g ? rt_phase_g_cons:0)",
+      "calls": [
+        {
+          "target": "ROE.get/ROF.get/ROH.get",
+          "rule_id": "ideal-typed-ROM"
+        },
+        {
+          "target": "G.get",
+          "rule_id": "ideal-or-logged-G"
+        },
+        {
+          "target": "RawXOFStreams.es/fs/gs/other",
+          "rule_id": "ideal-lazy-extension"
+        },
+        {
+          "target": "raw_join192/hash_join",
+          "rule_id": "fixed224-copy-initializer"
+        }
+      ],
+      "certificate_theorem": "rt_phase_fixed_nonnegative",
+      "blocks": [
+        {
+          "id": "complete-body",
+          "source_fragment": "var prefix,suffix;\n  prefix <@ ROE.get(input);\n  if(input \\notin RawXOFStreams.es){suffix <$ uniform32; RawXOFStreams.es.[input]<-suffix;}\n  return raw_join192(prefix,oget RawXOFStreams.es.[input]);",
+          "occurrences": 1,
+          "rule_id": "phase-source-block-v1",
+          "units_expr": "rt_phase_stream_fixed + (g ? rt_phase_g_cons:0)"
+        }
+      ],
+      "numeric_rule": "phase-finite-source-token-and-array-bound-v1",
+      "array_value_cells": {
+        "input": 32,
+        "prefix": 192,
+        "suffix": 32
+      },
+      "fixed_breakdown": {
+        "local_scalar_ops": 50,
+        "guards": 1,
+        "list_ops": {
+          "head": 0,
+          "behead": 0,
+          "cons": 0
+        },
+        "array_reference_occurrences": {
+          "input": 4,
+          "prefix": 2,
+          "suffix": 2
+        },
+        "array_copy_cells": 832,
+        "initializer_cells": 0,
+        "initializer_calls": 0,
+        "numeric_local_upper": 2547,
+        "array_boundary_cells": {
+          "entry": 32,
+          "return": 224
+        }
+      },
+      "per_visit_breakdown": {
+        "local_scalar_ops": 0,
+        "guards": 0,
+        "list_ops": {
+          "head": 0,
+          "behead": 0,
+          "cons": 0
+        },
+        "array_reference_occurrences": {},
+        "array_copy_cells": 0,
+        "initializer_cells": 0,
+        "initializer_calls": 0,
+        "numeric_local_upper": 0
+      },
+      "fixed_local_upper": 2547,
+      "per_visit_local_upper": 0,
+      "loop_count": 0,
+      "calls_excluded": [
+        {
+          "callee": "ROE.get/ROF.get/ROH.get",
+          "verified_bucket": "ideal-typed-ROM"
+        },
+        {
+          "callee": "G.get",
+          "verified_bucket": "ideal-or-logged-G"
+        },
+        {
+          "callee": "RawXOFStreams.es/fs/gs/other",
+          "verified_bucket": "ideal-lazy-extension"
+        },
+        {
+          "callee": "raw_join192/hash_join",
+          "verified_bucket": "fixed224-copy-initializer"
+        }
+      ],
+      "price_bucket": "pc_call + pc_input*raw_input_bytes"
+    },
+    {
+      "source": "ntruplus/proof/768/ref/kem_modified_fo/NTRUPlus768FOGAdapters.ec",
+      "module": "FOGRawStreams",
+      "procedure": "f",
+      "normalized_body_sha256": "73cb195fa56e0f9aa0dc374e5343410093a0ce26ce15c9b47a209dddb791f158",
+      "source_fragment": "var prefix,suffix;\n  prefix <@ ROF.get(input);\n  if(input \\notin RawXOFStreams.fs){suffix <$ uniform192; RawXOFStreams.fs.[input]<-suffix;}\n  return hash_join(prefix,oget RawXOFStreams.fs.[input]);",
+      "rule_id": "phase-source-block-v1",
+      "allocation": {},
+      "units_expr": "rt_phase_stream_fixed + (g ? rt_phase_g_cons:0)",
+      "calls": [
+        {
+          "target": "ROE.get/ROF.get/ROH.get",
+          "rule_id": "ideal-typed-ROM"
+        },
+        {
+          "target": "G.get",
+          "rule_id": "ideal-or-logged-G"
+        },
+        {
+          "target": "RawXOFStreams.es/fs/gs/other",
+          "rule_id": "ideal-lazy-extension"
+        },
+        {
+          "target": "raw_join192/hash_join",
+          "rule_id": "fixed224-copy-initializer"
+        }
+      ],
+      "certificate_theorem": "rt_phase_fixed_nonnegative",
+      "blocks": [
+        {
+          "id": "complete-body",
+          "source_fragment": "var prefix,suffix;\n  prefix <@ ROF.get(input);\n  if(input \\notin RawXOFStreams.fs){suffix <$ uniform192; RawXOFStreams.fs.[input]<-suffix;}\n  return hash_join(prefix,oget RawXOFStreams.fs.[input]);",
+          "occurrences": 1,
+          "rule_id": "phase-source-block-v1",
+          "units_expr": "rt_phase_stream_fixed + (g ? rt_phase_g_cons:0)"
+        }
+      ],
+      "numeric_rule": "phase-finite-source-token-and-array-bound-v1",
+      "array_value_cells": {
+        "input": 1152,
+        "prefix": 32,
+        "suffix": 192
+      },
+      "fixed_breakdown": {
+        "local_scalar_ops": 50,
+        "guards": 1,
+        "list_ops": {
+          "head": 0,
+          "behead": 0,
+          "cons": 0
+        },
+        "array_reference_occurrences": {
+          "input": 4,
+          "prefix": 2,
+          "suffix": 2
+        },
+        "array_copy_cells": 6432,
+        "initializer_cells": 0,
+        "initializer_calls": 0,
+        "numeric_local_upper": 19347,
+        "array_boundary_cells": {
+          "entry": 1152,
+          "return": 224
+        }
+      },
+      "per_visit_breakdown": {
+        "local_scalar_ops": 0,
+        "guards": 0,
+        "list_ops": {
+          "head": 0,
+          "behead": 0,
+          "cons": 0
+        },
+        "array_reference_occurrences": {},
+        "array_copy_cells": 0,
+        "initializer_cells": 0,
+        "initializer_calls": 0,
+        "numeric_local_upper": 0
+      },
+      "fixed_local_upper": 19347,
+      "per_visit_local_upper": 0,
+      "loop_count": 0,
+      "calls_excluded": [
+        {
+          "callee": "ROE.get/ROF.get/ROH.get",
+          "verified_bucket": "ideal-typed-ROM"
+        },
+        {
+          "callee": "G.get",
+          "verified_bucket": "ideal-or-logged-G"
+        },
+        {
+          "callee": "RawXOFStreams.es/fs/gs/other",
+          "verified_bucket": "ideal-lazy-extension"
+        },
+        {
+          "callee": "raw_join192/hash_join",
+          "verified_bucket": "fixed224-copy-initializer"
+        }
+      ],
+      "price_bucket": "pc_call + pc_input*raw_input_bytes"
+    },
+    {
+      "source": "ntruplus/proof/768/ref/kem_modified_fo/NTRUPlus768FOGAdapters.ec",
+      "module": "FOGRawStreams",
+      "procedure": "g",
+      "normalized_body_sha256": "842fb7e2037faa75ae53490d5232597c180c703e2701ada1483bca520aed6094",
+      "source_fragment": "var prefix,suffix;\n  prefix <@ G.get(input);\n  if(input \\notin RawXOFStreams.gs){suffix <$ uniform32; RawXOFStreams.gs.[input]<-suffix;}\n  return raw_join192(prefix,oget RawXOFStreams.gs.[input]);",
+      "rule_id": "phase-source-block-v1",
+      "allocation": {},
+      "units_expr": "rt_phase_stream_fixed + (g ? rt_phase_g_cons:0)",
+      "calls": [
+        {
+          "target": "ROE.get/ROF.get/ROH.get",
+          "rule_id": "ideal-typed-ROM"
+        },
+        {
+          "target": "G.get",
+          "rule_id": "ideal-or-logged-G"
+        },
+        {
+          "target": "RawXOFStreams.es/fs/gs/other",
+          "rule_id": "ideal-lazy-extension"
+        },
+        {
+          "target": "raw_join192/hash_join",
+          "rule_id": "fixed224-copy-initializer"
+        }
+      ],
+      "certificate_theorem": "rt_phase_fixed_nonnegative",
+      "blocks": [
+        {
+          "id": "complete-body",
+          "source_fragment": "var prefix,suffix;\n  prefix <@ G.get(input);\n  if(input \\notin RawXOFStreams.gs){suffix <$ uniform32; RawXOFStreams.gs.[input]<-suffix;}\n  return raw_join192(prefix,oget RawXOFStreams.gs.[input]);",
+          "occurrences": 1,
+          "rule_id": "phase-source-block-v1",
+          "units_expr": "rt_phase_stream_fixed + (g ? rt_phase_g_cons:0)"
+        }
+      ],
+      "numeric_rule": "phase-finite-source-token-and-array-bound-v1",
+      "array_value_cells": {
+        "input": 1152,
+        "prefix": 192,
+        "suffix": 32
+      },
+      "fixed_breakdown": {
+        "local_scalar_ops": 50,
+        "guards": 1,
+        "list_ops": {
+          "head": 0,
+          "behead": 0,
+          "cons": 0
+        },
+        "array_reference_occurrences": {
+          "input": 4,
+          "prefix": 2,
+          "suffix": 2
+        },
+        "array_copy_cells": 6432,
+        "initializer_cells": 0,
+        "initializer_calls": 0,
+        "numeric_local_upper": 19347,
+        "array_boundary_cells": {
+          "entry": 1152,
+          "return": 224
+        }
+      },
+      "per_visit_breakdown": {
+        "local_scalar_ops": 0,
+        "guards": 0,
+        "list_ops": {
+          "head": 0,
+          "behead": 0,
+          "cons": 0
+        },
+        "array_reference_occurrences": {},
+        "array_copy_cells": 0,
+        "initializer_cells": 0,
+        "initializer_calls": 0,
+        "numeric_local_upper": 0
+      },
+      "fixed_local_upper": 19347,
+      "per_visit_local_upper": 0,
+      "loop_count": 0,
+      "calls_excluded": [
+        {
+          "callee": "ROE.get/ROF.get/ROH.get",
+          "verified_bucket": "ideal-typed-ROM"
+        },
+        {
+          "callee": "G.get",
+          "verified_bucket": "ideal-or-logged-G"
+        },
+        {
+          "callee": "RawXOFStreams.es/fs/gs/other",
+          "verified_bucket": "ideal-lazy-extension"
+        },
+        {
+          "callee": "raw_join192/hash_join",
+          "verified_bucket": "fixed224-copy-initializer"
+        }
+      ],
+      "price_bucket": "pc_call + pc_input*raw_input_bytes"
+    },
+    {
+      "source": "ntruplus/proof/768/ref/kem_modified_fo/NTRUPlus768FOGAdapters.ec",
+      "module": "FOGRawStreams",
+      "procedure": "h",
+      "normalized_body_sha256": "10dd238e38eac6ccccaefcee868035579ba39269d905998419d4dc09a877c19a",
+      "source_fragment": "var y; y <@ ROH.get(input); return y;",
+      "rule_id": "phase-source-block-v1",
+      "allocation": {},
+      "units_expr": "rt_phase_stream_fixed + (g ? rt_phase_g_cons:0)",
+      "calls": [
+        {
+          "target": "ROE.get/ROF.get/ROH.get",
+          "rule_id": "ideal-typed-ROM"
+        },
+        {
+          "target": "G.get",
+          "rule_id": "ideal-or-logged-G"
+        },
+        {
+          "target": "RawXOFStreams.es/fs/gs/other",
+          "rule_id": "ideal-lazy-extension"
+        },
+        {
+          "target": "raw_join192/hash_join",
+          "rule_id": "fixed224-copy-initializer"
+        }
+      ],
+      "certificate_theorem": "rt_phase_fixed_nonnegative",
+      "blocks": [
+        {
+          "id": "complete-body",
+          "source_fragment": "var y; y <@ ROH.get(input); return y;",
+          "occurrences": 1,
+          "rule_id": "phase-source-block-v1",
+          "units_expr": "rt_phase_stream_fixed + (g ? rt_phase_g_cons:0)"
+        }
+      ],
+      "numeric_rule": "phase-finite-source-token-and-array-bound-v1",
+      "array_value_cells": {
+        "input": 128,
+        "y": 224
+      },
+      "fixed_breakdown": {
+        "local_scalar_ops": 12,
+        "guards": 0,
+        "list_ops": {
+          "head": 0,
+          "behead": 0,
+          "cons": 0
+        },
+        "array_reference_occurrences": {
+          "input": 1,
+          "y": 2
+        },
+        "array_copy_cells": 928,
+        "initializer_cells": 0,
+        "initializer_calls": 0,
+        "numeric_local_upper": 2796,
+        "array_boundary_cells": {
+          "entry": 128,
+          "return": 224
+        }
+      },
+      "per_visit_breakdown": {
+        "local_scalar_ops": 0,
+        "guards": 0,
+        "list_ops": {
+          "head": 0,
+          "behead": 0,
+          "cons": 0
+        },
+        "array_reference_occurrences": {},
+        "array_copy_cells": 0,
+        "initializer_cells": 0,
+        "initializer_calls": 0,
+        "numeric_local_upper": 0
+      },
+      "fixed_local_upper": 2796,
+      "per_visit_local_upper": 0,
+      "loop_count": 0,
+      "calls_excluded": [
+        {
+          "callee": "ROE.get/ROF.get/ROH.get",
+          "verified_bucket": "ideal-typed-ROM"
+        },
+        {
+          "callee": "G.get",
+          "verified_bucket": "ideal-or-logged-G"
+        },
+        {
+          "callee": "RawXOFStreams.es/fs/gs/other",
+          "verified_bucket": "ideal-lazy-extension"
+        },
+        {
+          "callee": "raw_join192/hash_join",
+          "verified_bucket": "fixed224-copy-initializer"
+        }
+      ],
+      "price_bucket": "pc_call + pc_input*raw_input_bytes"
+    },
+    {
+      "source": "ntruplus/proof/768/ref/kem_modified_fo/NTRUPlus768FOGAdapters.ec",
+      "module": "FOGRawStreams",
+      "procedure": "untyped",
+      "normalized_body_sha256": "950e260854fc20bbac4e4fa3e7d6960fd7ff9ad492421dfc048176bc0a56a8de",
+      "source_fragment": "var y;\n  if(input \\notin RawXOFStreams.other){y <$ uniform224; RawXOFStreams.other.[input]<-y;}\n  return oget RawXOFStreams.other.[input];",
+      "rule_id": "phase-source-block-v1",
+      "allocation": {},
+      "units_expr": "rt_phase_stream_fixed + (g ? rt_phase_g_cons:0)",
+      "calls": [
+        {
+          "target": "ROE.get/ROF.get/ROH.get",
+          "rule_id": "ideal-typed-ROM"
+        },
+        {
+          "target": "G.get",
+          "rule_id": "ideal-or-logged-G"
+        },
+        {
+          "target": "RawXOFStreams.es/fs/gs/other",
+          "rule_id": "ideal-lazy-extension"
+        },
+        {
+          "target": "raw_join192/hash_join",
+          "rule_id": "fixed224-copy-initializer"
+        }
+      ],
+      "certificate_theorem": "rt_phase_fixed_nonnegative",
+      "blocks": [
+        {
+          "id": "complete-body",
+          "source_fragment": "var y;\n  if(input \\notin RawXOFStreams.other){y <$ uniform224; RawXOFStreams.other.[input]<-y;}\n  return oget RawXOFStreams.other.[input];",
+          "occurrences": 1,
+          "rule_id": "phase-source-block-v1",
+          "units_expr": "rt_phase_stream_fixed + (g ? rt_phase_g_cons:0)"
+        }
+      ],
+      "numeric_rule": "phase-finite-source-token-and-array-bound-v1",
+      "array_value_cells": {
+        "y": 224
+      },
+      "fixed_breakdown": {
+        "local_scalar_ops": 36,
+        "guards": 1,
+        "list_ops": {
+          "head": 0,
+          "behead": 0,
+          "cons": 0
+        },
+        "array_reference_occurrences": {
+          "y": 2
+        },
+        "array_copy_cells": 672,
+        "initializer_cells": 0,
+        "initializer_calls": 0,
+        "numeric_local_upper": 2053,
+        "array_boundary_cells": {
+          "entry": 0,
+          "return": 224
+        }
+      },
+      "per_visit_breakdown": {
+        "local_scalar_ops": 0,
+        "guards": 0,
+        "list_ops": {
+          "head": 0,
+          "behead": 0,
+          "cons": 0
+        },
+        "array_reference_occurrences": {},
+        "array_copy_cells": 0,
+        "initializer_cells": 0,
+        "initializer_calls": 0,
+        "numeric_local_upper": 0
+      },
+      "fixed_local_upper": 2053,
+      "per_visit_local_upper": 0,
+      "loop_count": 0,
+      "calls_excluded": [
+        {
+          "callee": "ROE.get/ROF.get/ROH.get",
+          "verified_bucket": "ideal-typed-ROM"
+        },
+        {
+          "callee": "G.get",
+          "verified_bucket": "ideal-or-logged-G"
+        },
+        {
+          "callee": "RawXOFStreams.es/fs/gs/other",
+          "verified_bucket": "ideal-lazy-extension"
+        },
+        {
+          "callee": "raw_join192/hash_join",
+          "verified_bucket": "fixed224-copy-initializer"
+        }
+      ],
+      "price_bucket": "pc_call + pc_input*raw_input_bytes"
+    },
+    {
+      "source": "ntruplus/proof/768/ref/kem_modified_fo/NTRUPlus768FOGAdapters.ec",
+      "module": "FOGRaw",
+      "procedure": "full",
+      "normalized_body_sha256": "13aef7722b26b2e1f6bfb3285c1335aee3df5b2303ab4f97360955d1616bff47",
+      "source_fragment": "var stream;\n  match decode_typed input with\n  | None => {stream <@ FOGRawStreams(G).untyped(input);}\n  | Some query => {\n   match query with\n   | E seed => {stream <@ FOGRawStreams(G).e(seed);}\n   | F pk => {stream <@ FOGRawStreams(G).f(pk);}\n   | G serialized => {stream <@ FOGRawStreams(G).g(serialized);}\n   | H payload => {stream <@ FOGRawStreams(G).h(payload);}\n   end;\n  }\n  end;\n  return stream;",
+      "rule_id": "phase-source-block-v1",
+      "allocation": {},
+      "units_expr": "rt_phase_decode(size input)+rt_phase_stream_fixed+rt_phase_prefix_fixed",
+      "calls": [
+        {
+          "target": "decode_typed",
+          "rule_id": "definition-list-size-array-of-list"
+        },
+        {
+          "target": "FOGRawStreams.*",
+          "rule_id": "phase-raw-stream"
+        },
+        {
+          "target": "raw_xof_output",
+          "rule_id": "definition-prefix224"
+        }
+      ],
+      "certificate_theorem": "rt_phase_raw_linear",
+      "blocks": [
+        {
+          "id": "complete-body",
+          "source_fragment": "var stream;\n  match decode_typed input with\n  | None => {stream <@ FOGRawStreams(G).untyped(input);}\n  | Some query => {\n   match query with\n   | E seed => {stream <@ FOGRawStreams(G).e(seed);}\n   | F pk => {stream <@ FOGRawStreams(G).f(pk);}\n   | G serialized => {stream <@ FOGRawStreams(G).g(serialized);}\n   | H payload => {stream <@ FOGRawStreams(G).h(payload);}\n   end;\n  }\n  end;\n  return stream;",
+          "occurrences": 1,
+          "rule_id": "phase-source-block-v1",
+          "units_expr": "rt_phase_decode(size input)+rt_phase_stream_fixed+rt_phase_prefix_fixed"
+        }
+      ],
+      "numeric_rule": "phase-finite-source-token-and-array-bound-v1",
+      "array_value_cells": {
+        "stream": 224,
+        "query": 1152,
+        "seed": 32,
+        "pk": 1152,
+        "serialized": 1152,
+        "payload": 128
+      },
+      "fixed_breakdown": {
+        "local_scalar_ops": 115,
+        "guards": 2,
+        "list_ops": {
+          "head": 0,
+          "behead": 0,
+          "cons": 0
+        },
+        "array_reference_occurrences": {
+          "stream": 6,
+          "query": 2,
+          "seed": 2,
+          "pk": 2,
+          "serialized": 2,
+          "payload": 2
+        },
+        "array_copy_cells": 8800,
+        "initializer_cells": 0,
+        "initializer_calls": 0,
+        "numeric_local_upper": 26517,
+        "array_boundary_cells": {
+          "entry": 0,
+          "return": 224
+        }
+      },
+      "per_visit_breakdown": {
+        "local_scalar_ops": 0,
+        "guards": 0,
+        "list_ops": {
+          "head": 0,
+          "behead": 0,
+          "cons": 0
+        },
+        "array_reference_occurrences": {},
+        "array_copy_cells": 0,
+        "initializer_cells": 0,
+        "initializer_calls": 0,
+        "numeric_local_upper": 0
+      },
+      "fixed_local_upper": 26517,
+      "per_visit_local_upper": 0,
+      "loop_count": 0,
+      "calls_excluded": [
+        {
+          "callee": "decode_typed",
+          "verified_bucket": "definition-list-size-array-of-list"
+        },
+        {
+          "callee": "FOGRawStreams.*",
+          "verified_bucket": "phase-raw-stream"
+        },
+        {
+          "callee": "raw_xof_output",
+          "verified_bucket": "definition-prefix224"
+        }
+      ],
+      "price_bucket": "pc_call + pc_input*raw_input_bytes"
+    },
+    {
+      "source": "ntruplus/proof/768/ref/kem_modified_fo/NTRUPlus768FOGAdapters.ec",
+      "module": "FOGRaw",
+      "procedure": "get",
+      "normalized_body_sha256": "04341f900d41b60a15b7e9044648fab2ef811777ad5b29db0cbc57c02fc849c3",
+      "source_fragment": "var result,stream;\n  result <- None;\n  if(0<=outlen<=raw_xof_max_output){\n   stream <@ full(input);\n   result <- Some(raw_xof_output outlen stream);\n  }\n  return result;",
+      "rule_id": "phase-source-block-v1",
+      "allocation": {},
+      "units_expr": "rt_phase_decode(size input)+rt_phase_stream_fixed+rt_phase_prefix_fixed",
+      "calls": [
+        {
+          "target": "decode_typed",
+          "rule_id": "definition-list-size-array-of-list"
+        },
+        {
+          "target": "FOGRawStreams.*",
+          "rule_id": "phase-raw-stream"
+        },
+        {
+          "target": "raw_xof_output",
+          "rule_id": "definition-prefix224"
+        }
+      ],
+      "certificate_theorem": "rt_phase_raw_linear",
+      "blocks": [
+        {
+          "id": "complete-body",
+          "source_fragment": "var result,stream;\n  result <- None;\n  if(0<=outlen<=raw_xof_max_output){\n   stream <@ full(input);\n   result <- Some(raw_xof_output outlen stream);\n  }\n  return result;",
+          "occurrences": 1,
+          "rule_id": "phase-source-block-v1",
+          "units_expr": "rt_phase_decode(size input)+rt_phase_stream_fixed+rt_phase_prefix_fixed"
+        }
+      ],
+      "numeric_rule": "phase-finite-source-token-and-array-bound-v1",
+      "array_value_cells": {
+        "stream": 224
+      },
+      "fixed_breakdown": {
+        "local_scalar_ops": 35,
+        "guards": 1,
+        "list_ops": {
+          "head": 0,
+          "behead": 0,
+          "cons": 0
+        },
+        "array_reference_occurrences": {
+          "stream": 2
+        },
+        "array_copy_cells": 448,
+        "initializer_cells": 0,
+        "initializer_calls": 0,
+        "numeric_local_upper": 1380,
+        "array_boundary_cells": {
+          "entry": 0,
+          "return": 0
+        }
+      },
+      "per_visit_breakdown": {
+        "local_scalar_ops": 0,
+        "guards": 0,
+        "list_ops": {
+          "head": 0,
+          "behead": 0,
+          "cons": 0
+        },
+        "array_reference_occurrences": {},
+        "array_copy_cells": 0,
+        "initializer_cells": 0,
+        "initializer_calls": 0,
+        "numeric_local_upper": 0
+      },
+      "fixed_local_upper": 1380,
+      "per_visit_local_upper": 0,
+      "loop_count": 0,
+      "calls_excluded": [
+        {
+          "callee": "decode_typed",
+          "verified_bucket": "definition-list-size-array-of-list"
+        },
+        {
+          "callee": "FOGRawStreams.*",
+          "verified_bucket": "phase-raw-stream"
+        },
+        {
+          "callee": "raw_xof_output",
+          "verified_bucket": "definition-prefix224"
+        }
+      ],
+      "price_bucket": "pc_call + pc_input*raw_input_bytes"
+    },
+    {
+      "source": "ntruplus/proof/768/ref/kem_acwc2_security/NTRUPlus768SecGOracles.ec",
+      "module": "SecGLogged",
+      "procedure": "get",
+      "normalized_body_sha256": "cea4193e363932aa759a15d107a70bd69f469d6eb952099568ede92e7acccd0a",
+      "source_fragment": "var y;\n  SecGHistory.queries<-input::SecGHistory.queries;\n  y<@G.get(input);\n  return y;",
+      "rule_id": "phase-source-block-v1",
+      "allocation": {
+        "new_G_nodes": 1,
+        "copied_payload_cells": 1152
+      },
+      "units_expr": "rt_phase_logged_g_fixed+rt_phase_g_cons",
+      "calls": [
+        {
+          "target": "G.get",
+          "rule_id": "ideal-ROG"
+        }
+      ],
+      "certificate_theorem": "rt_phase_node_calibration",
+      "blocks": [
+        {
+          "id": "complete-body",
+          "source_fragment": "var y;\n  SecGHistory.queries<-input::SecGHistory.queries;\n  y<@G.get(input);\n  return y;",
+          "occurrences": 1,
+          "rule_id": "phase-source-block-v1",
+          "units_expr": "rt_phase_logged_g_fixed+rt_phase_g_cons"
+        }
+      ],
+      "numeric_rule": "phase-finite-source-token-and-array-bound-v1",
+      "array_value_cells": {
+        "input": 1152,
+        "y": 192
+      },
+      "fixed_breakdown": {
+        "local_scalar_ops": 22,
+        "guards": 0,
+        "list_ops": {
+          "head": 0,
+          "behead": 0,
+          "cons": 1
+        },
+        "array_reference_occurrences": {
+          "input": 2,
+          "y": 2
+        },
+        "array_copy_cells": 4032,
+        "initializer_cells": 0,
+        "initializer_calls": 0,
+        "numeric_local_upper": 12118,
+        "array_boundary_cells": {
+          "entry": 1152,
+          "return": 192
+        }
+      },
+      "per_visit_breakdown": {
+        "local_scalar_ops": 0,
+        "guards": 0,
+        "list_ops": {
+          "head": 0,
+          "behead": 0,
+          "cons": 0
+        },
+        "array_reference_occurrences": {},
+        "array_copy_cells": 0,
+        "initializer_cells": 0,
+        "initializer_calls": 0,
+        "numeric_local_upper": 0
+      },
+      "fixed_local_upper": 12118,
+      "per_visit_local_upper": 0,
+      "loop_count": 0,
+      "calls_excluded": [
+        {
+          "callee": "G.get",
+          "verified_bucket": "ideal-ROG"
+        }
+      ],
+      "price_bucket": "pc_call (public) or pc_encrypt (internal); pc_cons*Gcalls separately"
+    },
+    {
+      "source": "ntruplus/proof/768/ref/kem_fo_simulation/NTRUPlus768SimOracles.ec",
+      "module": "SimOracles",
+      "procedure": "g",
+      "normalized_body_sha256": "1ef814327b468d9b7779f38c671e2f57ab8245caa350a221776947f93027fe3b",
+      "source_fragment": "var y; y <@ G.get(input);return y;",
+      "rule_id": "phase-source-block-v1",
+      "allocation": {},
+      "units_expr": "part of rt_phase_logged_g_fixed",
+      "calls": [
+        {
+          "target": "G.get",
+          "rule_id": "phase-logged-G"
+        }
+      ],
+      "certificate_theorem": "rt_phase_fixed_nonnegative",
+      "blocks": [
+        {
+          "id": "complete-body",
+          "source_fragment": "var y; y <@ G.get(input);return y;",
+          "occurrences": 1,
+          "rule_id": "phase-source-block-v1",
+          "units_expr": "part of rt_phase_logged_g_fixed"
+        }
+      ],
+      "numeric_rule": "phase-finite-source-token-and-array-bound-v1",
+      "array_value_cells": {
+        "input": 1152,
+        "y": 192
+      },
+      "fixed_breakdown": {
+        "local_scalar_ops": 12,
+        "guards": 0,
+        "list_ops": {
+          "head": 0,
+          "behead": 0,
+          "cons": 0
+        },
+        "array_reference_occurrences": {
+          "input": 1,
+          "y": 2
+        },
+        "array_copy_cells": 2880,
+        "initializer_cells": 0,
+        "initializer_calls": 0,
+        "numeric_local_upper": 8652,
+        "array_boundary_cells": {
+          "entry": 1152,
+          "return": 192
+        }
+      },
+      "per_visit_breakdown": {
+        "local_scalar_ops": 0,
+        "guards": 0,
+        "list_ops": {
+          "head": 0,
+          "behead": 0,
+          "cons": 0
+        },
+        "array_reference_occurrences": {},
+        "array_copy_cells": 0,
+        "initializer_cells": 0,
+        "initializer_calls": 0,
+        "numeric_local_upper": 0
+      },
+      "fixed_local_upper": 8652,
+      "per_visit_local_upper": 0,
+      "loop_count": 0,
+      "calls_excluded": [
+        {
+          "callee": "G.get",
+          "verified_bucket": "phase-logged-G"
+        }
+      ],
+      "price_bucket": "pc_call (public) or pc_encrypt (internal); pc_cons*Gcalls separately"
+    },
+    {
+      "source": "ntruplus/proof/768/ref/kem_adaptive_history/NTRUPlus768AHActualReduction.ec",
+      "module": "AHActualPhase",
+      "procedure": "run",
+      "normalized_body_sha256": "d7ba6b457ff87face0e5d80ea50c27b21cdb3dffe801187b4aa144b3d0d27a4b",
+      "source_fragment": "var suffix:W8.t Array32.t;var answer:bool;\n  suffix<@ROF.get(pk);\n  answer<@AHWrapper(S,A,AHActualOracles(G),AHRejectD).guess(pk,ct,key);\n  return answer;",
+      "rule_id": "phase-source-block-v1",
+      "allocation": {},
+      "units_expr": "part of rt_phase_setup_fixed",
+      "calls": [
+        {
+          "target": "ROF.get",
+          "rule_id": "ideal-ROF"
+        },
+        {
+          "target": "uniform32",
+          "rule_id": "sample-fixed-product32-inline"
+        },
+        {
+          "target": "SecGHistory.init",
+          "rule_id": "empty-persistent-list"
+        },
+        {
+          "target": "AHWrapper/AHActualPhase",
+          "rule_id": "phase-setup"
+        }
+      ],
+      "certificate_theorem": "rt_phase_fixed_nonnegative",
+      "blocks": [
+        {
+          "id": "complete-body",
+          "source_fragment": "var suffix:W8.t Array32.t;var answer:bool;\n  suffix<@ROF.get(pk);\n  answer<@AHWrapper(S,A,AHActualOracles(G),AHRejectD).guess(pk,ct,key);\n  return answer;",
+          "occurrences": 1,
+          "rule_id": "phase-source-block-v1",
+          "units_expr": "part of rt_phase_setup_fixed"
+        }
+      ],
+      "numeric_rule": "phase-finite-source-token-and-array-bound-v1",
+      "array_value_cells": {
+        "pk": 1152,
+        "ct": 1152,
+        "key": 32,
+        "suffix": 32
+      },
+      "fixed_breakdown": {
+        "local_scalar_ops": 37,
+        "guards": 0,
+        "list_ops": {
+          "head": 0,
+          "behead": 0,
+          "cons": 0
+        },
+        "array_reference_occurrences": {
+          "pk": 2,
+          "ct": 1,
+          "key": 1,
+          "suffix": 1
+        },
+        "array_copy_cells": 5856,
+        "initializer_cells": 0,
+        "initializer_calls": 0,
+        "numeric_local_upper": 17605,
+        "array_boundary_cells": {
+          "entry": 2336,
+          "return": 0
+        }
+      },
+      "per_visit_breakdown": {
+        "local_scalar_ops": 0,
+        "guards": 0,
+        "list_ops": {
+          "head": 0,
+          "behead": 0,
+          "cons": 0
+        },
+        "array_reference_occurrences": {},
+        "array_copy_cells": 0,
+        "initializer_cells": 0,
+        "initializer_calls": 0,
+        "numeric_local_upper": 0
+      },
+      "fixed_local_upper": 17605,
+      "per_visit_local_upper": 0,
+      "loop_count": 0,
+      "calls_excluded": [
+        {
+          "callee": "ROF.get",
+          "verified_bucket": "ideal-ROF"
+        },
+        {
+          "callee": "uniform32",
+          "verified_bucket": "sample-fixed-product32-inline"
+        },
+        {
+          "callee": "SecGHistory.init",
+          "verified_bucket": "empty-persistent-list"
+        },
+        {
+          "callee": "AHWrapper/AHActualPhase",
+          "verified_bucket": "phase-setup"
+        }
+      ],
+      "price_bucket": "pc_extract_init"
+    },
+    {
+      "source": "ntruplus/proof/768/ref/kem_adaptive_history/NTRUPlus768AHActualReduction.ec",
+      "module": "AHActualTranscript",
+      "procedure": "run",
+      "normalized_body_sha256": "532d3a647c03aee2da1bb080c2164aab7b043abd43c5b4c2e45b221e41ffa2de",
+      "source_fragment": "var key:W8.t Array32.t;var ignored:bool;\n  SecGHistory.init();key<$uniform32;\n  ignored<@AHActualPhase(S,A,SecGLogged(FOGActual)).run(pk,ct,key);\n  return SecGHistory.queries;",
+      "rule_id": "phase-source-block-v1",
+      "allocation": {},
+      "units_expr": "part of rt_phase_setup_fixed",
+      "calls": [
+        {
+          "target": "ROF.get",
+          "rule_id": "ideal-ROF"
+        },
+        {
+          "target": "uniform32",
+          "rule_id": "sample-fixed-product32-inline"
+        },
+        {
+          "target": "SecGHistory.init",
+          "rule_id": "empty-persistent-list"
+        },
+        {
+          "target": "AHWrapper/AHActualPhase",
+          "rule_id": "phase-setup"
+        }
+      ],
+      "certificate_theorem": "rt_phase_fixed_nonnegative",
+      "blocks": [
+        {
+          "id": "complete-body",
+          "source_fragment": "var key:W8.t Array32.t;var ignored:bool;\n  SecGHistory.init();key<$uniform32;\n  ignored<@AHActualPhase(S,A,SecGLogged(FOGActual)).run(pk,ct,key);\n  return SecGHistory.queries;",
+          "occurrences": 1,
+          "rule_id": "phase-source-block-v1",
+          "units_expr": "part of rt_phase_setup_fixed"
+        }
+      ],
+      "numeric_rule": "phase-finite-source-token-and-array-bound-v1",
+      "array_value_cells": {
+        "pk": 1152,
+        "ct": 1152,
+        "key": 32
+      },
+      "fixed_breakdown": {
+        "local_scalar_ops": 39,
+        "guards": 0,
+        "list_ops": {
+          "head": 0,
+          "behead": 0,
+          "cons": 0
+        },
+        "array_reference_occurrences": {
+          "pk": 1,
+          "ct": 1,
+          "key": 2
+        },
+        "array_copy_cells": 4672,
+        "initializer_cells": 0,
+        "initializer_calls": 0,
+        "numeric_local_upper": 14055,
+        "array_boundary_cells": {
+          "entry": 2304,
+          "return": 0
+        }
+      },
+      "per_visit_breakdown": {
+        "local_scalar_ops": 0,
+        "guards": 0,
+        "list_ops": {
+          "head": 0,
+          "behead": 0,
+          "cons": 0
+        },
+        "array_reference_occurrences": {},
+        "array_copy_cells": 0,
+        "initializer_cells": 0,
+        "initializer_calls": 0,
+        "numeric_local_upper": 0
+      },
+      "fixed_local_upper": 14055,
+      "per_visit_local_upper": 0,
+      "loop_count": 0,
+      "calls_excluded": [
+        {
+          "callee": "ROF.get",
+          "verified_bucket": "ideal-ROF"
+        },
+        {
+          "callee": "uniform32",
+          "verified_bucket": "sample-fixed-product32-inline"
+        },
+        {
+          "callee": "SecGHistory.init",
+          "verified_bucket": "empty-persistent-list"
+        },
+        {
+          "callee": "AHWrapper/AHActualPhase",
+          "verified_bucket": "phase-setup"
+        }
+      ],
+      "price_bucket": "pc_extract_init"
+    },
+    {
+      "source": "ntruplus/proof/768/ref/kem_acwc2_security/NTRUPlus768SecBaseGames.ec",
+      "module": "SecAuxSetup",
+      "procedure": "run",
+      "normalized_body_sha256": "8dc004cec9af6ac8c3cfd351cf581c46ec342232fa87769b1fbf17bae7203343",
+      "source_fragment": "var ignored:W8.t Array32.t;\n  ROMInit.init();RawXOFStreams.init();ignored<@ROF.get(pk);",
+      "rule_id": "phase-source-block-v1",
+      "allocation": {},
+      "units_expr": "part of rt_phase_setup_fixed",
+      "calls": [
+        {
+          "target": "ROMInit.init",
+          "rule_id": "ideal-ROM-initialization"
+        },
+        {
+          "target": "RawXOFStreams.init",
+          "rule_id": "ideal-ROM-initialization"
+        },
+        {
+          "target": "ROF.get",
+          "rule_id": "ideal-ROF"
+        }
+      ],
+      "certificate_theorem": "rt_phase_fixed_nonnegative",
+      "blocks": [
+        {
+          "id": "complete-body",
+          "source_fragment": "var ignored:W8.t Array32.t;\n  ROMInit.init();RawXOFStreams.init();ignored<@ROF.get(pk);",
+          "occurrences": 1,
+          "rule_id": "phase-source-block-v1",
+          "units_expr": "part of rt_phase_setup_fixed"
+        }
+      ],
+      "numeric_rule": "phase-finite-source-token-and-array-bound-v1",
+      "array_value_cells": {
+        "pk": 1152,
+        "ignored": 32
+      },
+      "fixed_breakdown": {
+        "local_scalar_ops": 21,
+        "guards": 0,
+        "list_ops": {
+          "head": 0,
+          "behead": 0,
+          "cons": 0
+        },
+        "array_reference_occurrences": {
+          "pk": 1,
+          "ignored": 1
+        },
+        "array_copy_cells": 2336,
+        "initializer_cells": 0,
+        "initializer_calls": 0,
+        "numeric_local_upper": 7029,
+        "array_boundary_cells": {
+          "entry": 1152,
+          "return": 0
+        }
+      },
+      "per_visit_breakdown": {
+        "local_scalar_ops": 0,
+        "guards": 0,
+        "list_ops": {
+          "head": 0,
+          "behead": 0,
+          "cons": 0
+        },
+        "array_reference_occurrences": {},
+        "array_copy_cells": 0,
+        "initializer_cells": 0,
+        "initializer_calls": 0,
+        "numeric_local_upper": 0
+      },
+      "fixed_local_upper": 7029,
+      "per_visit_local_upper": 0,
+      "loop_count": 0,
+      "calls_excluded": [
+        {
+          "callee": "ROMInit.init",
+          "verified_bucket": "ideal-ROM-initialization"
+        },
+        {
+          "callee": "RawXOFStreams.init",
+          "verified_bucket": "ideal-ROM-initialization"
+        },
+        {
+          "callee": "ROF.get",
+          "verified_bucket": "ideal-ROF"
+        }
+      ],
+      "price_bucket": "pc_extract_init"
+    },
+    {
+      "source": "ntruplus/proof/768/ref/kem_indcca_game/NTRUPlus768CCAQueryCodec.ec",
+      "op": "decode_typed",
+      "normalized_body_sha256": "f84b7c029b90e287ffb2acb22d261767aa5b3d5f646a54673571ac9af0b4e383",
+      "source_fragment": "op decode_typed (s:W8.t list) : typed_query option =\n if size s=32 then Some (E (Array32.of_list W8.zero s)) else\n if size s=1153 /\\ nth W8.zero s 0=W8.zero then\n   Some (F (peel1153 (Array1153.of_list W8.zero s))) else\n if size s=1153 /\\ nth W8.zero s 0=W8.one then\n   Some (G (peel1153 (Array1153.of_list W8.zero s))) else\n if size s=129 /\\ nth W8.zero s 0=W8.of_int 2 then\n   Some (H (peel_h (Array129.of_list W8.zero s))) else None.",
+      "rule_id": "definition-decode-typed",
+      "units_expr": "4*rt_phase_size(n)+rt_phase_decode_fixed",
+      "certificate_theorem": "rt_phase_raw_linear",
+      "blocks": [
+        {
+          "id": "complete-body",
+          "source_fragment": "op decode_typed (s:W8.t list) : typed_query option =\n if size s=32 then Some (E (Array32.of_list W8.zero s)) else\n if size s=1153 /\\ nth W8.zero s 0=W8.zero then\n   Some (F (peel1153 (Array1153.of_list W8.zero s))) else\n if size s=1153 /\\ nth W8.zero s 0=W8.one then\n   Some (G (peel1153 (Array1153.of_list W8.zero s))) else\n if size s=129 /\\ nth W8.zero s 0=W8.of_int 2 then\n   Some (H (peel_h (Array129.of_list W8.zero s))) else None.",
+          "occurrences": 1,
+          "rule_id": "definition-decode-typed",
+          "units_expr": "4*rt_phase_size(n)+rt_phase_decode_fixed"
+        }
+      ]
+    },
+    {
+      "source": "ntruplus/proof/768/ref/kem_indcca_game/NTRUPlus768RawXOFSampling.ec",
+      "op": "raw_xof_output",
+      "normalized_body_sha256": "de05787852ea16dd65259fc987538166d590aba1a2a8cec04d6f45a306d05c7b",
+      "source_fragment": "op raw_xof_output (n:int) (s:W8.t Array224.t) =\n take n (Array224.to_list s).",
+      "rule_id": "definition-tolist-take224",
+      "units_expr": "rt_phase_prefix_fixed",
+      "certificate_theorem": "rt_phase_raw_linear",
+      "blocks": [
+        {
+          "id": "complete-body",
+          "source_fragment": "op raw_xof_output (n:int) (s:W8.t Array224.t) =\n take n (Array224.to_list s).",
+          "occurrences": 1,
+          "rule_id": "definition-tolist-take224",
+          "units_expr": "rt_phase_prefix_fixed"
+        }
+      ]
+    },
+    {
+      "source": "ntruplus/proof/768/ref/kem_indcca_game/NTRUPlus768RawXOFSampling.ec",
+      "op": "raw_join192",
+      "normalized_body_sha256": "b2baea580810dc4370d6ee9cad59c6d8485375fa886c84719a0aae8972b5cc6c",
+      "source_fragment": "op raw_join192 (p:W8.t Array192.t*W8.t Array32.t) : W8.t Array224.t =\n Array224.init(fun i=>if i<192 then p.`1.[i] else p.`2.[i-192]).",
+      "rule_id": "fixed-array224-init",
+      "units_expr": "rt_phase_stream_fixed",
+      "certificate_theorem": "rt_phase_raw_linear",
+      "blocks": [
+        {
+          "id": "complete-body",
+          "source_fragment": "op raw_join192 (p:W8.t Array192.t*W8.t Array32.t) : W8.t Array224.t =\n Array224.init(fun i=>if i<192 then p.`1.[i] else p.`2.[i-192]).",
+          "occurrences": 1,
+          "rule_id": "fixed-array224-init",
+          "units_expr": "rt_phase_stream_fixed"
+        }
+      ]
+    },
+    {
+      "source": "ntruplus/proof/768/ref/kem_rom_oracle/NTRUPlus768ROMDomains.ec",
+      "op": "peel1153",
+      "normalized_body_sha256": "1d6e50bc44c60fb871621570162e6ff4136d1f9ffb6f500ea878483fc61ee751",
+      "source_fragment": "op peel1153 (input : W8.t Array1153.t) : W8.t Array1152.t =\n  Array1152.init (fun i => input.[i+1]).",
+      "rule_id": "fixed-array-index-copy",
+      "units_expr": "24*1153 in rt_phase_decode_fixed",
+      "certificate_theorem": "rt_phase_raw_linear",
+      "blocks": [
+        {
+          "id": "complete-body",
+          "source_fragment": "op peel1153 (input : W8.t Array1153.t) : W8.t Array1152.t =\n  Array1152.init (fun i => input.[i+1]).",
+          "occurrences": 1,
+          "rule_id": "fixed-array-index-copy",
+          "units_expr": "24*1153 in rt_phase_decode_fixed"
+        }
+      ]
+    },
+    {
+      "source": "ntruplus/proof/768/ref/kem_rom_oracle/NTRUPlus768ROMDomains.ec",
+      "op": "peel_h",
+      "normalized_body_sha256": "ba686861c22db12e82ed66f61c2ba16b8c140b8027f56fdea3ea26545e07cc70",
+      "source_fragment": "op peel_h (input : W8.t Array129.t) : W8.t Array96.t * W8.t Array32.t =\n  (Array96.init (fun i => input.[i+1]),\n   Array32.init (fun i => input.[i+97])).",
+      "rule_id": "fixed-array-index-copy",
+      "units_expr": "24*1153 in rt_phase_decode_fixed",
+      "certificate_theorem": "rt_phase_raw_linear",
+      "blocks": [
+        {
+          "id": "complete-body",
+          "source_fragment": "op peel_h (input : W8.t Array129.t) : W8.t Array96.t * W8.t Array32.t =\n  (Array96.init (fun i => input.[i+1]),\n   Array32.init (fun i => input.[i+97])).",
+          "occurrences": 1,
+          "rule_id": "fixed-array-index-copy",
+          "units_expr": "24*1153 in rt_phase_decode_fixed"
+        }
+      ]
+    },
+    {
+      "source": "ntruplus/proof/768/ref/kem_history_refinement/NTRUPlus768HistModel.ec",
+      "op": "hist_zero_value",
+      "normalized_body_sha256": "bde3c27d34f001e77155f7cc4160d0f0e693d48d46111e15dc9216cdc1c9d5f8",
+      "source_fragment": "op [opaque] hist_zero_value : W8.t Array224.t = Array224.init(fun _=>W8.zero).",
+      "rule_id": "fixed-array224-zero-init",
+      "units_expr": "5*224 + fixed copies in rt_phase_keep_visit",
+      "certificate_theorem": "rt_phase_visit_calibration",
+      "blocks": [
+        {
+          "id": "complete-body",
+          "source_fragment": "op [opaque] hist_zero_value : W8.t Array224.t = Array224.init(fun _=>W8.zero).",
+          "occurrences": 1,
+          "rule_id": "fixed-array224-zero-init",
+          "units_expr": "5*224 + fixed copies in rt_phase_keep_visit"
+        }
+      ]
+    },
+    {
+      "source": "ntruplus/proof/768/ref/kem_history_refinement/NTRUPlus768HistLookup.ec",
+      "op": "hist_lookup_default",
+      "normalized_body_sha256": "ef7566b5c9c23591334d69e93ee050931c07490acd05cc2c145be2ed814ca4f8",
+      "source_fragment": "op [opaque] hist_lookup_default : hist_entry =\n ((Array96.init(fun _=>W8.zero),Array32.init(fun _=>W8.zero)),hist_zero_value).",
+      "rule_id": "fixed-history-entry-zero-init",
+      "units_expr": "5*352 + fixed copies in rt_phase_lookup_visit",
+      "certificate_theorem": "rt_phase_visit_calibration",
+      "blocks": [
+        {
+          "id": "complete-body",
+          "source_fragment": "op [opaque] hist_lookup_default : hist_entry =\n ((Array96.init(fun _=>W8.zero),Array32.init(fun _=>W8.zero)),hist_zero_value).",
+          "occurrences": 1,
+          "rule_id": "fixed-history-entry-zero-init",
+          "units_expr": "5*352 + fixed copies in rt_phase_lookup_visit"
+        }
+      ]
+    },
+    {
+      "source": "ntruplus/proof/768/ref/kem_rom_bridge/NTRUPlus768KEMPayloadSpec.ec",
+      "op": "payload_shared_key",
+      "normalized_body_sha256": "ed0c2bef5152653d1cb3aa43b4f73668d08ed1370840e5b75c796631ba9cafd7",
+      "source_fragment": "op [opaque] payload_shared_key (hout:W8.t Array224.t) = Array32.init (fun i => hout.[i]).",
+      "rule_id": "fixed-array32-copy-init",
+      "units_expr": "fixed copies in rt_phase_lookup_visit",
+      "certificate_theorem": "rt_phase_visit_calibration",
+      "blocks": [
+        {
+          "id": "complete-body",
+          "source_fragment": "op [opaque] payload_shared_key (hout:W8.t Array224.t) = Array32.init (fun i => hout.[i]).",
+          "occurrences": 1,
+          "rule_id": "fixed-array32-copy-init",
+          "units_expr": "fixed copies in rt_phase_lookup_visit"
+        }
+      ]
+    },
+    {
+      "source": "ntruplus/proof/768/ref/kem_numerical_dfr/NTRUPlus768HashPayloadSampling.ec",
+      "op": "hash_join",
+      "normalized_body_sha256": "6883cb95468e060090215fdb47cd731b4c5bc4e39a80374fbf5a421c0ac9e32f",
+      "source_fragment": "op hash_join (p:W8.t Array32.t*W8.t Array192.t) : W8.t Array224.t =\n Array224.init(fun i=>if i<32 then p.`1.[i] else p.`2.[i-32]).",
+      "rule_id": "fixed-array224-init",
+      "units_expr": "rt_phase_stream_fixed",
+      "certificate_theorem": "rt_phase_visit_calibration",
+      "blocks": [
+        {
+          "id": "complete-body",
+          "source_fragment": "op hash_join (p:W8.t Array32.t*W8.t Array192.t) : W8.t Array224.t =\n Array224.init(fun i=>if i<32 then p.`1.[i] else p.`2.[i-32]).",
+          "occurrences": 1,
+          "rule_id": "fixed-array224-init",
+          "units_expr": "rt_phase_stream_fixed"
+        }
+      ]
+    },
+    {
+      "source": "ntruplus/proof/768/ref/kem_adaptive_history/NTRUPlus768AHActualReduction.ec",
+      "module": "AHActualINJReducer",
+      "procedure": "run",
+      "normalized_body_sha256": "83ac0c2cb644c843de868ec3463bf1616c5c2e625809803b48fccb41e635bcae",
+      "source_fragment": "var code,r:pke_poly;var ct:W8.t Array1152.t;var queries:W8.t Array1152.t list;\n  var out:(pke_poly*pke_poly) option;\n  code<$pke_psi1;r<$pke_psi1;ct<-pke_ciphertext pk code r;\n  queries<@AHActualTranscript(S,A).run(pk,ct);\n  out<@SecExtract.run(pk,ct,Some r,queries);\n  return if out=None then (code,code,r,r) else (code,(oget out).`1,r,(oget out).`2);",
+      "rule_id": "phase-source-block-v1",
+      "allocation": {},
+      "units_expr": "non-kernel entry/exit/option/default blocks in rt_phase_setup_fixed; extraction in rt_phase_extract_body",
+      "calls": [
+        {
+          "target": "AHActualTranscript(S,A).run",
+          "rule_id": "phase-setup"
+        },
+        {
+          "target": "SecExtract.run",
+          "rule_id": "phase-extraction"
+        },
+        {
+          "target": "pke_psi1/pke_ciphertext",
+          "rule_id": "separate-fixed-kernel-profile"
+        },
+        {
+          "target": "sec_zero",
+          "rule_id": "fixed-array768-zero-init"
+        }
+      ],
+      "certificate_theorem": "rt_phase_fixed_nonnegative",
+      "blocks": [
+        {
+          "id": "complete-body",
+          "source_fragment": "var code,r:pke_poly;var ct:W8.t Array1152.t;var queries:W8.t Array1152.t list;\n  var out:(pke_poly*pke_poly) option;\n  code<$pke_psi1;r<$pke_psi1;ct<-pke_ciphertext pk code r;\n  queries<@AHActualTranscript(S,A).run(pk,ct);\n  out<@SecExtract.run(pk,ct,Some r,queries);\n  return if out=None then (code,code,r,r) else (code,(oget out).`1,r,(oget out).`2);",
+          "occurrences": 1,
+          "rule_id": "phase-source-block-v1",
+          "units_expr": "non-kernel entry/exit/option/default blocks in rt_phase_setup_fixed; extraction in rt_phase_extract_body"
+        }
+      ],
+      "numeric_rule": "phase-finite-source-token-and-array-bound-v1",
+      "array_value_cells": {
+        "pk": 1152,
+        "code": 768,
+        "r": 768,
+        "ct": 1152,
+        "out": 1536
+      },
+      "fixed_breakdown": {
+        "local_scalar_ops": 87,
+        "guards": 1,
+        "list_ops": {
+          "head": 0,
+          "behead": 0,
+          "cons": 0
+        },
+        "array_reference_occurrences": {
+          "pk": 3,
+          "code": 5,
+          "r": 6,
+          "ct": 3,
+          "out": 4
+        },
+        "array_copy_cells": 25728,
+        "initializer_cells": 0,
+        "initializer_calls": 0,
+        "numeric_local_upper": 77272,
+        "array_boundary_cells": {
+          "entry": 1152,
+          "return": 3072
+        }
+      },
+      "per_visit_breakdown": {
+        "local_scalar_ops": 0,
+        "guards": 0,
+        "list_ops": {
+          "head": 0,
+          "behead": 0,
+          "cons": 0
+        },
+        "array_reference_occurrences": {},
+        "array_copy_cells": 0,
+        "initializer_cells": 0,
+        "initializer_calls": 0,
+        "numeric_local_upper": 0
+      },
+      "fixed_local_upper": 77272,
+      "per_visit_local_upper": 0,
+      "loop_count": 0,
+      "calls_excluded": [
+        {
+          "callee": "AHActualTranscript(S,A).run",
+          "verified_bucket": "phase-setup"
+        },
+        {
+          "callee": "SecExtract.run",
+          "verified_bucket": "phase-extraction"
+        },
+        {
+          "callee": "pke_psi1/pke_ciphertext",
+          "verified_bucket": "separate-fixed-kernel-profile"
+        },
+        {
+          "callee": "sec_zero",
+          "verified_bucket": "fixed-array768-zero-init"
+        }
+      ],
+      "price_bucket": "pc_extract_init"
+    },
+    {
+      "source": "ntruplus/proof/768/ref/kem_adaptive_history/NTRUPlus768AHActualReduction.ec",
+      "module": "AHActualOWReducer",
+      "procedure": "run",
+      "normalized_body_sha256": "876ae94dfc122e40dfc6319343b7b3e07af15dc017178aae020d52d2db90893f",
+      "source_fragment": "var queries:W8.t Array1152.t list;var out:(pke_poly*pke_poly) option;\n  queries<@AHActualTranscript(S,A).run(pk,ct);out<@SecExtract.run(pk,ct,None,queries);\n  return if out=None then sec_zero else (oget out).`1;",
+      "rule_id": "phase-source-block-v1",
+      "allocation": {},
+      "units_expr": "non-kernel entry/exit/option/default blocks in rt_phase_setup_fixed; extraction in rt_phase_extract_body",
+      "calls": [
+        {
+          "target": "AHActualTranscript(S,A).run",
+          "rule_id": "phase-setup"
+        },
+        {
+          "target": "SecExtract.run",
+          "rule_id": "phase-extraction"
+        },
+        {
+          "target": "pke_psi1/pke_ciphertext",
+          "rule_id": "separate-fixed-kernel-profile"
+        },
+        {
+          "target": "sec_zero",
+          "rule_id": "fixed-array768-zero-init"
+        }
+      ],
+      "certificate_theorem": "rt_phase_fixed_nonnegative",
+      "blocks": [
+        {
+          "id": "complete-body",
+          "source_fragment": "var queries:W8.t Array1152.t list;var out:(pke_poly*pke_poly) option;\n  queries<@AHActualTranscript(S,A).run(pk,ct);out<@SecExtract.run(pk,ct,None,queries);\n  return if out=None then sec_zero else (oget out).`1;",
+          "occurrences": 1,
+          "rule_id": "phase-source-block-v1",
+          "units_expr": "non-kernel entry/exit/option/default blocks in rt_phase_setup_fixed; extraction in rt_phase_extract_body"
+        }
+      ],
+      "numeric_rule": "phase-finite-source-token-and-array-bound-v1",
+      "array_value_cells": {
+        "pk": 1152,
+        "ct": 1152,
+        "out": 1536
+      },
+      "fixed_breakdown": {
+        "local_scalar_ops": 47,
+        "guards": 1,
+        "list_ops": {
+          "head": 0,
+          "behead": 0,
+          "cons": 0
+        },
+        "array_reference_occurrences": {
+          "pk": 2,
+          "ct": 2,
+          "out": 3
+        },
+        "array_copy_cells": 12288,
+        "initializer_cells": 768,
+        "initializer_calls": 1,
+        "numeric_local_upper": 40760,
+        "array_boundary_cells": {
+          "entry": 2304,
+          "return": 768
+        }
+      },
+      "per_visit_breakdown": {
+        "local_scalar_ops": 0,
+        "guards": 0,
+        "list_ops": {
+          "head": 0,
+          "behead": 0,
+          "cons": 0
+        },
+        "array_reference_occurrences": {},
+        "array_copy_cells": 0,
+        "initializer_cells": 0,
+        "initializer_calls": 0,
+        "numeric_local_upper": 0
+      },
+      "fixed_local_upper": 40760,
+      "per_visit_local_upper": 0,
+      "loop_count": 0,
+      "calls_excluded": [
+        {
+          "callee": "AHActualTranscript(S,A).run",
+          "verified_bucket": "phase-setup"
+        },
+        {
+          "callee": "SecExtract.run",
+          "verified_bucket": "phase-extraction"
+        },
+        {
+          "callee": "pke_psi1/pke_ciphertext",
+          "verified_bucket": "separate-fixed-kernel-profile"
+        },
+        {
+          "callee": "sec_zero",
+          "verified_bucket": "fixed-array768-zero-init"
+        }
+      ],
+      "price_bucket": "pc_extract_init"
+    },
+    {
+      "source": "ntruplus/proof/768/ref/kem_acwc2_security/NTRUPlus768SecBaseGames.ec",
+      "module": "SecINJAuxAdapter",
+      "procedure": "run",
+      "normalized_body_sha256": "0a49cbd41f2b07e849e4c1940928c6129f232bf8b352b68e204a35b0ae986f6f",
+      "source_fragment": "var out:sec_collision;\n  SecAuxSetup.run(pk);out<@B.run(pk);return out;",
+      "rule_id": "phase-source-block-v1",
+      "allocation": {},
+      "units_expr": "non-kernel entry/exit/call boundaries in rt_phase_setup_fixed",
+      "calls": [
+        {
+          "target": "SecAuxSetup.run",
+          "rule_id": "phase-setup"
+        },
+        {
+          "target": "B.run",
+          "rule_id": "actual-AH-inner-reducer"
+        }
+      ],
+      "certificate_theorem": "rt_phase_fixed_nonnegative",
+      "blocks": [
+        {
+          "id": "complete-body",
+          "source_fragment": "var out:sec_collision;\n  SecAuxSetup.run(pk);out<@B.run(pk);return out;",
+          "occurrences": 1,
+          "rule_id": "phase-source-block-v1",
+          "units_expr": "non-kernel entry/exit/call boundaries in rt_phase_setup_fixed"
+        }
+      ],
+      "numeric_rule": "phase-finite-source-token-and-array-bound-v1",
+      "array_value_cells": {
+        "pk": 1152,
+        "out": 3072
+      },
+      "fixed_breakdown": {
+        "local_scalar_ops": 19,
+        "guards": 0,
+        "list_ops": {
+          "head": 0,
+          "behead": 0,
+          "cons": 0
+        },
+        "array_reference_occurrences": {
+          "pk": 2,
+          "out": 2
+        },
+        "array_copy_cells": 12672,
+        "initializer_cells": 0,
+        "initializer_calls": 0,
+        "numeric_local_upper": 38035,
+        "array_boundary_cells": {
+          "entry": 1152,
+          "return": 3072
+        }
+      },
+      "per_visit_breakdown": {
+        "local_scalar_ops": 0,
+        "guards": 0,
+        "list_ops": {
+          "head": 0,
+          "behead": 0,
+          "cons": 0
+        },
+        "array_reference_occurrences": {},
+        "array_copy_cells": 0,
+        "initializer_cells": 0,
+        "initializer_calls": 0,
+        "numeric_local_upper": 0
+      },
+      "fixed_local_upper": 38035,
+      "per_visit_local_upper": 0,
+      "loop_count": 0,
+      "calls_excluded": [
+        {
+          "callee": "SecAuxSetup.run",
+          "verified_bucket": "phase-setup"
+        },
+        {
+          "callee": "B.run",
+          "verified_bucket": "actual-AH-inner-reducer"
+        }
+      ],
+      "price_bucket": "pc_extract_init"
+    },
+    {
+      "source": "ntruplus/proof/768/ref/kem_acwc2_security/NTRUPlus768SecBaseGames.ec",
+      "module": "SecOWAuxAdapter",
+      "procedure": "run",
+      "normalized_body_sha256": "73e8805bd7a881881f5633983df86df8db4ec1766445959d68c7726d0bd871e0",
+      "source_fragment": "var out:pke_poly;\n  SecAuxSetup.run(pk);out<@B.run(pk,ct);return out;",
+      "rule_id": "phase-source-block-v1",
+      "allocation": {},
+      "units_expr": "non-kernel entry/exit/call boundaries in rt_phase_setup_fixed",
+      "calls": [
+        {
+          "target": "SecAuxSetup.run",
+          "rule_id": "phase-setup"
+        },
+        {
+          "target": "B.run",
+          "rule_id": "actual-AH-inner-reducer"
+        }
+      ],
+      "certificate_theorem": "rt_phase_fixed_nonnegative",
+      "blocks": [
+        {
+          "id": "complete-body",
+          "source_fragment": "var out:pke_poly;\n  SecAuxSetup.run(pk);out<@B.run(pk,ct);return out;",
+          "occurrences": 1,
+          "rule_id": "phase-source-block-v1",
+          "units_expr": "non-kernel entry/exit/call boundaries in rt_phase_setup_fixed"
+        }
+      ],
+      "numeric_rule": "phase-finite-source-token-and-array-bound-v1",
+      "array_value_cells": {
+        "pk": 1152,
+        "ct": 1152,
+        "out": 768
+      },
+      "fixed_breakdown": {
+        "local_scalar_ops": 21,
+        "guards": 0,
+        "list_ops": {
+          "head": 0,
+          "behead": 0,
+          "cons": 0
+        },
+        "array_reference_occurrences": {
+          "pk": 2,
+          "ct": 1,
+          "out": 2
+        },
+        "array_copy_cells": 8064,
+        "initializer_cells": 0,
+        "initializer_calls": 0,
+        "numeric_local_upper": 24213,
+        "array_boundary_cells": {
+          "entry": 2304,
+          "return": 768
+        }
+      },
+      "per_visit_breakdown": {
+        "local_scalar_ops": 0,
+        "guards": 0,
+        "list_ops": {
+          "head": 0,
+          "behead": 0,
+          "cons": 0
+        },
+        "array_reference_occurrences": {},
+        "array_copy_cells": 0,
+        "initializer_cells": 0,
+        "initializer_calls": 0,
+        "numeric_local_upper": 0
+      },
+      "fixed_local_upper": 24213,
+      "per_visit_local_upper": 0,
+      "loop_count": 0,
+      "calls_excluded": [
+        {
+          "callee": "SecAuxSetup.run",
+          "verified_bucket": "phase-setup"
+        },
+        {
+          "callee": "B.run",
+          "verified_bucket": "actual-AH-inner-reducer"
+        }
+      ],
+      "price_bucket": "pc_extract_init"
+    },
+    {
+      "source": "ntruplus/proof/768/ref/kem_indcca_game/NTRUPlus768CCAOraclePorts.ec",
+      "module": "SharedCCAOracles",
+      "procedure": "e",
+      "normalized_body_sha256": "fad39a6826ae9c7d49eb73133219d3b4c7510920eadabb083767669dfb45651b",
+      "source_fragment": "var r; r <@ ROE.get(input); return r;",
+      "rule_id": "phase-source-block-v1",
+      "allocation": {},
+      "units_expr": "typed fixed array boundaries and ideal-RO call in rt_phase_call",
+      "calls": [
+        {
+          "target": "ROE.get/ROF.get",
+          "rule_id": "ideal-typed-ROM"
+        }
+      ],
+      "certificate_theorem": "rt_phase_fixed_nonnegative",
+      "blocks": [
+        {
+          "id": "complete-body",
+          "source_fragment": "var r; r <@ ROE.get(input); return r;",
+          "occurrences": 1,
+          "rule_id": "phase-source-block-v1",
+          "units_expr": "typed fixed array boundaries and ideal-RO call in rt_phase_call"
+        }
+      ],
+      "numeric_rule": "phase-finite-source-token-and-array-bound-v1",
+      "array_value_cells": {
+        "input": 32,
+        "r": 192
+      },
+      "fixed_breakdown": {
+        "local_scalar_ops": 12,
+        "guards": 0,
+        "list_ops": {
+          "head": 0,
+          "behead": 0,
+          "cons": 0
+        },
+        "array_reference_occurrences": {
+          "input": 1,
+          "r": 2
+        },
+        "array_copy_cells": 640,
+        "initializer_cells": 0,
+        "initializer_calls": 0,
+        "numeric_local_upper": 1932,
+        "array_boundary_cells": {
+          "entry": 32,
+          "return": 192
+        }
+      },
+      "per_visit_breakdown": {
+        "local_scalar_ops": 0,
+        "guards": 0,
+        "list_ops": {
+          "head": 0,
+          "behead": 0,
+          "cons": 0
+        },
+        "array_reference_occurrences": {},
+        "array_copy_cells": 0,
+        "initializer_cells": 0,
+        "initializer_calls": 0,
+        "numeric_local_upper": 0
+      },
+      "fixed_local_upper": 1932,
+      "per_visit_local_upper": 0,
+      "loop_count": 0,
+      "calls_excluded": [
+        {
+          "callee": "ROE.get/ROF.get",
+          "verified_bucket": "ideal-typed-ROM"
+        }
+      ],
+      "price_bucket": "pc_call + pc_input*raw_input_bytes"
+    },
+    {
+      "source": "ntruplus/proof/768/ref/kem_indcca_game/NTRUPlus768CCAOraclePorts.ec",
+      "module": "SharedCCAOracles",
+      "procedure": "f",
+      "normalized_body_sha256": "14c7391098f5bc20946e2b5331b1bf942d2cecd56792d1e47a623ae52f601bb2",
+      "source_fragment": "var r; r <@ ROF.get(input); return r;",
+      "rule_id": "phase-source-block-v1",
+      "allocation": {},
+      "units_expr": "typed fixed array boundaries and ideal-RO call in rt_phase_call",
+      "calls": [
+        {
+          "target": "ROE.get/ROF.get",
+          "rule_id": "ideal-typed-ROM"
+        }
+      ],
+      "certificate_theorem": "rt_phase_fixed_nonnegative",
+      "blocks": [
+        {
+          "id": "complete-body",
+          "source_fragment": "var r; r <@ ROF.get(input); return r;",
+          "occurrences": 1,
+          "rule_id": "phase-source-block-v1",
+          "units_expr": "typed fixed array boundaries and ideal-RO call in rt_phase_call"
+        }
+      ],
+      "numeric_rule": "phase-finite-source-token-and-array-bound-v1",
+      "array_value_cells": {
+        "input": 1152,
+        "r": 32
+      },
+      "fixed_breakdown": {
+        "local_scalar_ops": 12,
+        "guards": 0,
+        "list_ops": {
+          "head": 0,
+          "behead": 0,
+          "cons": 0
+        },
+        "array_reference_occurrences": {
+          "input": 1,
+          "r": 2
+        },
+        "array_copy_cells": 2400,
+        "initializer_cells": 0,
+        "initializer_calls": 0,
+        "numeric_local_upper": 7212,
+        "array_boundary_cells": {
+          "entry": 1152,
+          "return": 32
+        }
+      },
+      "per_visit_breakdown": {
+        "local_scalar_ops": 0,
+        "guards": 0,
+        "list_ops": {
+          "head": 0,
+          "behead": 0,
+          "cons": 0
+        },
+        "array_reference_occurrences": {},
+        "array_copy_cells": 0,
+        "initializer_cells": 0,
+        "initializer_calls": 0,
+        "numeric_local_upper": 0
+      },
+      "fixed_local_upper": 7212,
+      "per_visit_local_upper": 0,
+      "loop_count": 0,
+      "calls_excluded": [
+        {
+          "callee": "ROE.get/ROF.get",
+          "verified_bucket": "ideal-typed-ROM"
+        }
+      ],
+      "price_bucket": "pc_call + pc_input*raw_input_bytes"
+    },
+    {
+      "source": "ntruplus/proof/768/ref/kem_acwc2_security/NTRUPlus768SecExtractModel.ec",
+      "op": "sec_zero",
+      "normalized_body_sha256": "d98fa972358d47290edc64d1b9af42a646fcbb6f5a5adb3a402c15a848b90a41",
+      "source_fragment": "op sec_zero:pke_poly = Array768.init(fun _=>W16.zero).",
+      "rule_id": "fixed-array768-zero-init",
+      "units_expr": "5*768 plus boundary copies in rt_phase_setup_fixed",
+      "certificate_theorem": "rt_phase_fixed_nonnegative",
+      "blocks": [
+        {
+          "id": "complete-definition",
+          "source_fragment": "op sec_zero:pke_poly = Array768.init(fun _=>W16.zero).",
+          "occurrences": 1,
+          "rule_id": "fixed-array768-zero-init",
+          "units_expr": "5*768 plus boundary copies in rt_phase_setup_fixed"
+        }
+      ]
+    },
+    {
+      "source": "ntruplus/proof/768/ref/kem_runtime_bound/NTRUPlus768RTStore.ec",
+      "module": "RTStoreOps",
+      "procedure": "init",
+      "normalized_body_sha256": "262081b714d0fa70b4bbb883a77c2a764691d9880776e91959e1a2ca01e56c1a",
+      "source_fragment": "var st:ah_state;\n  st<-{|ah_rows=[];ah_pk=pk;ah_suffix=suffix;ah_cstar=cstar|};\n  return(st,p);",
+      "rule_id": "phase-source-block-v1",
+      "allocation": {
+        "list_spine": "persistent sharing",
+        "ghost_variables": [
+          "ledger",
+          "p"
+        ]
+      },
+      "units_expr": "fixed protocol state array copies; ledger-only updates erased",
+      "calls": [
+        {
+          "target": "RTStoreOps.init",
+          "rule_id": "phase-store-helper"
+        }
+      ],
+      "certificate_theorem": "rt_phase_fixed_nonnegative",
+      "blocks": [
+        {
+          "id": "complete-body",
+          "source_fragment": "var st:ah_state;\n  st<-{|ah_rows=[];ah_pk=pk;ah_suffix=suffix;ah_cstar=cstar|};\n  return(st,p);",
+          "occurrences": 1,
+          "rule_id": "phase-source-block-v1",
+          "units_expr": "fixed protocol state array copies; ledger-only updates erased"
+        }
+      ],
+      "numeric_rule": "phase-finite-source-token-and-array-bound-v1",
+      "array_value_cells": {
+        "pk": 1152,
+        "suffix": 32,
+        "cstar": 1152,
+        "st": 2336
+      },
+      "fixed_breakdown": {
+        "local_scalar_ops": 30,
+        "guards": 0,
+        "list_ops": {
+          "head": 0,
+          "behead": 0,
+          "cons": 0
+        },
+        "array_reference_occurrences": {
+          "pk": 1,
+          "suffix": 1,
+          "cstar": 1,
+          "st": 2
+        },
+        "array_copy_cells": 11680,
+        "initializer_cells": 0,
+        "initializer_calls": 0,
+        "numeric_local_upper": 35070,
+        "array_boundary_cells": {
+          "entry": 2336,
+          "return": 2336
+        }
+      },
+      "per_visit_breakdown": {
+        "local_scalar_ops": 0,
+        "guards": 0,
+        "list_ops": {
+          "head": 0,
+          "behead": 0,
+          "cons": 0
+        },
+        "array_reference_occurrences": {},
+        "array_copy_cells": 0,
+        "initializer_cells": 0,
+        "initializer_calls": 0,
+        "numeric_local_upper": 0
+      },
+      "fixed_local_upper": 35070,
+      "per_visit_local_upper": 0,
+      "loop_count": 0,
+      "calls_excluded": [
+        {
+          "callee": "RTStoreOps.init",
+          "verified_bucket": "phase-store-helper"
+        }
+      ],
+      "price_bucket": "pc_extract_init"
+    },
+    {
+      "source": "ntruplus/proof/768/ref/kem_runtime_bound/NTRUPlus768RTStore.ec",
+      "module": "RTStoreOps",
+      "procedure": "record",
+      "normalized_body_sha256": "0627ba1616c31a83680f79755f286939a5a4d5210e60236b88d0fbe5832bc06f",
+      "source_fragment": "var updated:hist_table*int*int;\n  updated<@HistTable.put(input,hout,st.`ah_rows);\n  st<-{|st with ah_rows=updated.`1|};\n  p<-rt_record p updated.`2 updated.`3;\n  return(st,p);",
+      "rule_id": "phase-source-block-v1",
+      "allocation": {
+        "list_spine": "persistent sharing",
+        "ghost_variables": [
+          "ledger",
+          "p"
+        ]
+      },
+      "units_expr": "fixed protocol state array copies; ledger-only updates erased",
+      "calls": [
+        {
+          "target": "HistTable.put",
+          "rule_id": "phase-store-helper"
+        }
+      ],
+      "certificate_theorem": "rt_phase_fixed_nonnegative",
+      "blocks": [
+        {
+          "id": "complete-body",
+          "source_fragment": "var updated:hist_table*int*int;\n  updated<@HistTable.put(input,hout,st.`ah_rows);\n  st<-{|st with ah_rows=updated.`1|};\n  p<-rt_record p updated.`2 updated.`3;\n  return(st,p);",
+          "occurrences": 1,
+          "rule_id": "phase-source-block-v1",
+          "units_expr": "fixed protocol state array copies; ledger-only updates erased"
+        }
+      ],
+      "numeric_rule": "phase-finite-source-token-and-array-bound-v1",
+      "array_value_cells": {
+        "st": 2336,
+        "input": 128,
+        "hout": 224
+      },
+      "fixed_breakdown": {
+        "local_scalar_ops": 51,
+        "guards": 0,
+        "list_ops": {
+          "head": 0,
+          "behead": 0,
+          "cons": 0
+        },
+        "array_reference_occurrences": {
+          "st": 4,
+          "input": 1,
+          "hout": 1
+        },
+        "array_copy_cells": 14720,
+        "initializer_cells": 0,
+        "initializer_calls": 0,
+        "numeric_local_upper": 44211,
+        "array_boundary_cells": {
+          "entry": 2688,
+          "return": 2336
+        }
+      },
+      "per_visit_breakdown": {
+        "local_scalar_ops": 0,
+        "guards": 0,
+        "list_ops": {
+          "head": 0,
+          "behead": 0,
+          "cons": 0
+        },
+        "array_reference_occurrences": {},
+        "array_copy_cells": 0,
+        "initializer_cells": 0,
+        "initializer_calls": 0,
+        "numeric_local_upper": 0
+      },
+      "fixed_local_upper": 44211,
+      "per_visit_local_upper": 0,
+      "loop_count": 0,
+      "calls_excluded": [
+        {
+          "callee": "HistTable.put",
+          "verified_bucket": "phase-store-helper"
+        }
+      ],
+      "price_bucket": "pc_call + pc_input*raw_input_bytes"
+    },
+    {
+      "source": "ntruplus/proof/768/ref/kem_runtime_bound/NTRUPlus768RTFinal.ec",
+      "module": "RTPrivateStore",
+      "procedure": "init",
+      "normalized_body_sha256": "9e447db565c282ac6c849c949ba82407fc513a9a5513f359de8f979be776ec9a",
+      "source_fragment": "(st,ledger)<@RTStoreOps.init(ledger,pk,suffix,cstar);",
+      "rule_id": "phase-source-block-v1",
+      "allocation": {
+        "list_spine": "persistent sharing",
+        "ghost_variables": [
+          "ledger",
+          "p"
+        ]
+      },
+      "units_expr": "fixed protocol state array copies; ledger-only updates erased",
+      "calls": [
+        {
+          "target": "RTStoreOps.init",
+          "rule_id": "phase-store-helper"
+        }
+      ],
+      "certificate_theorem": "rt_phase_fixed_nonnegative",
+      "blocks": [
+        {
+          "id": "complete-body",
+          "source_fragment": "(st,ledger)<@RTStoreOps.init(ledger,pk,suffix,cstar);",
+          "occurrences": 1,
+          "rule_id": "phase-source-block-v1",
+          "units_expr": "fixed protocol state array copies; ledger-only updates erased"
+        }
+      ],
+      "numeric_rule": "phase-finite-source-token-and-array-bound-v1",
+      "array_value_cells": {
+        "st": 2336,
+        "pk": 1152,
+        "suffix": 32,
+        "cstar": 1152
+      },
+      "fixed_breakdown": {
+        "local_scalar_ops": 19,
+        "guards": 0,
+        "list_ops": {
+          "head": 0,
+          "behead": 0,
+          "cons": 0
+        },
+        "array_reference_occurrences": {
+          "st": 1,
+          "pk": 1,
+          "suffix": 1,
+          "cstar": 1
+        },
+        "array_copy_cells": 7008,
+        "initializer_cells": 0,
+        "initializer_calls": 0,
+        "numeric_local_upper": 21043,
+        "array_boundary_cells": {
+          "entry": 2336,
+          "return": 0
+        }
+      },
+      "per_visit_breakdown": {
+        "local_scalar_ops": 0,
+        "guards": 0,
+        "list_ops": {
+          "head": 0,
+          "behead": 0,
+          "cons": 0
+        },
+        "array_reference_occurrences": {},
+        "array_copy_cells": 0,
+        "initializer_cells": 0,
+        "initializer_calls": 0,
+        "numeric_local_upper": 0
+      },
+      "fixed_local_upper": 21043,
+      "per_visit_local_upper": 0,
+      "loop_count": 0,
+      "calls_excluded": [
+        {
+          "callee": "RTStoreOps.init",
+          "verified_bucket": "phase-store-helper"
+        }
+      ],
+      "price_bucket": "pc_extract_init"
+    },
+    {
+      "source": "ntruplus/proof/768/ref/kem_runtime_bound/NTRUPlus768RTFinal.ec",
+      "module": "RTPrivateStore",
+      "procedure": "snapshot",
+      "normalized_body_sha256": "3ed89940f62d948a3198d949f8af3a5081ae57d5f1eb9df4af51c25a9a3d0f86",
+      "source_fragment": "return st;",
+      "rule_id": "phase-source-block-v1",
+      "allocation": {
+        "list_spine": "persistent sharing",
+        "ghost_variables": [
+          "ledger",
+          "p"
+        ]
+      },
+      "units_expr": "fixed protocol state array copies; ledger-only updates erased",
+      "calls": [],
+      "certificate_theorem": "rt_phase_fixed_nonnegative",
+      "blocks": [
+        {
+          "id": "complete-body",
+          "source_fragment": "return st;",
+          "occurrences": 1,
+          "rule_id": "phase-source-block-v1",
+          "units_expr": "fixed protocol state array copies; ledger-only updates erased"
+        }
+      ],
+      "numeric_rule": "phase-finite-source-token-and-array-bound-v1",
+      "array_value_cells": {
+        "st": 2336
+      },
+      "fixed_breakdown": {
+        "local_scalar_ops": 3,
+        "guards": 0,
+        "list_ops": {
+          "head": 0,
+          "behead": 0,
+          "cons": 0
+        },
+        "array_reference_occurrences": {
+          "st": 1
+        },
+        "array_copy_cells": 4672,
+        "initializer_cells": 0,
+        "initializer_calls": 0,
+        "numeric_local_upper": 14019,
+        "array_boundary_cells": {
+          "entry": 0,
+          "return": 2336
+        }
+      },
+      "per_visit_breakdown": {
+        "local_scalar_ops": 0,
+        "guards": 0,
+        "list_ops": {
+          "head": 0,
+          "behead": 0,
+          "cons": 0
+        },
+        "array_reference_occurrences": {},
+        "array_copy_cells": 0,
+        "initializer_cells": 0,
+        "initializer_calls": 0,
+        "numeric_local_upper": 0
+      },
+      "fixed_local_upper": 14019,
+      "per_visit_local_upper": 0,
+      "loop_count": 0,
+      "calls_excluded": [],
+      "price_bucket": "pc_call + pc_input*raw_input_bytes"
+    },
+    {
+      "source": "ntruplus/proof/768/ref/kem_runtime_bound/NTRUPlus768RTFinal.ec",
+      "module": "RTPrivateStore",
+      "procedure": "record",
+      "normalized_body_sha256": "5e5491220294ca85b226a4573938f8cfa8977ebe06ba6bfcd56f86b5310087af",
+      "source_fragment": "(st,ledger)<@RTStoreOps.record(st,ledger,input,hout);",
+      "rule_id": "phase-source-block-v1",
+      "allocation": {
+        "list_spine": "persistent sharing",
+        "ghost_variables": [
+          "ledger",
+          "p"
+        ]
+      },
+      "units_expr": "fixed protocol state array copies; ledger-only updates erased",
+      "calls": [
+        {
+          "target": "RTStoreOps.record",
+          "rule_id": "phase-store-helper"
+        }
+      ],
+      "certificate_theorem": "rt_phase_fixed_nonnegative",
+      "blocks": [
+        {
+          "id": "complete-body",
+          "source_fragment": "(st,ledger)<@RTStoreOps.record(st,ledger,input,hout);",
+          "occurrences": 1,
+          "rule_id": "phase-source-block-v1",
+          "units_expr": "fixed protocol state array copies; ledger-only updates erased"
+        }
+      ],
+      "numeric_rule": "phase-finite-source-token-and-array-bound-v1",
+      "array_value_cells": {
+        "st": 2336,
+        "input": 128,
+        "hout": 224
+      },
+      "fixed_breakdown": {
+        "local_scalar_ops": 19,
+        "guards": 0,
+        "list_ops": {
+          "head": 0,
+          "behead": 0,
+          "cons": 0
+        },
+        "array_reference_occurrences": {
+          "st": 2,
+          "input": 1,
+          "hout": 1
+        },
+        "array_copy_cells": 5376,
+        "initializer_cells": 0,
+        "initializer_calls": 0,
+        "numeric_local_upper": 16147,
+        "array_boundary_cells": {
+          "entry": 352,
+          "return": 0
+        }
+      },
+      "per_visit_breakdown": {
+        "local_scalar_ops": 0,
+        "guards": 0,
+        "list_ops": {
+          "head": 0,
+          "behead": 0,
+          "cons": 0
+        },
+        "array_reference_occurrences": {},
+        "array_copy_cells": 0,
+        "initializer_cells": 0,
+        "initializer_calls": 0,
+        "numeric_local_upper": 0
+      },
+      "fixed_local_upper": 16147,
+      "per_visit_local_upper": 0,
+      "loop_count": 0,
+      "calls_excluded": [
+        {
+          "callee": "RTStoreOps.record",
+          "verified_bucket": "phase-store-helper"
+        }
+      ],
+      "price_bucket": "pc_call + pc_input*raw_input_bytes"
+    },
+    {
+      "source": "ntruplus/proof/768/ref/kem_modified_fo/NTRUPlus768FOProcedures.ec",
+      "module": "FOHashG",
+      "procedure": "run",
+      "normalized_body_sha256": "1a704690a75761ee94ef3e2ca7b573d8cc74a0ec89821b1d857ecc44595b2c4e",
+      "source_fragment": "var serialized:W8.t Array1152.t; var input:W8.t Array1153.t; var pad:W8.t Array192.t;\n  (serialized,input) <@ ACWC2GPrepare.run(r);\n  pad <@ G.shake(input);\n  return pad;",
+      "rule_id": "inlined-wrapper-boundary-v1",
+      "numeric_rule": "inlined-wrapper-boundary-v1",
+      "entry_array_cells": 768,
+      "return_array_cells": 192,
+      "arity": 1,
+      "return_fields": 1,
+      "entry_cost": 2304,
+      "return_cost": 577,
+      "caller_frame_and_binding": 579,
+      "fixed_local_upper": 3460,
+      "per_visit_local_upper": 0,
+      "executions_per_encryption": 1,
+      "price_op": "rt_phase_fohash_boundary",
+      "price_bucket": "pc_encrypt via rt_phase_encrypt_wrapper_fixed",
+      "calls_excluded": [
+        {
+          "source_call": "ACWC2GPrepare.run(r)",
+          "lowered_location": "RTKernelSimEncrypt: NTT then GPrepare",
+          "coverage": "child wrapper boundary below; common native bodies already in rt_kernel_sim_encrypt_bound"
+        },
+        {
+          "source_call": "G.shake(input)",
+          "lowered_location": "RTKernelSimEncrypt: peel then supplied G.get",
+          "coverage": "FOGHash wrapper boundary below; peel/G-call body already included"
+        }
+      ],
+      "certificate_theorem": "rt_phase_encrypt_wrapper_calibration",
+      "blocks": [
+        {
+          "id": "removed-wrapper-boundary",
+          "source_fragment": "var serialized:W8.t Array1152.t; var input:W8.t Array1153.t; var pad:W8.t Array192.t;\n  (serialized,input) <@ ACWC2GPrepare.run(r);\n  pad <@ G.shake(input);\n  return pad;",
+          "occurrences": "one per SimEncrypt invocation",
+          "rule_id": "inlined-wrapper-boundary-v1",
+          "units_expr": "3*768+(1+3*192)+(2+1+3*192)"
+        }
+      ]
+    },
+    {
+      "source": "ntruplus/proof/768/ref/acwc2_contracts/NTRUPlus768ACWC2HashG.ec",
+      "module": "ACWC2GPrepare",
+      "procedure": "run",
+      "normalized_body_sha256": "c38e1ee3abb2e11735590379ad8098f11dcd4c5630b361836ac4b2e028c99d3f",
+      "source_fragment": "var rhat:pke_poly; var serialized:W8.t Array1152.t; var input:W8.t Array1153.t;\n  rhat <@ NTRUPlus768NTT.M.jade_ntruplus_ntruplus768_amd64_ref_ntt(witness,r);\n  (serialized,input) <@ NTRUPlus768DecapMessagePrepare.M.jade_ntruplus_ntruplus768_amd64_ref_decap_message_prepare(witness,witness,rhat);\n  return(serialized,input);",
+      "rule_id": "inlined-wrapper-boundary-v1",
+      "numeric_rule": "inlined-wrapper-boundary-v1",
+      "entry_array_cells": 768,
+      "return_array_cells": 2305,
+      "arity": 1,
+      "return_fields": 2,
+      "entry_cost": 2304,
+      "return_cost": 6917,
+      "caller_frame_and_binding": 6918,
+      "fixed_local_upper": 16139,
+      "per_visit_local_upper": 0,
+      "executions_per_encryption": 1,
+      "price_op": "rt_phase_gprepare_boundary",
+      "price_bucket": "pc_encrypt via rt_phase_encrypt_wrapper_fixed",
+      "calls_excluded": [
+        {
+          "source_call": "NTRUPlus768NTT.M.jade_ntruplus_ntruplus768_amd64_ref_ntt(witness,r)",
+          "lowered_location": "RTFixedNTT call",
+          "coverage": "same args/native body/caller fee3076 already included"
+        },
+        {
+          "source_call": "NTRUPlus768DecapMessagePrepare.M.jade_ntruplus_ntruplus768_amd64_ref_decap_message_prepare(witness,witness,rhat)",
+          "lowered_location": "RTFixedGPrepare call",
+          "coverage": "same args/native body/caller fee9225 already included"
+        }
+      ],
+      "certificate_theorem": "rt_phase_encrypt_wrapper_calibration",
+      "blocks": [
+        {
+          "id": "removed-wrapper-boundary",
+          "source_fragment": "var rhat:pke_poly; var serialized:W8.t Array1152.t; var input:W8.t Array1153.t;\n  rhat <@ NTRUPlus768NTT.M.jade_ntruplus_ntruplus768_amd64_ref_ntt(witness,r);\n  (serialized,input) <@ NTRUPlus768DecapMessagePrepare.M.jade_ntruplus_ntruplus768_amd64_ref_decap_message_prepare(witness,witness,rhat);\n  return(serialized,input);",
+          "occurrences": "one per SimEncrypt invocation",
+          "rule_id": "inlined-wrapper-boundary-v1",
+          "units_expr": "3*768+(2+3*2305)+(2+1+3*2305)"
+        }
+      ]
+    },
+    {
+      "source": "ntruplus/proof/768/ref/kem_modified_fo/NTRUPlus768FOGAdapters.ec",
+      "module": "FOGHash",
+      "procedure": "shake",
+      "normalized_body_sha256": "e70422c64392969784ef925e47d4927dab13828cee7c3da9f9fda23b6c9adda2",
+      "source_fragment": "var y; y <@ G.get(peel1153 input); return y;",
+      "rule_id": "inlined-wrapper-boundary-v1",
+      "numeric_rule": "inlined-wrapper-boundary-v1",
+      "entry_array_cells": 1153,
+      "return_array_cells": 192,
+      "arity": 1,
+      "return_fields": 1,
+      "entry_cost": 3459,
+      "return_cost": 577,
+      "caller_frame_and_binding": 579,
+      "fixed_local_upper": 4615,
+      "per_visit_local_upper": 0,
+      "executions_per_encryption": 1,
+      "price_op": "rt_phase_foghash_boundary",
+      "price_bucket": "pc_encrypt via rt_phase_encrypt_wrapper_fixed",
+      "calls_excluded": [
+        {
+          "source_call": "peel1153 input",
+          "lowered_location": "RTKernelBytes.peel",
+          "coverage": "actual copy17288 plus measured caller3459 already included"
+        },
+        {
+          "source_call": "G.get(payload)",
+          "lowered_location": "RTKernelSimEncrypt supplied G.get",
+          "coverage": "Gcaller frame/binding579 in local Sim; backend32768+cons3470 separate"
+        }
+      ],
+      "certificate_theorem": "rt_phase_encrypt_wrapper_calibration",
+      "blocks": [
+        {
+          "id": "removed-wrapper-boundary",
+          "source_fragment": "var y; y <@ G.get(peel1153 input); return y;",
+          "occurrences": "one per SimEncrypt invocation",
+          "rule_id": "inlined-wrapper-boundary-v1",
+          "units_expr": "3*1153+(1+3*192)+(2+1+3*192)"
+        }
+      ]
+    },
+    {
+      "source": "ntruplus/proof/768/ref/acwc2_contracts/NTRUPlus768SOTPContracts.ec",
+      "module": "SOTPEncode",
+      "procedure": "run",
+      "normalized_body_sha256": "6d23928a18a9060673853a86f1f7fa4321c2f67f36e08b5c80c83e9c399ed434",
+      "source_fragment": "var code:W16.t Array768.t;\n  code <@ NTRUPlus768PolySOTPEncodeChecked.M.jade_ntruplus_ntruplus768_amd64_ref_poly_sotp_encode(witness,msg,pad);\n  return code;",
+      "rule_id": "inlined-wrapper-boundary-v1",
+      "numeric_rule": "inlined-wrapper-boundary-v1",
+      "entry_array_cells": 288,
+      "return_array_cells": 768,
+      "arity": 2,
+      "return_fields": 1,
+      "entry_cost": 864,
+      "return_cost": 2305,
+      "caller_frame_and_binding": 2308,
+      "fixed_local_upper": 5477,
+      "per_visit_local_upper": 0,
+      "executions_per_encryption": 1,
+      "price_op": "rt_phase_sotp_boundary",
+      "price_bucket": "pc_encrypt via rt_phase_encrypt_wrapper_fixed",
+      "calls_excluded": [
+        {
+          "source_call": "NTRUPlus768PolySOTPEncodeChecked.M.jade_ntruplus_ntruplus768_amd64_ref_poly_sotp_encode(witness,msg,pad)",
+          "lowered_location": "RTFixedSOTPEncode call",
+          "coverage": "same args/native body/caller fee3077 already included"
+        }
+      ],
+      "certificate_theorem": "rt_phase_encrypt_wrapper_calibration",
+      "blocks": [
+        {
+          "id": "removed-wrapper-boundary",
+          "source_fragment": "var code:W16.t Array768.t;\n  code <@ NTRUPlus768PolySOTPEncodeChecked.M.jade_ntruplus_ntruplus768_amd64_ref_poly_sotp_encode(witness,msg,pad);\n  return code;",
+          "occurrences": "one per SimEncrypt invocation",
+          "rule_id": "inlined-wrapper-boundary-v1",
+          "units_expr": "3*288+(1+3*768)+(2+2+3*768)"
+        }
+      ]
+    },
+    {
+      "source": "ntruplus/proof/768/ref/kem_fo_simulation/NTRUPlus768SimLookup.ec",
+      "module": "SimEncrypt",
+      "procedure": "run",
+      "normalized_body_sha256": "e76def8b8796d3484925e1071622dd4d15909ce4b1d604c3ba420d5821994b4d",
+      "source_fragment": "var r,code:pke_poly;var pad:W8.t Array192.t;var ct:W8.t Array1152.t option;\n  r <@ NTRUPlus768PolyCBD1Checked.M.jade_ntruplus_ntruplus768_amd64_ref_poly_cbd1(witness,complete_hash_tail hout);\n  pad <@ FOHashG(FOGHash(G)).run(r);\n  code <@ SOTPEncode.run(msg,pad);\n  ct <@ PKEEnc.run(pk,code,r);\n  return ct;",
+      "rule_id": "inlined-wrapper-use-sites-v1",
+      "numeric_rule": "inlined-wrapper-use-sites-v1",
+      "expected_direct_calls": [
+        {
+          "callee": "NTRUPlus768PolyCBD1Checked.M.jade_ntruplus_ntruplus768_amd64_ref_poly_cbd1",
+          "count": 1,
+          "bucket": "frozen Sim native CBD"
+        },
+        {
+          "callee": "FOHashG(FOGHash(G)).run",
+          "count": 1,
+          "bucket": "frozen Sim contents plus rt_phase_fohash_boundary and child boundaries"
+        },
+        {
+          "callee": "SOTPEncode.run",
+          "count": 1,
+          "bucket": "frozen Sim native SOTP plus rt_phase_sotp_boundary"
+        },
+        {
+          "callee": "PKEEnc.run",
+          "count": 1,
+          "bucket": "frozen Sim PKE"
+        }
+      ],
+      "expected_nested_calls": [
+        {
+          "parent": "FOHashG.run",
+          "callee": "ACWC2GPrepare.run",
+          "count": 1
+        },
+        {
+          "parent": "FOHashG(FOGHash(G)).run",
+          "callee": "FOGHash(G).shake",
+          "count": 1
+        }
+      ],
+      "price_bucket": "pc_encrypt",
+      "wrapper_total": 29691,
+      "certificate_theorem": "rt_phase_encrypt_wrapper_calibration"
+    }
+  ],
+  "rules": {
+    "fixed_array_copy": "3*N = allocation N + read N + write N; actual source boundaries may be conservatively overcharged",
+    "persistent_list": "head/behead/spine bindings are constant; new cons copies fixed payload and allocates two node fields; no full list clone",
+    "list_size": "tail recursion/loop: <=8*N+5",
+    "list_nth": "<=10*max(index,0)+8; fixed initializer uses index<N",
+    "array_of_list": "<=5+10*N+N*(10*N+8); N in {32,129,1153}; no opaque unit cost",
+    "raw_decode": "at most two decode_typed invocations; each up to four list-size scans; typed construction maxN1153",
+    "raw_prefix": "to_list224+take at most224: <=32+24*224; valid output zero still performs full backend and H record",
+    "ideal_rom": "ROE/F/G/H and RawXOFStreams extension maps are explicit ideal lookup/sample boundaries, not concrete FMap cost",
+    "counter": "new RT ledger computation is ghost; original HistTable/HistLookup procedure counters are included in the block prices",
+    "int": "unit-cost unbounded EC integer control operations; no bit-complexity claim",
+    "forward_G": "at most six forwarding/call boundaries: each <=3*(1152+192)+8, plus each returned-array binding3*192, ideal endpoint1; list cons separate",
+    "visit_bound": "65536 bounds each independently expanded visit block: maximum is lookup58897; candidate and comparator bodies are separate",
+    "sample_key32": "actual fixed uniform32 sampler source expansion, 194 units inline; setup allocation/call copies additionally bounded"
+  },
+  "outputs": [
+    {
+      "price_op": "rt_calibrated_phase_prices",
+      "formula": "source-block prices in NTRUPlus768RTPhaseCost.ec",
+      "free_kernel_parameters": [
+        "C_encrypt",
+        "C_candidate"
+      ],
+      "required_final_substitutions": {
+        "C_encrypt": "rt_kernel_sim_encrypt_bound",
+        "C_candidate": "rt_kernel_candidate_bound"
+      }
+    },
+    {
+      "price_op": "rt_concrete_phase_prices",
+      "formula": "rt_calibrated_phase_prices rt_kernel_sim_encrypt_bound rt_kernel_candidate_bound",
+      "free_kernel_parameters": []
+    }
+  ],
+  "required_negative_controls": [
+    "remove/increase source operation without calibration update",
+    "lower annotation and final bound together",
+    "insert unsupported pure operation",
+    "omit typed/raw zero-output H backend",
+    "omit Glog payload clone",
+    "omit fresh setup with Q=0",
+    "omit FOHashG or ACWC2GPrepare wrapper boundary",
+    "omit FOGHash or SOTPEncode wrapper boundary",
+    "claim value projection proves equal wrapper cost"
+  ],
+  "semantic_support": [
+    {
+      "source": "/home/hacker-code-j/easycrypt/theories/datatypes/List.ec",
+      "sha256": "fa5c5e4479bac9f2d6c67d5055c38cd4988488e96827e6ea99b4430cc2c6b0c2",
+      "lines": [
+        15,
+        261,
+        903
+      ],
+      "reason": "recursive size/nth/take definitions"
+    },
+    {
+      "source": "/home/hacker-code-j/.opam/cryptotools-2026.09/lib/easycrypt/jasmin/JArray.ec",
+      "sha256": "26966821096bf437b5328b3876f64675374b90db3c80b2090013b4719d5f2d8b",
+      "lines": [
+        448,
+        451
+      ],
+      "reason": "of_list=init(nth); to_list=mkseq indexed reads"
+    }
+  ],
+  "numeric_lowering": {
+    "token_rule": "one unit per lexical source token is a conservative upper bound for each permitted scalar/guard/call-frame/return instruction; unknown nonprimitive operators are rejected or expanded by a separate rule",
+    "array_rule": "each syntactic reference to a typed finite-array value is conservatively charged 3*N cells, plus entry/result boundaries; even read-only references may be overcharged",
+    "initializer_rule": "known zero/default initializers cost <=5*N+8, head witness reserves fixed1152 cells; this bound is conservative for the persistent array representation",
+    "loop_rule": "fixed includes initial guard once; per_visit includes guard plus body; nested loops not permitted in these phase procedures",
+    "cons_rule": "payload/node allocation charged separately via pc_cons, all reference-copy overcharges retained",
+    "side_condition": "these numeric local bounds exclude the body costs of explicitly mapped calls; those are recursively composed or charged to verified kernel/comparator/idealROM buckets"
+  },
+  "raw_numeric_rules": {
+    "decoder_calls_max": 2,
+    "size_calls_per_decoder_max": 4,
+    "size_per_cell": 8,
+    "size_fixed": 5,
+    "typed_array_sizes": [
+      32,
+      129,
+      1153
+    ],
+    "max_initializer_cells": 1153,
+    "nth_per_index": 10,
+    "nth_fixed": 8,
+    "of_list_fixed": 5,
+    "of_list_linear": 10,
+    "of_list_nth_calls": "N",
+    "of_list_nth_max_index": "N",
+    "decode_fixed_overhead": 64,
+    "peel_copy_per_max_cell": 24,
+    "prefix_cells": 224,
+    "prefix_per_cell": 24,
+    "prefix_fixed": 32,
+    "raw_input_coefficient": 64,
+    "zero_output_still_full_backend": true
+  },
+  "bucket_aggregation": {
+    "callback_fixed": {
+      "entries": [
+        "HistKeep.run",
+        "HistReverse.run",
+        "HistTable.put",
+        "HistCipherOption.equal",
+        "HistLookup.run",
+        "AHPublicG.get",
+        "AHRecordH.get",
+        "AHOracles.raw",
+        "AHDecap.decap",
+        "AHPrivateStore.snapshot",
+        "AHPrivateStore.record",
+        "FOGRawStreams.e",
+        "FOGRawStreams.f",
+        "FOGRawStreams.g",
+        "FOGRawStreams.h",
+        "FOGRawStreams.untyped",
+        "FOGRaw.full",
+        "FOGRaw.get",
+        "SecGLogged.get",
+        "SimOracles.g",
+        "SharedCCAOracles.e",
+        "SharedCCAOracles.f",
+        "RTStoreOps.record",
+        "RTPrivateStore.snapshot",
+        "RTPrivateStore.record"
+      ],
+      "sum_local_upper": 344206,
+      "plus_stream_rule": "rt_phase_stream_fixed",
+      "decoder_calls": 2,
+      "prefix_calls": 1
+    },
+    "setup_fixed": {
+      "entries": [
+        "AHWrapper.guess",
+        "AHActualPhase.run",
+        "AHActualTranscript.run",
+        "SecAuxSetup.run",
+        "AHActualINJReducer.run",
+        "AHActualOWReducer.run",
+        "SecINJAuxAdapter.run",
+        "SecOWAuxAdapter.run",
+        "AHPrivateStore.init",
+        "RTStoreOps.init",
+        "RTPrivateStore.init"
+      ],
+      "sum_local_upper": 320757,
+      "extra_typed_F": 3,
+      "extra_uniform32_units": 194,
+      "extra_ideal_initialization_units": 32
+    },
+    "visit": {
+      "choices": {
+        "keep": 5132,
+        "reverse": 3198,
+        "lookup": 58897,
+        "extract": 51919
+      },
+      "rounded_upper": 65536
+    },
+    "put_fixed": {
+      "entries": [
+        "HistTable.put",
+        "HistKeep.run",
+        "HistReverse.run"
+      ],
+      "total": 5114
+    },
+    "lookup_fixed": {
+      "entries": [
+        "HistLookup.run",
+        "HistCipherOption.equal"
+      ],
+      "total": 38608
+    },
+    "extract_fixed": {
+      "entries": [
+        "CostExtract.run"
+      ],
+      "total": 27676
+    },
+    "logged_G_fixed": {
+      "entries": [
+        "AHPublicG.get",
+        "SimOracles.g",
+        "SecGLogged.get"
+      ],
+      "extra_ideal_endpoint": 1,
+      "total": 29423,
+      "rounded_upper": 32768
+    },
+    "encrypt_wrappers": {
+      "entries": [
+        "FOHashG.run",
+        "ACWC2GPrepare.run",
+        "FOGHash.shake",
+        "SOTPEncode.run"
+      ],
+      "total": 29691,
+      "separate_from_logged_G": true,
+      "common_native_calls_not_repriced": true
+    }
+  },
+  "logged_G_path": [
+    "AHPublicG(AHActualOracles(SecGLogged(FOGActual))).get",
+    "AHActualOracles.g alias = SimOracles(SecGLogged(FOGActual),SimHActual).g",
+    "SecGLogged(FOGActual).get",
+    "FOGActual.get alias = ROG.get (ideal boundary)"
+  ]
+}

@@ -17,3 +17,9 @@ agreement:
 
 concrete:
 	$(EASYCRYPT) compile $(EASYCRYPT_FLAGS) $(EASYCRYPT_INCLUDES) $(CONCRETE_PROOF)
+
+.PHONY: check-model-compatibility
+check-model-compatibility:
+	python3 ../../../../../tests/ntruplus768/toolchain/check_model_compatibility.py --source-only
+
+agreement concrete: check-model-compatibility

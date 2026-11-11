@@ -1,0 +1,20 @@
+param int NTRUPLUS_CLEAR_BYTES = 13634;
+
+// Clear exactly this caller-owned region. Registers, spills and nested-call
+// private storage are outside this procedure's claim.
+#[safety = { ensures = is_arr_init(workspace,0,NTRUPLUS_CLEAR_BYTES) }]
+#[ct = "secret → secret"]
+#[sct="{ ptr: transient, val: secret } → { ptr: public, val: secret }"]
+export fn jade_ntruplus_ntruplus768_amd64_ref_encap_clear(
+  reg mut ptr u8[NTRUPLUS_CLEAR_BYTES] workspace) ->
+  reg ptr u8[NTRUPLUS_CLEAR_BYTES]
+{
+  reg u64 i;
+  _ = #init_msf();
+  i = 0;
+  while (i < NTRUPLUS_CLEAR_BYTES) {
+    workspace[i] = 0;
+    i += 1;
+  }
+  return workspace;
+}

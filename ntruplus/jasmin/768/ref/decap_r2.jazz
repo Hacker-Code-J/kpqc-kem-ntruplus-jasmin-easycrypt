@@ -1,0 +1,60 @@
+namespace Forward {
+  require "ntt.jazz"
+}
+
+namespace Difference {
+  require "poly_sub.jazz"
+}
+
+namespace Product {
+  require "poly_basemul.jazz"
+}
+
+param int NTRUPLUS_N = 768;
+
+// Normal Decaps r2 calculation: (c - NTT(m1)) * hinv in NTT form.
+// All four external regions are disjoint, u16-aligned 1536-byte buffers.
+// cp and hp contain canonical decoded coefficients in [0,3457), and mp
+// contains signed trits. This procedure reveals no status or predicate.
+#[safety =
+   { requires = is_arr_init(cp,0,2 * NTRUPLUS_N) &&
+                is_arr_init(mp,0,2 * NTRUPLUS_N) &&
+                is_arr_init(hp,0,2 * NTRUPLUS_N)
+   , ensures = is_arr_init(rp,0,2 * NTRUPLUS_N)
+   }
+]
+#[ct = "secret × secret × secret × secret → secret"]
+#[sct="
+{ ptr: transient, val: secret } ×
+{ ptr: transient, val: secret } ×
+{ ptr: transient, val: secret } ×
+{ ptr: transient, val: secret } →
+{ ptr: public, val: secret }
+"]
+export fn jade_ntruplus_ntruplus768_amd64_ref_decap_r2(
+  reg mut ptr u16[NTRUPLUS_N] rp,
+  reg const ptr u16[NTRUPLUS_N] cp,
+  reg const ptr u16[NTRUPLUS_N] mp,
+  reg const ptr u16[NTRUPLUS_N] hp) -> reg ptr u16[NTRUPLUS_N]
+{
+  stack u16[NTRUPLUS_N] transformed;
+  stack u16[NTRUPLUS_N] difference;
+  reg ptr u16[NTRUPLUS_N] transformedp;
+  reg ptr u16[NTRUPLUS_N] differencep;
+  inline int i;
+
+  // Fixed-index initialization precedes access through the pointer views.
+  _ = #init_msf();
+  for i = 0 to NTRUPLUS_N {
+    transformed[i] = 0;
+    difference[i] = 0;
+  }
+
+  transformedp = transformed[0:NTRUPLUS_N];
+  differencep = difference[0:NTRUPLUS_N];
+  #[inline] transformedp = Forward::jade_ntruplus_ntruplus768_amd64_ref_ntt(transformedp, mp);
+  #[inline] differencep = Difference::jade_ntruplus_ntruplus768_amd64_ref_poly_sub(differencep, cp, transformedp);
+  #[inline] rp = Product::jade_ntruplus_ntruplus768_amd64_ref_poly_basemul(rp, differencep, hp);
+
+  return rp;
+}
