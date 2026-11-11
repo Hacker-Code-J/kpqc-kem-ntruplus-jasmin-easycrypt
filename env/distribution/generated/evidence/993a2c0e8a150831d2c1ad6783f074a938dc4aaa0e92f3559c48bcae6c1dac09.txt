@@ -1,0 +1,20 @@
+opam-version: "2.0"
+added: [
+  "doc/bigstring" {"D"}
+  "doc/bigstring/LICENSE" {"F:S1296T1746706801.55"}
+  "doc/bigstring/README.adoc" {"F:S835T1746706801.55"}
+  "lib/bigstring" {"D"}
+  "lib/bigstring/META" {"F:S254T1746706801.55"}
+  "lib/bigstring/bigstring.a" {"F:S54204T1746706801.55"}
+  "lib/bigstring/bigstring.cma" {"F:S68103T1746706801.55"}
+  "lib/bigstring/bigstring.cmi" {"F:S9296T1746706801.55"}
+  "lib/bigstring/bigstring.cmt" {"F:S147300T1746706801.55"}
+  "lib/bigstring/bigstring.cmti" {"F:S49029T1746706801.55"}
+  "lib/bigstring/bigstring.cmx" {"F:S5042T1746706801.55"}
+  "lib/bigstring/bigstring.cmxa" {"F:S803T1746706801.55"}
+  "lib/bigstring/bigstring.cmxs" {"F:S67552T1746706801.55"}
+  "lib/bigstring/bigstring.ml" {"F:S9398T1746706801.55"}
+  "lib/bigstring/bigstring.mli" {"F:S6433T1746706801.55"}
+  "lib/bigstring/dune-package" {"F:S872T1746706801.55"}
+  "lib/bigstring/opam" {"F:S692T1746706801.55"}
+]

@@ -1,0 +1,12 @@
+opam-version: "2.0"
+added: [
+  "bin/atdts" {"F:S4242936T1737446897.03"}
+  "doc/atdts" {"D"}
+  "doc/atdts/CHANGES.md" {"F:S7798T1737446897.03"}
+  "doc/atdts/LICENSE.md" {"F:S1408T1737446897.03"}
+  "doc/atdts/README.md" {"F:S3411T1737446897.03"}
+  "lib/atdts" {"D"}
+  "lib/atdts/META" {"F:S0T1737446897.03"}
+  "lib/atdts/dune-package" {"F:S200T1737446897.03"}
+  "lib/atdts/opam" {"F:S2823T1737446897.03"}
+]

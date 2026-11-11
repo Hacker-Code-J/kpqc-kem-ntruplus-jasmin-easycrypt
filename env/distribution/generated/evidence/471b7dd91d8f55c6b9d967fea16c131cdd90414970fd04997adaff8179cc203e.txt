@@ -1,0 +1,20 @@
+opam-version: "2.0"
+added: [
+  "doc/spelll" {"D"}
+  "doc/spelll/LICENSE" {"F:S1295T1737446807.57"}
+  "doc/spelll/README.md" {"F:S1098T1737446807.57"}
+  "lib/spelll" {"D"}
+  "lib/spelll/META" {"F:S182T1737446807.57"}
+  "lib/spelll/Spelll.ml" {"F:S19833T1737446807.57"}
+  "lib/spelll/Spelll.mli" {"F:S5370T1737446807.57"}
+  "lib/spelll/dune-package" {"F:S714T1737446807.57"}
+  "lib/spelll/opam" {"F:S767T1737446807.57"}
+  "lib/spelll/spelll.a" {"F:S68488T1737446807.57"}
+  "lib/spelll/spelll.cma" {"F:S131013T1737446807.57"}
+  "lib/spelll/spelll.cmi" {"F:S8075T1737446807.57"}
+  "lib/spelll/spelll.cmt" {"F:S274619T1737446807.57"}
+  "lib/spelll/spelll.cmti" {"F:S38846T1737446807.57"}
+  "lib/spelll/spelll.cmx" {"F:S9342T1737446807.57"}
+  "lib/spelll/spelll.cmxa" {"F:S989T1737446807.57"}
+  "lib/spelll/spelll.cmxs" {"F:S84544T1737446807.57"}
+]

@@ -51,13 +51,20 @@ OS/runtime dependencies; it does not establish a standalone image or new-host re
 | Evidence portability | The full runtime-bound target passed through the public preserved-layout launcher | Retain the verified source/environment/evidence bytes and full logs; never rewrite historical pins |
 | Full proof replay | The default runtime-bound target passed freshly; its prerequisite proofs are authenticated historical imports | Replay other release claims as needed, including negative controls, EOF/kernel checks; retain all results |
 | Resources | The public preserved-environment runtime-bound run took 23:57.69 and maximum RSS 2,694,052 KiB | Retain the measured environment; measure other targets or platforms before quoting their costs |
-| Third-party redistribution | Root MIT covers repository-owned material; Formosa has no top-level license at its pinned commit | Resolve applicable file/upstream terms before bundling external sources; retain provenance and notices |
+| Third-party materials | Exact-file upstream provenance, component attribution, original notices and source-material companions are recorded; three system source payloads remain pending | Include the relevant notices/companions with the chosen distribution; finish pending source acquisition and review the recorded component/build-option conditions before distributing the binary attachment |
 | Citation | Repository author/title available; thesis metadata, DOI and release date are not finalized here | Confirm authorship/title, create the validated release, archive it and record its version DOI |
 
 The runtime proof manifest's `ROOT_REVIEWED_ALPHA_RENAME_NOT_REPLAYED` state
 must not be silently converted into a new PASS. Family documentation may retain
 historical proof descriptions; only a fresh run against the release sources
 establishes release verification status.
+
+See [Formosa's location and exact-file evidence](provenance/formosa.md) and the
+[preserved environment distribution inventory](../env/distribution/README.md).
+The original tested source/runtime archives are immutable evidence; they predate
+the newly assembled notices. A public distribution using those archives must
+include the notice/provenance companion and current acquisition instructions
+alongside them. Adding these materials does not claim a new proof replay.
 
 ## Public contents and credentials
 

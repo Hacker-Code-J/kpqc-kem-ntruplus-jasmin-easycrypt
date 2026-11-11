@@ -1,0 +1,13 @@
+opam-version: "2.0"
+added: [
+  "lib/inifiles" {"D"}
+  "lib/inifiles/META" {"F:S96T1126744397."}
+  "lib/inifiles/inifiles.a" {"F:S67452T1737446890.37"}
+  "lib/inifiles/inifiles.cma" {"F:S81425T1737446890.44"}
+  "lib/inifiles/inifiles.cmi" {"F:S3039T1737446890.15"}
+  "lib/inifiles/inifiles.cmxa" {"F:S1959T1737446890.37"}
+  "lib/inifiles/inifiles.mli" {"F:S3964T1119480499."}
+  "lib/inifiles/inilexer.cmi" {"F:S662T1737446890.27"}
+  "lib/inifiles/parseini.cmi" {"F:S761T1737446890.12"}
+  "lib/inifiles/parseini.mli" {"F:S192T1737446890.07"}
+]

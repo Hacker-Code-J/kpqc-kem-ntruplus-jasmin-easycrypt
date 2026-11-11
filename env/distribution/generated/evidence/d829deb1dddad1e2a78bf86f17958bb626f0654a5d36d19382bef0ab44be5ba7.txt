@@ -1,0 +1,30 @@
+opam-version: "2.0"
+added: [
+  "bin/atdgen" {"F:S5120256T1737446898.59"}
+  "bin/atdgen-cppo" {"F:S1628T1737446898.59"}
+  "bin/cppo-json" {"F:S1102T1737446898.59"}
+  "doc/atdgen" {"D"}
+  "doc/atdgen/CHANGES.md" {"F:S7798T1737446898.59"}
+  "doc/atdgen/LICENSE.md" {"F:S1408T1737446898.59"}
+  "doc/atdgen/README.md" {"F:S3411T1737446898.59"}
+  "lib/atdgen" {"D"}
+  "lib/atdgen/META" {"F:S183T1737446898.59"}
+  "lib/atdgen/atdgen.a" {"F:S6234T1737446898.59"}
+  "lib/atdgen/atdgen.cma" {"F:S6914T1737446898.59"}
+  "lib/atdgen/atdgen.cmi" {"F:S837T1737446898.59"}
+  "lib/atdgen/atdgen.cmt" {"F:S4126T1737446898.59"}
+  "lib/atdgen/atdgen.cmx" {"F:S268T1737446898.59"}
+  "lib/atdgen/atdgen.cmxa" {"F:S539T1737446898.59"}
+  "lib/atdgen/atdgen.cmxs" {"F:S17664T1737446898.59"}
+  "lib/atdgen/atdgen.ml" {"F:S141T1737446898.59"}
+  "lib/atdgen/atdgen__.cmi" {"F:S228T1737446898.59"}
+  "lib/atdgen/atdgen__.cmt" {"F:S2618T1737446898.59"}
+  "lib/atdgen/atdgen__.cmx" {"F:S118T1737446898.59"}
+  "lib/atdgen/atdgen__.ml" {"F:S91T1737446898.59"}
+  "lib/atdgen/atdgen__Version.cmi" {"F:S326T1737446898.59"}
+  "lib/atdgen/atdgen__Version.cmt" {"F:S2977T1737446898.59"}
+  "lib/atdgen/atdgen__Version.cmx" {"F:S241T1737446898.59"}
+  "lib/atdgen/dune-package" {"F:S1225T1737446898.59"}
+  "lib/atdgen/opam" {"F:S3408T1737446898.59"}
+  "lib/atdgen/version.ml" {"F:S120T1737446898.59"}
+]

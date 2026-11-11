@@ -1,0 +1,19 @@
+opam-version: "2.0"
+added: [
+  "doc/coq-mathcomp-word" {"D"}
+  "doc/coq-mathcomp-word/CHANGELOG.md" {"F:S616T1746707134.52"}
+  "doc/coq-mathcomp-word/LICENSE" {"F:S1074T1746707134.52"}
+  "doc/coq-mathcomp-word/README.md" {"F:S179T1746707134.52"}
+  "lib/coq-mathcomp-word" {"D"}
+  "lib/coq-mathcomp-word/META" {"F:S0T1746707134.52"}
+  "lib/coq-mathcomp-word/dune-package" {"F:S485T1746707134.52"}
+  "lib/coq-mathcomp-word/opam" {"F:S571T1746707134.52"}
+  "lib/coq/user-contrib/mathcomp/word/word.glob" {"F:S412669T1746707134.52"}
+  "lib/coq/user-contrib/mathcomp/word/word.v" {"F:S52873T1746707134.52"}
+  "lib/coq/user-contrib/mathcomp/word/word.vo" {"F:S445810T1746707134.52"}
+  "lib/coq/user-contrib/mathcomp/word/word_ssrZ.glob"
+    {"F:S84301T1746707134.52"}
+  "lib/coq/user-contrib/mathcomp/word/word_ssrZ.v" {"F:S15833T1746707134.52"}
+  "lib/coq/user-contrib/mathcomp/word/word_ssrZ.vo"
+    {"F:S136068T1746707134.52"}
+]

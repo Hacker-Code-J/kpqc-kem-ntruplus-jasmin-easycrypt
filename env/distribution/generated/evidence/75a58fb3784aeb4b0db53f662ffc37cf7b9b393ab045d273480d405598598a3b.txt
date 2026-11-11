@@ -1,0 +1,81 @@
+{
+  "historical_revision": {
+    "sha": "b682e63f4ba9eed9220eb763fa73baa8f663046b",
+    "node_id": "C_kwDOAhO0wtoAKGI2ODJlNjNmNGJhOWVlZDkyMjBlYjc2M2ZhNzNiYWE4ZjY2MzA0NmI",
+    "url": "https://api.github.com/repos/EasyCrypt/easycrypt/git/commits/b682e63f4ba9eed9220eb763fa73baa8f663046b",
+    "html_url": "https://github.com/EasyCrypt/easycrypt/commit/b682e63f4ba9eed9220eb763fa73baa8f663046b",
+    "author": {
+      "name": "Xingyu Xie",
+      "email": "namasikanam@gmail.com",
+      "date": "2026-03-16T14:14:58Z"
+    },
+    "committer": {
+      "name": "Pierre-Yves Strub",
+      "email": "pierre-yves@strub.nu",
+      "date": "2026-03-16T15:46:33Z"
+    },
+    "tree": {
+      "sha": "cbb1952994d1dfb88fea72c7597981acaaf2e0ed",
+      "url": "https://api.github.com/repos/EasyCrypt/easycrypt/git/trees/cbb1952994d1dfb88fea72c7597981acaaf2e0ed"
+    },
+    "message": "stdlib: new lemmas (lists, bytes, distr)\n\nBitChunking: new lemmas: chunk_nil, chunk_exact\nList: new lemmas: mkseq2\nDList: new lemmas: dmap_dlist_partial_perm",
+    "parents": [
+      {
+        "sha": "7367ad055916be92f1d26b19789696e2cfa62dc5",
+        "url": "https://api.github.com/repos/EasyCrypt/easycrypt/git/commits/7367ad055916be92f1d26b19789696e2cfa62dc5",
+        "html_url": "https://github.com/EasyCrypt/easycrypt/commit/7367ad055916be92f1d26b19789696e2cfa62dc5"
+      }
+    ],
+    "verification": {
+      "verified": false,
+      "reason": "unsigned",
+      "signature": null,
+      "payload": null,
+      "verified_at": null
+    }
+  },
+  "license_change_commit": {
+    "sha": "f87695472e70c313ef2966e20979b1afcc2e543e",
+    "node_id": "C_kwDOAhO0wtoAKGY4NzY5NTQ3MmU3MGMzMTNlZjI5NjZlMjA5NzliMWFmY2MyZTU0M2U",
+    "url": "https://api.github.com/repos/EasyCrypt/easycrypt/git/commits/f87695472e70c313ef2966e20979b1afcc2e543e",
+    "html_url": "https://github.com/EasyCrypt/easycrypt/commit/f87695472e70c313ef2966e20979b1afcc2e543e",
+    "author": {
+      "name": "Pierre-Yves Strub",
+      "email": "pierre-yves@strub.nu",
+      "date": "2022-03-29T08:01:08Z"
+    },
+    "committer": {
+      "name": "bgregoir",
+      "email": "benjamin.gregoire@inria.fr",
+      "date": "2022-03-29T19:39:31Z"
+    },
+    "tree": {
+      "sha": "ee8baf2bc053ddab92bfc019dff78e903da180a6",
+      "url": "https://api.github.com/repos/EasyCrypt/easycrypt/git/trees/ee8baf2bc053ddab92bfc019dff78e903da180a6"
+    },
+    "message": "License change: CeCILL B/C -> MIT",
+    "parents": [
+      {
+        "sha": "b229a87e508b45744669b503bdd8093654ca39dd",
+        "url": "https://api.github.com/repos/EasyCrypt/easycrypt/git/commits/b229a87e508b45744669b503bdd8093654ca39dd",
+        "html_url": "https://github.com/EasyCrypt/easycrypt/commit/b229a87e508b45744669b503bdd8093654ca39dd"
+      }
+    ],
+    "verification": {
+      "verified": false,
+      "reason": "unsigned",
+      "signature": null,
+      "payload": null,
+      "verified_at": null
+    }
+  },
+  "comparison": {
+    "base": "b682e63f4ba9eed9220eb763fa73baa8f663046b",
+    "head": "2aaa14acf7b2ce234b475f24f9e85ba0bdaeb024",
+    "status": "ahead",
+    "ahead_by": 121,
+    "behind_by": 0,
+    "merge_base": "b682e63f4ba9eed9220eb763fa73baa8f663046b",
+    "url": "https://api.github.com/repos/EasyCrypt/easycrypt/compare/b682e63f4ba9eed9220eb763fa73baa8f663046b...2aaa14acf7b2ce234b475f24f9e85ba0bdaeb024?per_page=1"
+  }
+}

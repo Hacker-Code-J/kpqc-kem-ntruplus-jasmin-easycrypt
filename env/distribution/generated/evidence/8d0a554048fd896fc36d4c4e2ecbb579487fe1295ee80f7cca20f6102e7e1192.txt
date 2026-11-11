@@ -1,0 +1,119 @@
+opam-version: "2.0"
+lib: [
+  "_build/install/default/lib/sedlex/META"
+  "_build/install/default/lib/sedlex/dune-package"
+  "_build/install/default/lib/sedlex/opam"
+  "_build/install/default/lib/sedlex/ppx/iso.ml" {"ppx/iso.ml"}
+  "_build/install/default/lib/sedlex/ppx/iso.mli" {"ppx/iso.mli"}
+  "_build/install/default/lib/sedlex/ppx/ppx_sedlex.ml" {"ppx/ppx_sedlex.ml"}
+  "_build/install/default/lib/sedlex/ppx/sedlex.ml" {"ppx/sedlex.ml"}
+  "_build/install/default/lib/sedlex/ppx/sedlex.mli" {"ppx/sedlex.mli"}
+  "_build/install/default/lib/sedlex/ppx/sedlex_cset.ml"
+    {"ppx/sedlex_cset.ml"}
+  "_build/install/default/lib/sedlex/ppx/sedlex_ppx.a" {"ppx/sedlex_ppx.a"}
+  "_build/install/default/lib/sedlex/ppx/sedlex_ppx.cma"
+    {"ppx/sedlex_ppx.cma"}
+  "_build/install/default/lib/sedlex/ppx/sedlex_ppx.cmi"
+    {"ppx/sedlex_ppx.cmi"}
+  "_build/install/default/lib/sedlex/ppx/sedlex_ppx.cmt"
+    {"ppx/sedlex_ppx.cmt"}
+  "_build/install/default/lib/sedlex/ppx/sedlex_ppx.cmx"
+    {"ppx/sedlex_ppx.cmx"}
+  "_build/install/default/lib/sedlex/ppx/sedlex_ppx.cmxa"
+    {"ppx/sedlex_ppx.cmxa"}
+  "_build/install/default/lib/sedlex/ppx/sedlex_ppx.ml" {"ppx/sedlex_ppx.ml"}
+  "_build/install/default/lib/sedlex/ppx/sedlex_ppx__Iso.cmi"
+    {"ppx/sedlex_ppx__Iso.cmi"}
+  "_build/install/default/lib/sedlex/ppx/sedlex_ppx__Iso.cmt"
+    {"ppx/sedlex_ppx__Iso.cmt"}
+  "_build/install/default/lib/sedlex/ppx/sedlex_ppx__Iso.cmti"
+    {"ppx/sedlex_ppx__Iso.cmti"}
+  "_build/install/default/lib/sedlex/ppx/sedlex_ppx__Iso.cmx"
+    {"ppx/sedlex_ppx__Iso.cmx"}
+  "_build/install/default/lib/sedlex/ppx/sedlex_ppx__Ppx_sedlex.cmi"
+    {"ppx/sedlex_ppx__Ppx_sedlex.cmi"}
+  "_build/install/default/lib/sedlex/ppx/sedlex_ppx__Ppx_sedlex.cmt"
+    {"ppx/sedlex_ppx__Ppx_sedlex.cmt"}
+  "_build/install/default/lib/sedlex/ppx/sedlex_ppx__Ppx_sedlex.cmx"
+    {"ppx/sedlex_ppx__Ppx_sedlex.cmx"}
+  "_build/install/default/lib/sedlex/ppx/sedlex_ppx__Sedlex.cmi"
+    {"ppx/sedlex_ppx__Sedlex.cmi"}
+  "_build/install/default/lib/sedlex/ppx/sedlex_ppx__Sedlex.cmt"
+    {"ppx/sedlex_ppx__Sedlex.cmt"}
+  "_build/install/default/lib/sedlex/ppx/sedlex_ppx__Sedlex.cmti"
+    {"ppx/sedlex_ppx__Sedlex.cmti"}
+  "_build/install/default/lib/sedlex/ppx/sedlex_ppx__Sedlex.cmx"
+    {"ppx/sedlex_ppx__Sedlex.cmx"}
+  "_build/install/default/lib/sedlex/ppx/sedlex_ppx__Sedlex_cset.cmi"
+    {"ppx/sedlex_ppx__Sedlex_cset.cmi"}
+  "_build/install/default/lib/sedlex/ppx/sedlex_ppx__Sedlex_cset.cmt"
+    {"ppx/sedlex_ppx__Sedlex_cset.cmt"}
+  "_build/install/default/lib/sedlex/ppx/sedlex_ppx__Sedlex_cset.cmx"
+    {"ppx/sedlex_ppx__Sedlex_cset.cmx"}
+  "_build/install/default/lib/sedlex/ppx/sedlex_ppx__Unicode.cmi"
+    {"ppx/sedlex_ppx__Unicode.cmi"}
+  "_build/install/default/lib/sedlex/ppx/sedlex_ppx__Unicode.cmt"
+    {"ppx/sedlex_ppx__Unicode.cmt"}
+  "_build/install/default/lib/sedlex/ppx/sedlex_ppx__Unicode.cmti"
+    {"ppx/sedlex_ppx__Unicode.cmti"}
+  "_build/install/default/lib/sedlex/ppx/sedlex_ppx__Unicode.cmx"
+    {"ppx/sedlex_ppx__Unicode.cmx"}
+  "_build/install/default/lib/sedlex/ppx/sedlex_ppx__Xml.cmi"
+    {"ppx/sedlex_ppx__Xml.cmi"}
+  "_build/install/default/lib/sedlex/ppx/sedlex_ppx__Xml.cmt"
+    {"ppx/sedlex_ppx__Xml.cmt"}
+  "_build/install/default/lib/sedlex/ppx/sedlex_ppx__Xml.cmti"
+    {"ppx/sedlex_ppx__Xml.cmti"}
+  "_build/install/default/lib/sedlex/ppx/sedlex_ppx__Xml.cmx"
+    {"ppx/sedlex_ppx__Xml.cmx"}
+  "_build/install/default/lib/sedlex/ppx/unicode.ml" {"ppx/unicode.ml"}
+  "_build/install/default/lib/sedlex/ppx/unicode.mli" {"ppx/unicode.mli"}
+  "_build/install/default/lib/sedlex/ppx/xml.ml" {"ppx/xml.ml"}
+  "_build/install/default/lib/sedlex/ppx/xml.mli" {"ppx/xml.mli"}
+  "_build/install/default/lib/sedlex/sedlex.a"
+  "_build/install/default/lib/sedlex/sedlex.cma"
+  "_build/install/default/lib/sedlex/sedlex.cmxa"
+  "_build/install/default/lib/sedlex/sedlexing.cmi"
+  "_build/install/default/lib/sedlex/sedlexing.cmt"
+  "_build/install/default/lib/sedlex/sedlexing.cmti"
+  "_build/install/default/lib/sedlex/sedlexing.cmx"
+  "_build/install/default/lib/sedlex/sedlexing.ml"
+  "_build/install/default/lib/sedlex/sedlexing.mli"
+  "_build/install/default/lib/sedlex/utils/cset.ml" {"utils/cset.ml"}
+  "_build/install/default/lib/sedlex/utils/cset.mli" {"utils/cset.mli"}
+  "_build/install/default/lib/sedlex/utils/sedlex_utils.a"
+    {"utils/sedlex_utils.a"}
+  "_build/install/default/lib/sedlex/utils/sedlex_utils.cma"
+    {"utils/sedlex_utils.cma"}
+  "_build/install/default/lib/sedlex/utils/sedlex_utils.cmi"
+    {"utils/sedlex_utils.cmi"}
+  "_build/install/default/lib/sedlex/utils/sedlex_utils.cmt"
+    {"utils/sedlex_utils.cmt"}
+  "_build/install/default/lib/sedlex/utils/sedlex_utils.cmx"
+    {"utils/sedlex_utils.cmx"}
+  "_build/install/default/lib/sedlex/utils/sedlex_utils.cmxa"
+    {"utils/sedlex_utils.cmxa"}
+  "_build/install/default/lib/sedlex/utils/sedlex_utils.ml"
+    {"utils/sedlex_utils.ml"}
+  "_build/install/default/lib/sedlex/utils/sedlex_utils__Cset.cmi"
+    {"utils/sedlex_utils__Cset.cmi"}
+  "_build/install/default/lib/sedlex/utils/sedlex_utils__Cset.cmt"
+    {"utils/sedlex_utils__Cset.cmt"}
+  "_build/install/default/lib/sedlex/utils/sedlex_utils__Cset.cmti"
+    {"utils/sedlex_utils__Cset.cmti"}
+  "_build/install/default/lib/sedlex/utils/sedlex_utils__Cset.cmx"
+    {"utils/sedlex_utils__Cset.cmx"}
+]
+doc: [
+  "_build/install/default/doc/sedlex/CHANGES.md"
+  "_build/install/default/doc/sedlex/LICENSE"
+  "_build/install/default/doc/sedlex/README.md"
+]
+libexec: [
+  "_build/install/default/lib/sedlex/ppx/ppx.exe" {"ppx/ppx.exe"}
+  "_build/install/default/lib/sedlex/ppx/sedlex_ppx.cmxs"
+    {"ppx/sedlex_ppx.cmxs"}
+  "_build/install/default/lib/sedlex/sedlex.cmxs"
+  "_build/install/default/lib/sedlex/utils/sedlex_utils.cmxs"
+    {"utils/sedlex_utils.cmxs"}
+]

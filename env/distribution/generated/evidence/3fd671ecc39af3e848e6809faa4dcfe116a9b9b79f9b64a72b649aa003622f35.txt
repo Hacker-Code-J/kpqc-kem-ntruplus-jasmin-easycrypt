@@ -1,0 +1,34 @@
+opam-version: "2.0"
+lib: [
+  "_build/install/default/lib/pp_loc/.private/pp_loc__Line_offsets.cmi"
+    {".private/pp_loc__Line_offsets.cmi"}
+  "_build/install/default/lib/pp_loc/.private/pp_loc__Line_offsets.cmt"
+    {".private/pp_loc__Line_offsets.cmt"}
+  "_build/install/default/lib/pp_loc/.private/pp_loc__Line_offsets.cmti"
+    {".private/pp_loc__Line_offsets.cmti"}
+  "_build/install/default/lib/pp_loc/META"
+  "_build/install/default/lib/pp_loc/dune-package"
+  "_build/install/default/lib/pp_loc/line_offsets.ml"
+  "_build/install/default/lib/pp_loc/line_offsets.mli"
+  "_build/install/default/lib/pp_loc/opam"
+  "_build/install/default/lib/pp_loc/pp_loc.a"
+  "_build/install/default/lib/pp_loc/pp_loc.cma"
+  "_build/install/default/lib/pp_loc/pp_loc.cmi"
+  "_build/install/default/lib/pp_loc/pp_loc.cmt"
+  "_build/install/default/lib/pp_loc/pp_loc.cmti"
+  "_build/install/default/lib/pp_loc/pp_loc.cmx"
+  "_build/install/default/lib/pp_loc/pp_loc.cmxa"
+  "_build/install/default/lib/pp_loc/pp_loc.ml"
+  "_build/install/default/lib/pp_loc/pp_loc.mli"
+  "_build/install/default/lib/pp_loc/pp_loc__.cmi"
+  "_build/install/default/lib/pp_loc/pp_loc__.cmt"
+  "_build/install/default/lib/pp_loc/pp_loc__.cmx"
+  "_build/install/default/lib/pp_loc/pp_loc__.ml"
+  "_build/install/default/lib/pp_loc/pp_loc__Line_offsets.cmx"
+]
+doc: [
+  "_build/install/default/doc/pp_loc/CHANGES"
+  "_build/install/default/doc/pp_loc/LICENSE"
+  "_build/install/default/doc/pp_loc/README.md"
+]
+libexec: "_build/install/default/lib/pp_loc/pp_loc.cmxs"

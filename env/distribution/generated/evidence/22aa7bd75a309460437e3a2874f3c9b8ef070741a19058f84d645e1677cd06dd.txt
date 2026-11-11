@@ -1,0 +1,20 @@
+opam-version: "2.0"
+added: [
+  "doc/qcheck" {"D"}
+  "doc/qcheck/CHANGELOG.md" {"F:S14868T1746706825.16"}
+  "doc/qcheck/LICENSE" {"F:S1337T1746706825.16"}
+  "doc/qcheck/README.adoc" {"F:S15506T1746706825.16"}
+  "doc/qcheck/odoc-pages/index.mld" {"F:S425T1746706825.16"}
+  "lib/qcheck" {"D"}
+  "lib/qcheck/META" {"F:S242T1746706825.16"}
+  "lib/qcheck/QCheck_runner.ml" {"F:S49T1746706825.16"}
+  "lib/qcheck/dune-package" {"F:S793T1746706825.16"}
+  "lib/qcheck/opam" {"F:S852T1746706825.16"}
+  "lib/qcheck/qCheck_runner.cmi" {"F:S6303T1746706825.16"}
+  "lib/qcheck/qCheck_runner.cmt" {"F:S18928T1746706825.16"}
+  "lib/qcheck/qCheck_runner.cmx" {"F:S6521T1746706825.16"}
+  "lib/qcheck/qcheck.a" {"F:S4014T1746706825.16"}
+  "lib/qcheck/qcheck.cma" {"F:S8887T1746706825.16"}
+  "lib/qcheck/qcheck.cmxa" {"F:S1546T1746706825.16"}
+  "lib/qcheck/qcheck.cmxs" {"F:S18640T1746706825.16"}
+]

@@ -1,0 +1,29 @@
+opam-version: "2.0"
+added: [
+  "lib/camlzip" {"D"}
+  "lib/camlzip/META" {"F:S14T1737446592.86"}
+  "lib/stublibs/dllcamlzip.so" {"F:S28576T1737446592.57"}
+  "lib/stublibs/dllcamlzip.so.owner" {"F:S4T1737446592.86"}
+  "lib/zip" {"D"}
+  "lib/zip/META" {"F:S165T1737446592.86"}
+  "lib/zip/gzip.cmi" {"F:S2504T1737446592.66"}
+  "lib/zip/gzip.cmt" {"F:S89146T1737446592.67"}
+  "lib/zip/gzip.cmti" {"F:S25052T1737446592.66"}
+  "lib/zip/gzip.cmx" {"F:S2032T1737446592.77"}
+  "lib/zip/gzip.mli" {"F:S7185T1607797813."}
+  "lib/zip/libcamlzip.a" {"F:S29070T1737446592.59"}
+  "lib/zip/zip.a" {"F:S101292T1737446592.8"}
+  "lib/zip/zip.cma" {"F:S147634T1737446592.68"}
+  "lib/zip/zip.cmi" {"F:S4076T1737446592.62"}
+  "lib/zip/zip.cmt" {"F:S226053T1737446592.64"}
+  "lib/zip/zip.cmti" {"F:S34105T1737446592.62"}
+  "lib/zip/zip.cmx" {"F:S4872T1737446592.75"}
+  "lib/zip/zip.cmxa" {"F:S1699T1737446592.8"}
+  "lib/zip/zip.cmxs" {"F:S124504T1737446592.83"}
+  "lib/zip/zip.mli" {"F:S9457T1607797813."}
+  "lib/zip/zlib.cmi" {"F:S4196T1737446592.6"}
+  "lib/zip/zlib.cmt" {"F:S44310T1737446592.61"}
+  "lib/zip/zlib.cmti" {"F:S18466T1737446592.6"}
+  "lib/zip/zlib.cmx" {"F:S1147T1737446592.69"}
+  "lib/zip/zlib.mli" {"F:S2506T1607797813."}
+]

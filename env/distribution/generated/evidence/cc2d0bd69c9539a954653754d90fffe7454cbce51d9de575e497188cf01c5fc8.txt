@@ -1,0 +1,119 @@
+opam-version: "2.0"
+added: [
+  "lib/coq/user-contrib/mathcomp/algebra" {"D"}
+  "lib/coq/user-contrib/mathcomp/algebra/all_algebra.glob"
+    {"F:S889T1746707125.58"}
+  "lib/coq/user-contrib/mathcomp/algebra/all_algebra.v"
+    {"F:S447T1746707125.42"}
+  "lib/coq/user-contrib/mathcomp/algebra/all_algebra.vo"
+    {"F:S2046T1746707125.26"}
+  "lib/coq/user-contrib/mathcomp/algebra/archimedean.glob"
+    {"F:S156476T1746707125.58"}
+  "lib/coq/user-contrib/mathcomp/algebra/archimedean.v"
+    {"F:S22257T1746707125.43"}
+  "lib/coq/user-contrib/mathcomp/algebra/archimedean.vo"
+    {"F:S192469T1746707125.27"}
+  "lib/coq/user-contrib/mathcomp/algebra/countalg.glob"
+    {"F:S65920T1746707125.59"}
+  "lib/coq/user-contrib/mathcomp/algebra/countalg.v"
+    {"F:S7603T1746707125.43"}
+  "lib/coq/user-contrib/mathcomp/algebra/countalg.vo"
+    {"F:S409679T1746707125.27"}
+  "lib/coq/user-contrib/mathcomp/algebra/finalg.glob"
+    {"F:S165034T1746707125.59"}
+  "lib/coq/user-contrib/mathcomp/algebra/finalg.v" {"F:S18220T1746707125.44"}
+  "lib/coq/user-contrib/mathcomp/algebra/finalg.vo"
+    {"F:S1150898T1746707125.28"}
+  "lib/coq/user-contrib/mathcomp/algebra/fraction.glob"
+    {"F:S223138T1746707125.6"}
+  "lib/coq/user-contrib/mathcomp/algebra/fraction.v"
+    {"F:S11380T1746707125.45"}
+  "lib/coq/user-contrib/mathcomp/algebra/fraction.vo"
+    {"F:S180512T1746707125.29"}
+  "lib/coq/user-contrib/mathcomp/algebra/intdiv.glob"
+    {"F:S458835T1746707125.61"}
+  "lib/coq/user-contrib/mathcomp/algebra/intdiv.v" {"F:S47259T1746707125.45"}
+  "lib/coq/user-contrib/mathcomp/algebra/intdiv.vo"
+    {"F:S500856T1746707125.29"}
+  "lib/coq/user-contrib/mathcomp/algebra/interval.glob"
+    {"F:S411787T1746707125.61"}
+  "lib/coq/user-contrib/mathcomp/algebra/interval.v"
+    {"F:S30386T1746707125.46"}
+  "lib/coq/user-contrib/mathcomp/algebra/interval.vo"
+    {"F:S822861T1746707125.3"}
+  "lib/coq/user-contrib/mathcomp/algebra/matrix.glob"
+    {"F:S1792466T1746707125.62"}
+  "lib/coq/user-contrib/mathcomp/algebra/matrix.v"
+    {"F:S194118T1746707125.47"}
+  "lib/coq/user-contrib/mathcomp/algebra/matrix.vo"
+    {"F:S2806017T1746707125.31"}
+  "lib/coq/user-contrib/mathcomp/algebra/mxalgebra.glob"
+    {"F:S1218055T1746707125.63"}
+  "lib/coq/user-contrib/mathcomp/algebra/mxalgebra.v"
+    {"F:S132965T1746707125.48"}
+  "lib/coq/user-contrib/mathcomp/algebra/mxalgebra.vo"
+    {"F:S1423476T1746707125.31"}
+  "lib/coq/user-contrib/mathcomp/algebra/mxpoly.glob"
+    {"F:S791814T1746707125.63"}
+  "lib/coq/user-contrib/mathcomp/algebra/mxpoly.v" {"F:S84462T1746707125.49"}
+  "lib/coq/user-contrib/mathcomp/algebra/mxpoly.vo"
+    {"F:S1076758T1746707125.32"}
+  "lib/coq/user-contrib/mathcomp/algebra/poly.glob"
+    {"F:S1105033T1746707125.64"}
+  "lib/coq/user-contrib/mathcomp/algebra/poly.v" {"F:S117247T1746707125.5"}
+  "lib/coq/user-contrib/mathcomp/algebra/poly.vo"
+    {"F:S1333629T1746707125.34"}
+  "lib/coq/user-contrib/mathcomp/algebra/polyXY.glob"
+    {"F:S159998T1746707125.65"}
+  "lib/coq/user-contrib/mathcomp/algebra/polyXY.v" {"F:S18471T1746707125.51"}
+  "lib/coq/user-contrib/mathcomp/algebra/polyXY.vo"
+    {"F:S206315T1746707125.34"}
+  "lib/coq/user-contrib/mathcomp/algebra/polydiv.glob"
+    {"F:S1276103T1746707125.64"}
+  "lib/coq/user-contrib/mathcomp/algebra/polydiv.v"
+    {"F:S124136T1746707125.49"}
+  "lib/coq/user-contrib/mathcomp/algebra/polydiv.vo"
+    {"F:S1229087T1746707125.33"}
+  "lib/coq/user-contrib/mathcomp/algebra/qpoly.glob"
+    {"F:S197887T1746707125.65"}
+  "lib/coq/user-contrib/mathcomp/algebra/qpoly.v" {"F:S25990T1746707125.52"}
+  "lib/coq/user-contrib/mathcomp/algebra/qpoly.vo"
+    {"F:S413989T1746707125.35"}
+  "lib/coq/user-contrib/mathcomp/algebra/rat.glob"
+    {"F:S415830T1746707125.66"}
+  "lib/coq/user-contrib/mathcomp/algebra/rat.v" {"F:S36042T1746707125.53"}
+  "lib/coq/user-contrib/mathcomp/algebra/rat.vo" {"F:S393837T1746707125.36"}
+  "lib/coq/user-contrib/mathcomp/algebra/ring_quotient.glob"
+    {"F:S109981T1746707125.67"}
+  "lib/coq/user-contrib/mathcomp/algebra/ring_quotient.v"
+    {"F:S17809T1746707125.53"}
+  "lib/coq/user-contrib/mathcomp/algebra/ring_quotient.vo"
+    {"F:S421260T1746707125.37"}
+  "lib/coq/user-contrib/mathcomp/algebra/ssralg.glob"
+    {"F:S1759708T1746707125.67"}
+  "lib/coq/user-contrib/mathcomp/algebra/ssralg.v"
+    {"F:S253161T1746707125.54"}
+  "lib/coq/user-contrib/mathcomp/algebra/ssralg.vo"
+    {"F:S5518782T1746707125.38"}
+  "lib/coq/user-contrib/mathcomp/algebra/ssrint.glob"
+    {"F:S816844T1746707125.68"}
+  "lib/coq/user-contrib/mathcomp/algebra/ssrint.v" {"F:S63283T1746707125.55"}
+  "lib/coq/user-contrib/mathcomp/algebra/ssrint.vo"
+    {"F:S658055T1746707125.39"}
+  "lib/coq/user-contrib/mathcomp/algebra/ssrnum.glob"
+    {"F:S2370441T1746707125.69"}
+  "lib/coq/user-contrib/mathcomp/algebra/ssrnum.v"
+    {"F:S222605T1746707125.56"}
+  "lib/coq/user-contrib/mathcomp/algebra/ssrnum.vo"
+    {"F:S3560340T1746707125.39"}
+  "lib/coq/user-contrib/mathcomp/algebra/vector.glob"
+    {"F:S586900T1746707125.7"}
+  "lib/coq/user-contrib/mathcomp/algebra/vector.v" {"F:S74919T1746707125.57"}
+  "lib/coq/user-contrib/mathcomp/algebra/vector.vo"
+    {"F:S878185T1746707125.4"}
+  "lib/coq/user-contrib/mathcomp/algebra/zmodp.glob"
+    {"F:S68074T1746707125.71"}
+  "lib/coq/user-contrib/mathcomp/algebra/zmodp.v" {"F:S13150T1746707125.57"}
+  "lib/coq/user-contrib/mathcomp/algebra/zmodp.vo"
+    {"F:S162740T1746707125.41"}
+]

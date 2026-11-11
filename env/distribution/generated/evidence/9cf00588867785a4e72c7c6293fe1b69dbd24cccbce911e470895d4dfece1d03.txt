@@ -1,0 +1,31 @@
+opam-version: "2.0"
+added: [
+  "bin/z3" {"F:S31138688T1737446722.41"}
+  "lib/stublibs/dllz3ml.so" {"F:S575888T1737446722.14"}
+  "lib/stublibs/dllz3ml.so.owner" {"F:S3T1737446722.32"}
+  "lib/stublibs/libz3.so" {"F:S30553664T1737446718.26"}
+  "lib/stublibs/libz3.so.owner" {"F:S3T1737446722.36"}
+  "lib/z3" {"D"}
+  "lib/z3/META" {"F:S359T1737446599.01"}
+  "lib/z3/libz3ml.a" {"F:S700872T1737446722.17"}
+  "lib/z3/z3.cmi" {"F:S124449T1737446599.83"}
+  "lib/z3/z3.cmo" {"F:S105818T1737446599.99"}
+  "lib/z3/z3.cmx" {"F:S71304T1737446602.91"}
+  "lib/z3/z3.mli" {"F:S130503T1737446599.75"}
+  "lib/z3/z3.o" {"F:S497288T1737446602.91"}
+  "lib/z3/z3enums.cmi" {"F:S22128T1737446600.49"}
+  "lib/z3/z3enums.cmo" {"F:S16613T1737446599.24"}
+  "lib/z3/z3enums.cmx" {"F:S1434T1737446600.58"}
+  "lib/z3/z3enums.mli" {"F:S6751T1737446599.2"}
+  "lib/z3/z3enums.o" {"F:S23152T1737446600.58"}
+  "lib/z3/z3ml.a" {"F:S607180T1737446722.21"}
+  "lib/z3/z3ml.cma" {"F:S138247T1737446722.11"}
+  "lib/z3/z3ml.cmxa" {"F:S1567T1737446722.21"}
+  "lib/z3/z3ml.cmxs" {"F:S1097352T1737446722.27"}
+  "lib/z3/z3native.cmi" {"F:S155916T1737446600.73"}
+  "lib/z3/z3native.cmo" {"F:S15689T1737446599.69"}
+  "lib/z3/z3native.cmx" {"F:S199T1737446600.74"}
+  "lib/z3/z3native.mli" {"F:S65530T1737446599.55"}
+  "lib/z3/z3native.o" {"F:S60152T1737446600.74"}
+  "lib/z3/z3native_stubs.o" {"F:S679072T1737446722.03"}
+]

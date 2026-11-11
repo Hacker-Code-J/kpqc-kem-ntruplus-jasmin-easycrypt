@@ -1,0 +1,37 @@
+opam-version: "2.0"
+lib: [
+  "_build/install/default/lib/markdown/META"
+  "_build/install/default/lib/markdown/Markdown.ml"
+  "_build/install/default/lib/markdown/dune-package"
+  "_build/install/default/lib/markdown/html/MarkdownHTML.a"
+    {"html/MarkdownHTML.a"}
+  "_build/install/default/lib/markdown/html/MarkdownHTML.cma"
+    {"html/MarkdownHTML.cma"}
+  "_build/install/default/lib/markdown/html/MarkdownHTML.cmxa"
+    {"html/MarkdownHTML.cmxa"}
+  "_build/install/default/lib/markdown/html/MarkdownHTML.ml"
+    {"html/MarkdownHTML.ml"}
+  "_build/install/default/lib/markdown/html/markdownHTML.cmi"
+    {"html/markdownHTML.cmi"}
+  "_build/install/default/lib/markdown/html/markdownHTML.cmt"
+    {"html/markdownHTML.cmt"}
+  "_build/install/default/lib/markdown/html/markdownHTML.cmx"
+    {"html/markdownHTML.cmx"}
+  "_build/install/default/lib/markdown/markdown.a"
+  "_build/install/default/lib/markdown/markdown.cma"
+  "_build/install/default/lib/markdown/markdown.cmi"
+  "_build/install/default/lib/markdown/markdown.cmt"
+  "_build/install/default/lib/markdown/markdown.cmx"
+  "_build/install/default/lib/markdown/markdown.cmxa"
+  "_build/install/default/lib/markdown/opam"
+]
+doc: [
+  "_build/install/default/doc/markdown/CHANGES.md"
+  "_build/install/default/doc/markdown/LICENSE.txt"
+  "_build/install/default/doc/markdown/README.md"
+]
+libexec: [
+  "_build/install/default/lib/markdown/html/MarkdownHTML.cmxs"
+    {"html/MarkdownHTML.cmxs"}
+  "_build/install/default/lib/markdown/markdown.cmxs"
+]

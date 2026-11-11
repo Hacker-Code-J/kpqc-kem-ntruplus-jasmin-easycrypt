@@ -1,0 +1,10 @@
+opam-version: "2.0"
+added: [
+  "doc/coq" {"D"}
+  "doc/coq/LICENSE" {"F:S24381T1746706944.27"}
+  "doc/coq/README.md" {"F:S4784T1746706944.27"}
+  "doc/coq/odoc-pages/index.mld" {"F:S200T1746706944.27"}
+  "lib/coq/META" {"F:S122T1746706944.27"}
+  "lib/coq/dune-package" {"F:S368T1746706944.27"}
+  "lib/coq/opam" {"F:S1682T1746706944.27"}
+]

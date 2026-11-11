@@ -1,0 +1,25 @@
+opam-version: "2.0"
+lib: [
+  "_build/install/default/lib/coq-mathcomp-word/META"
+  "_build/install/default/lib/coq-mathcomp-word/dune-package"
+  "_build/install/default/lib/coq-mathcomp-word/opam"
+]
+doc: [
+  "_build/install/default/doc/coq-mathcomp-word/CHANGELOG.md"
+  "_build/install/default/doc/coq-mathcomp-word/LICENSE"
+  "_build/install/default/doc/coq-mathcomp-word/README.md"
+]
+lib_root: [
+  "_build/install/default/lib/coq/user-contrib/mathcomp/word/word.glob"
+    {"coq/user-contrib/mathcomp/word/word.glob"}
+  "_build/install/default/lib/coq/user-contrib/mathcomp/word/word.v"
+    {"coq/user-contrib/mathcomp/word/word.v"}
+  "_build/install/default/lib/coq/user-contrib/mathcomp/word/word.vo"
+    {"coq/user-contrib/mathcomp/word/word.vo"}
+  "_build/install/default/lib/coq/user-contrib/mathcomp/word/word_ssrZ.glob"
+    {"coq/user-contrib/mathcomp/word/word_ssrZ.glob"}
+  "_build/install/default/lib/coq/user-contrib/mathcomp/word/word_ssrZ.v"
+    {"coq/user-contrib/mathcomp/word/word_ssrZ.v"}
+  "_build/install/default/lib/coq/user-contrib/mathcomp/word/word_ssrZ.vo"
+    {"coq/user-contrib/mathcomp/word/word_ssrZ.vo"}
+]

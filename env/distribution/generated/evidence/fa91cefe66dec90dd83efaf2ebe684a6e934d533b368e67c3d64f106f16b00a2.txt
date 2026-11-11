@@ -1,0 +1,205 @@
+opam-version: "2.0"
+added: [
+  "bin/elpi" {"F:S7756816T1746706842.37"}
+  "bin/elpi-trace-elaborator" {"F:S3418936T1746706842.37"}
+  "doc/elpi" {"D"}
+  "doc/elpi/CHANGES.md" {"F:S35674T1746706842.45"}
+  "doc/elpi/LICENSE" {"F:S53044T1746706842.45"}
+  "doc/elpi/README.md" {"F:S7944T1746706842.45"}
+  "lib/elpi" {"D"}
+  "lib/elpi/.private/elpi__Builtin_map.cmi" {"F:S306T1746706842.37"}
+  "lib/elpi/.private/elpi__Builtin_map.cmt" {"F:S7123T1746706842.37"}
+  "lib/elpi/.private/elpi__Builtin_set.cmi" {"F:S306T1746706842.37"}
+  "lib/elpi/.private/elpi__Builtin_set.cmt" {"F:S6870T1746706842.37"}
+  "lib/elpi/.private/elpi__Builtin_stdlib.cmi" {"F:S315T1746706842.37"}
+  "lib/elpi/.private/elpi__Builtin_stdlib.cmt" {"F:S13018T1746706842.37"}
+  "lib/elpi/.private/elpi__Compiler.cmi" {"F:S7989T1746706842.37"}
+  "lib/elpi/.private/elpi__Compiler.cmt" {"F:S2724080T1746706842.38"}
+  "lib/elpi/.private/elpi__Compiler.cmti" {"F:S35913T1746706842.38"}
+  "lib/elpi/.private/elpi__Data.cmi" {"F:S88253T1746706842.38"}
+  "lib/elpi/.private/elpi__Data.cmt" {"F:S1890884T1746706842.38"}
+  "lib/elpi/.private/elpi__Legacy_parser_proxy.cmi" {"F:S1132T1746706842.38"}
+  "lib/elpi/.private/elpi__Legacy_parser_proxy.cmt" {"F:S6867T1746706842.38"}
+  "lib/elpi/.private/elpi__Legacy_parser_proxy.cmti"
+    {"F:S5429T1746706842.38"}
+  "lib/elpi/.private/elpi__Ptmap.cmi" {"F:S3211T1746706842.38"}
+  "lib/elpi/.private/elpi__Ptmap.cmt" {"F:S91672T1746706842.38"}
+  "lib/elpi/.private/elpi__Ptmap.cmti" {"F:S18334T1746706842.38"}
+  "lib/elpi/.private/elpi__Runtime.cmi" {"F:S8561T1746706842.38"}
+  "lib/elpi/.private/elpi__Runtime.cmt" {"F:S3405610T1746706842.38"}
+  "lib/elpi/.private/elpi__Runtime.cmti" {"F:S37864T1746706842.38"}
+  "lib/elpi/.private/elpi__Runtime_trace_off.cmi" {"F:S8591T1746706842.38"}
+  "lib/elpi/.private/elpi__Runtime_trace_off.cmt"
+    {"F:S2693010T1746706842.38"}
+  "lib/elpi/.private/elpi__Runtime_trace_off.cmti" {"F:S37935T1746706842.38"}
+  "lib/elpi/API.ml" {"F:S52042T1746706842.38"}
+  "lib/elpi/API.mli" {"F:S47401T1746706842.38"}
+  "lib/elpi/META" {"F:S2175T1746706842.38"}
+  "lib/elpi/builtin.elpi" {"F:S44475T1746706842.38"}
+  "lib/elpi/builtin.ml" {"F:S51124T1746706842.38"}
+  "lib/elpi/builtin.mli" {"F:S2912T1746706842.38"}
+  "lib/elpi/builtin_checker.ml" {"F:S13105T1746706842.38"}
+  "lib/elpi/builtin_map.ml" {"F:S3817T1746706842.38"}
+  "lib/elpi/builtin_set.ml" {"F:S3564T1746706842.38"}
+  "lib/elpi/builtin_stdlib.ml" {"F:S9692T1746706842.38"}
+  "lib/elpi/compiler.ml" {"F:S107773T1746706842.38"}
+  "lib/elpi/compiler.mli" {"F:S2772T1746706842.38"}
+  "lib/elpi/data.ml" {"F:S51231T1746706842.38"}
+  "lib/elpi/discrimination_tree.ml" {"F:S15380T1746706842.38"}
+  "lib/elpi/discrimination_tree.mli" {"F:S2756T1746706842.38"}
+  "lib/elpi/dune-package" {"F:S12861T1746706842.38"}
+  "lib/elpi/elpi-quoted_syntax.elpi" {"F:S757T1746706842.38"}
+  "lib/elpi/elpi.a" {"F:S3070742T1746706842.39"}
+  "lib/elpi/elpi.cma" {"F:S4677638T1746706842.39"}
+  "lib/elpi/elpi.cmi" {"F:S500T1746706842.39"}
+  "lib/elpi/elpi.cmt" {"F:S4191T1746706842.39"}
+  "lib/elpi/elpi.cmx" {"F:S212T1746706842.39"}
+  "lib/elpi/elpi.cmxa" {"F:S18389T1746706842.39"}
+  "lib/elpi/elpi.cmxs" {"F:S2679680T1746706842.43"}
+  "lib/elpi/elpi.ml" {"F:S162T1746706842.39"}
+  "lib/elpi/elpi2html.elpi" {"F:S11992T1746706842.39"}
+  "lib/elpi/elpi__.cmi" {"F:S1267T1746706842.39"}
+  "lib/elpi/elpi__.cmt" {"F:S7455T1746706842.39"}
+  "lib/elpi/elpi__.cmx" {"F:S367T1746706842.39"}
+  "lib/elpi/elpi__.ml" {"F:S990T1746706842.39"}
+  "lib/elpi/elpi__API.cmi" {"F:S117471T1746706842.39"}
+  "lib/elpi/elpi__API.cmt" {"F:S1181269T1746706842.4"}
+  "lib/elpi/elpi__API.cmti" {"F:S473681T1746706842.4"}
+  "lib/elpi/elpi__API.cmx" {"F:S48967T1746706842.4"}
+  "lib/elpi/elpi__Builtin.cmi" {"F:S4846T1746706842.4"}
+  "lib/elpi/elpi__Builtin.cmt" {"F:S761903T1746706842.4"}
+  "lib/elpi/elpi__Builtin.cmti" {"F:S39920T1746706842.4"}
+  "lib/elpi/elpi__Builtin.cmx" {"F:S58650T1746706842.4"}
+  "lib/elpi/elpi__Builtin_checker.cmi" {"F:S318T1746706842.4"}
+  "lib/elpi/elpi__Builtin_checker.cmt" {"F:S16437T1746706842.4"}
+  "lib/elpi/elpi__Builtin_checker.cmx" {"F:S13329T1746706842.4"}
+  "lib/elpi/elpi__Builtin_map.cmx" {"F:S4033T1746706842.4"}
+  "lib/elpi/elpi__Builtin_set.cmx" {"F:S3780T1746706842.4"}
+  "lib/elpi/elpi__Builtin_stdlib.cmx" {"F:S9914T1746706842.4"}
+  "lib/elpi/elpi__Compiler.cmx" {"F:S21390T1746706842.4"}
+  "lib/elpi/elpi__Data.cmx" {"F:S22408T1746706842.4"}
+  "lib/elpi/elpi__Discrimination_tree.cmi" {"F:S5261T1746706842.4"}
+  "lib/elpi/elpi__Discrimination_tree.cmt" {"F:S217626T1746706842.4"}
+  "lib/elpi/elpi__Discrimination_tree.cmti" {"F:S27873T1746706842.4"}
+  "lib/elpi/elpi__Discrimination_tree.cmx" {"F:S6253T1746706842.4"}
+  "lib/elpi/elpi__Legacy_parser_proxy.cmx" {"F:S1182T1746706842.4"}
+  "lib/elpi/elpi__Ptmap.cmx" {"F:S2529T1746706842.4"}
+  "lib/elpi/elpi__Runtime.cmx" {"F:S22021T1746706842.4"}
+  "lib/elpi/elpi__Runtime_trace_off.cmx" {"F:S23385T1746706842.4"}
+  "lib/elpi/legacy_parser_proxy.ml" {"F:S270T1746706842.4"}
+  "lib/elpi/legacy_parser_proxy.mli" {"F:S119T1746706842.4"}
+  "lib/elpi/lexer_config/elpi_lexer_config.a" {"F:S42170T1746706842.4"}
+  "lib/elpi/lexer_config/elpi_lexer_config.cma" {"F:S31975T1746706842.4"}
+  "lib/elpi/lexer_config/elpi_lexer_config.cmi" {"F:S384T1746706842.4"}
+  "lib/elpi/lexer_config/elpi_lexer_config.cmt" {"F:S3186T1746706842.4"}
+  "lib/elpi/lexer_config/elpi_lexer_config.cmx" {"F:S172T1746706842.4"}
+  "lib/elpi/lexer_config/elpi_lexer_config.cmxa" {"F:S799T1746706842.4"}
+  "lib/elpi/lexer_config/elpi_lexer_config.cmxs" {"F:S50352T1746706842.43"}
+  "lib/elpi/lexer_config/elpi_lexer_config.ml" {"F:S214T1746706842.4"}
+  "lib/elpi/lexer_config/elpi_lexer_config__Lexer_config.cmi"
+    {"F:S2747T1746706842.4"}
+  "lib/elpi/lexer_config/elpi_lexer_config__Lexer_config.cmt"
+    {"F:S53056T1746706842.4"}
+  "lib/elpi/lexer_config/elpi_lexer_config__Lexer_config.cmx"
+    {"F:S1424T1746706842.4"}
+  "lib/elpi/lexer_config/elpi_lexer_config__Tokens.cmi"
+    {"F:S4640T1746706842.4"}
+  "lib/elpi/lexer_config/elpi_lexer_config__Tokens.cmt"
+    {"F:S11083T1746706842.4"}
+  "lib/elpi/lexer_config/elpi_lexer_config__Tokens.cmti"
+    {"F:S15805T1746706842.4"}
+  "lib/elpi/lexer_config/elpi_lexer_config__Tokens.cmx"
+    {"F:S226T1746706842.4"}
+  "lib/elpi/lexer_config/lexer_config.ml" {"F:S3863T1746706842.4"}
+  "lib/elpi/lexer_config/tokens.ml" {"F:S1250T1746706842.4"}
+  "lib/elpi/lexer_config/tokens.mli" {"F:S1277T1746706842.4"}
+  "lib/elpi/opam" {"F:S3564T1746706842.4"}
+  "lib/elpi/parser/ast.ml" {"F:S8093T1746706842.4"}
+  "lib/elpi/parser/ast.mli" {"F:S4698T1746706842.4"}
+  "lib/elpi/parser/elpi_parser.a" {"F:S2698400T1746706842.4"}
+  "lib/elpi/parser/elpi_parser.cma" {"F:S7844689T1746706842.41"}
+  "lib/elpi/parser/elpi_parser.cmi" {"F:S705T1746706842.41"}
+  "lib/elpi/parser/elpi_parser.cmt" {"F:S4718T1746706842.41"}
+  "lib/elpi/parser/elpi_parser.cmx" {"F:S251T1746706842.41"}
+  "lib/elpi/parser/elpi_parser.cmxa" {"F:S7845T1746706842.41"}
+  "lib/elpi/parser/elpi_parser.cmxs" {"F:S1763256T1746706842.44"}
+  "lib/elpi/parser/elpi_parser.ml" {"F:S501T1746706842.41"}
+  "lib/elpi/parser/elpi_parser__Ast.cmi" {"F:S31790T1746706842.41"}
+  "lib/elpi/parser/elpi_parser__Ast.cmt" {"F:S1093229T1746706842.41"}
+  "lib/elpi/parser/elpi_parser__Ast.cmti" {"F:S133531T1746706842.41"}
+  "lib/elpi/parser/elpi_parser__Ast.cmx" {"F:S8927T1746706842.41"}
+  "lib/elpi/parser/elpi_parser__Error_messages.cmi" {"F:S384T1746706842.41"}
+  "lib/elpi/parser/elpi_parser__Error_messages.cmt"
+    {"F:S33002T1746706842.41"}
+  "lib/elpi/parser/elpi_parser__Error_messages.cmx" {"F:S301T1746706842.41"}
+  "lib/elpi/parser/elpi_parser__Grammar.cmi" {"F:S2736T1746706842.41"}
+  "lib/elpi/parser/elpi_parser__Grammar.cmt" {"F:S11051685T1746706842.42"}
+  "lib/elpi/parser/elpi_parser__Grammar.cmti" {"F:S10469T1746706842.42"}
+  "lib/elpi/parser/elpi_parser__Grammar.cmx" {"F:S3464T1746706842.42"}
+  "lib/elpi/parser/elpi_parser__Lexer.cmi" {"F:S3442T1746706842.42"}
+  "lib/elpi/parser/elpi_parser__Lexer.cmt" {"F:S216846T1746706842.42"}
+  "lib/elpi/parser/elpi_parser__Lexer.cmx" {"F:S87976T1746706842.42"}
+  "lib/elpi/parser/elpi_parser__Parse.cmi" {"F:S3162T1746706842.42"}
+  "lib/elpi/parser/elpi_parser__Parse.cmt" {"F:S53299T1746706842.42"}
+  "lib/elpi/parser/elpi_parser__Parse.cmti" {"F:S13029T1746706842.42"}
+  "lib/elpi/parser/elpi_parser__Parse.cmx" {"F:S3943T1746706842.42"}
+  "lib/elpi/parser/elpi_parser__Parser_config.cmi" {"F:S3484T1746706842.42"}
+  "lib/elpi/parser/elpi_parser__Parser_config.cmt" {"F:S86837T1746706842.42"}
+  "lib/elpi/parser/elpi_parser__Parser_config.cmx" {"F:S2280T1746706842.42"}
+  "lib/elpi/parser/error_messages.ml" {"F:S5856T1746706842.42"}
+  "lib/elpi/parser/grammar.ml" {"F:S1527940T1746706842.42"}
+  "lib/elpi/parser/grammar.mli" {"F:S669T1746706842.42"}
+  "lib/elpi/parser/lexer.ml" {"F:S393191T1746706842.43"}
+  "lib/elpi/parser/parse.ml" {"F:S4137T1746706842.43"}
+  "lib/elpi/parser/parse.mli" {"F:S1085T1746706842.43"}
+  "lib/elpi/parser/parser_config.ml" {"F:S5737T1746706842.43"}
+  "lib/elpi/ptmap.ml" {"F:S6947T1746706842.43"}
+  "lib/elpi/ptmap.mli" {"F:S2806T1746706842.43"}
+  "lib/elpi/runtime.ml" {"F:S174336T1746706842.43"}
+  "lib/elpi/runtime.mli" {"F:S2884T1746706842.43"}
+  "lib/elpi/runtime_trace_off.ml" {"F:S174336T1746706842.43"}
+  "lib/elpi/runtime_trace_off.mli" {"F:S2884T1746706842.43"}
+  "lib/elpi/trace.atd" {"F:S4835T1746706842.43"}
+  "lib/elpi/trace/ppx/ppx.exe" {"F:S17868088T1746706842.45"}
+  "lib/elpi/trace/ppx/trace_ppx.a" {"F:S94326T1746706842.43"}
+  "lib/elpi/trace/ppx/trace_ppx.cma" {"F:S128112T1746706842.43"}
+  "lib/elpi/trace/ppx/trace_ppx.cmi" {"F:S9566T1746706842.43"}
+  "lib/elpi/trace/ppx/trace_ppx.cmt" {"F:S258782T1746706842.43"}
+  "lib/elpi/trace/ppx/trace_ppx.cmx" {"F:S9991T1746706842.43"}
+  "lib/elpi/trace/ppx/trace_ppx.cmxa" {"F:S4109T1746706842.43"}
+  "lib/elpi/trace/ppx/trace_ppx.cmxs" {"F:S112472T1746706842.45"}
+  "lib/elpi/trace/ppx/trace_ppx.ml" {"F:S13354T1746706842.43"}
+  "lib/elpi/trace/runtime/runtime.ml" {"F:S16367T1746706842.43"}
+  "lib/elpi/trace/runtime/runtime.mli" {"F:S1150T1746706842.43"}
+  "lib/elpi/trace/runtime/trace_ppx_runtime.a" {"F:S102846T1746706842.43"}
+  "lib/elpi/trace/runtime/trace_ppx_runtime.cma" {"F:S112258T1746706842.43"}
+  "lib/elpi/trace/runtime/trace_ppx_runtime.cmi" {"F:S272T1746706842.43"}
+  "lib/elpi/trace/runtime/trace_ppx_runtime.cmt" {"F:S2727T1746706842.43"}
+  "lib/elpi/trace/runtime/trace_ppx_runtime.cmx" {"F:S138T1746706842.43"}
+  "lib/elpi/trace/runtime/trace_ppx_runtime.cmxa" {"F:S1829T1746706842.43"}
+  "lib/elpi/trace/runtime/trace_ppx_runtime.cmxs" {"F:S113136T1746706842.45"}
+  "lib/elpi/trace/runtime/trace_ppx_runtime.ml" {"F:S113T1746706842.43"}
+  "lib/elpi/trace/runtime/trace_ppx_runtime__Runtime.cmi"
+    {"F:S2716T1746706842.43"}
+  "lib/elpi/trace/runtime/trace_ppx_runtime__Runtime.cmt"
+    {"F:S259909T1746706842.43"}
+  "lib/elpi/trace/runtime/trace_ppx_runtime__Runtime.cmti"
+    {"F:S12420T1746706842.43"}
+  "lib/elpi/trace/runtime/trace_ppx_runtime__Runtime.cmx"
+    {"F:S10805T1746706842.43"}
+  "lib/elpi/trace_atd.ts" {"F:S38491T1746706842.43"}
+  "lib/elpi/util/elpi_util.a" {"F:S119042T1746706842.43"}
+  "lib/elpi/util/elpi_util.cma" {"F:S221415T1746706842.43"}
+  "lib/elpi/util/elpi_util.cmi" {"F:S215T1746706842.43"}
+  "lib/elpi/util/elpi_util.cmt" {"F:S2571T1746706842.43"}
+  "lib/elpi/util/elpi_util.cmx" {"F:S119T1746706842.43"}
+  "lib/elpi/util/elpi_util.cmxa" {"F:S2141T1746706842.43"}
+  "lib/elpi/util/elpi_util.cmxs" {"F:S141968T1746706842.45"}
+  "lib/elpi/util/elpi_util.ml" {"F:S88T1746706842.43"}
+  "lib/elpi/util/elpi_util__Util.cmi" {"F:S97166T1746706842.43"}
+  "lib/elpi/util/elpi_util__Util.cmt" {"F:S455616T1746706842.43"}
+  "lib/elpi/util/elpi_util__Util.cmti" {"F:S266798T1746706842.43"}
+  "lib/elpi/util/elpi_util__Util.cmx" {"F:S30687T1746706842.43"}
+  "lib/elpi/util/util.ml" {"F:S18839T1746706842.43"}
+  "lib/elpi/util/util.mli" {"F:S8309T1746706842.43"}
+]

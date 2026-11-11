@@ -63,7 +63,8 @@ The new Jasmin/extracted-program contract concerns the decoder only.
 ## Formosa ML-KEM
 
 - Path: `external/formosa-mlkem`
-- Source: <https://github.com/formosa-crypto/formosa-mlkem.git>
+- Current acquisition source: <https://github.com/formosa-crypto/formosa-libjade.git>
+- Historical repository name: `formosa-crypto/formosa-mlkem`
 - Pinned commit: `475b87434506280fdfa1a1ba5da0af3787e00579`
 - Retrieved: 2026-08-11
 - Purpose: external reference for Jasmin implementation and EasyCrypt proof
@@ -89,6 +90,41 @@ repository does not contain a top-level `LICENSE` file. Preserve upstream
 provenance and review the applicable upstream and file-specific terms before
 copying, modifying, or redistributing any of its contents outside the
 submodule.
+
+The [old repository's move notice](https://github.com/formosa-crypto/formosa-mlkem/blob/d1e64d5fee2157b47e5030c4f0bdc07bb36a7bde/README.md)
+identifies the official successor. A fresh fetch from that successor on
+2026-11-12 returned the same pinned commit and tree
+`609f884ab7abcf7baf6f57f53687c2087c8fbfe9`. Only the acquisition URL changed;
+the local path, Gitlink and imported proof bytes were retained.
+
+Later successor revisions contain explicit licensing notices. A later notice
+must be associated with the files and revision it actually covers; this document
+does not retroactively assign it to every file at the older pin. In particular,
+the nested `crypto-specs` repository's CC0 notice is not a license for the parent
+repository's `proof/eclib` files. The parent Formosa helper tree remains separately
+acquired. The exact CC0 `crypto-specs` dependency is now also preserved as the
+[offline recovery bundle](dependencies/README.md), with its original notice and
+full file-hash manifest; neither dependency revision changed.
+
+The [exact helper comparison](docs/provenance/formosa.md) now records five
+old files with byte-identical copies in an explicitly licensed successor
+revision, preserves that revision's notices, and distinguishes the 16 unmatched
+files. This narrow result does not relicense the whole historical dependency.
+
+## Preserved verification environment
+
+The optional binary environment attachment has its own
+[component and notice inventory](env/distribution/README.md). It maps the captured
+files to installed package records, preserves actual license/copyright text and
+records source URLs, digests, available source materials and unresolved items.
+It also distinguishes observed embedded components from a complete build or
+license closure. Repository MIT terms do not replace those component terms.
+
+The source-material companion includes cached upstream archives, exact source
+snapshots and all identified registered opam patches. Bash, coreutils and Python
+source-package acquisition is separately prepared but was blocked by DNS in the
+inspection environment. Their pending status is explicit; notices and a source
+recipe must not be represented as source payloads already included in an archive.
 
 ### Jasmin model name compatibility (September 2026)
 

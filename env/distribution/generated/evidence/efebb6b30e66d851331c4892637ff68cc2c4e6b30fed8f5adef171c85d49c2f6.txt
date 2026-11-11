@@ -1,0 +1,12 @@
+opam-version: "2.0"
+lib: [
+  "_build/install/default/lib/atdts/META"
+  "_build/install/default/lib/atdts/dune-package"
+  "_build/install/default/lib/atdts/opam"
+]
+bin: "_build/install/default/bin/atdts"
+doc: [
+  "_build/install/default/doc/atdts/CHANGES.md"
+  "_build/install/default/doc/atdts/LICENSE.md"
+  "_build/install/default/doc/atdts/README.md"
+]

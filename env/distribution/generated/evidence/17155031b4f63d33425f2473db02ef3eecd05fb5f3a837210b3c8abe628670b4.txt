@@ -1,0 +1,88 @@
+opam-version: "2.0"
+added: [
+  "doc/visitors" {"D"}
+  "doc/visitors/CHANGES.md" {"F:S4749T1746706843.96"}
+  "doc/visitors/LICENSE" {"F:S26530T1746706843.96"}
+  "doc/visitors/README.md" {"F:S833T1746706843.96"}
+  "doc/visitors/manual.pdf" {"F:S304590T1746706843.96"}
+  "lib/visitors" {"D"}
+  "lib/visitors/META" {"F:S1313T1746706843.95"}
+  "lib/visitors/Makefile.preprocess" {"F:S2259T1746706843.95"}
+  "lib/visitors/dune-package" {"F:S4992T1746706843.95"}
+  "lib/visitors/opam" {"F:S781T1746706843.95"}
+  "lib/visitors/ppx/Visitors.ml" {"F:S48410T1746706843.95"}
+  "lib/visitors/ppx/Visitors.mli" {"F:S37T1746706843.95"}
+  "lib/visitors/ppx/VisitorsAnalysis.ml" {"F:S13349T1746706843.95"}
+  "lib/visitors/ppx/VisitorsCompatibility.ml" {"F:S3858T1746706843.95"}
+  "lib/visitors/ppx/VisitorsGeneration.ml" {"F:S18785T1746706843.95"}
+  "lib/visitors/ppx/VisitorsList.ml" {"F:S3603T1746706843.95"}
+  "lib/visitors/ppx/VisitorsPlugin.ml" {"F:S72T1746706843.95"}
+  "lib/visitors/ppx/VisitorsSettings.ml" {"F:S12514T1746706843.95"}
+  "lib/visitors/ppx/VisitorsString.ml" {"F:S2221T1746706843.95"}
+  "lib/visitors/ppx/ppx_deriving_visitors.a" {"F:S333724T1746706843.96"}
+  "lib/visitors/ppx/ppx_deriving_visitors.cma" {"F:S328508T1746706843.96"}
+  "lib/visitors/ppx/ppx_deriving_visitors.cmi" {"F:S1262T1746706843.96"}
+  "lib/visitors/ppx/ppx_deriving_visitors.cmt" {"F:S6462T1746706843.96"}
+  "lib/visitors/ppx/ppx_deriving_visitors.cmx" {"F:S454T1746706843.96"}
+  "lib/visitors/ppx/ppx_deriving_visitors.cmxa" {"F:S23449T1746706843.96"}
+  "lib/visitors/ppx/ppx_deriving_visitors.cmxs" {"F:S339400T1746706843.96"}
+  "lib/visitors/ppx/ppx_deriving_visitors.ml" {"F:S989T1746706843.96"}
+  "lib/visitors/ppx/ppx_deriving_visitors__Visitors.cmi"
+    {"F:S277T1746706843.96"}
+  "lib/visitors/ppx/ppx_deriving_visitors__Visitors.cmt"
+    {"F:S341193T1746706843.96"}
+  "lib/visitors/ppx/ppx_deriving_visitors__Visitors.cmti"
+    {"F:S3730T1746706843.96"}
+  "lib/visitors/ppx/ppx_deriving_visitors__Visitors.cmx"
+    {"F:S13427T1746706843.96"}
+  "lib/visitors/ppx/ppx_deriving_visitors__VisitorsAnalysis.cmi"
+    {"F:S9054T1746706843.96"}
+  "lib/visitors/ppx/ppx_deriving_visitors__VisitorsAnalysis.cmt"
+    {"F:S118786T1746706843.96"}
+  "lib/visitors/ppx/ppx_deriving_visitors__VisitorsAnalysis.cmx"
+    {"F:S9265T1746706843.96"}
+  "lib/visitors/ppx/ppx_deriving_visitors__VisitorsCompatibility.cmi"
+    {"F:S5671T1746706843.96"}
+  "lib/visitors/ppx/ppx_deriving_visitors__VisitorsCompatibility.cmt"
+    {"F:S37973T1746706843.96"}
+  "lib/visitors/ppx/ppx_deriving_visitors__VisitorsCompatibility.cmx"
+    {"F:S6905T1746706843.96"}
+  "lib/visitors/ppx/ppx_deriving_visitors__VisitorsGeneration.cmi"
+    {"F:S14469T1746706843.96"}
+  "lib/visitors/ppx/ppx_deriving_visitors__VisitorsGeneration.cmt"
+    {"F:S174807T1746706843.96"}
+  "lib/visitors/ppx/ppx_deriving_visitors__VisitorsGeneration.cmx"
+    {"F:S13596T1746706843.96"}
+  "lib/visitors/ppx/ppx_deriving_visitors__VisitorsList.cmi"
+    {"F:S2518T1746706843.96"}
+  "lib/visitors/ppx/ppx_deriving_visitors__VisitorsList.cmt"
+    {"F:S37116T1746706843.96"}
+  "lib/visitors/ppx/ppx_deriving_visitors__VisitorsList.cmx"
+    {"F:S2143T1746706843.96"}
+  "lib/visitors/ppx/ppx_deriving_visitors__VisitorsPlugin.cmi"
+    {"F:S368T1746706843.96"}
+  "lib/visitors/ppx/ppx_deriving_visitors__VisitorsPlugin.cmt"
+    {"F:S4055T1746706843.96"}
+  "lib/visitors/ppx/ppx_deriving_visitors__VisitorsPlugin.cmx"
+    {"F:S302T1746706843.96"}
+  "lib/visitors/ppx/ppx_deriving_visitors__VisitorsSettings.cmi"
+    {"F:S7559T1746706843.96"}
+  "lib/visitors/ppx/ppx_deriving_visitors__VisitorsSettings.cmt"
+    {"F:S99220T1746706843.96"}
+  "lib/visitors/ppx/ppx_deriving_visitors__VisitorsSettings.cmx"
+    {"F:S6259T1746706843.96"}
+  "lib/visitors/ppx/ppx_deriving_visitors__VisitorsString.cmi"
+    {"F:S1274T1746706843.96"}
+  "lib/visitors/ppx/ppx_deriving_visitors__VisitorsString.cmt"
+    {"F:S22109T1746706843.96"}
+  "lib/visitors/ppx/ppx_deriving_visitors__VisitorsString.cmx"
+    {"F:S1382T1746706843.96"}
+  "lib/visitors/runtime/VisitorsRuntime.a" {"F:S117538T1746706843.96"}
+  "lib/visitors/runtime/VisitorsRuntime.cma" {"F:S225592T1746706843.96"}
+  "lib/visitors/runtime/VisitorsRuntime.cmxa" {"F:S708T1746706843.96"}
+  "lib/visitors/runtime/VisitorsRuntime.cmxs" {"F:S129816T1746706843.96"}
+  "lib/visitors/runtime/VisitorsRuntime.ml" {"F:S33034T1746706843.96"}
+  "lib/visitors/runtime/visitorsRuntime.cmi" {"F:S32663T1746706843.96"}
+  "lib/visitors/runtime/visitorsRuntime.cmt" {"F:S458022T1746706843.96"}
+  "lib/visitors/runtime/visitorsRuntime.cmx" {"F:S1655T1746706843.96"}
+]

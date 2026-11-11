@@ -1,0 +1,2 @@
+[general]
+idirs=Jasmin:/home/hacker-code-j/.opam/cryptotools-2026.09/lib/easycrypt/jasmin

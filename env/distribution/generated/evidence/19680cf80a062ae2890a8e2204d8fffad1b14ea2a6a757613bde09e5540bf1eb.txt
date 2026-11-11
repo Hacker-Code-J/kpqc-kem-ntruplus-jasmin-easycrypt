@@ -1,0 +1,131 @@
+opam-version: "2.0"
+added: [
+  "doc/dune-site" {"D"}
+  "doc/dune-site/CHANGES.md" {"F:S176351T1737446815.9"}
+  "doc/dune-site/LICENSE.md" {"F:S1111T1737446815.9"}
+  "doc/dune-site/README.md" {"F:S6004T1737446815.9"}
+  "lib/dune-site" {"D"}
+  "lib/dune-site/META" {"F:S1704T1737446815.89"}
+  "lib/dune-site/dune-package" {"F:S9117T1737446815.89"}
+  "lib/dune-site/dune_site.a" {"F:S24486T1737446815.89"}
+  "lib/dune-site/dune_site.cma" {"F:S22755T1737446815.89"}
+  "lib/dune-site/dune_site.cmi" {"F:S358T1737446815.89"}
+  "lib/dune-site/dune_site.cmt" {"F:S3038T1737446815.89"}
+  "lib/dune-site/dune_site.cmx" {"F:S227T1737446815.89"}
+  "lib/dune-site/dune_site.cmxa" {"F:S1392T1737446815.89"}
+  "lib/dune-site/dune_site.cmxs" {"F:S35464T1737446815.9"}
+  "lib/dune-site/dune_site.ml" {"F:S56T1737446815.89"}
+  "lib/dune-site/dune_site__.cmi" {"F:S537T1737446815.89"}
+  "lib/dune-site/dune_site__.cmt" {"F:S3540T1737446815.89"}
+  "lib/dune-site/dune_site__.cmx" {"F:S178T1737446815.89"}
+  "lib/dune-site/dune_site__.ml" {"F:S265T1737446815.89"}
+  "lib/dune-site/dune_site__Dune_site_data.cmi" {"F:S424T1737446815.89"}
+  "lib/dune-site/dune_site__Dune_site_data.cmti" {"F:S3256T1737446815.89"}
+  "lib/dune-site/dune_site__Helpers.cmi" {"F:S1616T1737446815.89"}
+  "lib/dune-site/dune_site__Helpers.cmt" {"F:S37198T1737446815.89"}
+  "lib/dune-site/dune_site__Helpers.cmti" {"F:S7936T1737446815.89"}
+  "lib/dune-site/dune_site__Helpers.cmx" {"F:S1405T1737446815.89"}
+  "lib/dune-site/dune_site_data.mli" {"F:S77T1737446815.89"}
+  "lib/dune-site/dynlink/dune_site_backend.cmi" {"F:S294T1737446815.89"}
+  "lib/dune-site/dynlink/dune_site_backend.cmx" {"F:S137T1737446815.89"}
+  "lib/dune-site/dynlink/dune_site_backend__Linker.cmi"
+    {"F:S400T1737446815.89"}
+  "lib/dune-site/dynlink/dune_site_backend__Linker.cmt"
+    {"F:S3059T1737446815.89"}
+  "lib/dune-site/dynlink/dune_site_backend__Linker.cmx"
+    {"F:S414T1737446815.89"}
+  "lib/dune-site/dynlink/dune_site_backend__dune_site_dynlink_linker__.cmi"
+    {"F:S388T1737446815.89"}
+  "lib/dune-site/dynlink/dune_site_backend__dune_site_dynlink_linker__.cmt"
+    {"F:S2953T1737446815.89"}
+  "lib/dune-site/dynlink/dune_site_backend__dune_site_dynlink_linker__.cmx"
+    {"F:S166T1737446815.89"}
+  "lib/dune-site/dynlink/dune_site_backend__dune_site_dynlink_linker__.ml"
+    {"F:S110T1737446815.89"}
+  "lib/dune-site/dynlink/dune_site_dynlink_linker.a"
+    {"F:S8448T1737446815.89"}
+  "lib/dune-site/dynlink/dune_site_dynlink_linker.cma"
+    {"F:S6560T1737446815.89"}
+  "lib/dune-site/dynlink/dune_site_dynlink_linker.cmxa"
+    {"F:S664T1737446815.89"}
+  "lib/dune-site/dynlink/dune_site_dynlink_linker.cmxs"
+    {"F:S18928T1737446815.9"}
+  "lib/dune-site/dynlink/linker.ml" {"F:S28T1737446815.89"}
+  "lib/dune-site/helpers.ml" {"F:S3389T1737446815.89"}
+  "lib/dune-site/helpers.mli" {"F:S515T1737446815.89"}
+  "lib/dune-site/linker/dune_site_backend.cmi" {"F:S294T1737446815.89"}
+  "lib/dune-site/linker/dune_site_backend.cmo" {"F:S2060T1737446815.89"}
+  "lib/dune-site/linker/dune_site_backend.cmt" {"F:S2736T1737446815.89"}
+  "lib/dune-site/linker/dune_site_backend.cmx" {"F:S137T1737446815.89"}
+  "lib/dune-site/linker/dune_site_backend.ml" {"F:S110T1737446815.89"}
+  "lib/dune-site/linker/dune_site_backend.o" {"F:S1712T1737446815.89"}
+  "lib/dune-site/linker/dune_site_backend__Linker.cmi"
+    {"F:S400T1737446815.89"}
+  "lib/dune-site/linker/dune_site_backend__Linker.cmti"
+    {"F:S2926T1737446815.89"}
+  "lib/dune-site/linker/linker.mli" {"F:S26T1737446815.89"}
+  "lib/dune-site/opam" {"F:S797T1737446815.89"}
+  "lib/dune-site/plugins/dune_site_plugins.a" {"F:S60372T1737446815.89"}
+  "lib/dune-site/plugins/dune_site_plugins.cma" {"F:S69154T1737446815.89"}
+  "lib/dune-site/plugins/dune_site_plugins.cmi" {"F:S3295T1737446815.89"}
+  "lib/dune-site/plugins/dune_site_plugins.cmt" {"F:S4385T1737446815.89"}
+  "lib/dune-site/plugins/dune_site_plugins.cmti" {"F:S10310T1737446815.89"}
+  "lib/dune-site/plugins/dune_site_plugins.cmx" {"F:S3841T1737446815.89"}
+  "lib/dune-site/plugins/dune_site_plugins.cmxa" {"F:S3137T1737446815.89"}
+  "lib/dune-site/plugins/dune_site_plugins.cmxs" {"F:S69440T1737446815.9"}
+  "lib/dune-site/plugins/dune_site_plugins.ml" {"F:S177T1737446815.89"}
+  "lib/dune-site/plugins/dune_site_plugins.mli" {"F:S454T1737446815.89"}
+  "lib/dune-site/plugins/dune_site_plugins__.cmi" {"F:S751T1737446815.89"}
+  "lib/dune-site/plugins/dune_site_plugins__.cmt" {"F:S4269T1737446815.89"}
+  "lib/dune-site/plugins/dune_site_plugins__.cmx" {"F:S253T1737446815.89"}
+  "lib/dune-site/plugins/dune_site_plugins__.ml" {"F:S430T1737446815.9"}
+  "lib/dune-site/plugins/dune_site_plugins__Dune_site_plugins_data.cmi"
+    {"F:S811T1737446815.9"}
+  "lib/dune-site/plugins/dune_site_plugins__Dune_site_plugins_data.cmti"
+    {"F:S5653T1737446815.9"}
+  "lib/dune-site/plugins/dune_site_plugins__Meta_parser.cmi"
+    {"F:S1617T1737446815.9"}
+  "lib/dune-site/plugins/dune_site_plugins__Meta_parser.cmt"
+    {"F:S16731T1737446815.9"}
+  "lib/dune-site/plugins/dune_site_plugins__Meta_parser.cmti"
+    {"F:S7691T1737446815.9"}
+  "lib/dune-site/plugins/dune_site_plugins__Meta_parser.cmx"
+    {"F:S1807T1737446815.9"}
+  "lib/dune-site/plugins/dune_site_plugins__Plugins.cmi"
+    {"F:S1009T1737446815.9"}
+  "lib/dune-site/plugins/dune_site_plugins__Plugins.cmt"
+    {"F:S112921T1737446815.9"}
+  "lib/dune-site/plugins/dune_site_plugins__Plugins.cmti"
+    {"F:S6734T1737446815.9"}
+  "lib/dune-site/plugins/dune_site_plugins__Plugins.cmx"
+    {"F:S4113T1737446815.9"}
+  "lib/dune-site/plugins/dune_site_plugins_data.mli" {"F:S610T1737446815.9"}
+  "lib/dune-site/plugins/meta_parser.ml" {"F:S643T1737446815.9"}
+  "lib/dune-site/plugins/meta_parser.mli" {"F:S408T1737446815.9"}
+  "lib/dune-site/plugins/plugins.ml" {"F:S10443T1737446815.9"}
+  "lib/dune-site/plugins/plugins.mli" {"F:S503T1737446815.9"}
+  "lib/dune-site/private/dune_site_private.a" {"F:S9436T1737446815.9"}
+  "lib/dune-site/private/dune_site_private.cma" {"F:S9380T1737446815.9"}
+  "lib/dune-site/private/dune_site_private.cmi" {"F:S1163T1737446815.9"}
+  "lib/dune-site/private/dune_site_private.cmt" {"F:S16174T1737446815.9"}
+  "lib/dune-site/private/dune_site_private.cmti" {"F:S5900T1737446815.9"}
+  "lib/dune-site/private/dune_site_private.cmx" {"F:S1172T1737446815.9"}
+  "lib/dune-site/private/dune_site_private.cmxa" {"F:S652T1737446815.9"}
+  "lib/dune-site/private/dune_site_private.cmxs" {"F:S24992T1737446815.9"}
+  "lib/dune-site/private/dune_site_private.ml" {"F:S1331T1737446815.9"}
+  "lib/dune-site/private/dune_site_private.mli" {"F:S377T1737446815.9"}
+  "lib/dune-site/toplevel/dune_site_backend.cmi" {"F:S294T1737446815.9"}
+  "lib/dune-site/toplevel/dune_site_backend__Linker.cmi"
+    {"F:S400T1737446815.9"}
+  "lib/dune-site/toplevel/dune_site_backend__Linker.cmt"
+    {"F:S10229T1737446815.9"}
+  "lib/dune-site/toplevel/dune_site_backend__dune_site_toplevel_linker__.cmi"
+    {"F:S392T1737446815.9"}
+  "lib/dune-site/toplevel/dune_site_backend__dune_site_toplevel_linker__.cmt"
+    {"F:S2965T1737446815.9"}
+  "lib/dune-site/toplevel/dune_site_backend__dune_site_toplevel_linker__.ml"
+    {"F:S110T1737446815.9"}
+  "lib/dune-site/toplevel/dune_site_toplevel_linker.cma"
+    {"F:S9037T1737446815.9"}
+  "lib/dune-site/toplevel/linker.ml" {"F:S672T1737446815.9"}
+]

@@ -1,0 +1,31 @@
+[main]
+default_editor = "xdg-open %f"
+magic = 14
+memlimit = 1000
+running_provers_max = 2
+timelimit = 5.000000
+
+[partial_prover]
+name = "Alt-Ergo"
+path = "/home/hacker-code-j/.opam/easycrypt-5.2/bin/alt-ergo"
+version = "2.6.0"
+
+[partial_prover]
+name = "CVC4"
+path = "/usr/bin/cvc4"
+version = "1.8"
+
+[partial_prover]
+name = "CVC5"
+path = "/usr/local/bin/cvc5"
+version = "1.2.1"
+
+[partial_prover]
+name = "Coq"
+path = "/usr/bin/coqtop"
+version = "8.15.0"
+
+[partial_prover]
+name = "Z3"
+path = "/home/hacker-code-j/.opam/easycrypt-5.2/bin/z3"
+version = "4.12.6"

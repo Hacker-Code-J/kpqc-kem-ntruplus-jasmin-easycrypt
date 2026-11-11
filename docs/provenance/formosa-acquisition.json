@@ -1,0 +1,7 @@
+{
+  "url": "https://github.com/formosa-crypto/formosa-libjade.git",
+  "commit": "475b87434506280fdfa1a1ba5da0af3787e00579",
+  "tree": "609f884ab7abcf7baf6f57f53687c2087c8fbfe9",
+  "matches_existing_pinned_tree": true,
+  "method": "fresh shallow filtered Git fetch of exact pin; no submodule revision changed"
+}

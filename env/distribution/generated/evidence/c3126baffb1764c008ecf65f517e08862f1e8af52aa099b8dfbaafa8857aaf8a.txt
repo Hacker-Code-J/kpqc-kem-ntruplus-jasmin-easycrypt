@@ -1,0 +1,57 @@
+opam-version: "2.0"
+added: [
+  "doc/atdgen-runtime" {"D"}
+  "doc/atdgen-runtime/CHANGES.md" {"F:S7798T1737446889.56"}
+  "doc/atdgen-runtime/LICENSE.md" {"F:S1408T1737446889.56"}
+  "doc/atdgen-runtime/README.md" {"F:S3411T1737446889.56"}
+  "lib/atdgen-runtime" {"D"}
+  "lib/atdgen-runtime/META" {"F:S214T1737446889.56"}
+  "lib/atdgen-runtime/atdgen_runtime.a" {"F:S172486T1737446889.56"}
+  "lib/atdgen-runtime/atdgen_runtime.cma" {"F:S192247T1737446889.56"}
+  "lib/atdgen-runtime/atdgen_runtime.cmi" {"F:S744T1737446889.56"}
+  "lib/atdgen-runtime/atdgen_runtime.cmt" {"F:S4850T1737446889.56"}
+  "lib/atdgen-runtime/atdgen_runtime.cmx" {"F:S266T1737446889.56"}
+  "lib/atdgen-runtime/atdgen_runtime.cmxa" {"F:S4920T1737446889.56"}
+  "lib/atdgen-runtime/atdgen_runtime.cmxs" {"F:S179552T1737446889.56"}
+  "lib/atdgen-runtime/atdgen_runtime.ml" {"F:S519T1737446889.56"}
+  "lib/atdgen-runtime/atdgen_runtime__Json_adapter.cmi"
+    {"F:S2218T1737446889.56"}
+  "lib/atdgen-runtime/atdgen_runtime__Json_adapter.cmt"
+    {"F:S52169T1737446889.56"}
+  "lib/atdgen-runtime/atdgen_runtime__Json_adapter.cmti"
+    {"F:S20609T1737446889.56"}
+  "lib/atdgen-runtime/atdgen_runtime__Json_adapter.cmx"
+    {"F:S1916T1737446889.56"}
+  "lib/atdgen-runtime/atdgen_runtime__Ob_run.cmi" {"F:S6053T1737446889.56"}
+  "lib/atdgen-runtime/atdgen_runtime__Ob_run.cmt" {"F:S104607T1737446889.56"}
+  "lib/atdgen-runtime/atdgen_runtime__Ob_run.cmti" {"F:S24435T1737446889.56"}
+  "lib/atdgen-runtime/atdgen_runtime__Ob_run.cmx" {"F:S5591T1737446889.56"}
+  "lib/atdgen-runtime/atdgen_runtime__Oj_run.cmi" {"F:S5600T1737446889.56"}
+  "lib/atdgen-runtime/atdgen_runtime__Oj_run.cmt" {"F:S111920T1737446889.56"}
+  "lib/atdgen-runtime/atdgen_runtime__Oj_run.cmti" {"F:S24064T1737446889.56"}
+  "lib/atdgen-runtime/atdgen_runtime__Oj_run.cmx" {"F:S7873T1737446889.56"}
+  "lib/atdgen-runtime/atdgen_runtime__Ov_run.cmi" {"F:S1068T1737446889.56"}
+  "lib/atdgen-runtime/atdgen_runtime__Ov_run.cmt" {"F:S13279T1737446889.56"}
+  "lib/atdgen-runtime/atdgen_runtime__Ov_run.cmti" {"F:S6443T1737446889.56"}
+  "lib/atdgen-runtime/atdgen_runtime__Ov_run.cmx" {"F:S671T1737446889.56"}
+  "lib/atdgen-runtime/atdgen_runtime__Util.cmi" {"F:S9995T1737446889.56"}
+  "lib/atdgen-runtime/atdgen_runtime__Util.cmt" {"F:S103507T1737446889.56"}
+  "lib/atdgen-runtime/atdgen_runtime__Util.cmti" {"F:S65098T1737446889.56"}
+  "lib/atdgen-runtime/atdgen_runtime__Util.cmx" {"F:S6342T1737446889.56"}
+  "lib/atdgen-runtime/atdgen_runtime__Version.cmi" {"F:S344T1737446889.56"}
+  "lib/atdgen-runtime/atdgen_runtime__Version.cmt" {"F:S3100T1737446889.56"}
+  "lib/atdgen-runtime/atdgen_runtime__Version.cmx" {"F:S263T1737446889.56"}
+  "lib/atdgen-runtime/dune-package" {"F:S2775T1737446889.56"}
+  "lib/atdgen-runtime/json_adapter.ml" {"F:S4784T1737446889.56"}
+  "lib/atdgen-runtime/json_adapter.mli" {"F:S5517T1737446889.56"}
+  "lib/atdgen-runtime/ob_run.ml" {"F:S8212T1737446889.56"}
+  "lib/atdgen-runtime/ob_run.mli" {"F:S2121T1737446889.56"}
+  "lib/atdgen-runtime/oj_run.ml" {"F:S6978T1737446889.56"}
+  "lib/atdgen-runtime/oj_run.mli" {"F:S1822T1737446889.56"}
+  "lib/atdgen-runtime/opam" {"F:S2840T1737446889.56"}
+  "lib/atdgen-runtime/ov_run.ml" {"F:S580T1737446889.56"}
+  "lib/atdgen-runtime/ov_run.mli" {"F:S360T1737446889.56"}
+  "lib/atdgen-runtime/util.ml" {"F:S6076T1737446889.56"}
+  "lib/atdgen-runtime/util.mli" {"F:S15187T1737446889.56"}
+  "lib/atdgen-runtime/version.ml" {"F:S120T1737446889.56"}
+]

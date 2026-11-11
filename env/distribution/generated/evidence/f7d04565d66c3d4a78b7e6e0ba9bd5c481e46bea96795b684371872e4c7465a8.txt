@@ -1,0 +1,27 @@
+opam-version: "2.0"
+added: [
+  "doc/markdown" {"D"}
+  "doc/markdown/CHANGES.md" {"F:S327T1791655459.65"}
+  "doc/markdown/LICENSE.txt" {"F:S1112T1791655459.65"}
+  "doc/markdown/README.md" {"F:S928T1791655459.65"}
+  "lib/markdown" {"D"}
+  "lib/markdown/META" {"F:S450T1791655459.65"}
+  "lib/markdown/Markdown.ml" {"F:S10519T1791655459.65"}
+  "lib/markdown/dune-package" {"F:S1364T1791655459.65"}
+  "lib/markdown/html/MarkdownHTML.a" {"F:S15120T1791655459.65"}
+  "lib/markdown/html/MarkdownHTML.cma" {"F:S33975T1791655459.65"}
+  "lib/markdown/html/MarkdownHTML.cmxa" {"F:S1337T1791655459.65"}
+  "lib/markdown/html/MarkdownHTML.cmxs" {"F:S30904T1791655459.65"}
+  "lib/markdown/html/MarkdownHTML.ml" {"F:S1787T1791655459.65"}
+  "lib/markdown/html/markdownHTML.cmi" {"F:S5030T1791655459.65"}
+  "lib/markdown/html/markdownHTML.cmt" {"F:S111117T1791655459.65"}
+  "lib/markdown/html/markdownHTML.cmx" {"F:S1724T1791655459.65"}
+  "lib/markdown/markdown.a" {"F:S57420T1791655459.65"}
+  "lib/markdown/markdown.cma" {"F:S58998T1791655459.65"}
+  "lib/markdown/markdown.cmi" {"F:S7324T1791655459.65"}
+  "lib/markdown/markdown.cmt" {"F:S152569T1791655459.65"}
+  "lib/markdown/markdown.cmx" {"F:S3448T1791655459.65"}
+  "lib/markdown/markdown.cmxa" {"F:S1080T1791655459.65"}
+  "lib/markdown/markdown.cmxs" {"F:S70400T1791655459.65"}
+  "lib/markdown/opam" {"F:S879T1791655459.65"}
+]

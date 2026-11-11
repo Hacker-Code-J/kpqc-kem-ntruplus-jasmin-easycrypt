@@ -1,0 +1,29 @@
+{
+  "status": "SYSTEM_SOURCE_PAYLOADS_NOT_DOWNLOADED",
+  "reason": "Normal urllib and wget retrieval could not resolve snapshot.ubuntu.com or archive.ubuntu.com in this execution environment. No network/sandbox policy was changed.",
+  "packages": [
+    {
+      "name": "bash",
+      "version": "5.1-6ubuntu1.1",
+      "snapshot": "20260801T000000Z"
+    },
+    {
+      "name": "coreutils",
+      "version": "8.32-4.1ubuntu1.3",
+      "snapshot": "20260801T000000Z"
+    },
+    {
+      "name": "python3.10",
+      "version": "3.10.12-1~22.04.15",
+      "snapshot": "20260401T000000Z"
+    }
+  ],
+  "cached_20260801_inrelease_signature": "PASS",
+  "cached_20260801_source_index_expected": {
+    "sha256": "6819c6811cfb40106ac9e0066b439a7d1d120cef7e72b15b6edc2ccb2f979aec",
+    "bytes": 467672
+  },
+  "keyring_sha256": "1a4dd63e5c76728960a2edddae22e2e0fc53df8e8b87806deb971030ac704eb0",
+  "command": "python3 fetch-sources.py",
+  "host_installation_modified": false
+}

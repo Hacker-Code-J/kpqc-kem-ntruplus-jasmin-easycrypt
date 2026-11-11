@@ -1,0 +1,81 @@
+opam-version: "2.0"
+added: [
+  "doc/ocaml-compiler-libs" {"D"}
+  "doc/ocaml-compiler-libs/CHANGES.md" {"F:S206T1737446806.92"}
+  "doc/ocaml-compiler-libs/LICENSE.md" {"F:S1117T1737446806.92"}
+  "doc/ocaml-compiler-libs/README.org" {"F:S338T1737446806.92"}
+  "lib/ocaml-compiler-libs" {"D"}
+  "lib/ocaml-compiler-libs/META" {"F:S1379T1737446806.91"}
+  "lib/ocaml-compiler-libs/bytecomp/ocaml_bytecomp.a"
+    {"F:S2156T1737446806.91"}
+  "lib/ocaml-compiler-libs/bytecomp/ocaml_bytecomp.cma"
+    {"F:S2805T1737446806.91"}
+  "lib/ocaml-compiler-libs/bytecomp/ocaml_bytecomp.cmi"
+    {"F:S940T1737446806.91"}
+  "lib/ocaml-compiler-libs/bytecomp/ocaml_bytecomp.cmt"
+    {"F:S5200T1737446806.91"}
+  "lib/ocaml-compiler-libs/bytecomp/ocaml_bytecomp.cmx"
+    {"F:S306T1737446806.91"}
+  "lib/ocaml-compiler-libs/bytecomp/ocaml_bytecomp.cmxa"
+    {"F:S312T1737446806.92"}
+  "lib/ocaml-compiler-libs/bytecomp/ocaml_bytecomp.cmxs"
+    {"F:S16408T1737446806.92"}
+  "lib/ocaml-compiler-libs/bytecomp/ocaml_bytecomp.ml"
+    {"F:S373T1737446806.92"}
+  "lib/ocaml-compiler-libs/common/ocaml_common.a" {"F:S2046T1737446806.92"}
+  "lib/ocaml-compiler-libs/common/ocaml_common.cma" {"F:S9995T1737446806.92"}
+  "lib/ocaml-compiler-libs/common/ocaml_common.cmi" {"F:S8303T1737446806.92"}
+  "lib/ocaml-compiler-libs/common/ocaml_common.cmt"
+    {"F:S31489T1737446806.92"}
+  "lib/ocaml-compiler-libs/common/ocaml_common.cmx" {"F:S1578T1737446806.92"}
+  "lib/ocaml-compiler-libs/common/ocaml_common.cmxa"
+    {"F:S1584T1737446806.92"}
+  "lib/ocaml-compiler-libs/common/ocaml_common.cmxs"
+    {"F:S17664T1737446806.92"}
+  "lib/ocaml-compiler-libs/common/ocaml_common.ml" {"F:S5361T1737446806.92"}
+  "lib/ocaml-compiler-libs/dune-package" {"F:S3887T1737446806.92"}
+  "lib/ocaml-compiler-libs/opam" {"F:S841T1737446806.92"}
+  "lib/ocaml-compiler-libs/optcomp/ocaml_optcomp.a" {"F:S2062T1737446806.92"}
+  "lib/ocaml-compiler-libs/optcomp/ocaml_optcomp.cma"
+    {"F:S13713T1737446806.92"}
+  "lib/ocaml-compiler-libs/optcomp/ocaml_optcomp.cmi"
+    {"F:S12039T1737446806.92"}
+  "lib/ocaml-compiler-libs/optcomp/ocaml_optcomp.cmt"
+    {"F:S41884T1737446806.92"}
+  "lib/ocaml-compiler-libs/optcomp/ocaml_optcomp.cmx"
+    {"F:S2459T1737446806.92"}
+  "lib/ocaml-compiler-libs/optcomp/ocaml_optcomp.cmxa"
+    {"F:S2465T1737446806.92"}
+  "lib/ocaml-compiler-libs/optcomp/ocaml_optcomp.cmxs"
+    {"F:S18552T1737446806.92"}
+  "lib/ocaml-compiler-libs/optcomp/ocaml_optcomp.ml"
+    {"F:S7396T1737446806.92"}
+  "lib/ocaml-compiler-libs/shadow/ocaml_shadow.a" {"F:S3598T1737446806.92"}
+  "lib/ocaml-compiler-libs/shadow/ocaml_shadow.cma"
+    {"F:S73754T1737446806.92"}
+  "lib/ocaml-compiler-libs/shadow/ocaml_shadow.cmi"
+    {"F:S71562T1737446806.92"}
+  "lib/ocaml-compiler-libs/shadow/ocaml_shadow.cmt"
+    {"F:S189725T1737446806.92"}
+  "lib/ocaml-compiler-libs/shadow/ocaml_shadow.cmx" {"F:S201T1737446806.92"}
+  "lib/ocaml-compiler-libs/shadow/ocaml_shadow.cmxa" {"F:S181T1737446806.92"}
+  "lib/ocaml-compiler-libs/shadow/ocaml_shadow.cmxs"
+    {"F:S17048T1737446806.92"}
+  "lib/ocaml-compiler-libs/shadow/ocaml_shadow.ml" {"F:S37012T1737446806.92"}
+  "lib/ocaml-compiler-libs/toplevel/ocaml_toplevel.a"
+    {"F:S2156T1737446806.92"}
+  "lib/ocaml-compiler-libs/toplevel/ocaml_toplevel.cma"
+    {"F:S2428T1737446806.92"}
+  "lib/ocaml-compiler-libs/toplevel/ocaml_toplevel.cmi"
+    {"F:S559T1737446806.92"}
+  "lib/ocaml-compiler-libs/toplevel/ocaml_toplevel.cmt"
+    {"F:S3831T1737446806.92"}
+  "lib/ocaml-compiler-libs/toplevel/ocaml_toplevel.cmx"
+    {"F:S234T1737446806.92"}
+  "lib/ocaml-compiler-libs/toplevel/ocaml_toplevel.cmxa"
+    {"F:S240T1737446806.92"}
+  "lib/ocaml-compiler-libs/toplevel/ocaml_toplevel.cmxs"
+    {"F:S16336T1737446806.92"}
+  "lib/ocaml-compiler-libs/toplevel/ocaml_toplevel.ml"
+    {"F:S191T1737446806.92"}
+]

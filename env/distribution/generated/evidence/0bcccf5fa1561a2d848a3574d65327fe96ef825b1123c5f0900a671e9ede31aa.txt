@@ -1,0 +1,13 @@
+opam-version: "2.0"
+added: [
+  "bin/camlidl" {"F:S2854692T1737446883.37"}
+  "lib/camlidl" {"D"}
+  "lib/camlidl/META" {"F:S157T1737446883.37"}
+  "lib/camlidl/caml/camlidlruntime.h" {"F:S5503T1737446883.37"}
+  "lib/camlidl/com.a" {"F:S6624T1737446883.37"}
+  "lib/camlidl/com.cma" {"F:S4753T1737446883.37"}
+  "lib/camlidl/com.cmi" {"F:S2468T1737446883.37"}
+  "lib/camlidl/com.cmxa" {"F:S325T1737446883.37"}
+  "lib/camlidl/libcamlidl.a" {"F:S63832T1737446883.37"}
+  "lib/stublibs/dllcamlidl.so" {"F:S44520T1737446883.37"}
+]

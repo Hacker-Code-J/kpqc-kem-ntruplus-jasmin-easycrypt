@@ -1,0 +1,22 @@
+opam-version: "2.0"
+lib: [
+  "_build/install/default/lib/ppx_blob/META"
+  "_build/install/default/lib/ppx_blob/dune-package"
+  "_build/install/default/lib/ppx_blob/opam"
+  "_build/install/default/lib/ppx_blob/ppx_blob.a"
+  "_build/install/default/lib/ppx_blob/ppx_blob.cma"
+  "_build/install/default/lib/ppx_blob/ppx_blob.cmi"
+  "_build/install/default/lib/ppx_blob/ppx_blob.cmt"
+  "_build/install/default/lib/ppx_blob/ppx_blob.cmx"
+  "_build/install/default/lib/ppx_blob/ppx_blob.cmxa"
+  "_build/install/default/lib/ppx_blob/ppx_blob.ml"
+]
+doc: [
+  "_build/install/default/doc/ppx_blob/CHANGES.md"
+  "_build/install/default/doc/ppx_blob/LICENSE.txt"
+  "_build/install/default/doc/ppx_blob/README.md"
+]
+libexec: [
+  "_build/install/default/lib/ppx_blob/ppx.exe"
+  "_build/install/default/lib/ppx_blob/ppx_blob.cmxs"
+]

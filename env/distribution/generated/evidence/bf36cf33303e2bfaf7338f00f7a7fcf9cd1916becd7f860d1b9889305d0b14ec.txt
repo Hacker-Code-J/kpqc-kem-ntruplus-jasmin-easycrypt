@@ -1,0 +1,32 @@
+opam-version: "2.0"
+lib: [
+  "_build/install/default/lib/atdgen/META"
+  "_build/install/default/lib/atdgen/atdgen.a"
+  "_build/install/default/lib/atdgen/atdgen.cma"
+  "_build/install/default/lib/atdgen/atdgen.cmi"
+  "_build/install/default/lib/atdgen/atdgen.cmt"
+  "_build/install/default/lib/atdgen/atdgen.cmx"
+  "_build/install/default/lib/atdgen/atdgen.cmxa"
+  "_build/install/default/lib/atdgen/atdgen.ml"
+  "_build/install/default/lib/atdgen/atdgen__.cmi"
+  "_build/install/default/lib/atdgen/atdgen__.cmt"
+  "_build/install/default/lib/atdgen/atdgen__.cmx"
+  "_build/install/default/lib/atdgen/atdgen__.ml"
+  "_build/install/default/lib/atdgen/atdgen__Version.cmi"
+  "_build/install/default/lib/atdgen/atdgen__Version.cmt"
+  "_build/install/default/lib/atdgen/atdgen__Version.cmx"
+  "_build/install/default/lib/atdgen/dune-package"
+  "_build/install/default/lib/atdgen/opam"
+  "_build/install/default/lib/atdgen/version.ml"
+]
+bin: [
+  "_build/install/default/bin/atdgen"
+  "_build/install/default/bin/atdgen-cppo"
+  "_build/install/default/bin/cppo-json"
+]
+doc: [
+  "_build/install/default/doc/atdgen/CHANGES.md"
+  "_build/install/default/doc/atdgen/LICENSE.md"
+  "_build/install/default/doc/atdgen/README.md"
+]
+libexec: "_build/install/default/lib/atdgen/atdgen.cmxs"

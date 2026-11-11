@@ -1,0 +1,86 @@
+{
+  "schema": 1,
+  "status": "EXACT_UPSTREAM_HISTORICAL_CALIBRATION_FILE_IDENTIFIED",
+  "checked_on": "2026-11-12",
+  "calibration_input": {
+    "path": "/home/hacker-code-j/easycrypt/theories/datatypes/List.ec",
+    "sha256": "fa5c5e4479bac9f2d6c67d5055c38cd4988488e96827e6ea99b4430cc2c6b0c2",
+    "git_blob": "00930afc28229ea0b6ea2d9e4a8d8d02cb111679",
+    "exact_upstream_revision": "b682e63f4ba9eed9220eb763fa73baa8f663046b",
+    "exact_upstream_path": "theories/datatypes/List.ec",
+    "bytes_equal": true
+  },
+  "installed_current_input": {
+    "path": "/home/hacker-code-j/.opam/cryptotools-2026.09/lib/easycrypt/theories/datatypes/List.ec",
+    "sha256": "4216fa404e16d3237f21d0e992b7b9d69356a5e4fdc5d694623f9b5acfec9852",
+    "git_blob": "7924dd44ca8291da218c6d68bd080069c78d2a78",
+    "upstream_revision": "2aaa14acf7b2ce234b475f24f9e85ba0bdaeb024",
+    "different_from_calibration": true
+  },
+  "preserved_sources": [
+    {
+      "local_evidence": "upstream/List.ec",
+      "source_path": "theories/datatypes/List.ec",
+      "git_blob": "00930afc28229ea0b6ea2d9e4a8d8d02cb111679",
+      "sha256": "fa5c5e4479bac9f2d6c67d5055c38cd4988488e96827e6ea99b4430cc2c6b0c2",
+      "bytes": 144288,
+      "source_url": "https://github.com/EasyCrypt/easycrypt/blob/b682e63f4ba9eed9220eb763fa73baa8f663046b/theories/datatypes/List.ec"
+    },
+    {
+      "local_evidence": "upstream/LICENSE",
+      "source_path": "LICENSE",
+      "git_blob": "ff62ff6f6cb99b9640e5e6a9c1de50c1b7bf11cb",
+      "sha256": "66a4d47c99a89fc20bb4fc9e426e654c07ad7b7b36504ca3d91d4a58a5cda472",
+      "bytes": 1197,
+      "source_url": "https://github.com/EasyCrypt/easycrypt/blob/b682e63f4ba9eed9220eb763fa73baa8f663046b/LICENSE"
+    },
+    {
+      "local_evidence": "upstream/AUTHORS",
+      "source_path": "AUTHORS",
+      "git_blob": "dc7f1ac20eed6dc4a1478fb5dd21787388f08306",
+      "sha256": "a1055a25758d66c70dbc6923888d70277ea0e0da9a4ccc53974bf6e0170de046",
+      "bytes": 543,
+      "source_url": "https://github.com/EasyCrypt/easycrypt/blob/b682e63f4ba9eed9220eb763fa73baa8f663046b/AUTHORS"
+    },
+    {
+      "local_evidence": "upstream/easycrypt.opam",
+      "source_path": "easycrypt.opam",
+      "git_blob": "08bdb40eac1bfcdfa9ff7f376efeee773599838d",
+      "sha256": "6f5e23d1e27b4e2bbfa7425b1942c21a182cc6c735a8b35accfb614486abeb8b",
+      "bytes": 1430,
+      "source_url": "https://github.com/EasyCrypt/easycrypt/blob/b682e63f4ba9eed9220eb763fa73baa8f663046b/easycrypt.opam"
+    }
+  ],
+  "upstream_commit": {
+    "sha": "b682e63f4ba9eed9220eb763fa73baa8f663046b",
+    "author": {
+      "name": "Xingyu Xie",
+      "email": "namasikanam@gmail.com",
+      "date": "2026-03-16T14:14:58Z"
+    },
+    "subject": "stdlib: new lemmas (lists, bytes, distr)\n\nBitChunking: new lemmas: chunk_nil, chunk_exact\nList: new lemmas: mkseq2\nDList: new lemmas: dmap_dlist_partial_perm"
+  },
+  "history_relationship": {
+    "base": "b682e63f4ba9eed9220eb763fa73baa8f663046b",
+    "head": "2aaa14acf7b2ce234b475f24f9e85ba0bdaeb024",
+    "status": "ahead",
+    "ahead_by": 121,
+    "behind_by": 0,
+    "merge_base": "b682e63f4ba9eed9220eb763fa73baa8f663046b",
+    "url": "https://api.github.com/repos/EasyCrypt/easycrypt/compare/b682e63f4ba9eed9220eb763fa73baa8f663046b...2aaa14acf7b2ce234b475f24f9e85ba0bdaeb024?per_page=1"
+  },
+  "license_notices": {
+    "root_LICENSE": "MIT License",
+    "easycrypt_opam": "CeCILL-C",
+    "discrepancy_preserved": true,
+    "explicit_upstream_license_change_commit": "f87695472e70c313ef2966e20979b1afcc2e543e",
+    "license_change_subject": "License change: CeCILL B/C -> MIT",
+    "interpretation": "Recorded upstream notices and history only; this trace does not silently resolve contradictory package metadata or determine licensing of the complete toolchain."
+  },
+  "scope_limits": [
+    "Identity of this file does not identify the entire unpacked /home/hacker-code-j/easycrypt tree.",
+    "The calibration file and installed library are distinct declared inputs; neither should replace the other."
+  ],
+  "source_repo_or_environment_modified": false,
+  "validation": "PASS: exact Git blob IDs and SHA-256; historical local input byte equality; current installed blob identity; official ancestor relationship"
+}

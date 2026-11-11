@@ -1,0 +1,23 @@
+opam-version: "2.0"
+added: [
+  "doc/pcre2" {"D"}
+  "doc/pcre2/CHANGELOG.md" {"F:S1623T1791655427.97"}
+  "doc/pcre2/LICENSE.md" {"F:S27415T1791655427.97"}
+  "doc/pcre2/README.md" {"F:S4193T1791655427.97"}
+  "lib/pcre2" {"D"}
+  "lib/pcre2/META" {"F:S164T1791655427.96"}
+  "lib/pcre2/dune-package" {"F:S905T1791655427.96"}
+  "lib/pcre2/libpcre2_stubs.a" {"F:S92406T1791655427.96"}
+  "lib/pcre2/opam" {"F:S1012T1791655427.96"}
+  "lib/pcre2/pcre2.a" {"F:S129270T1791655427.96"}
+  "lib/pcre2/pcre2.cma" {"F:S205279T1791655427.96"}
+  "lib/pcre2/pcre2.cmi" {"F:S20087T1791655427.96"}
+  "lib/pcre2/pcre2.cmt" {"F:S479835T1791655427.96"}
+  "lib/pcre2/pcre2.cmti" {"F:S153146T1791655427.96"}
+  "lib/pcre2/pcre2.cmx" {"F:S13287T1791655427.96"}
+  "lib/pcre2/pcre2.cmxa" {"F:S1100T1791655427.96"}
+  "lib/pcre2/pcre2.cmxs" {"F:S199168T1791655427.97"}
+  "lib/pcre2/pcre2.ml" {"F:S41783T1791655427.97"}
+  "lib/pcre2/pcre2.mli" {"F:S37900T1791655427.97"}
+  "lib/stublibs/dllpcre2_stubs.so" {"F:S69800T1791655427.97"}
+]

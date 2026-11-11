@@ -1,0 +1,74 @@
+opam-version: "2.0"
+added: [
+  "doc/dune-private-libs" {"D"}
+  "doc/dune-private-libs/CHANGES.md" {"F:S217385T1791655425.93"}
+  "doc/dune-private-libs/LICENSE.md" {"F:S1111T1791655425.93"}
+  "doc/dune-private-libs/README.md" {"F:S5829T1791655425.93"}
+  "lib/dune-private-libs" {"D"}
+  "lib/dune-private-libs/META" {"F:S600T1791655425.92"}
+  "lib/dune-private-libs/dune-package" {"F:S3274T1791655425.92"}
+  "lib/dune-private-libs/dune-section/dune_section.a"
+    {"F:S10214T1791655425.93"}
+  "lib/dune-private-libs/dune-section/dune_section.cma"
+    {"F:S5102T1791655425.93"}
+  "lib/dune-private-libs/dune-section/dune_section.cmi"
+    {"F:S1167T1791655425.93"}
+  "lib/dune-private-libs/dune-section/dune_section.cmt"
+    {"F:S11905T1791655425.93"}
+  "lib/dune-private-libs/dune-section/dune_section.cmti"
+    {"F:S6062T1791655425.93"}
+  "lib/dune-private-libs/dune-section/dune_section.cmx"
+    {"F:S1902T1791655425.93"}
+  "lib/dune-private-libs/dune-section/dune_section.cmxa"
+    {"F:S328T1791655425.93"}
+  "lib/dune-private-libs/dune-section/dune_section.cmxs"
+    {"F:S25056T1791655425.93"}
+  "lib/dune-private-libs/dune-section/dune_section.ml"
+    {"F:S650T1791655425.93"}
+  "lib/dune-private-libs/dune-section/dune_section.mli"
+    {"F:S252T1791655425.93"}
+  "lib/dune-private-libs/meta_parser/dune_meta_parser.a"
+    {"F:S43486T1791655425.93"}
+  "lib/dune-private-libs/meta_parser/dune_meta_parser.cma"
+    {"F:S42636T1791655425.93"}
+  "lib/dune-private-libs/meta_parser/dune_meta_parser.cmi"
+    {"F:S436T1791655425.93"}
+  "lib/dune-private-libs/meta_parser/dune_meta_parser.cmt"
+    {"F:S3596T1791655425.93"}
+  "lib/dune-private-libs/meta_parser/dune_meta_parser.cmx"
+    {"F:S234T1791655425.93"}
+  "lib/dune-private-libs/meta_parser/dune_meta_parser.cmxa"
+    {"F:S1648T1791655425.93"}
+  "lib/dune-private-libs/meta_parser/dune_meta_parser.cmxs"
+    {"F:S48472T1791655425.93"}
+  "lib/dune-private-libs/meta_parser/dune_meta_parser.ml"
+    {"F:S64T1791655425.93"}
+  "lib/dune-private-libs/meta_parser/dune_meta_parser__.cmi"
+    {"F:S619T1791655425.93"}
+  "lib/dune-private-libs/meta_parser/dune_meta_parser__.cmt"
+    {"F:S4350T1791655425.93"}
+  "lib/dune-private-libs/meta_parser/dune_meta_parser__.cmx"
+    {"F:S223T1791655425.93"}
+  "lib/dune-private-libs/meta_parser/dune_meta_parser__.ml"
+    {"F:S300T1791655425.93"}
+  "lib/dune-private-libs/meta_parser/dune_meta_parser__Meta_lexer.cmi"
+    {"F:S1135T1791655425.93"}
+  "lib/dune-private-libs/meta_parser/dune_meta_parser__Meta_lexer.cmt"
+    {"F:S32684T1791655425.93"}
+  "lib/dune-private-libs/meta_parser/dune_meta_parser__Meta_lexer.cmti"
+    {"F:S6125T1791655425.93"}
+  "lib/dune-private-libs/meta_parser/dune_meta_parser__Meta_lexer.cmx"
+    {"F:S4189T1791655425.93"}
+  "lib/dune-private-libs/meta_parser/dune_meta_parser__Meta_parser.cmi"
+    {"F:S4969T1791655425.93"}
+  "lib/dune-private-libs/meta_parser/dune_meta_parser__Meta_parser.cmt"
+    {"F:S62301T1791655425.93"}
+  "lib/dune-private-libs/meta_parser/dune_meta_parser__Meta_parser.cmx"
+    {"F:S1836T1791655425.93"}
+  "lib/dune-private-libs/meta_parser/meta_lexer.ml"
+    {"F:S16518T1791655425.93"}
+  "lib/dune-private-libs/meta_parser/meta_lexer.mli" {"F:S248T1791655425.93"}
+  "lib/dune-private-libs/meta_parser/meta_parser.ml"
+    {"F:S5053T1791655425.93"}
+  "lib/dune-private-libs/opam" {"F:S1047T1791655425.93"}
+]

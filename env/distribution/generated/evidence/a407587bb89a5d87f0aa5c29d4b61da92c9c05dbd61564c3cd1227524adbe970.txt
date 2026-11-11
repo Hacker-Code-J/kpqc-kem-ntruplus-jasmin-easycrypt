@@ -1,0 +1,31 @@
+opam-version: "2.0"
+added: [
+  "doc/pp_loc" {"D"}
+  "doc/pp_loc/CHANGES" {"F:S611T1737446806.95"}
+  "doc/pp_loc/LICENSE" {"F:S1083T1737446806.95"}
+  "doc/pp_loc/README.md" {"F:S881T1737446806.95"}
+  "lib/pp_loc" {"D"}
+  "lib/pp_loc/.private/pp_loc__Line_offsets.cmi" {"F:S977T1737446806.95"}
+  "lib/pp_loc/.private/pp_loc__Line_offsets.cmt" {"F:S35479T1737446806.95"}
+  "lib/pp_loc/.private/pp_loc__Line_offsets.cmti" {"F:S5436T1737446806.95"}
+  "lib/pp_loc/META" {"F:S170T1737446806.95"}
+  "lib/pp_loc/dune-package" {"F:S1391T1737446806.95"}
+  "lib/pp_loc/line_offsets.ml" {"F:S2222T1737446806.95"}
+  "lib/pp_loc/line_offsets.mli" {"F:S256T1737446806.95"}
+  "lib/pp_loc/opam" {"F:S1159T1737446806.95"}
+  "lib/pp_loc/pp_loc.a" {"F:S74452T1737446806.95"}
+  "lib/pp_loc/pp_loc.cma" {"F:S90964T1737446806.95"}
+  "lib/pp_loc/pp_loc.cmi" {"F:S3213T1737446806.95"}
+  "lib/pp_loc/pp_loc.cmt" {"F:S162339T1737446806.95"}
+  "lib/pp_loc/pp_loc.cmti" {"F:S25216T1737446806.95"}
+  "lib/pp_loc/pp_loc.cmx" {"F:S4030T1737446806.95"}
+  "lib/pp_loc/pp_loc.cmxa" {"F:S1465T1737446806.95"}
+  "lib/pp_loc/pp_loc.cmxs" {"F:S84032T1737446806.95"}
+  "lib/pp_loc/pp_loc.ml" {"F:S13797T1737446806.95"}
+  "lib/pp_loc/pp_loc.mli" {"F:S6091T1737446806.95"}
+  "lib/pp_loc/pp_loc__.cmi" {"F:S224T1737446806.95"}
+  "lib/pp_loc/pp_loc__.cmt" {"F:S2613T1737446806.95"}
+  "lib/pp_loc/pp_loc__.cmx" {"F:S123T1737446806.95"}
+  "lib/pp_loc/pp_loc__.ml" {"F:S106T1737446806.95"}
+  "lib/pp_loc/pp_loc__Line_offsets.cmx" {"F:S1574T1737446806.95"}
+]

@@ -1,0 +1,29 @@
+opam-version: "2.0"
+lib: [
+  "_build/install/default/lib/pprint/META"
+  "_build/install/default/lib/pprint/PPrint.ml"
+  "_build/install/default/lib/pprint/PPrint.mli"
+  "_build/install/default/lib/pprint/PPrintEngine.ml"
+  "_build/install/default/lib/pprint/PPrintEngine.mli"
+  "_build/install/default/lib/pprint/dune-package"
+  "_build/install/default/lib/pprint/opam"
+  "_build/install/default/lib/pprint/pPrint.cmi"
+  "_build/install/default/lib/pprint/pPrint.cmt"
+  "_build/install/default/lib/pprint/pPrint.cmti"
+  "_build/install/default/lib/pprint/pPrint.cmx"
+  "_build/install/default/lib/pprint/pPrintEngine.cmi"
+  "_build/install/default/lib/pprint/pPrintEngine.cmt"
+  "_build/install/default/lib/pprint/pPrintEngine.cmti"
+  "_build/install/default/lib/pprint/pPrintEngine.cmx"
+  "_build/install/default/lib/pprint/pprint.a"
+  "_build/install/default/lib/pprint/pprint.cma"
+  "_build/install/default/lib/pprint/pprint.cmxa"
+]
+doc: [
+  "_build/install/default/doc/pprint/CHANGES.md"
+  "_build/install/default/doc/pprint/LICENSE"
+  "_build/install/default/doc/pprint/README.md"
+  "_build/install/default/doc/pprint/odoc-pages/index.mld"
+    {"odoc-pages/index.mld"}
+]
+libexec: "_build/install/default/lib/pprint/pprint.cmxs"

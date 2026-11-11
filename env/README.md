@@ -72,6 +72,16 @@ is a candidate release attachment requiring its own provenance/license review.
 Repository MIT terms do not replace the terms of the captured third-party
 tools, libraries or system package.
 
+The [distribution companion](distribution/README.md) now attributes all 3,145
+captured files across 150 components and preserves 169 original notice texts.
+Its separate source-material companion contains 124 digest-identified blobs,
+including upstream archives, pinned Git snapshots and registered build patches.
+These materials are additional attachments; the tested runtime archive and its
+manifest are unchanged. Three exact Ubuntu source-package payloads still need
+acquisition through the prepared signed-index recipe, and component/build-option
+limits remain explicit in the inventory. The companion is not a blanket
+redistribution clearance for the binary package.
+
 ## Reconstructing the expected layout
 
 Use a supported, isolated Linux x86-64 environment that exposes each captured

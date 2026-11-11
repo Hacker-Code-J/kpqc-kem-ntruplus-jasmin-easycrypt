@@ -1,0 +1,46 @@
+opam-version: "2.0"
+added: [
+  "doc/secp256k1-internal" {"D"}
+  "doc/secp256k1-internal/LICENSE" {"F:S1154T1746706824.72"}
+  "lib/secp256k1-internal" {"D"}
+  "lib/secp256k1-internal/META" {"F:S271T1746706824.68"}
+  "lib/secp256k1-internal/dune-package" {"F:S2106T1746706824.68"}
+  "lib/secp256k1-internal/external.ml" {"F:S16439T1746706824.68"}
+  "lib/secp256k1-internal/external.mli" {"F:S7483T1746706824.68"}
+  "lib/secp256k1-internal/internal.ml" {"F:S10968T1746706824.68"}
+  "lib/secp256k1-internal/internal.mli" {"F:S11753T1746706824.68"}
+  "lib/secp256k1-internal/liblibsecp256k1_precomputed.a"
+    {"F:S1124268T1746706824.68"}
+  "lib/secp256k1-internal/liblibsecp256k1_stubs.a"
+    {"F:S677202T1746706824.69"}
+  "lib/secp256k1-internal/libsecp256k1.a" {"F:S126050T1746706824.69"}
+  "lib/secp256k1-internal/libsecp256k1.cma" {"F:S156022T1746706824.69"}
+  "lib/secp256k1-internal/libsecp256k1.cmi" {"F:S335T1746706824.69"}
+  "lib/secp256k1-internal/libsecp256k1.cmt" {"F:S3061T1746706824.71"}
+  "lib/secp256k1-internal/libsecp256k1.cmx" {"F:S155T1746706824.71"}
+  "lib/secp256k1-internal/libsecp256k1.cmxa" {"F:S1487T1746706824.71"}
+  "lib/secp256k1-internal/libsecp256k1.cmxs" {"F:S1676312T1746706824.72"}
+  "lib/secp256k1-internal/libsecp256k1.ml" {"F:S188T1746706824.71"}
+  "lib/secp256k1-internal/libsecp256k1__External.cmi"
+    {"F:S10789T1746706824.71"}
+  "lib/secp256k1-internal/libsecp256k1__External.cmt"
+    {"F:S196366T1746706824.71"}
+  "lib/secp256k1-internal/libsecp256k1__External.cmti"
+    {"F:S53656T1746706824.71"}
+  "lib/secp256k1-internal/libsecp256k1__External.cmx"
+    {"F:S7141T1746706824.71"}
+  "lib/secp256k1-internal/libsecp256k1__Internal.cmi"
+    {"F:S13949T1746706824.71"}
+  "lib/secp256k1-internal/libsecp256k1__Internal.cmt"
+    {"F:S129494T1746706824.71"}
+  "lib/secp256k1-internal/libsecp256k1__Internal.cmti"
+    {"F:S74790T1746706824.71"}
+  "lib/secp256k1-internal/libsecp256k1__Internal.cmx"
+    {"F:S14994T1746706824.71"}
+  "lib/secp256k1-internal/opam" {"F:S967T1746706824.71"}
+  "lib/secp256k1-internal/runtime.js" {"F:S13868T1746706824.71"}
+  "lib/secp256k1-internal/runtime_helper.js" {"F:S3401T1746706824.71"}
+  "lib/secp256k1-internal/runtime_wrap.js" {"F:S7197T1746706824.71"}
+  "lib/stublibs/dlllibsecp256k1_precomputed.so" {"F:S1132592T1746706824.72"}
+  "lib/stublibs/dlllibsecp256k1_stubs.so" {"F:S439552T1746706824.72"}
+]

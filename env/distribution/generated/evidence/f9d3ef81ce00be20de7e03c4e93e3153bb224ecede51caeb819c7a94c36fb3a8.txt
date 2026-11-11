@@ -1,0 +1,20 @@
+opam-version: "2.0"
+lib: [
+  "_build/install/default/lib/spelll/META"
+  "_build/install/default/lib/spelll/Spelll.ml"
+  "_build/install/default/lib/spelll/Spelll.mli"
+  "_build/install/default/lib/spelll/dune-package"
+  "_build/install/default/lib/spelll/opam"
+  "_build/install/default/lib/spelll/spelll.a"
+  "_build/install/default/lib/spelll/spelll.cma"
+  "_build/install/default/lib/spelll/spelll.cmi"
+  "_build/install/default/lib/spelll/spelll.cmt"
+  "_build/install/default/lib/spelll/spelll.cmti"
+  "_build/install/default/lib/spelll/spelll.cmx"
+  "_build/install/default/lib/spelll/spelll.cmxa"
+]
+doc: [
+  "_build/install/default/doc/spelll/LICENSE"
+  "_build/install/default/doc/spelll/README.md"
+]
+libexec: "_build/install/default/lib/spelll/spelll.cmxs"

@@ -1,0 +1,12 @@
+opam-version: "2.0"
+lib: [
+  "_destdir/home/hacker-code-j/.opam/ocaml-base-compiler.4.12.0/lib/coq/META"
+  "_destdir/home/hacker-code-j/.opam/ocaml-base-compiler.4.12.0/lib/coq/dune-package"
+  "_build/install/default/lib/coq/opam"
+]
+doc: [
+  "_build/install/default/doc/coq/LICENSE"
+  "_build/install/default/doc/coq/README.md"
+  "_build/install/default/doc/coq/odoc-pages/index.mld"
+    {"odoc-pages/index.mld"}
+]

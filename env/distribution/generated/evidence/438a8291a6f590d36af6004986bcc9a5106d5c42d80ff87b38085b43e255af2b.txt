@@ -1,0 +1,21 @@
+opam-version: "2.0"
+lib: [
+  "_build/install/default/lib/qcheck/META"
+  "_build/install/default/lib/qcheck/QCheck_runner.ml"
+  "_build/install/default/lib/qcheck/dune-package"
+  "_build/install/default/lib/qcheck/opam"
+  "_build/install/default/lib/qcheck/qCheck_runner.cmi"
+  "_build/install/default/lib/qcheck/qCheck_runner.cmt"
+  "_build/install/default/lib/qcheck/qCheck_runner.cmx"
+  "_build/install/default/lib/qcheck/qcheck.a"
+  "_build/install/default/lib/qcheck/qcheck.cma"
+  "_build/install/default/lib/qcheck/qcheck.cmxa"
+]
+doc: [
+  "_build/install/default/doc/qcheck/CHANGELOG.md"
+  "_build/install/default/doc/qcheck/LICENSE"
+  "_build/install/default/doc/qcheck/README.adoc"
+  "_build/install/default/doc/qcheck/odoc-pages/index.mld"
+    {"odoc-pages/index.mld"}
+]
+libexec: "_build/install/default/lib/qcheck/qcheck.cmxs"

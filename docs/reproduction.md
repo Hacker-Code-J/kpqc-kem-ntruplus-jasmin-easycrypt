@@ -11,7 +11,9 @@ hash-pinned evidence; that is not a fresh replay of every imported theorem.
 Clone this repository at the commit or release cited by the paper, then run:
 
 ```sh
-git submodule update --init --recursive
+git submodule update --init external/formosa-mlkem
+git clone --no-checkout dependencies/crypto-specs-fb050598ed35.bundle external/formosa-mlkem/crypto-specs
+git -C external/formosa-mlkem/crypto-specs checkout --detach fb050598ed356c5c6604d92a1e198b2dd4543777
 python3 --version
 python3 scripts/reproduce.py list
 ```
@@ -20,20 +22,43 @@ For a source archive without the parent repository's Git metadata, obtain the
 external dependency explicitly instead of running `git submodule` at its root:
 
 ```sh
-git clone --no-checkout https://github.com/formosa-crypto/formosa-mlkem.git external/formosa-mlkem
+git clone --no-checkout https://github.com/formosa-crypto/formosa-libjade.git external/formosa-mlkem
 git -C external/formosa-mlkem checkout --detach 475b87434506280fdfa1a1ba5da0af3787e00579
-git -C external/formosa-mlkem submodule update --init --recursive
+git clone --no-checkout /path/to/crypto-specs-fb050598ed35.bundle external/formosa-mlkem/crypto-specs
+git -C external/formosa-mlkem/crypto-specs checkout --detach fb050598ed356c5c6604d92a1e198b2dd4543777
 ```
 
-The source archive does not embed the external repository. Retain the pinned
-commit and its recursive dependencies; their upstream terms are described in
+The tested source archive does not embed the external repositories. Retain the
+Formosa commit and exact `crypto-specs` dependency; their upstream terms are described in
 [THIRD_PARTY.md](../THIRD_PARTY.md). Source smoke and the C baseline do not need
 these external proof libraries.
 
+The old `crypto-specs` URL also became a move notice and did not serve the
+required historical commit in the inspected endpoints. The
+[CC0 recovery bundle](../dependencies/README.md) restores that exact commit
+offline and was checked against all 136 source files. It is included in current
+checkouts and the separate publication companion, not retroactively inserted
+into the immutable tested source archive. Verify its documented checksum and
+use a fresh dependency path; keep an existing checkout already at the exact pin.
+
+The public NTRU+ verification entry points use Formosa's `proof/eclib` and
+`crypto-specs` subtrees. The upstream repository's other benchmark, implementation
+and compiler submodules are not required by these entry points. The documented
+Jasmin compiler and installed model library are configured separately below.
+
+The upstream repository moved to `formosa-crypto/formosa-libjade`. The local
+directory remains `external/formosa-mlkem`, and the required commit remains
+`475b87434506280fdfa1a1ba5da0af3787e00579`. On 2026-11-12, a fresh fetch from
+the successor verified the exact original commit and tree. The old remote now
+contains a move notice rather than the original history. For a checkout made
+before this URL update, use `git submodule sync -- external/formosa-mlkem`
+before updating its dependencies. A pre-update source archive can use the
+explicit successor-clone commands above without changing proof source pins.
+
 The wrapper requires Python 3.10 or later. C baseline tests additionally require
 Bash, GCC (or a compatible compiler selected by `CC`), and standard Unix tools.
-Proof and Jasmin targets need the matching compiler/proof environment and recursive
-Formosa dependencies. The documented extraction baseline is Jasmin 2026.09.0 and
+Proof and Jasmin targets need the matching compiler/proof environment and the
+pinned Formosa/crypto-specs proof libraries. The documented extraction baseline is Jasmin 2026.09.0 and
 Why3 1.8.2. Some algebraic targets also use Coq 8.20.1 and MathComp 2.2.
 
 See [toolchain-observed.json](toolchain-observed.json) for the locally observed

@@ -1,0 +1,21 @@
+opam-version: "2.0"
+added: [
+  "doc/qcheck-ounit" {"D"}
+  "doc/qcheck-ounit/CHANGELOG.md" {"F:S14868T1746706824.93"}
+  "doc/qcheck-ounit/LICENSE" {"F:S1337T1746706824.93"}
+  "doc/qcheck-ounit/README.adoc" {"F:S15506T1746706824.93"}
+  "lib/qcheck-ounit" {"D"}
+  "lib/qcheck-ounit/META" {"F:S233T1746706824.93"}
+  "lib/qcheck-ounit/QCheck_ounit.ml" {"F:S7296T1746706824.93"}
+  "lib/qcheck-ounit/QCheck_ounit.mli" {"F:S3119T1746706824.93"}
+  "lib/qcheck-ounit/dune-package" {"F:S873T1746706824.93"}
+  "lib/qcheck-ounit/opam" {"F:S748T1746706824.93"}
+  "lib/qcheck-ounit/qCheck_ounit.cmi" {"F:S2941T1746706824.93"}
+  "lib/qcheck-ounit/qCheck_ounit.cmt" {"F:S112027T1746706824.93"}
+  "lib/qcheck-ounit/qCheck_ounit.cmti" {"F:S16177T1746706824.93"}
+  "lib/qcheck-ounit/qCheck_ounit.cmx" {"F:S4838T1746706824.93"}
+  "lib/qcheck-ounit/qcheck_ounit.a" {"F:S54644T1746706824.93"}
+  "lib/qcheck-ounit/qcheck_ounit.cma" {"F:S44560T1746706824.93"}
+  "lib/qcheck-ounit/qcheck_ounit.cmxa" {"F:S1796T1746706824.93"}
+  "lib/qcheck-ounit/qcheck_ounit.cmxs" {"F:S70072T1746706824.93"}
+]

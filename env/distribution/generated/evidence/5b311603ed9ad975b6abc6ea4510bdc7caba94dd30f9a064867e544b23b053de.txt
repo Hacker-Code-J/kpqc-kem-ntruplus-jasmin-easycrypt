@@ -1,0 +1,20 @@
+opam-version: "2.0"
+lib: [
+  "_build/install/default/lib/bigstring/META"
+  "_build/install/default/lib/bigstring/bigstring.a"
+  "_build/install/default/lib/bigstring/bigstring.cma"
+  "_build/install/default/lib/bigstring/bigstring.cmi"
+  "_build/install/default/lib/bigstring/bigstring.cmt"
+  "_build/install/default/lib/bigstring/bigstring.cmti"
+  "_build/install/default/lib/bigstring/bigstring.cmx"
+  "_build/install/default/lib/bigstring/bigstring.cmxa"
+  "_build/install/default/lib/bigstring/bigstring.ml"
+  "_build/install/default/lib/bigstring/bigstring.mli"
+  "_build/install/default/lib/bigstring/dune-package"
+  "_build/install/default/lib/bigstring/opam"
+]
+doc: [
+  "_build/install/default/doc/bigstring/LICENSE"
+  "_build/install/default/doc/bigstring/README.adoc"
+]
+libexec: "_build/install/default/lib/bigstring/bigstring.cmxs"

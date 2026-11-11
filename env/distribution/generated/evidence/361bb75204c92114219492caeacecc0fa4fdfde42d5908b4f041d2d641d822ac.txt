@@ -1,0 +1,12 @@
+opam-version: "2.0"
+added: [
+  "lib/process" {"D"}
+  "lib/process/META" {"F:S241T1472728455."}
+  "lib/process/process.a" {"F:S33204T1746706825.66"}
+  "lib/process/process.cma" {"F:S47289T1746706825.55"}
+  "lib/process/process.cmi" {"F:S4227T1746706825.49"}
+  "lib/process/process.cmti" {"F:S17617T1746706825.49"}
+  "lib/process/process.cmx" {"F:S2046T1746706825.58"}
+  "lib/process/process.cmxa" {"F:S880T1746706825.66"}
+  "lib/process/process.mli" {"F:S1958T1746706825.46"}
+]

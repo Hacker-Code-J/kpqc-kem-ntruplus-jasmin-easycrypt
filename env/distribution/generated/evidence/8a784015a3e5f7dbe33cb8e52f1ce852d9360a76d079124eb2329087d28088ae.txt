@@ -1,0 +1,38 @@
+opam-version: "2.0"
+added: [
+  "doc/qcheck-core" {"D"}
+  "doc/qcheck-core/CHANGELOG.md" {"F:S14868T1746706823.18"}
+  "doc/qcheck-core/LICENSE" {"F:S1337T1746706823.18"}
+  "doc/qcheck-core/README.adoc" {"F:S15506T1746706823.18"}
+  "doc/qcheck-core/odoc-pages/index.mld" {"F:S1168T1746706823.18"}
+  "lib/qcheck-core" {"D"}
+  "lib/qcheck-core/META" {"F:S456T1746706823.17"}
+  "lib/qcheck-core/QCheck.ml" {"F:S60585T1746706823.17"}
+  "lib/qcheck-core/QCheck.mli" {"F:S67083T1746706823.17"}
+  "lib/qcheck-core/QCheck2.ml" {"F:S78126T1746706823.17"}
+  "lib/qcheck-core/QCheck2.mli" {"F:S73179T1746706823.17"}
+  "lib/qcheck-core/dune-package" {"F:S1836T1746706823.17"}
+  "lib/qcheck-core/opam" {"F:S778T1746706823.17"}
+  "lib/qcheck-core/qCheck.cmi" {"F:S68929T1746706823.17"}
+  "lib/qcheck-core/qCheck.cmt" {"F:S1279682T1746706823.17"}
+  "lib/qcheck-core/qCheck.cmti" {"F:S419787T1746706823.17"}
+  "lib/qcheck-core/qCheck.cmx" {"F:S40157T1746706823.17"}
+  "lib/qcheck-core/qCheck2.cmi" {"F:S49861T1746706823.17"}
+  "lib/qcheck-core/qCheck2.cmt" {"F:S1272799T1746706823.18"}
+  "lib/qcheck-core/qCheck2.cmti" {"F:S352936T1746706823.18"}
+  "lib/qcheck-core/qCheck2.cmx" {"F:S38407T1746706823.18"}
+  "lib/qcheck-core/qcheck_core.a" {"F:S808106T1746706823.18"}
+  "lib/qcheck-core/qcheck_core.cma" {"F:S1084253T1746706823.18"}
+  "lib/qcheck-core/qcheck_core.cmxa" {"F:S3526T1746706823.18"}
+  "lib/qcheck-core/qcheck_core.cmxs" {"F:S818504T1746706823.18"}
+  "lib/qcheck-core/runner/QCheck_base_runner.ml" {"F:S16838T1746706823.18"}
+  "lib/qcheck-core/runner/QCheck_base_runner.mli" {"F:S7615T1746706823.18"}
+  "lib/qcheck-core/runner/qCheck_base_runner.cmi" {"F:S6123T1746706823.18"}
+  "lib/qcheck-core/runner/qCheck_base_runner.cmt" {"F:S239099T1746706823.18"}
+  "lib/qcheck-core/runner/qCheck_base_runner.cmti" {"F:S36909T1746706823.18"}
+  "lib/qcheck-core/runner/qCheck_base_runner.cmx" {"F:S7117T1746706823.18"}
+  "lib/qcheck-core/runner/qcheck_runner.a" {"F:S99012T1746706823.18"}
+  "lib/qcheck-core/runner/qcheck_runner.cma" {"F:S116061T1746706823.18"}
+  "lib/qcheck-core/runner/qcheck_runner.cmxa" {"F:S1216T1746706823.18"}
+  "lib/qcheck-core/runner/qcheck_runner.cmxs" {"F:S124208T1746706823.18"}
+]

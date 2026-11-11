@@ -1,0 +1,16 @@
+opam-version: "2.0"
+lib: [
+  "META"
+  "lib/com.cma"
+  "lib/com.cmxa"
+  "lib/com.cmi"
+  "?lib/com.a"
+  "?lib/com.lib"
+  "?runtime/libcamlidl.a"
+  "?runtime/libcamlidl.lib"
+  "?runtime/cfactory.obj"
+  "?runtime/cfactory.o"
+  "runtime/camlidlruntime.h" {"caml/camlidlruntime.h"}
+]
+bin: ["?compiler/camlidl" "?compiler/camlidl.exe"]
+stublibs: ["?runtime/dllcamlidl.so" "?runtime/dllcamlidl.dll"]

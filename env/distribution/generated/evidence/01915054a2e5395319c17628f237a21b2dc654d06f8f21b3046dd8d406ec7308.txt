@@ -1,0 +1,40 @@
+opam-version: "2.0"
+added: [
+  "lib/wasm" {"D"}
+  "lib/wasm/META" {"F:S157T1690184952."}
+  "lib/wasm/arrange.mli" {"F:S172T1690184952."}
+  "lib/wasm/data.mli" {"F:S152T1690184952."}
+  "lib/wasm/decode.mli" {"F:S188T1690184952."}
+  "lib/wasm/elem.mli" {"F:S161T1690184952."}
+  "lib/wasm/encode.mli" {"F:S146T1690184952."}
+  "lib/wasm/error.mli" {"F:S180T1690184952."}
+  "lib/wasm/eval.mli" {"F:S345T1690184952."}
+  "lib/wasm/eval_num.mli" {"F:S234T1690184952."}
+  "lib/wasm/eval_vec.mli" {"F:S736T1690184952."}
+  "lib/wasm/f32_convert.mli" {"F:S278T1690184952."}
+  "lib/wasm/f64_convert.mli" {"F:S279T1690184952."}
+  "lib/wasm/free.mli" {"F:S701T1690184952."}
+  "lib/wasm/func.mli" {"F:S333T1690184952."}
+  "lib/wasm/global.mli" {"F:S283T1690184952."}
+  "lib/wasm/i32_convert.mli" {"F:S416T1690184952."}
+  "lib/wasm/i64_convert.mli" {"F:S454T1690184952."}
+  "lib/wasm/import.mli" {"F:S229T1690184952."}
+  "lib/wasm/js.mli" {"F:S40T1690184952."}
+  "lib/wasm/lexer.mli" {"F:S118T1690184952."}
+  "lib/wasm/lib.mli" {"F:S2383T1690184952."}
+  "lib/wasm/memory.mli" {"F:S1522T1690184952."}
+  "lib/wasm/parse.mli" {"F:S400T1690184952."}
+  "lib/wasm/print.mli" {"F:S239T1690184952."}
+  "lib/wasm/run.mli" {"F:S244T1690184952."}
+  "lib/wasm/sexpr.mli" {"F:S180T1690184952."}
+  "lib/wasm/source.mli" {"F:S322T1690184952."}
+  "lib/wasm/table.mli" {"F:S620T1690184952."}
+  "lib/wasm/utf8.mli" {"F:S166T1690184952."}
+  "lib/wasm/v128.mli" {"F:S4694T1690184952."}
+  "lib/wasm/valid.mli" {"F:S105T1690184952."}
+  "lib/wasm/wasm.cmi" {"F:S224852T1746706849.68"}
+  "lib/wasm/wasm.cmo" {"F:S3337435T1746706849.74"}
+  "lib/wasm/wasm.cmt" {"F:S229681T1746706849.88"}
+  "lib/wasm/wasm.cmx" {"F:S207680T1746706849.94"}
+  "lib/wasm/wasm.o" {"F:S2311144T1746706849.93"}
+]

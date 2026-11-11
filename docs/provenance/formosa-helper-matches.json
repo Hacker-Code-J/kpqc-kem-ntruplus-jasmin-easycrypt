@@ -1,0 +1,447 @@
+{
+  "schema": 1,
+  "checked_on": "2026-11-12",
+  "old_revision": "475b87434506280fdfa1a1ba5da0af3787e00579",
+  "licensed_revision": "589038bbae572525ff6a8281f6bc07fa5a31ff7b",
+  "licensed_repository": "formosa-crypto/formosa-libjade",
+  "old_ec_file_count": 21,
+  "matched_files": 5,
+  "unmatched_files": 16,
+  "matching_scope": "Every blob outside bench/ in the complete licensed revision tree; not only same-path candidates. Git submodule contents were not traversed.",
+  "license_expression_of_reviewed_revision": "CC0-1.0 OR Apache-2.0",
+  "license_scope_limit": "Only exact matched files are mapped to the later declaration. No retroactive assertion for old revision, no authorization inferred for unmatched bytes.",
+  "files": [
+    {
+      "old_path": "proof/eclib/AVX2_Ops.ec",
+      "old_git_blob": "b26a288e04c2a9d7de6b3aed8510a1a69596e7d7",
+      "old_sha256": "01f8ebebf6f2d3b39808577edb9b7578eaef785e0df4bce5fcb6ac7b9477e0e7",
+      "bytes": 70334,
+      "old_url": "https://github.com/formosa-crypto/formosa-libjade/blob/475b87434506280fdfa1a1ba5da0af3787e00579/proof/eclib/AVX2_Ops.ec",
+      "exact_matches": [],
+      "status": "NO_IDENTICAL_NON_BENCH_BLOB_AT_REVIEWED_REVISION",
+      "license_marker_lines": [],
+      "same_relative_path_at_successor": {
+        "path": "proofs/mlkem/eclib/AVX2_Ops.ec",
+        "mode": "100644",
+        "kind": "blob",
+        "blob": "a0594c2e5ffddedff25e6081a0e5bfb321faa4af",
+        "sha256": "8ae03cfb949ecac214ed3e7e4ea1addc7277f170af1fa8913aa8545f4a385e3c",
+        "bytes": 73549
+      },
+      "runtime_bound_source_pin_present": true,
+      "runtime_bound_source_pin_matches": true
+    },
+    {
+      "old_path": "proof/eclib/Fastexp.ec",
+      "old_git_blob": "f7c412959f8d359619e592b8152e9537fc227495",
+      "old_sha256": "a1f7a3562c743eab602cf98f6380339c63aa3824448380e570b1dcbbb3e450b3",
+      "bytes": 2852,
+      "old_url": "https://github.com/formosa-crypto/formosa-libjade/blob/475b87434506280fdfa1a1ba5da0af3787e00579/proof/eclib/Fastexp.ec",
+      "exact_matches": [
+        {
+          "path": "proofs/mlkem/eclib/Fastexp.ec",
+          "git_blob": "f7c412959f8d359619e592b8152e9537fc227495",
+          "sha256": "a1f7a3562c743eab602cf98f6380339c63aa3824448380e570b1dcbbb3e450b3",
+          "url": "https://github.com/formosa-crypto/formosa-libjade/blob/589038bbae572525ff6a8281f6bc07fa5a31ff7b/proofs/mlkem/eclib/Fastexp.ec"
+        }
+      ],
+      "status": "EXACT_LATER_LICENSED_BYTES",
+      "license_marker_lines": [],
+      "same_relative_path_at_successor": {
+        "path": "proofs/mlkem/eclib/Fastexp.ec",
+        "mode": "100644",
+        "kind": "blob",
+        "blob": "f7c412959f8d359619e592b8152e9537fc227495",
+        "sha256": "a1f7a3562c743eab602cf98f6380339c63aa3824448380e570b1dcbbb3e450b3",
+        "bytes": 2852
+      },
+      "runtime_bound_source_pin_present": true,
+      "runtime_bound_source_pin_matches": true
+    },
+    {
+      "old_path": "proof/eclib/For.ec",
+      "old_git_blob": "eb7531b0fbe41645597b178ebadad603520debc7",
+      "old_sha256": "9fe64ebefb5f410ba6f1f61bdfe865b91e48f648e2712c4d961debbc082d3207",
+      "bytes": 22761,
+      "old_url": "https://github.com/formosa-crypto/formosa-libjade/blob/475b87434506280fdfa1a1ba5da0af3787e00579/proof/eclib/For.ec",
+      "exact_matches": [
+        {
+          "path": "proofs/mlkem/eclib/For.ec",
+          "git_blob": "eb7531b0fbe41645597b178ebadad603520debc7",
+          "sha256": "9fe64ebefb5f410ba6f1f61bdfe865b91e48f648e2712c4d961debbc082d3207",
+          "url": "https://github.com/formosa-crypto/formosa-libjade/blob/589038bbae572525ff6a8281f6bc07fa5a31ff7b/proofs/mlkem/eclib/For.ec"
+        }
+      ],
+      "status": "EXACT_LATER_LICENSED_BYTES",
+      "license_marker_lines": [],
+      "same_relative_path_at_successor": {
+        "path": "proofs/mlkem/eclib/For.ec",
+        "mode": "100644",
+        "kind": "blob",
+        "blob": "eb7531b0fbe41645597b178ebadad603520debc7",
+        "sha256": "9fe64ebefb5f410ba6f1f61bdfe865b91e48f648e2712c4d961debbc082d3207",
+        "bytes": 22761
+      },
+      "runtime_bound_source_pin_present": true,
+      "runtime_bound_source_pin_matches": true
+    },
+    {
+      "old_path": "proof/eclib/IntDiv_extra.ec",
+      "old_git_blob": "eb2ec99baa63162740f87198091ddd57654d3f78",
+      "old_sha256": "c5fd737ff10710764827422a070eda6009d8ef466ef5d020628bdd61624731c4",
+      "bytes": 14983,
+      "old_url": "https://github.com/formosa-crypto/formosa-libjade/blob/475b87434506280fdfa1a1ba5da0af3787e00579/proof/eclib/IntDiv_extra.ec",
+      "exact_matches": [
+        {
+          "path": "proofs/mlkem/eclib/IntDiv_extra.ec",
+          "git_blob": "eb2ec99baa63162740f87198091ddd57654d3f78",
+          "sha256": "c5fd737ff10710764827422a070eda6009d8ef466ef5d020628bdd61624731c4",
+          "url": "https://github.com/formosa-crypto/formosa-libjade/blob/589038bbae572525ff6a8281f6bc07fa5a31ff7b/proofs/mlkem/eclib/IntDiv_extra.ec"
+        }
+      ],
+      "status": "EXACT_LATER_LICENSED_BYTES",
+      "license_marker_lines": [],
+      "same_relative_path_at_successor": {
+        "path": "proofs/mlkem/eclib/IntDiv_extra.ec",
+        "mode": "100644",
+        "kind": "blob",
+        "blob": "eb2ec99baa63162740f87198091ddd57654d3f78",
+        "sha256": "c5fd737ff10710764827422a070eda6009d8ef466ef5d020628bdd61624731c4",
+        "bytes": 14983
+      },
+      "runtime_bound_source_pin_present": true,
+      "runtime_bound_source_pin_matches": true
+    },
+    {
+      "old_path": "proof/eclib/JSafety.ec",
+      "old_git_blob": "d043d30f602e026770d6d12f6a12fe525e855cee",
+      "old_sha256": "ece3eaf58361feb5ecc442e3e3d3aee12fa0146552b87a40f4394ee46c85fa4c",
+      "bytes": 512,
+      "old_url": "https://github.com/formosa-crypto/formosa-libjade/blob/475b87434506280fdfa1a1ba5da0af3787e00579/proof/eclib/JSafety.ec",
+      "exact_matches": [],
+      "status": "NO_IDENTICAL_NON_BENCH_BLOB_AT_REVIEWED_REVISION",
+      "license_marker_lines": [],
+      "same_relative_path_at_successor": null,
+      "runtime_bound_source_pin_present": true,
+      "runtime_bound_source_pin_matches": true
+    },
+    {
+      "old_path": "proof/eclib/Jcheck.ec",
+      "old_git_blob": "feb330c3726fa79bf380ef5251b8579a9aa63432",
+      "old_sha256": "d3ce312b27ea600c5f762ab087db5d80379093b98adabcdf0f127fdfdc367aca",
+      "bytes": 1222,
+      "old_url": "https://github.com/formosa-crypto/formosa-libjade/blob/475b87434506280fdfa1a1ba5da0af3787e00579/proof/eclib/Jcheck.ec",
+      "exact_matches": [
+        {
+          "path": "proofs/mlkem/eclib/Jcheck.ec",
+          "git_blob": "feb330c3726fa79bf380ef5251b8579a9aa63432",
+          "sha256": "d3ce312b27ea600c5f762ab087db5d80379093b98adabcdf0f127fdfdc367aca",
+          "url": "https://github.com/formosa-crypto/formosa-libjade/blob/589038bbae572525ff6a8281f6bc07fa5a31ff7b/proofs/mlkem/eclib/Jcheck.ec"
+        }
+      ],
+      "status": "EXACT_LATER_LICENSED_BYTES",
+      "license_marker_lines": [],
+      "same_relative_path_at_successor": {
+        "path": "proofs/mlkem/eclib/Jcheck.ec",
+        "mode": "100644",
+        "kind": "blob",
+        "blob": "feb330c3726fa79bf380ef5251b8579a9aa63432",
+        "sha256": "d3ce312b27ea600c5f762ab087db5d80379093b98adabcdf0f127fdfdc367aca",
+        "bytes": 1222
+      },
+      "runtime_bound_source_pin_present": true,
+      "runtime_bound_source_pin_matches": true
+    },
+    {
+      "old_path": "proof/eclib/List_extra.ec",
+      "old_git_blob": "25399c8038ee146fbbb0d4e9ea60da3cd744e91d",
+      "old_sha256": "fb0af96f24bf169cf12d068a204434bd09d6755860b232500250422219df3657",
+      "bytes": 4049,
+      "old_url": "https://github.com/formosa-crypto/formosa-libjade/blob/475b87434506280fdfa1a1ba5da0af3787e00579/proof/eclib/List_extra.ec",
+      "exact_matches": [],
+      "status": "NO_IDENTICAL_NON_BENCH_BLOB_AT_REVIEWED_REVISION",
+      "license_marker_lines": [],
+      "same_relative_path_at_successor": null,
+      "runtime_bound_source_pin_present": true,
+      "runtime_bound_source_pin_matches": true
+    },
+    {
+      "old_path": "proof/eclib/MLKEMFCLib.ec",
+      "old_git_blob": "ef4b3d31f894301634f3f144524c487ad87fd60e",
+      "old_sha256": "158c5f09f86c653de61611f6b445df2c274b4d9d475c060b852b74451e5f59d1",
+      "bytes": 28839,
+      "old_url": "https://github.com/formosa-crypto/formosa-libjade/blob/475b87434506280fdfa1a1ba5da0af3787e00579/proof/eclib/MLKEMFCLib.ec",
+      "exact_matches": [],
+      "status": "NO_IDENTICAL_NON_BENCH_BLOB_AT_REVIEWED_REVISION",
+      "license_marker_lines": [],
+      "same_relative_path_at_successor": {
+        "path": "proofs/mlkem/eclib/MLKEMFCLib.ec",
+        "mode": "100644",
+        "kind": "blob",
+        "blob": "8e73c5721dc56f720d540dffa038d03337c6a318",
+        "sha256": "32eced2146ec2fd88c883487ea63f2d06accfee1d4ccc195048027a71c3c3b77",
+        "bytes": 32256
+      },
+      "runtime_bound_source_pin_present": true,
+      "runtime_bound_source_pin_matches": true
+    },
+    {
+      "old_path": "proof/eclib/Montgomery.ec",
+      "old_git_blob": "de6b363b5563743d20e8ab3c88d82f374e7c83b2",
+      "old_sha256": "b368ab1f72ed72060ce950cc1731cdd16479c7bae9a2ffade66a258498362ad3",
+      "bytes": 15457,
+      "old_url": "https://github.com/formosa-crypto/formosa-libjade/blob/475b87434506280fdfa1a1ba5da0af3787e00579/proof/eclib/Montgomery.ec",
+      "exact_matches": [],
+      "status": "NO_IDENTICAL_NON_BENCH_BLOB_AT_REVIEWED_REVISION",
+      "license_marker_lines": [],
+      "same_relative_path_at_successor": {
+        "path": "proofs/mlkem/eclib/Montgomery.ec",
+        "mode": "100644",
+        "kind": "blob",
+        "blob": "6fbb3e5bd8890b39ad61d3e360d86e84b88eff43",
+        "sha256": "a3d654894e7a391dba1af2537749c6e5155fa2a313d46f5d3b02c812a295cbe0",
+        "bytes": 15950
+      },
+      "runtime_bound_source_pin_present": true,
+      "runtime_bound_source_pin_matches": true
+    },
+    {
+      "old_path": "proof/eclib/Montgomery16.ec",
+      "old_git_blob": "f77a61c3175a340447c08df5521bb4baeb0fe692",
+      "old_sha256": "44e4a3b350ca158b33c87f09e045e6f14cd85a0546b4f78283b9ebced8975731",
+      "bytes": 19105,
+      "old_url": "https://github.com/formosa-crypto/formosa-libjade/blob/475b87434506280fdfa1a1ba5da0af3787e00579/proof/eclib/Montgomery16.ec",
+      "exact_matches": [],
+      "status": "NO_IDENTICAL_NON_BENCH_BLOB_AT_REVIEWED_REVISION",
+      "license_marker_lines": [],
+      "same_relative_path_at_successor": {
+        "path": "proofs/mlkem/eclib/Montgomery16.ec",
+        "mode": "100644",
+        "kind": "blob",
+        "blob": "109624aeb2440ab90fe6a3f3e919162c0d5e5671",
+        "sha256": "3aee5a266b75a56a54bbcf544815bfad859ccbab94fa988f383f0c1764d3385a",
+        "bytes": 19312
+      },
+      "runtime_bound_source_pin_present": true,
+      "runtime_bound_source_pin_matches": true
+    },
+    {
+      "old_path": "proof/eclib/NTTAlgebra.ec",
+      "old_git_blob": "9329c0ec71fd7f9846c555c78ddbf11df50b9f5a",
+      "old_sha256": "3b7bb15fa5c9a652679d2a150e21474e98d242c06c381e0d96d291ae2d0d4411",
+      "bytes": 220346,
+      "old_url": "https://github.com/formosa-crypto/formosa-libjade/blob/475b87434506280fdfa1a1ba5da0af3787e00579/proof/eclib/NTTAlgebra.ec",
+      "exact_matches": [],
+      "status": "NO_IDENTICAL_NON_BENCH_BLOB_AT_REVIEWED_REVISION",
+      "license_marker_lines": [],
+      "same_relative_path_at_successor": null,
+      "runtime_bound_source_pin_present": true,
+      "runtime_bound_source_pin_matches": true
+    },
+    {
+      "old_path": "proof/eclib/NTT_Fq.ec",
+      "old_git_blob": "f44bf58a5bd8b523416cdc80dd521c2eaacbc8b6",
+      "old_sha256": "8bda4506343dc94d09b3ce2e7f51e54a8584d2c9d2e660a8dc06ec5d0b5a58d8",
+      "bytes": 20800,
+      "old_url": "https://github.com/formosa-crypto/formosa-libjade/blob/475b87434506280fdfa1a1ba5da0af3787e00579/proof/eclib/NTT_Fq.ec",
+      "exact_matches": [],
+      "status": "NO_IDENTICAL_NON_BENCH_BLOB_AT_REVIEWED_REVISION",
+      "license_marker_lines": [],
+      "same_relative_path_at_successor": null,
+      "runtime_bound_source_pin_present": true,
+      "runtime_bound_source_pin_matches": true
+    },
+    {
+      "old_path": "proof/eclib/W16extra.ec",
+      "old_git_blob": "be82f55a1b96b0caec38c2e0217d083216e88118",
+      "old_sha256": "b3c603a6308d0922216a669a08e427ed74a35033a316c6f58ce16e8cc20adde6",
+      "bytes": 1791,
+      "old_url": "https://github.com/formosa-crypto/formosa-libjade/blob/475b87434506280fdfa1a1ba5da0af3787e00579/proof/eclib/W16extra.ec",
+      "exact_matches": [],
+      "status": "NO_IDENTICAL_NON_BENCH_BLOB_AT_REVIEWED_REVISION",
+      "license_marker_lines": [],
+      "same_relative_path_at_successor": null,
+      "runtime_bound_source_pin_present": true,
+      "runtime_bound_source_pin_matches": true
+    },
+    {
+      "old_path": "proof/eclib/W8extra.ec",
+      "old_git_blob": "94c7ae5c5e2a30bcd9b7a64c6e0ce38de893e685",
+      "old_sha256": "11aa6c2bcba543b43be63baf9cecfb943b47f02dcdd09c6a78eb1fbc69377180",
+      "bytes": 267,
+      "old_url": "https://github.com/formosa-crypto/formosa-libjade/blob/475b87434506280fdfa1a1ba5da0af3787e00579/proof/eclib/W8extra.ec",
+      "exact_matches": [],
+      "status": "NO_IDENTICAL_NON_BENCH_BLOB_AT_REVIEWED_REVISION",
+      "license_marker_lines": [],
+      "same_relative_path_at_successor": null,
+      "runtime_bound_source_pin_present": true,
+      "runtime_bound_source_pin_matches": true
+    },
+    {
+      "old_path": "proof/eclib/abs_bindings.ec",
+      "old_git_blob": "533d159480fab98f47e23d4adf4378dade6c7b40",
+      "old_sha256": "4dfa3d5fad30e651230b449ed50a64cb1d565148c81a9617d9588bc4661834b2",
+      "bytes": 26451,
+      "old_url": "https://github.com/formosa-crypto/formosa-libjade/blob/475b87434506280fdfa1a1ba5da0af3787e00579/proof/eclib/abs_bindings.ec",
+      "exact_matches": [],
+      "status": "NO_IDENTICAL_NON_BENCH_BLOB_AT_REVIEWED_REVISION",
+      "license_marker_lines": [],
+      "same_relative_path_at_successor": null,
+      "runtime_bound_source_pin_present": true,
+      "runtime_bound_source_pin_matches": true
+    },
+    {
+      "old_path": "proof/eclib/barrett_mlkem_general.ec",
+      "old_git_blob": "309bbc4ceac848d3dff65824548b314f9a656544",
+      "old_sha256": "a37df7e11d39c78a9bfa60405a8f8393c01a30b012168c9fe15ec12360fa1c27",
+      "bytes": 31365,
+      "old_url": "https://github.com/formosa-crypto/formosa-libjade/blob/475b87434506280fdfa1a1ba5da0af3787e00579/proof/eclib/barrett_mlkem_general.ec",
+      "exact_matches": [
+        {
+          "path": "proofs/mlkem/eclib/barrett_mlkem_general.ec",
+          "git_blob": "309bbc4ceac848d3dff65824548b314f9a656544",
+          "sha256": "a37df7e11d39c78a9bfa60405a8f8393c01a30b012168c9fe15ec12360fa1c27",
+          "url": "https://github.com/formosa-crypto/formosa-libjade/blob/589038bbae572525ff6a8281f6bc07fa5a31ff7b/proofs/mlkem/eclib/barrett_mlkem_general.ec"
+        }
+      ],
+      "status": "EXACT_LATER_LICENSED_BYTES",
+      "license_marker_lines": [],
+      "same_relative_path_at_successor": {
+        "path": "proofs/mlkem/eclib/barrett_mlkem_general.ec",
+        "mode": "100644",
+        "kind": "blob",
+        "blob": "309bbc4ceac848d3dff65824548b314f9a656544",
+        "sha256": "a37df7e11d39c78a9bfa60405a8f8393c01a30b012168c9fe15ec12360fa1c27",
+        "bytes": 31365
+      },
+      "runtime_bound_source_pin_present": true,
+      "runtime_bound_source_pin_matches": true
+    },
+    {
+      "old_path": "proof/eclib/bindings.ec",
+      "old_git_blob": "c15f5b2eaff4d6f5de8f7d7b06344994f4fa1b32",
+      "old_sha256": "ba6283a83fdc9f617ef76d97b3cc2502d455563f461aa8e52243e1b4c71f8ef9",
+      "bytes": 92386,
+      "old_url": "https://github.com/formosa-crypto/formosa-libjade/blob/475b87434506280fdfa1a1ba5da0af3787e00579/proof/eclib/bindings.ec",
+      "exact_matches": [],
+      "status": "NO_IDENTICAL_NON_BENCH_BLOB_AT_REVIEWED_REVISION",
+      "license_marker_lines": [],
+      "same_relative_path_at_successor": null,
+      "runtime_bound_source_pin_present": true,
+      "runtime_bound_source_pin_matches": true
+    },
+    {
+      "old_path": "proof/eclib/genbindings.ec",
+      "old_git_blob": "31f97ae07c26f87abad5521a92c0858dbaea8de5",
+      "old_sha256": "4871de1dab78ca88b2de3d344183bc69857bd5c16b67c3607dbbf5b56abebea4",
+      "bytes": 8617,
+      "old_url": "https://github.com/formosa-crypto/formosa-libjade/blob/475b87434506280fdfa1a1ba5da0af3787e00579/proof/eclib/genbindings.ec",
+      "exact_matches": [],
+      "status": "NO_IDENTICAL_NON_BENCH_BLOB_AT_REVIEWED_REVISION",
+      "license_marker_lines": [],
+      "same_relative_path_at_successor": null,
+      "runtime_bound_source_pin_present": true,
+      "runtime_bound_source_pin_matches": true
+    },
+    {
+      "old_path": "proof/eclib/mlkem_bindings.ec",
+      "old_git_blob": "5e29fbfc717db794c5b628813d3b42b1518d22b1",
+      "old_sha256": "036fb4925a83694a9fa45bc715ed172e7dc9c235b0630f8d189feec29f0810b7",
+      "bytes": 92411,
+      "old_url": "https://github.com/formosa-crypto/formosa-libjade/blob/475b87434506280fdfa1a1ba5da0af3787e00579/proof/eclib/mlkem_bindings.ec",
+      "exact_matches": [],
+      "status": "NO_IDENTICAL_NON_BENCH_BLOB_AT_REVIEWED_REVISION",
+      "license_marker_lines": [],
+      "same_relative_path_at_successor": {
+        "path": "proofs/mlkem/eclib/mlkem_bindings.ec",
+        "mode": "100644",
+        "kind": "blob",
+        "blob": "1f45338876882706ee08f4bc5ba4acb927a59f96",
+        "sha256": "1e6786f0155a6c6eb2a0e53b5bde6ac4e0f7c10a688b7239e42f99956c70c3b3",
+        "bytes": 2935
+      },
+      "runtime_bound_source_pin_present": true,
+      "runtime_bound_source_pin_matches": true
+    },
+    {
+      "old_path": "proof/eclib/mlkem_filters.ec",
+      "old_git_blob": "bab7b4540744b333b5310b91b98ccca3d155608f",
+      "old_sha256": "ce120796c3cb1b475e4c3f9521934540acd47944013edb9a2be9a37c9bf905ef",
+      "bytes": 69189,
+      "old_url": "https://github.com/formosa-crypto/formosa-libjade/blob/475b87434506280fdfa1a1ba5da0af3787e00579/proof/eclib/mlkem_filters.ec",
+      "exact_matches": [],
+      "status": "NO_IDENTICAL_NON_BENCH_BLOB_AT_REVIEWED_REVISION",
+      "license_marker_lines": [],
+      "same_relative_path_at_successor": {
+        "path": "proofs/mlkem/eclib/mlkem_filters.ec",
+        "mode": "100644",
+        "kind": "blob",
+        "blob": "c24000797e737e6eeea64c0a3945858cdcd67d3d",
+        "sha256": "68ad3c367f8ba5f6618cb892c7e429d31371e0a47e9cccd444612bb84ede7dab",
+        "bytes": 69948
+      },
+      "runtime_bound_source_pin_present": true,
+      "runtime_bound_source_pin_matches": true
+    },
+    {
+      "old_path": "proof/eclib/mlkem_filters_bindings.ec",
+      "old_git_blob": "6c9a328c1f4cb755bd324f44e3611b4942e78c79",
+      "old_sha256": "fb74e060b8884080cda0dbb78a4a9b494ed7c51c523fb8fdecfeb692c588c7cd",
+      "bytes": 14584,
+      "old_url": "https://github.com/formosa-crypto/formosa-libjade/blob/475b87434506280fdfa1a1ba5da0af3787e00579/proof/eclib/mlkem_filters_bindings.ec",
+      "exact_matches": [],
+      "status": "NO_IDENTICAL_NON_BENCH_BLOB_AT_REVIEWED_REVISION",
+      "license_marker_lines": [],
+      "same_relative_path_at_successor": null,
+      "runtime_bound_source_pin_present": true,
+      "runtime_bound_source_pin_matches": true
+    }
+  ],
+  "non_ec_old_entries": [
+    {
+      "path": "proof/eclib/specs/avx2.spec",
+      "mode": "100644",
+      "kind": "blob",
+      "blob": "57588187927f8139b0d9d09417195dd5f03c04ad"
+    }
+  ],
+  "per_file_license_marker_hits": 0,
+  "per_file_exception_observation": "No per-file license marker was found in any of the 21 inspected old .ec files; exact matches have identical text. This lexical inspection is not a claim about all third-party rights.",
+  "source_or_pin_modifications": false,
+  "runtime_bound_pinned_ec_count": 21,
+  "preserved_notices": [
+    {
+      "upstream_path": "LICENSE",
+      "git_blob": "59ff3e164365b232ee84415b676a0613bdea69e7",
+      "sha256": "86792d7738a5103541121138e3904aa8a8b01a3cade9d48963803546f28989c8",
+      "bytes": 47,
+      "source_url": "https://github.com/formosa-crypto/formosa-libjade/blob/589038bbae572525ff6a8281f6bc07fa5a31ff7b/LICENSE",
+      "repository_notice_path": "LICENSES/formosa-libjade/UPSTREAM-LICENSE.txt"
+    },
+    {
+      "upstream_path": "LICENSES/Apache-2.0.txt",
+      "git_blob": "d645695673349e3947e8e5ae42332d0ac3164cd7",
+      "sha256": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30",
+      "bytes": 11358,
+      "source_url": "https://github.com/formosa-crypto/formosa-libjade/blob/589038bbae572525ff6a8281f6bc07fa5a31ff7b/LICENSES/Apache-2.0.txt",
+      "repository_notice_path": "LICENSES/formosa-libjade/Apache-2.0.txt"
+    },
+    {
+      "upstream_path": "LICENSES/CC0-1.0.txt",
+      "git_blob": "0e259d42c996742e9e3cba14c677129b2c1b6311",
+      "sha256": "a2010f343487d3f7618affe54f789f5487602331c0a8d03f49e9a7c547cf0499",
+      "bytes": 7048,
+      "source_url": "https://github.com/formosa-crypto/formosa-libjade/blob/589038bbae572525ff6a8281f6bc07fa5a31ff7b/LICENSES/CC0-1.0.txt",
+      "repository_notice_path": "LICENSES/formosa-libjade/CC0-1.0.txt"
+    },
+    {
+      "upstream_path": "CONTRIBUTORS.md",
+      "git_blob": "39b72b1aff775a138d932d6c35dd1a09b846d7a0",
+      "sha256": "d5ad6f42fb1e90340cf0760d21f896b36b59b5392fc4ccfbf8d65a7f4e74b49f",
+      "bytes": 738,
+      "source_url": "https://github.com/formosa-crypto/formosa-libjade/blob/589038bbae572525ff6a8281f6bc07fa5a31ff7b/CONTRIBUTORS.md",
+      "repository_notice_path": "LICENSES/formosa-libjade/CONTRIBUTORS.md"
+    }
+  ],
+  "original_evidence_manifest_sha256": "fc624600216ccc241928cc8de11cd6b61b3bec0ba204d9b1e4769c16272b97f9"
+}

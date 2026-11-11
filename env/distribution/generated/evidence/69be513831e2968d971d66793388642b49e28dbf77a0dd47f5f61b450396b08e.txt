@@ -1,0 +1,21 @@
+Package: python3.10-minimal
+Source: python3.10
+Version: 3.10.12-1~22.04.15
+Architecture: amd64
+Maintainer: Ubuntu Developers <ubuntu-devel-discuss@lists.ubuntu.com>
+Original-Maintainer: Matthias Klose <doko@debian.org>
+Installed-Size: 5932
+Pre-Depends: libc6 (>= 2.35)
+Depends: libpython3.10-minimal (= 3.10.12-1~22.04.15), libexpat1 (>= 2.1~beta3), zlib1g (>= 1:1.2.0)
+Recommends: python3.10
+Suggests: binfmt-support
+Conflicts: binfmt-support (<< 1.1.2)
+Section: python
+Priority: optional
+Multi-Arch: allowed
+Description: Minimal subset of the Python language (version 3.10)
+ This package contains the interpreter and some essential modules.  It can
+ be used in the boot process for some basic tasks.
+ See /usr/share/doc/python3.10-minimal/README.Debian for a list of the modules
+ contained in this package.
+Cnf-Visible-Pkgname: python3.10

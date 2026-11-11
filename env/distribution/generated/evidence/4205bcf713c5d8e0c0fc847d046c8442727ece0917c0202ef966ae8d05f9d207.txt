@@ -1,0 +1,7 @@
+opam-version: "2.0"
+added: [
+  "lib/coq/user-contrib/HB" {"D"}
+  "lib/coq/user-contrib/HB/structures.glob" {"F:S5384T1746706967.46"}
+  "lib/coq/user-contrib/HB/structures.v" {"F:S46479T1746706967.45"}
+  "lib/coq/user-contrib/HB/structures.vo" {"F:S665020T1746706967.44"}
+]
