@@ -1,8 +1,10 @@
-# Thesis artifact release preparation
+# Research artifact publication
 
-Status: **publication preparation, not a validated thesis release**.
-The repository interface and lightweight CI are prepared. No public release,
-tag, DOI, push, or fresh whole-suite proof replay is implied by this document.
+The initial source, proof, and evidence artifact is published as
+[NTRU+768 Correctness & ROM Reduction Proofs](https://github.com/Hacker-Code-J/kpqc-kem-ntruplus-jasmin-easycrypt/releases/tag/ntruplus768-correctness-rom-proofs-v1.0.0).
+That release fixes publication commit `9f4eef4`; later commits on `main` do not
+replace its tag or attachments. A release is not a claim of fresh whole-suite
+proof replay, and no DOI has been assigned.
 
 ## Selected initial publication scope
 
@@ -42,8 +44,16 @@ The bounded checks performed during this preparation are recorded in
 [publication-checks.json](publication-checks.json), with source hashes for the
 reviewed files. They include 24 public-tool tests, source smoke controls, the C
 functional/KAT test, historical-summary authentication, document-link checks and
-Ruff. GitHub Actions itself has not been run on the hosted service. No complete
-proof replay, Python typechecker run or clean-environment installation is claimed.
+Ruff. At that preparation stage, GitHub Actions had not yet run on the hosted
+service. That record does not claim complete proof replay, a Python typechecker
+run, or clean-environment installation.
+
+Subsequently, [hosted source and C baseline CI](https://github.com/Hacker-Code-J/kpqc-kem-ntruplus-jasmin-easycrypt/actions/runs/43164613909)
+passed on English-edition commit `986cacc`. It checks public tooling, source smoke
+controls, the historical-evidence inventory, and the C reference/KAT baseline;
+it is not formal proof replay. The [English path migration](english-path-migration.md)
+also records its local regression and source-only checks while preserving original
+proof and evidence identities.
 
 The subsequent [local candidate validation](../evidence/release-candidate-20261111/README.md)
 records 57 public-tool tests, source and C/KAT checks, and a fresh default
@@ -72,7 +82,7 @@ OS/runtime dependencies; it does not establish a standalone image or new-host re
 | Full proof replay | The default runtime-bound target passed freshly; its prerequisite proofs are authenticated historical imports | Replay other release claims as needed, including negative controls, EOF/kernel checks; retain all results |
 | Resources | The public preserved-environment runtime-bound run took 23:57.69 and maximum RSS 2,694,052 KiB | Retain the measured environment; measure other targets or platforms before quoting their costs |
 | Third-party materials | Source notices and exact dependency recovery are included; the binary environment is outside this initial publication scope | Retain notices and scope boundaries for the selected source/evidence files; handle optional binary redistribution separately |
-| Citation | Repository author/title available; thesis metadata, DOI and release date are not finalized here | Confirm authorship/title, create the validated release, archive it and record its version DOI |
+| Citation | Repository author/title and the initial release are available; DOI and thesis metadata remain separate | Cite the exact release or commit used; archive it and record a version DOI only after one is assigned |
 
 The runtime proof manifest's `ROOT_REVIEWED_ALPHA_RENAME_NOT_REPLAYED` state
 must not be silently converted into a new PASS. Family documentation may retain
@@ -107,9 +117,10 @@ they are obtained and verify any separately distributed bundle.
    tree; inspect staged changes and required untracked proof families.
 2. Validate a fresh checkout of that exact commit with the documented environment
    and public evidence bundle. Record new results separately from inherited ones.
-3. Create a versioned release (for example `thesis-v1.0`) only after the gates
-   above pass. Include the source commit, submodule pins, checksums, environment,
-   commands and verification report in the release description.
+3. Create a versioned release with an owner-approved, algorithm-specific title
+   and tag after the relevant gates above pass. Preserve existing release tags
+   and attachments. Include the source commit, submodule pins, checksums,
+   environment, commands and verification report in the release description.
 4. Archive that release, obtain its DOI, and then update `CITATION.cff` with real
    version/date/DOI and confirmed thesis metadata. Cite the version used in the
    thesis rather than a moving branch.
