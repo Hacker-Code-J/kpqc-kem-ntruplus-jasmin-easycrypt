@@ -155,7 +155,9 @@ location. The wrapper rejects a missing/non-directory evidence root before
 launching targets. Each selected verifier remains responsible for validating
 the precise historical hashes, statuses, source coverage, and toolchain inputs.
 The public entry point never silently selects the adjacent private thesis
-directory. Direct legacy script invocations retain their original defaults.
+directory. Direct driver invocations now default to the sibling
+`research-evidence` directory. Explicit `--prior-evidence-root` selection is
+unchanged; see the [reviewed English-path migration](english-path-migration.md).
 
 For all listed verification scripts except the separate C baseline:
 

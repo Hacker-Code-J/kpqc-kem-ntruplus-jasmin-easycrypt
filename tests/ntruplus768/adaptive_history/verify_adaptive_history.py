@@ -33,7 +33,7 @@ def main():
     parser.add_argument("--check-only", action="store_true", help="source controls only; never full PASS")
     parser.add_argument("--output", type=Path, help="new/empty evidence directory outside checkout")
     parser.add_argument("--prior-evidence-root", type=Path,
-                        default=policy.ROOT.parent / "[졸업] 석사학위논문")
+                        default=policy.ROOT.parent / "research-evidence")
     parser.add_argument("--draft", action="store_true", help="with --check-only, inspect moving sources without frozen proof claims")
     args = parser.parse_args()
     policy.require(not args.draft or args.check_only, "--draft requires --check-only")

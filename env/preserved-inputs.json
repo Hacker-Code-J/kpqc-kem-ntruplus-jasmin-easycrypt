@@ -38130,7 +38130,7 @@
     "host_interpreter_modified": false
   },
   "separate_evidence_inputs": {
-    "/home/hacker-code-j/Desktop/2026/HAETAE/[졸업] 석사학위논문/handoff/verification/ntruplus-acceptance-bound-20261013/final-replay/summary.json": {
+    "handoff/verification/ntruplus-acceptance-bound-20261013/final-replay/summary.json": {
       "sha256": "ed07f10197e0182cd837f930aae347861f835137b6abcf488f5b05c853256c5e",
       "required_by": [
         "handoff/verification/ntruplus-acwc2-contracts-20261014/final-replay/summary.json",
@@ -38145,9 +38145,10 @@
         "handoff/verification/ntruplus-numerical-dfr-20261014/final-replay/summary.json",
         "handoff/verification/ntruplus-pke-average-20261014/final-replay/summary.json",
         "handoff/verification/ntruplus-spreadness-20261015/final-replay/summary.json"
-      ]
+      ],
+      "historical_absolute_path_sha256": "6badabae5f077b6b5c9046b7590ab391c8e3d9e04a52fb12ee1c18880665f7a1"
     },
-    "/home/hacker-code-j/Desktop/2026/HAETAE/[졸업] 석사학위논문/handoff/verification/ntruplus-acwc2-contracts-20261014/final-replay/summary.json": {
+    "handoff/verification/ntruplus-acwc2-contracts-20261014/final-replay/summary.json": {
       "sha256": "8db7730a68f34d597377236eac70932ce0e9f1c873dd8652391660e0a25a37d7",
       "required_by": [
         "handoff/verification/ntruplus-acwc2-correctness-20261014/final-replay/summary.json",
@@ -38158,9 +38159,10 @@
         "handoff/verification/ntruplus-linear-rrec-20261014/final-replay/summary.json",
         "handoff/verification/ntruplus-modified-fo-20261015/final-replay/summary.json",
         "handoff/verification/ntruplus-spreadness-20261015/final-replay/summary.json"
-      ]
+      ],
+      "historical_absolute_path_sha256": "c0d618470b469a5662717a9e28ace90262d8688ae739c4d8bf05cc06bedcbe15"
     },
-    "/home/hacker-code-j/Desktop/2026/HAETAE/[졸업] 석사학위논문/handoff/verification/ntruplus-acwc2-correctness-20261014/final-replay/summary.json": {
+    "handoff/verification/ntruplus-acwc2-correctness-20261014/final-replay/summary.json": {
       "sha256": "71927ffd18ec5f8dce0ee2fac9288f7438f7a48abd8cb19386e218628af1e0a3",
       "required_by": [
         "handoff/verification/ntruplus-cca-setup-20261014/final-replay/summary.json",
@@ -38170,15 +38172,17 @@
         "handoff/verification/ntruplus-linear-rrec-20261014/final-replay/summary.json",
         "handoff/verification/ntruplus-modified-fo-20261015/final-replay/summary.json",
         "handoff/verification/ntruplus-spreadness-20261015/final-replay/summary.json"
-      ]
+      ],
+      "historical_absolute_path_sha256": "e047f0824cac77d443da3e57fd1566d745e1dc4863647b65baa9f8336e95954d"
     },
-    "/home/hacker-code-j/Desktop/2026/HAETAE/[졸업] 석사학위논문/handoff/verification/ntruplus-acwc2-security-20261018/final-replay/summary.json": {
+    "handoff/verification/ntruplus-acwc2-security-20261018/final-replay/summary.json": {
       "sha256": "f5cd5ce4dcf1c8c4e0ca0975bc0d16130ae69453b2726e10d00c67458d2d91e5",
       "required_by": [
         "handoff/verification/ntruplus-ow-hardness-20261018/final-replay/summary.json"
-      ]
+      ],
+      "historical_absolute_path_sha256": "705052efd499b028ed552536cf6bab797ee116ab89721c197c9a9c41af47a592"
     },
-    "/home/hacker-code-j/Desktop/2026/HAETAE/[졸업] 석사학위논문/handoff/verification/ntruplus-cca-setup-20261014/final-replay/summary.json": {
+    "handoff/verification/ntruplus-cca-setup-20261014/final-replay/summary.json": {
       "sha256": "412486c17ad74dc92f676ba65bb925aa1c0886e38b7994fc0f516b74c3885745",
       "required_by": [
         "handoff/verification/ntruplus-e-erasure-20261015/final-replay/summary.json",
@@ -38186,9 +38190,10 @@
         "handoff/verification/ntruplus-keygen-gen-law-20261014/final-replay/summary.json",
         "handoff/verification/ntruplus-modified-fo-20261015/final-replay/summary.json",
         "handoff/verification/ntruplus-spreadness-20261015/final-replay/summary.json"
-      ]
+      ],
+      "historical_absolute_path_sha256": "ec66985819f6f7bc8dece0eb4f01bd63b80627308d9c5c5a77cebabd68d13988"
     },
-    "/home/hacker-code-j/Desktop/2026/HAETAE/[졸업] 석사학위논문/handoff/verification/ntruplus-classical-rom-20261013/final-replay/summary.json": {
+    "handoff/verification/ntruplus-classical-rom-20261013/final-replay/summary.json": {
       "sha256": "0f2a09c1c0be2585be1c73ae6cfc52cb5d75c17e6f4e5878d3ab159804846016",
       "required_by": [
         "handoff/verification/ntruplus-acceptance-bound-20261013/final-replay/summary.json",
@@ -38205,23 +38210,26 @@
         "handoff/verification/ntruplus-pke-average-20261014/final-replay/summary.json",
         "handoff/verification/ntruplus-spreadness-20261015/final-replay/summary.json",
         "handoff/verification/ntruplus-stopped-rom-20261013/final-replay/summary.json"
-      ]
+      ],
+      "historical_absolute_path_sha256": "620f5710a85d13c452e032d3b11e8c2ac47b931dc84c1fee4696076e68ea960f"
     },
-    "/home/hacker-code-j/Desktop/2026/HAETAE/[졸업] 석사학위논문/handoff/verification/ntruplus-classical-rom-20261013/research/ntruplus-specification.txt": {
+    "handoff/verification/ntruplus-classical-rom-20261013/research/ntruplus-specification.txt": {
       "sha256": "2e19833445d3c2fcb0abb226234c86b960058b10441e1093657ecf550fc0be27",
       "required_by": [
         "handoff/verification/ntruplus-keygen-gen-law-20261014/final-replay/summary.json"
-      ]
+      ],
+      "historical_absolute_path_sha256": "f7d4479cbd7f4ac7731fa8ffddc12ead287e5e9810e8f52bd8d8bc7040578b41"
     },
-    "/home/hacker-code-j/Desktop/2026/HAETAE/[졸업] 석사학위논문/handoff/verification/ntruplus-e-erasure-20261015/final-replay/summary.json": {
+    "handoff/verification/ntruplus-e-erasure-20261015/final-replay/summary.json": {
       "sha256": "e2c68c289395b567cc876ada71ba47b3e69feee55ac39312e23d9c206c91fc30",
       "required_by": [
         "handoff/verification/ntruplus-fo-simulation-20261015/final-replay/summary.json",
         "handoff/verification/ntruplus-modified-fo-20261015/final-replay/summary.json",
         "handoff/verification/ntruplus-spreadness-20261015/final-replay/summary.json"
-      ]
+      ],
+      "historical_absolute_path_sha256": "a1f32ce68566e1de6ce00138a9576542be7ad6d3054faff856ecced3dc64082b"
     },
-    "/home/hacker-code-j/Desktop/2026/HAETAE/[졸업] 석사학위논문/handoff/verification/ntruplus-encap-agreement-20261012/final-replay/summary.json": {
+    "handoff/verification/ntruplus-encap-agreement-20261012/final-replay/summary.json": {
       "sha256": "b0c233e9ee3f9fa3e16f8caf2361d3c1c269202f561e11b0f04878d5fa5a5824",
       "required_by": [
         "handoff/verification/ntruplus-acceptance-bound-20261013/final-replay/summary.json",
@@ -38239,9 +38247,10 @@
         "handoff/verification/ntruplus-pke-average-20261014/final-replay/summary.json",
         "handoff/verification/ntruplus-spreadness-20261015/final-replay/summary.json",
         "handoff/verification/ntruplus-stopped-rom-20261013/final-replay/summary.json"
-      ]
+      ],
+      "historical_absolute_path_sha256": "7eeda5f40004118ed8d0eb4030abe0d4b18d9adf52326c86b58390fef5d5c7eb"
     },
-    "/home/hacker-code-j/Desktop/2026/HAETAE/[졸업] 석사학위논문/handoff/verification/ntruplus-failure-bound-20261013/final-replay/summary.json": {
+    "handoff/verification/ntruplus-failure-bound-20261013/final-replay/summary.json": {
       "sha256": "b09408d060d644a04961057c24c82fcdaa41e0ca7a82de5a3cc466817de3a161",
       "required_by": [
         "handoff/verification/ntruplus-acceptance-bound-20261013/final-replay/summary.json",
@@ -38259,21 +38268,24 @@
         "handoff/verification/ntruplus-pke-average-20261014/final-replay/summary.json",
         "handoff/verification/ntruplus-spreadness-20261015/final-replay/summary.json",
         "handoff/verification/ntruplus-stopped-rom-20261013/final-replay/summary.json"
-      ]
+      ],
+      "historical_absolute_path_sha256": "d82c1349cbf279d5cdb8abd1caed60a0e2c2e8990d7a927f5f60b1615abe2596"
     },
-    "/home/hacker-code-j/Desktop/2026/HAETAE/[졸업] 석사학위논문/handoff/verification/ntruplus-fo-simulation-20261015/final-replay/summary.json": {
+    "handoff/verification/ntruplus-fo-simulation-20261015/final-replay/summary.json": {
       "sha256": "52304b2333025c846938b27c9b1ce7e357f8d0815fd91bc1949e8e779f943ace",
       "required_by": [
         "handoff/verification/ntruplus-indcpa-reduction-20261018/final-replay/summary.json"
-      ]
+      ],
+      "historical_absolute_path_sha256": "0db9ff87b3492270c8357f4df5852d25039dc829ce155dd211f2c80e6419703a"
     },
-    "/home/hacker-code-j/Desktop/2026/HAETAE/[졸업] 석사학위논문/handoff/verification/ntruplus-history-refinement-20261020/final-replay/summary.json": {
+    "handoff/verification/ntruplus-history-refinement-20261020/final-replay/summary.json": {
       "sha256": "8c46f5d5a5b819b6793ff6dc302a4930a70fc9fe0051deb6a0e02c11cc9f298d",
       "required_by": [
         "handoff/verification/ntruplus-adaptive-history-20261020/final-replay/summary.json"
-      ]
+      ],
+      "historical_absolute_path_sha256": "818537f741731fbdb3d310dcb5b4792ae69682b53c99f1f2188feb498ac1922b"
     },
-    "/home/hacker-code-j/Desktop/2026/HAETAE/[졸업] 석사학위논문/handoff/verification/ntruplus-indcca-game-20261014/final-replay/summary.json": {
+    "handoff/verification/ntruplus-indcca-game-20261014/final-replay/summary.json": {
       "sha256": "2f5e01a29467674796b7252c5245e29cb542a60de93e7af8e4c6071bbec211c5",
       "required_by": [
         "handoff/verification/ntruplus-acwc2-contracts-20261014/final-replay/summary.json",
@@ -38286,21 +38298,24 @@
         "handoff/verification/ntruplus-modified-fo-20261015/final-replay/summary.json",
         "handoff/verification/ntruplus-pke-average-20261014/final-replay/summary.json",
         "handoff/verification/ntruplus-spreadness-20261015/final-replay/summary.json"
-      ]
+      ],
+      "historical_absolute_path_sha256": "7a86054bdd41ff116e93f28c4bc0b5e089d3f04431491ce9869596a53482a593"
     },
-    "/home/hacker-code-j/Desktop/2026/HAETAE/[졸업] 석사학위논문/handoff/verification/ntruplus-indcpa-reduction-20261018/final-replay/summary.json": {
+    "handoff/verification/ntruplus-indcpa-reduction-20261018/final-replay/summary.json": {
       "sha256": "2872b023c8bf413b58668a2eb04cba9e381bbafaa34b839e513f0d66ef6b3e05",
       "required_by": [
         "handoff/verification/ntruplus-acwc2-security-20261018/final-replay/summary.json"
-      ]
+      ],
+      "historical_absolute_path_sha256": "adccb18c3a316f1b48d0490a0d40261ffd891a997e350630b92a971a7400c0d5"
     },
-    "/home/hacker-code-j/Desktop/2026/HAETAE/[졸업] 석사학위논문/handoff/verification/ntruplus-inj-hardness-20261018/final-replay/summary.json": {
+    "handoff/verification/ntruplus-inj-hardness-20261018/final-replay/summary.json": {
       "sha256": "fab9b29f1ed52ae5aceb392f656b574d2b9520a814d53bf5be44654493b4cd15",
       "required_by": [
         "handoff/verification/ntruplus-short-relation-bound-20261018/final-replay/summary.json"
-      ]
+      ],
+      "historical_absolute_path_sha256": "a47d7fb65ac11836f9a999e5853eb6918ae96eb1a291b52a439c6ff2725589f2"
     },
-    "/home/hacker-code-j/Desktop/2026/HAETAE/[졸업] 석사학위논문/handoff/verification/ntruplus-keygen-complete-20261013/final-replay/summary.json": {
+    "handoff/verification/ntruplus-keygen-complete-20261013/final-replay/summary.json": {
       "sha256": "6a3e54cf3ff71f926298eb93cb64cbe0d5421f2f53de9c0e32720b1da451a131",
       "required_by": [
         "handoff/verification/ntruplus-acceptance-bound-20261013/final-replay/summary.json",
@@ -38318,24 +38333,27 @@
         "handoff/verification/ntruplus-pke-average-20261014/final-replay/summary.json",
         "handoff/verification/ntruplus-spreadness-20261015/final-replay/summary.json",
         "handoff/verification/ntruplus-stopped-rom-20261013/final-replay/summary.json"
-      ]
+      ],
+      "historical_absolute_path_sha256": "6575372b770f87198cb26cb0558c53e3e0b6db8f05336380690c4e6daaaf51ea"
     },
-    "/home/hacker-code-j/Desktop/2026/HAETAE/[졸업] 석사학위논문/handoff/verification/ntruplus-keygen-gen-law-20261014/final-replay/summary.json": {
+    "handoff/verification/ntruplus-keygen-gen-law-20261014/final-replay/summary.json": {
       "sha256": "7d66c6a1c0c31198a642894339e3defcd9c1b0f9716003285e8b92aea4cba264",
       "required_by": [
         "handoff/verification/ntruplus-e-erasure-20261015/final-replay/summary.json",
         "handoff/verification/ntruplus-fo-simulation-20261015/final-replay/summary.json",
         "handoff/verification/ntruplus-modified-fo-20261015/final-replay/summary.json",
         "handoff/verification/ntruplus-spreadness-20261015/final-replay/summary.json"
-      ]
+      ],
+      "historical_absolute_path_sha256": "293f5a6e1274fc7d8a380dddf0ffe856c1bc73d36f73c9cdeb472f21809191dd"
     },
-    "/home/hacker-code-j/Desktop/2026/HAETAE/[졸업] 석사학위논문/handoff/verification/ntruplus-keygen-gen-law-20261014/specification-contract.json": {
+    "handoff/verification/ntruplus-keygen-gen-law-20261014/specification-contract.json": {
       "sha256": "3fd881289a924c421f1815bfa5918fd82ca64a2a49eef1ca51696082391230a9",
       "required_by": [
         "handoff/verification/ntruplus-keygen-gen-law-20261014/final-replay/summary.json"
-      ]
+      ],
+      "historical_absolute_path_sha256": "30176e0f53f552d85d1b391cb6d9472c8b2b87fce5a3d88cc7c7ebc7543c50b3"
     },
-    "/home/hacker-code-j/Desktop/2026/HAETAE/[졸업] 석사학위논문/handoff/verification/ntruplus-linear-rrec-20261014/final-replay/summary.json": {
+    "handoff/verification/ntruplus-linear-rrec-20261014/final-replay/summary.json": {
       "sha256": "38e3c39cfd483701c5b8cdbb6a878ed8bedf04133560d667f83ca77e3ff3333b",
       "required_by": [
         "handoff/verification/ntruplus-cca-setup-20261014/final-replay/summary.json",
@@ -38344,16 +38362,18 @@
         "handoff/verification/ntruplus-keygen-gen-law-20261014/final-replay/summary.json",
         "handoff/verification/ntruplus-modified-fo-20261015/final-replay/summary.json",
         "handoff/verification/ntruplus-spreadness-20261015/final-replay/summary.json"
-      ]
+      ],
+      "historical_absolute_path_sha256": "1ed35dc8826e916b94a22a597fe615332cca659b04ca7c0361681c0573890ed4"
     },
-    "/home/hacker-code-j/Desktop/2026/HAETAE/[졸업] 석사학위논문/handoff/verification/ntruplus-modified-fo-20261015/final-replay/summary.json": {
+    "handoff/verification/ntruplus-modified-fo-20261015/final-replay/summary.json": {
       "sha256": "c7c660f78a1a59cc75ee71ab014f86b9f8defe38a836701418091c566e24be37",
       "required_by": [
         "handoff/verification/ntruplus-fo-simulation-20261015/final-replay/summary.json",
         "handoff/verification/ntruplus-spreadness-20261015/final-replay/summary.json"
-      ]
+      ],
+      "historical_absolute_path_sha256": "58b356bd72da3f3a42f63c811c76682cde0f4c501f49c52898a858acc2f42661"
     },
-    "/home/hacker-code-j/Desktop/2026/HAETAE/[졸업] 석사학위논문/handoff/verification/ntruplus-numerical-dfr-20261014/final-replay/summary.json": {
+    "handoff/verification/ntruplus-numerical-dfr-20261014/final-replay/summary.json": {
       "sha256": "9c67e99f22cb256bd9874c0eb698a0dfaf26bb26aa0ba67f7beac453e1c7a791",
       "required_by": [
         "handoff/verification/ntruplus-acwc2-contracts-20261014/final-replay/summary.json",
@@ -38367,15 +38387,17 @@
         "handoff/verification/ntruplus-modified-fo-20261015/final-replay/summary.json",
         "handoff/verification/ntruplus-pke-average-20261014/final-replay/summary.json",
         "handoff/verification/ntruplus-spreadness-20261015/final-replay/summary.json"
-      ]
+      ],
+      "historical_absolute_path_sha256": "989932d61c5de2b3ced71bceca395d9e3a2a49eefc91bf7babbca738c507c7ba"
     },
-    "/home/hacker-code-j/Desktop/2026/HAETAE/[졸업] 석사학위논문/handoff/verification/ntruplus-ow-hardness-20261018/final-replay/summary.json": {
+    "handoff/verification/ntruplus-ow-hardness-20261018/final-replay/summary.json": {
       "sha256": "349fdd999c1fb3f4155c7b2f37d006a82d1d02f049d393b21712bf17647a3903",
       "required_by": [
         "handoff/verification/ntruplus-inj-hardness-20261018/final-replay/summary.json"
-      ]
+      ],
+      "historical_absolute_path_sha256": "65c7765a1c918616459c7f4ae552e26ac7a2744d0628f86bdf7fb43c4df9003a"
     },
-    "/home/hacker-code-j/Desktop/2026/HAETAE/[졸업] 석사학위논문/handoff/verification/ntruplus-pke-average-20261014/final-replay/summary.json": {
+    "handoff/verification/ntruplus-pke-average-20261014/final-replay/summary.json": {
       "sha256": "6e005a1f1d4fbdf723f0cb2b47e4666f0ac3a4d7d177a686ae9474ecf7f4aece",
       "required_by": [
         "handoff/verification/ntruplus-acwc2-contracts-20261014/final-replay/summary.json",
@@ -38387,27 +38409,31 @@
         "handoff/verification/ntruplus-linear-rrec-20261014/final-replay/summary.json",
         "handoff/verification/ntruplus-modified-fo-20261015/final-replay/summary.json",
         "handoff/verification/ntruplus-spreadness-20261015/final-replay/summary.json"
-      ]
+      ],
+      "historical_absolute_path_sha256": "c7931a1bc4314223ff7c5bcbba49cdad598e75b2c1d6e8b4ccd59d7c969d0699"
     },
-    "/home/hacker-code-j/Desktop/2026/HAETAE/[졸업] 석사학위논문/handoff/verification/ntruplus-reduction-cost-20261018/final-replay/summary.json": {
+    "handoff/verification/ntruplus-reduction-cost-20261018/final-replay/summary.json": {
       "sha256": "d5678eed287d102e28566e5735f1df1db949f00885c29399ac50518cc455d85f",
       "required_by": [
         "handoff/verification/ntruplus-history-refinement-20261020/final-replay/summary.json"
-      ]
+      ],
+      "historical_absolute_path_sha256": "1b72b21b098863dbaffc40801a4e557316a6d2c0aa05800d7b4bdcc61f053495"
     },
-    "/home/hacker-code-j/Desktop/2026/HAETAE/[졸업] 석사학위논문/handoff/verification/ntruplus-short-relation-bound-20261018/final-replay/summary.json": {
+    "handoff/verification/ntruplus-short-relation-bound-20261018/final-replay/summary.json": {
       "sha256": "a19228da92d0ee801a7c29bdd8f4aaa9e37bafaa53df1bba932eea2dede6cde4",
       "required_by": [
         "handoff/verification/ntruplus-reduction-cost-20261018/final-replay/summary.json"
-      ]
+      ],
+      "historical_absolute_path_sha256": "0359afaf6146c907f61e59402c5dcc4e1fcd4a3184a83c1b65122f9f558fa7a3"
     },
-    "/home/hacker-code-j/Desktop/2026/HAETAE/[졸업] 석사학위논문/handoff/verification/ntruplus-spreadness-20261015/final-replay/summary.json": {
+    "handoff/verification/ntruplus-spreadness-20261015/final-replay/summary.json": {
       "sha256": "6d350bf1e6a51965bdb7d121bc6b0a1fed3b17fcb63c07ad081658244d246a78",
       "required_by": [
         "handoff/verification/ntruplus-fo-simulation-20261015/final-replay/summary.json"
-      ]
+      ],
+      "historical_absolute_path_sha256": "504edad85b5477efbce0adcde560f08c04b6c925dca1face09bd08dab5eb1631"
     },
-    "/home/hacker-code-j/Desktop/2026/HAETAE/[졸업] 석사학위논문/handoff/verification/ntruplus-stopped-rom-20261013/final-replay/summary.json": {
+    "handoff/verification/ntruplus-stopped-rom-20261013/final-replay/summary.json": {
       "sha256": "6016c2c22d81fae43c2ab8e14955136779432fc405efa6f70e2ccff8e473d702",
       "required_by": [
         "handoff/verification/ntruplus-acceptance-bound-20261013/final-replay/summary.json",
@@ -38423,7 +38449,8 @@
         "handoff/verification/ntruplus-numerical-dfr-20261014/final-replay/summary.json",
         "handoff/verification/ntruplus-pke-average-20261014/final-replay/summary.json",
         "handoff/verification/ntruplus-spreadness-20261015/final-replay/summary.json"
-      ]
+      ],
+      "historical_absolute_path_sha256": "3747d1ddb96ce0c4fbea4dd360efacfeebd4f57538ce2b3da23ed9a4bfce57ba"
     }
   },
   "unexpected_external_inputs": [],
@@ -38480,5 +38507,12 @@
     "pattern": "**/*.eca",
     "scope": "All installed .eca source theories, including recursive clone/import dependencies; historical audits cover *.ec only."
   },
-  "supplemental_capture_completed_at": "2026-11-11T09:59:52.691143+00:00"
+  "supplemental_capture_completed_at": "2026-11-11T09:59:52.691143+00:00",
+  "metadata_representation": {
+    "format": "evidence-relative-paths-v1",
+    "original_manifest_sha256": "fb2cb4f9be729ef3706d9ec7a98e44ad6b35230e743762ba29899301b732d4d5",
+    "projected_field": "separate_evidence_inputs",
+    "record_count": 27,
+    "scope": "English evidence-relative identifiers with hashes of historical absolute identifiers. Original archive metadata bytes remain unchanged."
+  }
 }

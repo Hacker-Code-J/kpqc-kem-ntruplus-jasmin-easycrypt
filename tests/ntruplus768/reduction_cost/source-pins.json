@@ -1021,7 +1021,7 @@
   "ntruplus/proof/compat/jasmin/JModel.ec": "243634853394f0f012394aa194e783759291cef237f72587419cc5524eb94561",
   "scripts/verify-ntruplus768-reduction-cost.sh": "7d0d7d46186048bc7d6ac03def1a6b60fbb4932a9a60f6df21dda9f8a104590c",
   "tests/ntruplus768/fo_simulation/check_fo_simulation.py": "2cc7fa4e5361fb410f59502c9ba1817ae8d3144ed89b8692f31dea1c37741bf0",
-  "tests/ntruplus768/fo_simulation/verify_fo_simulation.py": "38cb0cf1ad6709778ad42d9ca954ee65cd3fc5c32c9e908fd8148b5f96833136",
+  "tests/ntruplus768/fo_simulation/verify_fo_simulation.py": "31135c668337a26b9063aa91a1e3864cec832bc83974233912eba4501a5512d9",
   "tests/ntruplus768/reduction_cost/freeze_manifest.py": "9286ae9b2786da4d35f9270b81bc296c22ac05de2f023747cae978e2c4220321",
   "tests/ntruplus768/reduction_cost/model_contract.py": "68eb9c792c645f37d2b9cd15fb10e4b604833fceb7e3db93e98b05244717964f",
   "tests/ntruplus768/reduction_cost/policy.py": "31aa62f9de23f135f581277e993835bee7bf48e1d2c7f722fa31b6c390034332",
@@ -1029,5 +1029,5 @@
   "tests/ntruplus768/reduction_cost/proof-manifest.json": "e863fb6f0bf04a777ea684eb5380c184bc014f9854310ca8aa942962345fdd0b",
   "tests/ntruplus768/reduction_cost/test_controls.py": "c2d1cd6cbb6b263563ed14dcf05e77e4265a053da22a9e94207277b745f8801f",
   "tests/ntruplus768/reduction_cost/test_reference.py": "f5f6980febb67d0bca2687cfe084b94552da4a2e2e555445249eb9ad3365def3",
-  "tests/ntruplus768/reduction_cost/verify_reduction_cost.py": "8df72c25ea74e5ecebfa6e3c4d09404945f56676730fa331d9b7a1f29a300fd3"
+  "tests/ntruplus768/reduction_cost/verify_reduction_cost.py": "98e76da4e8671c7b258e2e2667543335cf47c2e5bef8129a9e589df2139a3fc2"
 }

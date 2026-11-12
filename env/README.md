@@ -49,7 +49,7 @@ The binary payload is kept outside the Git source checkout during preparation:
 
 ```text
 preserved-environment/
-  manifest.json                  Same inventory as env/preserved-inputs.json
+  manifest.json                  Immutable original; repository has an English view
   SHA256SUMS                     Payload and metadata hashes
   runtime-dependencies.json      Host OS and dynamic dependency observations
   capture.py                     Explicit-root local capture procedure
@@ -140,11 +140,16 @@ python3 env/replay_runtime.py \
 
 The output must not exist. Its parent must already exist and be separate from
 the source, environment and evidence trees: the parent is the writable result
-mount. Source and input mounts are read-only. The launcher first compares the
-package manifest byte-for-byte with `env/preserved-inputs.json`, authenticates
-all payload hashes and modes, rejects extra payload files and symlinks, and
+mount. Source and input mounts are read-only. The launcher first authenticates
+the original package manifest by its pinned byte hash, then requires its
+deterministic English representation to equal `env/preserved-inputs.json`.
+It authenticates all payload hashes and modes, rejects extra files and symlinks, and
 checks the historical summaries. Mount destinations are fixed by the launcher,
 not selected by a caller-provided manifest.
+
+The [English-path migration](../docs/english-path-migration.md) explains the
+27 informational evidence-key projections and their historical identifier hashes.
+The archive manifest, payloads and original mount paths are unchanged.
 
 The original tool/configuration paths exist only inside this namespace.
 Explicit `EASYCRYPT`, `WHY3` and `XDG_CONFIG_HOME` selections point to the

@@ -969,8 +969,8 @@
   "tests/ntruplus768/acwc2_security/proof-manifest.json": "951221e93beaa470b8a709d197f59726ac7700eca4503d198d0ca1230fdcd1e5",
   "tests/ntruplus768/acwc2_security/test_controls.py": "024854a2cb1137f0bd41d170f8c0d50484fd9f8da382865f432ae4296c9c1973",
   "tests/ntruplus768/acwc2_security/test_reference.py": "fce28bbcdce1de83128f025f336114df6cef07459bdfb049f6e9d90f7c3ce3fa",
-  "tests/ntruplus768/acwc2_security/verify_acwc2_security.py": "55fd334a05a3ac50f83a43bc5ec658db5ae990990c61fca249c2f45ddd938934",
+  "tests/ntruplus768/acwc2_security/verify_acwc2_security.py": "31caa6245d0d08fe41760c12f73a6594fcf4bb1f39a6333f7df4dcc6b8e63e5b",
   "tests/ntruplus768/fo_simulation/check_fo_simulation.py": "2cc7fa4e5361fb410f59502c9ba1817ae8d3144ed89b8692f31dea1c37741bf0",
-  "tests/ntruplus768/fo_simulation/verify_fo_simulation.py": "38cb0cf1ad6709778ad42d9ca954ee65cd3fc5c32c9e908fd8148b5f96833136",
+  "tests/ntruplus768/fo_simulation/verify_fo_simulation.py": "31135c668337a26b9063aa91a1e3864cec832bc83974233912eba4501a5512d9",
   "tests/test_ntruplus768_acwc2_security.py": "cdd2ec4d8c7717ad3e21e79f15f2159b7f38761673a85296b8d3688dd35e72de"
 }

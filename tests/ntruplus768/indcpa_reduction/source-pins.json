@@ -946,7 +946,7 @@
   "ntruplus/proof/compat/jasmin/JModel.ec": "243634853394f0f012394aa194e783759291cef237f72587419cc5524eb94561",
   "scripts/verify-ntruplus768-indcpa-reduction.sh": "838acc86749da843aec8aa22b5fe6ddce7e82e74e79fc6677bc9861c25da8a44",
   "tests/ntruplus768/fo_simulation/check_fo_simulation.py": "2cc7fa4e5361fb410f59502c9ba1817ae8d3144ed89b8692f31dea1c37741bf0",
-  "tests/ntruplus768/fo_simulation/verify_fo_simulation.py": "38cb0cf1ad6709778ad42d9ca954ee65cd3fc5c32c9e908fd8148b5f96833136",
+  "tests/ntruplus768/fo_simulation/verify_fo_simulation.py": "31135c668337a26b9063aa91a1e3864cec832bc83974233912eba4501a5512d9",
   "tests/ntruplus768/indcpa_reduction/freeze_manifest.py": "266327b4ef662030330249906055e564d2bf369507d2f52028dcd397afa66370",
   "tests/ntruplus768/indcpa_reduction/model_contract.py": "c30528c5529b58ef481dbd6620196788dc43b71c69929166587cf726eb4079df",
   "tests/ntruplus768/indcpa_reduction/policy.py": "7a423fe9bfce65d12f392c7c065a990ab2873c9fcdae1a00ce163e523cb3684b",
@@ -954,6 +954,6 @@
   "tests/ntruplus768/indcpa_reduction/proof-manifest.json": "be252db4089f6327765020930dd584fd1c00139a87138a496d3914a6e505c76a",
   "tests/ntruplus768/indcpa_reduction/test_controls.py": "6721503bd23b69a79883646f92ba4dc67572879c7a6c4de9278cf03269fe7c37",
   "tests/ntruplus768/indcpa_reduction/test_reference.py": "8b4cf9979d6550d84a435447292f8cc2fe1a196059b66403eccc86d5cc748d7a",
-  "tests/ntruplus768/indcpa_reduction/verify_indcpa_reduction.py": "9b5ac3960c6baf13f37092988fd3e3c357073e193aed41d54011388fd67c586b",
+  "tests/ntruplus768/indcpa_reduction/verify_indcpa_reduction.py": "f16093e0ab97c271b36fcdc71939c498517dda7f5b5a700cf017923c3282a4bd",
   "tests/test_ntruplus768_indcpa_reduction.py": "233eec2cc72a5a6a948b9fa3593a1aaa07b353c397c285525b67cda5ff057951"
 }

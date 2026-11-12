@@ -93,7 +93,7 @@ def integration(output):
     inputs = [Path(__file__), Path(backend.__file__), Path(backend.coq_policy.__file__)]
     inputs_before = backend.snapshot(inputs)
     output.mkdir(parents=True, exist_ok=False)
-    root = output / "source tree 한글 with spaces"
+    root = output / "source tree café with spaces"
     root.mkdir()
     helper = root / "BackendMath.v"
     helper.write_text("From Coq Require Import ZArith Lia.\n"
@@ -147,7 +147,7 @@ def integration(output):
             "changed_goal": {"old": "lemma square_nonnegative : forall (x:int), 0 <= x*x.",
                              "new": "lemma square_nonnegative : forall (x:int), 1 <= x*x."}}
     manifest["natives"] = {"Smoke.ec": spec}
-    production = backend.CoqBackend(root, output / "actual evidence 한글 with spaces", run, external, manifest, **options)
+    production = backend.CoqBackend(root, output / "actual evidence café with spaces", run, external, manifest, **options)
     production.prepare()
     assert production.records['actual_native_limits']['timelimit_seconds'] == 60.0
     positive = production.output / "main with spaces" / "Smoke.ec"

@@ -85,6 +85,19 @@ class PreservedRuntimeTests(unittest.TestCase):
     def test_source_only_is_explicit(self):
         self.assertEqual(self.command(check_only=True)[-1], "--check-only")
 
+    def test_english_projection_keeps_original_package_and_fixed_payload_mounts(self):
+        original = json.loads((self.package / "manifest.json").read_bytes())
+        original["separate_evidence_inputs"] = {
+            "/archived research/handoff/verification/run/summary.json": {
+                "sha256": "b" * 64, "required_by": []}}
+        raw = json.dumps(original).encode()
+        (self.package / "manifest.json").write_bytes(raw)
+        projected = launcher.preserved_environment.project_manifest(raw)
+        (self.repo / "env/preserved-inputs.json").write_text(json.dumps(projected))
+        command = self.command(check_only=True)
+        self.assertIn("/tmp/work/evidence", command)
+        self.assertEqual((self.package / "manifest.json").read_bytes(), raw)
+
     def test_package_manifest_cannot_replace_trusted_inventory(self):
         (self.package / "manifest.json").write_text("{}")
         with self.assertRaisesRegex(ValueError, "manifest differs"):

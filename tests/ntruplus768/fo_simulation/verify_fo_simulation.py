@@ -103,7 +103,7 @@ def main():
     parser.add_argument('--check-only', action='store_true', help='source/mutation/syntax checks; never full PASS')
     parser.add_argument('--output', type=Path, help='new/empty evidence directory outside checkout')
     parser.add_argument('--prior-evidence-root', type=Path,
-                        default=ROOT.parent / '[졸업] 석사학위논문',
+                        default=ROOT.parent / 'research-evidence',
                         help='thesis root holding the hash-linked prior evidence')
     args = parser.parse_args()
     output = (args.output or Path(tempfile.mkdtemp(prefix='ntruplus-fo-simulation-'))).resolve()

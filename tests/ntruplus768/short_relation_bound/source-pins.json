@@ -1014,7 +1014,7 @@
   "ntruplus/proof/compat/jasmin/JModel.ec": "243634853394f0f012394aa194e783759291cef237f72587419cc5524eb94561",
   "scripts/verify-ntruplus768-short-relation-bound.sh": "902e260d334ec0966190eca5aecceab196b5f8643a679c5519f072330ec5d927",
   "tests/ntruplus768/fo_simulation/check_fo_simulation.py": "2cc7fa4e5361fb410f59502c9ba1817ae8d3144ed89b8692f31dea1c37741bf0",
-  "tests/ntruplus768/fo_simulation/verify_fo_simulation.py": "38cb0cf1ad6709778ad42d9ca954ee65cd3fc5c32c9e908fd8148b5f96833136",
+  "tests/ntruplus768/fo_simulation/verify_fo_simulation.py": "31135c668337a26b9063aa91a1e3864cec832bc83974233912eba4501a5512d9",
   "tests/ntruplus768/short_relation_bound/coq_backend.py": "0bc9977b0e2613c9b5caf77fb282c3366ccacb4667d382203d0dabb0799ea82c",
   "tests/ntruplus768/short_relation_bound/coq_policy.py": "d95fb5a330d722616186242ad007ce74837fb6f9f1a0bffb8546d553c3946211",
   "tests/ntruplus768/short_relation_bound/freeze_manifest.py": "7c72756c96a0bd8de38f8616d5641b81061524a0b4a08e9eca38ca2676670037",
@@ -1023,8 +1023,8 @@
   "tests/ntruplus768/short_relation_bound/prior-evidence-pins.json": "884c0c3b90fccde6f8fe95914c9e0f4bc4739a73b77c7d61830eb511af28c846",
   "tests/ntruplus768/short_relation_bound/proof-manifest.json": "c3db59379c7365398aeaeb5c6faec25301af4e14a767cbe2b8980a085af7364f",
   "tests/ntruplus768/short_relation_bound/test_controls.py": "1af110764f57c9d1df41833f4ff0a05d568a4e29f1093f1cead93cc8c2888e91",
-  "tests/ntruplus768/short_relation_bound/test_coq_backend.py": "7f3b854fbda893ba28fda6b5bd454ea97eecc866e5837c328d9091e1635bbd88",
+  "tests/ntruplus768/short_relation_bound/test_coq_backend.py": "ce0cd6ee670b3854f46c50fd5b35f8c6857f52b6426c541fce62bb05713b48b8",
   "tests/ntruplus768/short_relation_bound/test_reference.py": "73f6d678d7ab159f547debbea9da228dce938e18a70a64e2a828744fb0c1d40a",
-  "tests/ntruplus768/short_relation_bound/verify_short_relation_bound.py": "320d160cfd45242e8d98d20beaffbe9133e976df51746f13c60dd911c7f79a26",
+  "tests/ntruplus768/short_relation_bound/verify_short_relation_bound.py": "b4bc2c43823fdf4f67594dc9fe86a15621c2a5f03bb359c971eae820b19cd684",
   "tests/test_ntruplus768_short_relation_bound.py": "df2ecbb6365cf0cfd79eab982dd1ba8c56d4588f572cd7490be13961fd900a7f"
 }

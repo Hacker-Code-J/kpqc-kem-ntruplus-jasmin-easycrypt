@@ -1062,8 +1062,8 @@
   "tests/ntruplus768/adaptive_history/scope_controls.py": "ba45a164192018f3cc748f72f9ad626820d918eda3429d721d3f311a5c530c8b",
   "tests/ntruplus768/adaptive_history/test_controls.py": "fb729dcb6fb370b3f25e5bcb0ce6f641665adfca0eb4624cc865394229a78d99",
   "tests/ntruplus768/adaptive_history/test_reference.py": "1dbf35e6ee2acaff47b9ab039084e48d25dc963350bbbdb35a33b0fe3de86415",
-  "tests/ntruplus768/adaptive_history/verify_adaptive_history.py": "d62d020edbbf2f5b61d756173cc7c54c8a4d88dd2832256be94e27e6de60290c",
+  "tests/ntruplus768/adaptive_history/verify_adaptive_history.py": "7750efc41be1ce000a17836c816c559b3ad2ac6f9449d0f7587c901ff38314f5",
   "tests/ntruplus768/fo_simulation/check_fo_simulation.py": "2cc7fa4e5361fb410f59502c9ba1817ae8d3144ed89b8692f31dea1c37741bf0",
-  "tests/ntruplus768/fo_simulation/verify_fo_simulation.py": "38cb0cf1ad6709778ad42d9ca954ee65cd3fc5c32c9e908fd8148b5f96833136",
+  "tests/ntruplus768/fo_simulation/verify_fo_simulation.py": "31135c668337a26b9063aa91a1e3864cec832bc83974233912eba4501a5512d9",
   "tests/ntruplus768/history_refinement/executable_policy.py": "d60d242c783537878250d36cfdb94128809559a35920d2735cd6ad4543ef8b19"
 }

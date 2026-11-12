@@ -1081,7 +1081,7 @@
   "ntruplus/proof/compat/jasmin/JModel.ec": "243634853394f0f012394aa194e783759291cef237f72587419cc5524eb94561",
   "scripts/verify-ntruplus768-runtime-bound.sh": "afcce169d1f774410dae94f8540baee82bfc01225fdf657f6ac0b138e6ac0f89",
   "tests/ntruplus768/fo_simulation/check_fo_simulation.py": "2cc7fa4e5361fb410f59502c9ba1817ae8d3144ed89b8692f31dea1c37741bf0",
-  "tests/ntruplus768/fo_simulation/verify_fo_simulation.py": "38cb0cf1ad6709778ad42d9ca954ee65cd3fc5c32c9e908fd8148b5f96833136",
+  "tests/ntruplus768/fo_simulation/verify_fo_simulation.py": "31135c668337a26b9063aa91a1e3864cec832bc83974233912eba4501a5512d9",
   "tests/ntruplus768/history_refinement/executable_policy.py": "d60d242c783537878250d36cfdb94128809559a35920d2735cd6ad4543ef8b19",
   "tests/ntruplus768/runtime_bound/baseinv-proof-overrides.json": "fad3550eab745413bc16fb483e2c109c0a1cde7ad4a80c8b02e68896986b01ec",
   "tests/ntruplus768/runtime_bound/calibration/manifest.json": "fc8a9f22e79de07de41bfd780a89041cec9c056bdedbbf9370162a8f14dedc56",
@@ -1118,5 +1118,5 @@
   "tests/ntruplus768/runtime_bound/sim_calibration.py": "8590be1fa0f53236218572841a79353bc9cbe1a52c86cb9d0a6cff65425d081d",
   "tests/ntruplus768/runtime_bound/test_controls.py": "91fbb66b04eee733c0d3ba9a9074e7b175891a799f0297679189595f40deabc9",
   "tests/ntruplus768/runtime_bound/test_reference.py": "e8c3cf5bcc22424c7d0f5d0987844454e3ab27bb4c442baac5ec6d31696d5882",
-  "tests/ntruplus768/runtime_bound/verify_runtime_bound.py": "d07a523f487ba498b1c8fdef11b6eefaca90b1336811c131758263b55e5dddc5"
+  "tests/ntruplus768/runtime_bound/verify_runtime_bound.py": "bbd8a33420f061812f146d8188360529c9b089a6b48eeb79f54d25f6e031037e"
 }

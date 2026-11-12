@@ -10,8 +10,13 @@ from pathlib import Path, PurePosixPath
 import re
 import shutil
 import subprocess
+import sys
 import tarfile
 import zipfile
+
+sys.path.insert(0, str(Path(__file__).resolve().parents[2] / "scripts"))
+import preserved_environment  # noqa: E402
+sys.path.pop(0)
 
 
 def sha(data):
@@ -211,10 +216,10 @@ def main():
         raise ValueError(
             "Choose a new output directory outside the captured environment"
         )
-    manifest_bytes = manifest_path.read_bytes()
-    manifest = json.loads(manifest_bytes)
-    if (capture / "manifest.json").read_bytes() != manifest_bytes:
-        raise ValueError("Repository and captured manifests differ")
+    public_manifest_bytes = manifest_path.read_bytes()
+    manifest_bytes = (capture / "manifest.json").read_bytes()
+    manifest = preserved_environment.authenticate_manifest(
+        manifest_bytes, public_manifest_bytes)
     for name, record in manifest["files"].items():
         target = capture / record["archive_path"]
         if target.is_symlink() or sha(target.read_bytes()) != record["sha256"]:
@@ -1445,7 +1450,7 @@ def main():
         "".join(f"{sha(p.read_bytes())}  {p.relative_to(output)}\n" for p in entries)
     )
     if (
-        manifest_path.read_bytes() != manifest_bytes
+        manifest_path.read_bytes() != public_manifest_bytes
         or (capture / "manifest.json").read_bytes() != manifest_bytes
     ):
         raise ValueError("Preserved manifest changed during inventory")

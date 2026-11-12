@@ -1031,7 +1031,7 @@
   "ntruplus/proof/compat/jasmin/JModel.ec": "243634853394f0f012394aa194e783759291cef237f72587419cc5524eb94561",
   "scripts/verify-ntruplus768-history-refinement.sh": "939a4045d190f197af5f744e1a605f9d27a6eb82ffb50a51dc52b0f641e0137a",
   "tests/ntruplus768/fo_simulation/check_fo_simulation.py": "2cc7fa4e5361fb410f59502c9ba1817ae8d3144ed89b8692f31dea1c37741bf0",
-  "tests/ntruplus768/fo_simulation/verify_fo_simulation.py": "38cb0cf1ad6709778ad42d9ca954ee65cd3fc5c32c9e908fd8148b5f96833136",
+  "tests/ntruplus768/fo_simulation/verify_fo_simulation.py": "31135c668337a26b9063aa91a1e3864cec832bc83974233912eba4501a5512d9",
   "tests/ntruplus768/history_refinement/executable_policy.py": "d60d242c783537878250d36cfdb94128809559a35920d2735cd6ad4543ef8b19",
   "tests/ntruplus768/history_refinement/freeze_manifest.py": "3203b6a4b7907b87183957ba149321b5f2e216d163cc3fc209d387a16f5c4684",
   "tests/ntruplus768/history_refinement/model_contract.py": "6173846f752dd77400bb1f19f00dde8e6c83b0bd663ccb24fbce9791c6305981",
@@ -1040,5 +1040,5 @@
   "tests/ntruplus768/history_refinement/proof-manifest.json": "e2accbb6b0cd63a1ea35995d83d3681c99ea7ddc221c1dfc3e3db2ce77f0c4fc",
   "tests/ntruplus768/history_refinement/test_controls.py": "d762c2f59d3171f5dea4ce3bd06325f473fd142ab3ff52f616e8cb5db030ec92",
   "tests/ntruplus768/history_refinement/test_reference.py": "50f9c2d5efd5e75408a519b169dbb976563415a76c8c7b434a32ea425952a951",
-  "tests/ntruplus768/history_refinement/verify_history_refinement.py": "639451086fd7a06f9431d147f98d3161505b17cc3c487a382c1ebda5205a2c05"
+  "tests/ntruplus768/history_refinement/verify_history_refinement.py": "867dbd06f755c4bbee23b8d200e360be4f94920552602171f2321935c3754a59"
 }

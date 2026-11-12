@@ -3,7 +3,6 @@
 
 import argparse
 import hashlib
-import json
 import os
 from pathlib import Path
 import shutil
@@ -16,6 +15,7 @@ ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "scripts"))
 from check_public_evidence import check_record, inventory  # noqa: E402
 from export_public_evidence import checked_path  # noqa: E402
+import preserved_environment  # noqa: E402
 sys.path.pop(0)
 
 AUDITED_HOME = "/home/hacker-code-j"
@@ -31,9 +31,8 @@ def explicit_path(path):
 
 def authenticate_environment(package, repo):
     expected = checked_path(repo / "env/preserved-inputs.json").read_bytes()
-    if checked_path(package / "manifest.json").read_bytes() != expected:
-        raise ValueError("package manifest differs from repository inventory")
-    manifest = json.loads(expected)
+    original = checked_path(package / "manifest.json").read_bytes()
+    manifest = preserved_environment.authenticate_manifest(original, expected)
     files = manifest["files"]
     if (not files or len(files) != manifest["file_count"]
             or manifest["missing_or_mismatched_inputs"]

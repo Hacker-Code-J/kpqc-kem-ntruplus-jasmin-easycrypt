@@ -32,7 +32,7 @@ def main():
     parser.add_argument("--check-only", action="store_true", help="source controls only; never full PASS")
     parser.add_argument("--output", type=Path, help="new/empty evidence directory outside checkout")
     parser.add_argument("--prior-evidence-root", type=Path,
-                        default=policy.ROOT.parent / "[졸업] 석사학위논문")
+                        default=policy.ROOT.parent / "research-evidence")
     args = parser.parse_args()
     output = (args.output or Path(tempfile.mkdtemp(prefix="ntruplus-ow-hardness-"))).resolve()
     policy.require(not output.is_relative_to(policy.ROOT), "evidence must be outside checkout")

@@ -4,6 +4,12 @@ This companion attributes the 3,145 files in `../preserved-inputs.json` and
 preserves the available original notices. It does not modify the preserved
 environment, authorize redistribution, or establish a reproducible binary build.
 
+The [English metadata representation](../../docs/english-path-migration.md)
+authenticates the unchanged archive manifest before projecting informational
+historical path keys. The generator uses that same authentication procedure.
+Existing companion `preserved_manifest_sha256` values identify the original
+archive manifest, whose bytes and payload inventory remain unchanged.
+
 ## Read the inventory
 
 - [generated/COMPONENTS.md](generated/COMPONENTS.md) is the readable component,

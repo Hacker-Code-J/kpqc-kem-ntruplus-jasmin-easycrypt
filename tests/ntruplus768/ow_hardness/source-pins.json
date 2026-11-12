@@ -978,7 +978,7 @@
   "ntruplus/proof/compat/jasmin/JModel.ec": "243634853394f0f012394aa194e783759291cef237f72587419cc5524eb94561",
   "scripts/verify-ntruplus768-ow-hardness.sh": "20a6b2c3e4a277e03db0deaae465ed4725b04148bab7d0185ec7551642869ea8",
   "tests/ntruplus768/fo_simulation/check_fo_simulation.py": "2cc7fa4e5361fb410f59502c9ba1817ae8d3144ed89b8692f31dea1c37741bf0",
-  "tests/ntruplus768/fo_simulation/verify_fo_simulation.py": "38cb0cf1ad6709778ad42d9ca954ee65cd3fc5c32c9e908fd8148b5f96833136",
+  "tests/ntruplus768/fo_simulation/verify_fo_simulation.py": "31135c668337a26b9063aa91a1e3864cec832bc83974233912eba4501a5512d9",
   "tests/ntruplus768/ow_hardness/freeze_manifest.py": "11c065ec6f8c1d36399204e5062e4344e9ff9a633ed0721e89439fe76cf49a8a",
   "tests/ntruplus768/ow_hardness/model_contract.py": "9f50a8af9dcce104d19bf1b06f85ee470a5ffefc27fb05203b9c35ed0235eff1",
   "tests/ntruplus768/ow_hardness/policy.py": "619c41b81075dcb3ee4467ac44ca1db7b621d2fd4c0904c81463a8c7cb190e10",
@@ -986,6 +986,6 @@
   "tests/ntruplus768/ow_hardness/proof-manifest.json": "7e9ede18b750057d0893d288106ff70f391a5e8ab97c0acf6866b1fc26e48ad1",
   "tests/ntruplus768/ow_hardness/test_controls.py": "f19c052ec252ea492eef1e04893b365c827d7253d13f53be9faf7b8fb8929a8f",
   "tests/ntruplus768/ow_hardness/test_reference.py": "f5681aac22ede30b3433b4d7ac85d0f5abb43ef8bd2b532027f5b60e7db6ec7c",
-  "tests/ntruplus768/ow_hardness/verify_ow_hardness.py": "41d816b1a7d732573e9f896af970fe58f8a952a4eef7357df84ef2059165e7ef",
+  "tests/ntruplus768/ow_hardness/verify_ow_hardness.py": "f3be732087b47e9670a5301254634af3e6fd2ee566c5ec2dc73145ad9d1f7947",
   "tests/test_ntruplus768_ow_hardness.py": "821cf369ce7666d2ea0581cbdd2cbda4632165ba8956d6d473dd7beecd0fbf6d"
 }
