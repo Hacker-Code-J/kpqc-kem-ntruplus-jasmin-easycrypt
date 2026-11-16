@@ -1,0 +1,23 @@
+{
+  "schema": 1,
+  "scope": "Current development checker for the reviewed31-target EasyCrypt proof migration; not a whole-project replay or a replacement for historical environment captures.",
+  "easycrypt": {
+    "release": "r2026.10",
+    "source_commit": "859766e50e936fb9e420fb6fb1ad8824ffb8d83e"
+  },
+  "why3": "1.8.2",
+  "jasmin": "2026.09.0",
+  "prover": {
+    "name": "Z3",
+    "version": "4.12.6",
+    "timeout_seconds": 60,
+    "max_provers": 1
+  },
+  "migrated_public_targets": [
+    "cca-setup",
+    "stopped-rom",
+    "spreadness"
+  ],
+  "evidence": "../evidence/easycrypt-2026.10-20261116/README.md",
+  "historical_observation": "toolchain-observed.json"
+}

@@ -9,6 +9,14 @@ thesis release. Historical verification records are not a fresh full replay of
 the current sources. See [release status](docs/release.md) before citing a result
 as reproduced.
 
+The current development sources include the reviewed **EasyCrypt 2026.10**
+proof-body port for CCA setup, stopped-ROM and spreadness. All 31 selected
+primary proofs and their 31 unfinished-proof controls passed; theorem statements,
+assumptions and exported bounds are unchanged. See the
+[migration evidence](evidence/easycrypt-2026.10-20261116/README.md) and
+[current toolchain](docs/toolchain-current.json). This scoped replay does not
+replace historical full-target records or establish a fresh whole-project PASS.
+
 ## Research scope
 
 - Arithmetic and serialization artifacts connect word operations to polynomial

@@ -99,6 +99,8 @@ lemma bounded_buffer_rejection_tail_phoare d0 accept0 q0 :
     d=d0 /\ accept=accept0 /\ q=q0 ==> res=None] =
     ((1%r-mu d0 accept0)^q0).
 proof.
-  move=> dll hq; by bypr=> &m [-> [-> ->]];
+  move=> dll hq; have hb:0%r <= (1%r-mu d0 accept0)^q0 by apply StdOrder.RealOrder.expr_ge0; smt(mu_bounded).
+  bypr=> &m; split; first exact hb.
+  move=> [-> [-> ->]];
     exact (bounded_buffer_rejection_tail &m d0 accept0 q0 dll hq).
 qed.

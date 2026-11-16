@@ -13,6 +13,45 @@ source check or C test does not establish a formal theorem. Some formal harnesse
 check new proof mains while validating imported results through historical,
 hash-pinned evidence; that is not a fresh replay of every imported theorem.
 
+## Current EasyCrypt 2026.10 scope
+
+Current development uses EasyCrypt **r2026.10** (commit
+`859766e50e936fb9e420fb6fb1ad8824ffb8d83e`) for `cca-setup`, `stopped-rom` and
+`spreadness`, with Why3 1.8.2, Z3 4.12.6 and Jasmin 2026.09.0. The
+[current toolchain record](toolchain-current.json) and
+[31-target replay evidence](../evidence/easycrypt-2026.10-20261116/README.md)
+describe the checked scope. `toolchain-observed.json` remains the original
+2026.09 observation; it has not been relabeled as a new execution.
+
+The three current verifiers retain their source-mutation tests, semantic EOF
+checks and prover limits. Current source pins name the reviewed proof-port bytes.
+For historical imported sources, only the twelve exact before/after pairs in
+`tests/ntruplus768/easycrypt-2026.10-proof-transitions.json` are recognized. Their
+preserved original bytes and unchanged non-proof declarations are checked and
+each use is recorded as `reviewed_import_transitions`. This establishes a reviewed
+source transition, not a fresh replay of the imported proof bodies.
+
+After preparing the pinned external libraries and selecting the current tools,
+the public commands remain:
+
+```sh
+export EASYCRYPT="$(command -v easycrypt)"
+export WHY3="$(command -v why3)"
+python3 scripts/reproduce.py proof cca-setup stopped-rom spreadness \
+  --prior-evidence-root /absolute/path/to/evidence
+```
+
+Other historical targets have not been migrated or reverified collectively.
+Their frozen source/tool requirements can reject this development tree; use
+the source commit and environment attached to their historical record when
+reproducing that record. Do not change their pins merely to make a new run pass.
+
+The repository-local evidence integrity check is separate from proof execution:
+
+```sh
+python3 evidence/easycrypt-2026.10-20261116/check.py
+```
+
 ## Checkout and prerequisites
 
 Clone this repository at the commit or release cited by the paper, then run:
@@ -74,7 +113,7 @@ An independently rebuilt environment and complete clean-checkout replay remain
 release requirements. Do not substitute the latest compiler or prover and call
 older verification records a replay under the new versions.
 
-Use one consistent toolchain on `PATH`. Some newer Python harnesses default to
+Use one consistent toolchain on `PATH`. Some historical Python harnesses default to
 the author's opam switch layout, but accept absolute executable paths through
 environment variables such as `EASYCRYPT` and `WHY3`. For those harnesses, after
 activating the intended switch, explicitly select the tools:

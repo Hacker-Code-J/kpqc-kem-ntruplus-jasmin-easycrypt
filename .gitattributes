@@ -1,0 +1,5 @@
+# Preserve the exact bytes authenticated by the recorded evidence checksums.
+evidence/easycrypt-2026.10-20261116/** -text
+evidence/easycrypt-2026.10-20261116/**/*.log -diff -whitespace
+evidence/easycrypt-2026.10-20261116/inputs/** -whitespace
+evidence/easycrypt-2026.10-20261116/proof-port.patch -whitespace

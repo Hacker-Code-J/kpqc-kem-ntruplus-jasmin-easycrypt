@@ -216,12 +216,12 @@ lemma fresh_retry_f_buffer_law (event:W8.t Array192.t -> bool) :
  (mu (dcond uniform192 keygen_f_accept) event).
 proof.
  conseq (fresh_retry_f_probability
-  (fun (v:W8.t Array192.t * W16.t Array768.t * W16.t Array768.t)=>event v.`1)) => />.
+  (fun (v:W8.t Array192.t * W16.t Array768.t * W16.t Array768.t)=>event v.`1)) => />; apply ge0_mu.
 qed.
 lemma fresh_retry_g_buffer_law (event:W8.t Array192.t -> bool) :
  phoare[KeygenRetry(UniformSeedRNG,FreshExpand).g : true ==> event res.`1] =
  (mu (dcond uniform192 keygen_g_accept) event).
 proof.
  conseq (fresh_retry_g_probability
-  (fun (v:W8.t Array192.t * W16.t Array768.t * W16.t Array768.t)=>event v.`1)) => />.
+  (fun (v:W8.t Array192.t * W16.t Array768.t * W16.t Array768.t)=>event v.`1)) => />; apply ge0_mu.
 qed.

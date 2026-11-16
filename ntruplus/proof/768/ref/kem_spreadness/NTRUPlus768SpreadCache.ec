@@ -123,7 +123,11 @@ lemma spread_encoded_cache_bound w msg0 ct0 gm0 : pke_key_relation w=>
  phoare[SpreadEncodedValue.run:
  pk=w.`kg_pk /\ msg=msg0 /\ ROG.m=gm0 ==>res=Some ct0] <=((fsize gm0+1)%r/(2%r^768)).
 proof.
- move=>hk; bypr=> &m [hp [hm hg]]; rewrite hp hm.
+ move=>hk; have hb:0%r <= (fsize gm0+1)%r/(2%r^768).
+ + apply divr_ge0; last by apply expr_ge0; smt().
+   rewrite le_fromint; smt(ge0_fsize).
+ bypr=> &m; split; first exact hb.
+ move=> [hp [hm hg]]; rewrite hp hm.
  exact(spread_encoded_cache_probability w msg0 ct0 gm0 &m hk hg).
 qed.
 

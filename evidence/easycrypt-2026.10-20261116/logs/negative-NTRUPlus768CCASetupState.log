@@ -1,0 +1,15 @@
+[-] [0002] 1.8% (-1.0B / [frag -1.0B])[\] [0003] 3.5% (-1.0B / [frag -1.0B])[|] [0004] 6.2% (-1.0B / [frag -1.0B])[/] [0005] 9.6% (-1.0B / [frag -1.0B])[-] [0006] 13.2% (-1.0B / [frag -1.0B])* In [lemmas or axioms]:
+
+(* Keccak1600_Spec.keccak1600_opE (shorten name: keccak1600_opE) *)
+lemma keccak1600_opE:
+  forall (c r8 : int) (m : W8.t list) (ds_bits : bool list) (ds_byte : W8.t)
+    (outlen outlen8 : int),
+    0 <= c < 1600 =>
+    1600 - c = 8 * r8 =>
+    outlen = 8 * outlen8 =>
+    DS_BYTE_ok ds_bits ds_byte =>
+    keccak1600_op c (bytes_to_bits m ++ ds_bits) outlen =
+    bytes_to_bits (KECCAK1600 r8 m ds_byte outlen8).
+
+[\] [0007] 17.1% (-1.0B / [frag -1.0B])[|] [0009] 20.1% (-1.0B / [frag -1.0B])[/] [0010] 23.0% (-1.0B / [frag -1.0B])[-] [0011] 26.4% (-1.0B / [frag -1.0B])[\] [0023] 46.7% (-1.0B / [frag -1.0B])[|] [0031] 58.4% (-1.0B / [frag -1.0B])[/] [0040] 69.5% (-1.0B / [frag -1.0B])[-] [0042] 73.4% (-1.0B / [frag -1.0B])[\] [0042] 73.7% (-1.0B / [frag -1.0B])[|] [0042] 75.6% (-1.0B / [frag -1.0B])[/] [0043] 75.9% (-1.0B / [frag -1.0B])[-] [0047] 82.2% (-1.0B / [frag -1.0B])[\] [0047] 82.5% (-1.0B / [frag -1.0B])[|] [0047] 84.4% (-1.0B / [frag -1.0B])[/] [0048] 84.7% (-1.0B / [frag -1.0B])[-] [0051] 90.8% (-1.0B / [frag -1.0B])[\] [0051] 91.2% (-1.0B / [frag -1.0B])[|] [0051] 91.8% (-1.0B / [frag -1.0B])[/] [0055] 97.2% (-1.0B / [frag -1.0B])                                                                                                      [critical] [/home/hacker-code-j/.local/share/cryptotools/2026.10/research-replay-20261116T082335Z/ntruplus/port-cca-01/negative-NTRUPlus768CCASetupState/NTRUPlus768CCASetupState.ec: line 51 (19) to line 54 (77)] cannot process [axiom] inside a proof script
+[-] [0055] 97.2% (-1.0B / [frag -1.0B])[\] [0055] 97.2% (-1.0B / [frag -1.0B])

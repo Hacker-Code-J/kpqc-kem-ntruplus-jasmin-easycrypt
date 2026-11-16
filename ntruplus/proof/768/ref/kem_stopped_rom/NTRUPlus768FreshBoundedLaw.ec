@@ -75,7 +75,9 @@ lemma fresh_bounded_f_tail q0 :
  phoare[BoundedRetry(UniformSeedRNG,FreshExpand).f : limit=q0 ==>
    !res.`rs_ok] = ((1%r-fresh_f_accept_mass)^q0).
 proof.
- move=> hq; bypr=> &m ->; rewrite /fresh_f_accept_mass.
+ move=> hq; have hb:0%r <= (1%r-fresh_f_accept_mass)^q0 by apply StdOrder.RealOrder.expr_ge0; smt(fresh_f_mass_range).
+ bypr=> &m; split; first exact hb.
+ move=> ->; rewrite /fresh_f_accept_mass.
  rewrite -(bounded_buffer_rejection_tail &m uniform192 keygen_f_accept q0 uniform192_ll hq).
  by byequiv fresh_bounded_f_equiv; auto; smt().
 qed.
@@ -84,7 +86,9 @@ lemma fresh_bounded_g_tail q0 :
  phoare[BoundedRetry(UniformSeedRNG,FreshExpand).g : limit=q0 ==>
    !res.`rs_ok] = ((1%r-fresh_g_accept_mass)^q0).
 proof.
- move=> hq; bypr=> &m ->; rewrite /fresh_g_accept_mass.
+ move=> hq; have hb:0%r <= (1%r-fresh_g_accept_mass)^q0 by apply StdOrder.RealOrder.expr_ge0; smt(fresh_g_mass_range).
+ bypr=> &m; split; first exact hb.
+ move=> ->; rewrite /fresh_g_accept_mass.
  rewrite -(bounded_buffer_rejection_tail &m uniform192 keygen_g_accept q0 uniform192_ll hq).
  by byequiv fresh_bounded_g_equiv; auto; smt().
 qed.
@@ -102,12 +106,16 @@ lemma fresh_stopped_keygen_abort qf0 qg0 :
    qf=qf0 /\ qg=qg0 ==> !stopped_success res] <= (fresh_retry_tail qf0 qg0).
 proof.
  move=> hf hg.
+ have hfn:0%r <= (1%r-fresh_f_accept_mass)^qf0
+   by apply StdOrder.RealOrder.expr_ge0; smt(fresh_f_mass_range).
+ have hgn:0%r <= (1%r-fresh_g_accept_mass)^qg0
+   by apply StdOrder.RealOrder.expr_ge0; smt(fresh_g_mass_range).
  have hfb: phoare[BoundedRetry(UniformSeedRNG,FreshExpand).f : limit=qf0 ==>
    !res.`rs_ok] <= ((1%r-fresh_f_accept_mass)^qf0)
-   by conseq (fresh_bounded_f_tail qf0 hf).
+   by conseq (fresh_bounded_f_tail qf0 hf); smt().
  have hgb: phoare[BoundedRetry(UniformSeedRNG,FreshExpand).g : limit=qg0 ==>
    !res.`rs_ok] <= ((1%r-fresh_g_accept_mass)^qg0)
-   by conseq (fresh_bounded_g_tail qg0 hg).
+   by conseq (fresh_bounded_g_tail qg0 hg); smt().
  proc; rewrite /stopped_success /fresh_retry_tail.
  seq 3 : (!fv.`rs_ok) ((1%r-fresh_f_accept_mass)^qf0) 1%r
    1%r ((1%r-fresh_g_accept_mass)^qg0) (qg=qg0) => //.

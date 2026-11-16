@@ -8,6 +8,14 @@ proof replay, and no DOI has been assigned.
 
 ## Selected initial publication scope
 
+The development tree now also includes the
+[EasyCrypt 2026.10 proof-body migration](../evidence/easycrypt-2026.10-20261116/README.md):
+31 selected primary proofs and 31 semantic EOF controls passed for CCA setup,
+stopped-ROM and spreadness. Twelve proof files changed while their declarations,
+assumptions and exported bounds stayed identical. This is a subsequent scoped
+development result. It does not move the initial release tag, replace its
+attachments or promote its historical records to a whole-suite 2026.10 PASS.
+
 The initial distribution contains implementation/proof sources, reproducibility
 scripts, pinned dependency recovery sources, license notices, and verification
 reports/logs. It does not distribute compiler/prover executables, installed opam

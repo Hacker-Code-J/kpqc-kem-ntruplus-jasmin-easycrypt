@@ -10,6 +10,9 @@ sys.dont_write_bytecode = True
 TEST = Path(__file__).resolve().parent
 ROOT = TEST.parents[2]
 BASE = ROOT / 'ntruplus/proof/768/ref'
+sys.path.insert(0, str(ROOT / 'scripts'))
+from easycrypt_source_transitions import metadata_paths
+sys.path.pop(0)
 GROUPS = ('kem_stopped_rom',)
 SCRIPT = ROOT / 'scripts/verify-ntruplus768-stopped-rom.sh'
 
@@ -125,7 +128,7 @@ def source_paths():
 
 
 def snapshot():
-    paths = source_paths() | {SCRIPT}
+    paths = source_paths() | {SCRIPT} | metadata_paths(ROOT)
     paths.update(p for p in TEST.iterdir() if p.is_file() and p.suffix in ('.py', '.json'))
     return {str(p.relative_to(ROOT)): sha(p.read_bytes()) for p in sorted(paths)}
 

@@ -95,7 +95,8 @@ lemma spread_enc_correct pk0 m0 r0 :
  phoare[PKEEnc.run:pk=pk0 /\ m=m0 /\ r=r0 /\ pke_domain m0 /\ pke_domain r0 ==>
  res=pke_enc_spec pk0 m0 r0]=1%r.
 proof.
- bypr=> &mem [hp [hm [hr [hdm hdr]]]].
+ bypr=> &mem; split; first smt().
+ move=> [hp [hm [hr [hdm hdr]]]].
  byphoare(pke_enc_correct pk0 m0 r0 hdm hdr)=> //.
 qed.
 

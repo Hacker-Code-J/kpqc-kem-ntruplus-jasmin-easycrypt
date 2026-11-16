@@ -17,6 +17,9 @@ import time
 sys.dont_write_bytecode = True
 import check_cca_setup as policy
 ROOT, TEST, BASE = policy.ROOT, policy.TEST, policy.BASE
+sys.path.insert(0, str(ROOT / 'scripts'))
+from easycrypt_source_transitions import reviewed_import
+sys.path.pop(0)
 
 
 def timestamp():
@@ -152,8 +155,13 @@ def main():
             matched = []
             for source, value in imported.items():
                 if source in prior['source_hashes_after']:
-                    policy.require(value == prior['source_hashes_after'][source],
-                                   'import differs from prior verified source: ' + source)
+                    historical = prior['source_hashes_after'][source]
+                    if value != historical:
+                        transition = reviewed_import(ROOT, source, historical, value)
+                        report.setdefault('reviewed_import_transitions', []).append(transition)
+                        external.add(ROOT / 'scripts/easycrypt_source_transitions.py')
+                        external.add(ROOT / 'tests/ntruplus768/easycrypt-2026.10-proof-transitions.json')
+                        external.add(ROOT / 'evidence/easycrypt-2026.10-20261116/before' / source)
                     matched.append(source)
                     covered.add(source)
             external.add(path)
@@ -197,9 +205,8 @@ def main():
             policy.require(set(eof.SEMANTIC_TARGETS) == set(policy.MAINS), 'semantic EOF target inventory drift')
             policy.require(set(eof.MODULE_BINDERS) == set(policy.MAINS), 'semantic EOF binder inventory drift')
             policy.require(set(eof.NEGATIVE_PROOFS) == set(policy.MAINS), 'one unfinished-proof control per main required')
-            prefix = str(Path.home() / '.opam/cryptotools-2026.09')
-            easycrypt = tool('easycrypt', prefix + '/bin/easycrypt', ['config'])
-            why3 = tool('why3', prefix + '/bin/why3', ['--version'])
+            easycrypt = tool('easycrypt', shutil.which('easycrypt') or '', ['config'])
+            why3 = tool('why3', shutil.which('why3') or '', ['--version'])
             config = report['tools']['easycrypt']['version']
             why_match = re.search(r'why3 configuration file\s*\n\s*(\S+)', config)
             policy.require(why_match, 'effective Why3 configuration absent')
@@ -221,6 +228,7 @@ def main():
                     directory = Path(name.split('@', 1)[1])
                     if directory.is_dir() and not directory.is_relative_to(ROOT):
                         external.update(directory.rglob('*.ec'))
+                        external.update(directory.rglob('*.eca'))
             for directory in (why3.parent.parent / 'share/why3', easycrypt.parent.parent / 'lib/easycrypt/config'):
                 if directory.is_dir():
                     external.update(p for p in directory.rglob('*') if p.is_file())

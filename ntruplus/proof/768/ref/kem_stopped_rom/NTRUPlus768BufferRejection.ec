@@ -75,7 +75,9 @@ lemma buffer_rejection_phoare d0 accept0 (event:W8.t Array192.t -> bool) :
   phoare [BufferRejection.sample : d=d0 /\ accept=accept0 ==> event res] =
     (mu (dcond d0 accept0) event).
 proof.
-  move=> dll; by bypr => &m [-> ->]; apply (buffer_rejection_probability &m d0 accept0 event dll).
+  move=> dll; bypr => &m; split.
+  + apply ge0_mu.
+  move=> [-> ->]; apply (buffer_rejection_probability &m d0 accept0 event dll).
 qed.
 
 lemma buffer_rejection_lossless d0 accept0 :

@@ -22,9 +22,12 @@ lemma cca_programmed_joint_tail &m qf qg m0 f0 :
   !counted_joint_within qf qg res] <= fresh_retry_tail qf qg.
 proof.
  move=>hf hg.
+ have hb:0%r <= fresh_retry_tail qf qg.
+ + rewrite /fresh_retry_tail; apply addr_ge0; apply expr_ge0; smt(fresh_f_mass_range fresh_g_mass_range).
  have ht:phoare[CountedKeygen(UniformSeedRNG,ProgrammedFreshExpand).run:
    true ==> !counted_within qf qg res] <= (fresh_retry_tail qf qg).
- + bypr=> &mm _; exact(programmed_counted_tail &mm qf qg workspace{mm} hf hg).
+ + bypr=> &mm; split; first exact hb.
+   move=> _; exact(programmed_counted_tail &mm qf qg workspace{mm} hf hg).
  byphoare (_: true ==> _) => //.
  proc; call ht; auto.
 qed.

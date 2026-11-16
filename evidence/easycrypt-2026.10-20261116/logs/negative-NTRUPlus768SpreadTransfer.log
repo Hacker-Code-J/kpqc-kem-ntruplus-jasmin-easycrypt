@@ -1,0 +1,20 @@
+[-] [0002] 1.2% (-1.0B / [frag -1.0B])[\] [0003] 1.9% (-1.0B / [frag -1.0B])[|] [0004] 3.0% (-1.0B / [frag -1.0B])[/] [0005] 4.9% (-1.0B / [frag -1.0B])* In [lemmas or axioms]:
+
+(* Keccak1600_Spec.keccak1600_opE (shorten name: keccak1600_opE) *)
+lemma keccak1600_opE:
+  forall (c r8 : int) (m : W8.t list) (ds_bits : bool list) (ds_byte : W8.t)
+    (outlen outlen8 : int),
+    0 <= c < 1600 =>
+    1600 - c = 8 * r8 =>
+    outlen = 8 * outlen8 =>
+    DS_BYTE_ok ds_bits ds_byte =>
+    keccak1600_op c (bytes_to_bits m ++ ds_bits) outlen =
+    bytes_to_bits (KECCAK1600 r8 m ds_byte outlen8).
+
+* In [lemmas or axioms]:
+
+(* StdOrder.RealOrder.ler_def (shorten name: ler_def) *)
+lemma ler_def: forall (x y : real), x <= y <=> `|y - x| = y - x.
+
+[-] [0006] 7.0% (-1.0B / [frag -1.0B])[\] [0007] 8.7% (-1.0B / [frag -1.0B])[|] [0008] 9.4% (-1.0B / [frag -1.0B])[/] [0009] 9.8% (-1.0B / [frag -1.0B])[-] [0013] 13.9% (-1.0B / [frag -1.0B])[\] [0016] 18.0% (-1.0B / [frag -1.0B])[|] [0019] 21.0% (-1.0B / [frag -1.0B])[/] [0020] 21.1% (-1.0B / [frag -1.0B])[-] [0021] 22.6% (-1.0B / [frag -1.0B])[\] [0022] 23.8% (-1.0B / [frag -1.0B])[|] [0023] 23.9% (-1.0B / [frag -1.0B])[/] [0026] 26.8% (-1.0B / [frag -1.0B])[-] [0027] 26.9% (-1.0B / [frag -1.0B])[\] [0029] 30.2% (-1.0B / [frag -1.0B])[|] [0030] 30.3% (-1.0B / [frag -1.0B])[/] [0033] 34.1% (-1.0B / [frag -1.0B])[-] [0034] 34.3% (-1.0B / [frag -1.0B])[\] [0037] 38.2% (-1.0B / [frag -1.0B])[|] [0038] 38.3% (-1.0B / [frag -1.0B])[/] [0044] 44.8% (-1.0B / [frag -1.0B])[-] [0045] 45.0% (-1.0B / [frag -1.0B])[\] [0046] 45.9% (-1.0B / [frag -1.0B])[|] [0049] 50.1% (-1.0B / [frag -1.0B])[/] [0050] 50.6% (-1.0B / [frag -1.0B])[-] [0051] 51.9% (-1.0B / [frag -1.0B])[\] [0052] 53.6% (-1.0B / [frag -1.0B])[|] [0053] 54.2% (-1.0B / [frag -1.0B])[/] [0054] 54.3% (-1.0B / [frag -1.0B])[-] [0057] 58.4% (-1.0B / [frag -1.0B])[\] [0058] 58.6% (-1.0B / [frag -1.0B])[|] [0059] 59.9% (-1.0B / [frag -1.0B])[/] [0060] 61.8% (-1.0B / [frag -1.0B])[-] [0061] 61.9% (-1.0B / [frag -1.0B])[\] [0062] 62.0% (-1.0B / [frag -1.0B])[|] [0065] 65.2% (-1.0B / [frag -1.0B])[/] [0066] 65.4% (-1.0B / [frag -1.0B])[-] [0067] 65.6% (-1.0B / [frag -1.0B])[\] [0070] 69.1% (-1.0B / [frag -1.0B])[|] [0071] 70.3% (-1.0B / [frag -1.0B])[/] [0072] 71.1% (-1.0B / [frag -1.0B])[-] [0073] 72.0% (-1.0B / [frag -1.0B])[\] [0074] 72.1% (-1.0B / [frag -1.0B])[|] [0076] 75.0% (-1.0B / [frag -1.0B])[/] [0076] 75.1% (-1.0B / [frag -1.0B])[-] [0076] 76.9% (-1.0B / [frag -1.0B])[\] [0077] 77.0% (-1.0B / [frag -1.0B])[|] [0079] 80.2% (-1.0B / [frag -1.0B])[/] [0079] 80.4% (-1.0B / [frag -1.0B])[-] [0079] 82.3% (-1.0B / [frag -1.0B])[\] [0080] 82.4% (-1.0B / [frag -1.0B])[|] [0084] 86.8% (-1.0B / [frag -1.0B])[/] [0085] 87.0% (-1.0B / [frag -1.0B])[-] [0086] 87.9% (-1.0B / [frag -1.0B])[\] [0088] 91.8% (-1.0B / [frag -1.0B])[|] [0089] 92.4% (-1.0B / [frag -1.0B])[/] [0090] 93.4% (-1.0B / [frag -1.0B])[-] [0091] 94.3% (-1.0B / [frag -1.0B])[\] [0092] 95.7% (-1.0B / [frag -1.0B])[|] [0096] 98.7% (-1.0B / [frag -1.0B])                                                                                                      [critical] [/home/hacker-code-j/.local/share/cryptotools/2026.10/research-replay-20261116T082335Z/ntruplus/v2-remaining-spreadness-negative/negative-NTRUPlus768SpreadTransfer/NTRUPlus768SpreadTransfer.ec: line 92 (0) to line 95 (89)] cannot process [axiom] inside a proof script
+[/] [0096] 98.7% (-1.0B / [frag -1.0B])[-] [0096] 98.7% (-1.0B / [frag -1.0B])

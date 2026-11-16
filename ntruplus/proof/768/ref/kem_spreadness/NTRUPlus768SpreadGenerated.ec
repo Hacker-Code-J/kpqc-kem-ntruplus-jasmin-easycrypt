@@ -36,7 +36,9 @@ lemma spread_pke_public_bound_ph ct0 :
  phoare[SpreadPKE.run:spread_valid_public_key pk /\ pke_domain m ==>
  res=Some ct0]<=(1%r/(2%r^768)).
 proof.
- bypr=> &mem [hp hm]; exact(spread_pke_public_bound pk{mem} m{mem} ct0 &mem hp hm).
+ have hb:0%r <= 1%r/(2%r^768) by apply divr_ge0; [smt() | apply expr_ge0; smt()].
+ bypr=> &mem; split; first exact hb.
+ move=> [hp hm]; exact(spread_pke_public_bound pk{mem} m{mem} ct0 &mem hp hm).
 qed.
 
 (* The original public API performs its actual unbounded retries, Finish

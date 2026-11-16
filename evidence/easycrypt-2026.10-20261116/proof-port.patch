@@ -1,0 +1,239 @@
+--- a/ntruplus/proof/768/ref/kem_cca_setup/NTRUPlus768CCASetupBound.ec
++++ b/ntruplus/proof/768/ref/kem_cca_setup/NTRUPlus768CCASetupBound.ec
+@@ -22,9 +22,12 @@
+   !counted_joint_within qf qg res] <= fresh_retry_tail qf qg.
+ proof.
+  move=>hf hg.
++ have hb:0%r <= fresh_retry_tail qf qg.
++ + rewrite /fresh_retry_tail; apply addr_ge0; apply expr_ge0; smt(fresh_f_mass_range fresh_g_mass_range).
+  have ht:phoare[CountedKeygen(UniformSeedRNG,ProgrammedFreshExpand).run:
+    true ==> !counted_within qf qg res] <= (fresh_retry_tail qf qg).
+- + bypr=> &mm _; exact(programmed_counted_tail &mm qf qg workspace{mm} hf hg).
++ + bypr=> &mm; split; first exact hb.
++   move=> _; exact(programmed_counted_tail &mm qf qg workspace{mm} hf hg).
+  byphoare (_: true ==> _) => //.
+  proc; call ht; auto.
+ qed.
+--- a/ntruplus/proof/768/ref/kem_cca_setup/NTRUPlus768CCASetupSwitch.ec
++++ b/ntruplus/proof/768/ref/kem_cca_setup/NTRUPlus768CCASetupSwitch.ec
+@@ -108,10 +108,17 @@
+  <=proposal_delta a(qf0+qg0).
+ proof.
+  move=>hf hg ha hs.
++ have hd: 0%r <= proposal_delta a(qf0+qg0).
++ + have h:=fresh_proposal_birthday CCAStoppedContext &mem qf0 qg0 (qf0+qg0) a cache _ ha hs.
++   + smt().
++   have hp:0%r <= Pr[FreshProposalExperiment(CCAStoppedContext).run(qf0,qg0,qf0+qg0,cache) @ &mem:FreshProposal.bad]
++     by rewrite Pr[mu_ge0].
++   smt().
+  have hb:phoare[FreshProposalExperiment(CCAStoppedContext).run:
+    qf=qf0 /\ qg=qg0 /\ q0=qf0+qg0 /\ m0=cache ==>FreshProposal.bad]
+    <=(proposal_delta a(qf0+qg0)).
+- + bypr=> &m [hqf [hqg [hq hm]]].
++ + bypr=> &m; split; first exact hd.
++   move=> [hqf [hqg [hq hm]]].
+    rewrite hqf hqg hq hm.
+    apply(fresh_proposal_birthday CCAStoppedContext &m qf0 qg0 (qf0+qg0) a cache); smt().
+  byphoare(_:qf=qf0 /\ qg=qg0 /\ m0=cache ==>_)=>//.
+--- a/ntruplus/proof/768/ref/kem_spreadness/NTRUPlus768SpreadCache.ec
++++ b/ntruplus/proof/768/ref/kem_spreadness/NTRUPlus768SpreadCache.ec
+@@ -123,7 +123,11 @@
+  phoare[SpreadEncodedValue.run:
+  pk=w.`kg_pk /\ msg=msg0 /\ ROG.m=gm0 ==>res=Some ct0] <=((fsize gm0+1)%r/(2%r^768)).
+ proof.
+- move=>hk; bypr=> &m [hp [hm hg]]; rewrite hp hm.
++ move=>hk; have hb:0%r <= (fsize gm0+1)%r/(2%r^768).
++ + apply divr_ge0; last by apply expr_ge0; smt().
++   rewrite le_fromint; smt(ge0_fsize).
++ bypr=> &m; split; first exact hb.
++ move=> [hp [hm hg]]; rewrite hp hm.
+  exact(spread_encoded_cache_probability w msg0 ct0 gm0 &m hk hg).
+ qed.
+ 
+--- a/ntruplus/proof/768/ref/kem_spreadness/NTRUPlus768SpreadCalls.ec
++++ b/ntruplus/proof/768/ref/kem_spreadness/NTRUPlus768SpreadCalls.ec
+@@ -51,7 +51,11 @@
+  phoare[SpreadEncoded.run:pk=w.`kg_pk /\ msg=msg0 /\ ROG.m=gm0 ==>
+  res=Some ct0]<=((fsize gm0+1)%r/(2%r^768)).
+ proof.
+- move=>hw;bypr=> &mem [hp [hm hg]];rewrite hp hm.
++ move=>hw; have hb:0%r <= (fsize gm0+1)%r/(2%r^768).
++ + apply StdOrder.RealOrder.divr_ge0; last by apply StdOrder.RealOrder.expr_ge0; smt().
++   rewrite le_fromint; smt(ge0_fsize).
++ bypr=> &mem; split; first exact hb.
++ move=> [hp [hm hg]];rewrite hp hm.
+  have h:=spread_encoded_actual_bound w msg0 ct0 &mem hw.
+  by move:h;rewrite hg.
+ qed.
+--- a/ntruplus/proof/768/ref/kem_spreadness/NTRUPlus768SpreadGenerated.ec
++++ b/ntruplus/proof/768/ref/kem_spreadness/NTRUPlus768SpreadGenerated.ec
+@@ -36,7 +36,9 @@
+  phoare[SpreadPKE.run:spread_valid_public_key pk /\ pke_domain m ==>
+  res=Some ct0]<=(1%r/(2%r^768)).
+ proof.
+- bypr=> &mem [hp hm]; exact(spread_pke_public_bound pk{mem} m{mem} ct0 &mem hp hm).
++ have hb:0%r <= 1%r/(2%r^768) by apply divr_ge0; [smt() | apply expr_ge0; smt()].
++ bypr=> &mem; split; first exact hb.
++ move=> [hp hm]; exact(spread_pke_public_bound pk{mem} m{mem} ct0 &mem hp hm).
+ qed.
+ 
+ (* The original public API performs its actual unbounded retries, Finish
+--- a/ntruplus/proof/768/ref/kem_spreadness/NTRUPlus768SpreadProcedures.ec
++++ b/ntruplus/proof/768/ref/kem_spreadness/NTRUPlus768SpreadProcedures.ec
+@@ -95,7 +95,8 @@
+  phoare[PKEEnc.run:pk=pk0 /\ m=m0 /\ r=r0 /\ pke_domain m0 /\ pke_domain r0 ==>
+  res=pke_enc_spec pk0 m0 r0]=1%r.
+ proof.
+- bypr=> &mem [hp [hm [hr [hdm hdr]]]].
++ bypr=> &mem; split; first smt().
++ move=> [hp [hm [hr [hdm hdr]]]].
+  byphoare(pke_enc_correct pk0 m0 r0 hdm hdr)=> //.
+ qed.
+ 
+--- a/ntruplus/proof/768/ref/kem_stopped_rom/NTRUPlus768BoundedBufferRejection.ec
++++ b/ntruplus/proof/768/ref/kem_stopped_rom/NTRUPlus768BoundedBufferRejection.ec
+@@ -99,6 +99,8 @@
+     d=d0 /\ accept=accept0 /\ q=q0 ==> res=None] =
+     ((1%r-mu d0 accept0)^q0).
+ proof.
+-  move=> dll hq; by bypr=> &m [-> [-> ->]];
++  move=> dll hq; have hb:0%r <= (1%r-mu d0 accept0)^q0 by apply StdOrder.RealOrder.expr_ge0; smt(mu_bounded).
++  bypr=> &m; split; first exact hb.
++  move=> [-> [-> ->]];
+     exact (bounded_buffer_rejection_tail &m d0 accept0 q0 dll hq).
+ qed.
+--- a/ntruplus/proof/768/ref/kem_stopped_rom/NTRUPlus768BufferRejection.ec
++++ b/ntruplus/proof/768/ref/kem_stopped_rom/NTRUPlus768BufferRejection.ec
+@@ -75,7 +75,9 @@
+   phoare [BufferRejection.sample : d=d0 /\ accept=accept0 ==> event res] =
+     (mu (dcond d0 accept0) event).
+ proof.
+-  move=> dll; by bypr => &m [-> ->]; apply (buffer_rejection_probability &m d0 accept0 event dll).
++  move=> dll; bypr => &m; split.
++  + apply ge0_mu.
++  move=> [-> ->]; apply (buffer_rejection_probability &m d0 accept0 event dll).
+ qed.
+ 
+ lemma buffer_rejection_lossless d0 accept0 :
+--- a/ntruplus/proof/768/ref/kem_stopped_rom/NTRUPlus768FreshBoundedLaw.ec
++++ b/ntruplus/proof/768/ref/kem_stopped_rom/NTRUPlus768FreshBoundedLaw.ec
+@@ -75,7 +75,9 @@
+  phoare[BoundedRetry(UniformSeedRNG,FreshExpand).f : limit=q0 ==>
+    !res.`rs_ok] = ((1%r-fresh_f_accept_mass)^q0).
+ proof.
+- move=> hq; bypr=> &m ->; rewrite /fresh_f_accept_mass.
++ move=> hq; have hb:0%r <= (1%r-fresh_f_accept_mass)^q0 by apply StdOrder.RealOrder.expr_ge0; smt(fresh_f_mass_range).
++ bypr=> &m; split; first exact hb.
++ move=> ->; rewrite /fresh_f_accept_mass.
+  rewrite -(bounded_buffer_rejection_tail &m uniform192 keygen_f_accept q0 uniform192_ll hq).
+  by byequiv fresh_bounded_f_equiv; auto; smt().
+ qed.
+@@ -84,7 +86,9 @@
+  phoare[BoundedRetry(UniformSeedRNG,FreshExpand).g : limit=q0 ==>
+    !res.`rs_ok] = ((1%r-fresh_g_accept_mass)^q0).
+ proof.
+- move=> hq; bypr=> &m ->; rewrite /fresh_g_accept_mass.
++ move=> hq; have hb:0%r <= (1%r-fresh_g_accept_mass)^q0 by apply StdOrder.RealOrder.expr_ge0; smt(fresh_g_mass_range).
++ bypr=> &m; split; first exact hb.
++ move=> ->; rewrite /fresh_g_accept_mass.
+  rewrite -(bounded_buffer_rejection_tail &m uniform192 keygen_g_accept q0 uniform192_ll hq).
+  by byequiv fresh_bounded_g_equiv; auto; smt().
+ qed.
+@@ -102,12 +106,16 @@
+    qf=qf0 /\ qg=qg0 ==> !stopped_success res] <= (fresh_retry_tail qf0 qg0).
+ proof.
+  move=> hf hg.
++ have hfn:0%r <= (1%r-fresh_f_accept_mass)^qf0
++   by apply StdOrder.RealOrder.expr_ge0; smt(fresh_f_mass_range).
++ have hgn:0%r <= (1%r-fresh_g_accept_mass)^qg0
++   by apply StdOrder.RealOrder.expr_ge0; smt(fresh_g_mass_range).
+  have hfb: phoare[BoundedRetry(UniformSeedRNG,FreshExpand).f : limit=qf0 ==>
+    !res.`rs_ok] <= ((1%r-fresh_f_accept_mass)^qf0)
+-   by conseq (fresh_bounded_f_tail qf0 hf).
++   by conseq (fresh_bounded_f_tail qf0 hf); smt().
+  have hgb: phoare[BoundedRetry(UniformSeedRNG,FreshExpand).g : limit=qg0 ==>
+    !res.`rs_ok] <= ((1%r-fresh_g_accept_mass)^qg0)
+-   by conseq (fresh_bounded_g_tail qg0 hg).
++   by conseq (fresh_bounded_g_tail qg0 hg); smt().
+  proc; rewrite /stopped_success /fresh_retry_tail.
+  seq 3 : (!fv.`rs_ok) ((1%r-fresh_f_accept_mass)^qf0) 1%r
+    1%r ((1%r-fresh_g_accept_mass)^qg0) (qg=qg0) => //.
+--- a/ntruplus/proof/768/ref/kem_stopped_rom/NTRUPlus768FreshRetryLaw.ec
++++ b/ntruplus/proof/768/ref/kem_stopped_rom/NTRUPlus768FreshRetryLaw.ec
+@@ -216,12 +216,12 @@
+  (mu (dcond uniform192 keygen_f_accept) event).
+ proof.
+  conseq (fresh_retry_f_probability
+-  (fun (v:W8.t Array192.t * W16.t Array768.t * W16.t Array768.t)=>event v.`1)) => />.
++  (fun (v:W8.t Array192.t * W16.t Array768.t * W16.t Array768.t)=>event v.`1)) => />; apply ge0_mu.
+ qed.
+ lemma fresh_retry_g_buffer_law (event:W8.t Array192.t -> bool) :
+  phoare[KeygenRetry(UniformSeedRNG,FreshExpand).g : true ==> event res.`1] =
+  (mu (dcond uniform192 keygen_g_accept) event).
+ proof.
+  conseq (fresh_retry_g_probability
+-  (fun (v:W8.t Array192.t * W16.t Array768.t * W16.t Array768.t)=>event v.`1)) => />.
+-qed.
++  (fun (v:W8.t Array192.t * W16.t Array768.t * W16.t Array768.t)=>event v.`1)) => />; apply ge0_mu.
++qed.
+--- a/ntruplus/proof/768/ref/kem_stopped_rom/NTRUPlus768ProposalSwitch.ec
++++ b/ntruplus/proof/768/ref/kem_stopped_rom/NTRUPlus768ProposalSwitch.ec
+@@ -132,15 +132,24 @@
+   <= proposal_delta ab qb.
+ proof.
+   move=> qge age msize.
+-  fel 1 FreshProposal.n (fun c => (ab+c)%r*seed_probability) qb
++  fel 1 FreshProposal.n (fun c => (ab+max 0 c)%r*seed_probability) qb
+     FreshProposal.bad [FreshProposal.draw : (FreshProposal.n < qb)]
+     (FreshProposal.q=qb /\ 0<=FreshProposal.n<=qb /\
+       fsize FreshProposal.m<=ab+FreshProposal.n)=> //.
+-  + rewrite (prefix_collision_sum qb ab seed_probability qge).
++  + rewrite (@Bigreal.BRA.eq_big_seq _ (fun c => (ab+c)%r*seed_probability)).
++    - move=> c hc.
++      have hc0:0<=c by move:hc; rewrite List.Range.mem_range; smt().
++      change ((ab+max 0 c)%r*seed_probability = (ab+c)%r*seed_probability).
++      by rewrite (Int.lez_maxr 0 c hc0).
++    rewrite (prefix_collision_sum qb ab seed_probability qge).
+     by rewrite /proposal_delta seed_bound_format.
+   + inline FreshProposal.init; auto; smt().
+   + proc; rcondt 3; first by auto.
+-    wp; rnd; wp; rnd (mem (fdom FreshProposal.m)); wp; skip=> />.
++    wp; rnd; wp; rnd (mem (fdom FreshProposal.m)); last first.
++    - move=> &hr; apply mulr_ge0.
++      + by rewrite le_fromint /max; smt().
++      by rewrite /seed_probability; apply expr_ge0; smt().
++    wp; skip=> />.
+     move=> &hr nge nlt nbad nq nf.
+     split; last by move=> h v hv; rewrite mem_fdom.
+     have hit:=seed_hits_cache_bound uniform32 seed_probability FreshProposal.m{hr} _.
+@@ -148,7 +157,8 @@
+     apply (ler_trans _ _ _ hit).
+     apply ler_wpmul2r.
+     + rewrite /seed_probability; apply expr_ge0; smt().
+-    + by rewrite le_fromint.
++    + rewrite le_fromint (Int.lez_maxr 0 FreshProposal.n{hr} nge).
++      exact nf.
+   + move=> c; proc; rcondt 3; first by auto; smt().
+     auto=> /> &hr nc nge nle hs x hx y hy.
+     rewrite fsize_set /b2i.
+--- a/ntruplus/proof/768/ref/kem_stopped_rom/NTRUPlus768StoppedROMGames.ec
++++ b/ntruplus/proof/768/ref/kem_stopped_rom/NTRUPlus768StoppedROMGames.ec
+@@ -72,10 +72,17 @@
+   <= proposal_delta ab (qf0+qg0).
+ proof.
+   move=> qfge qgge age ms.
++  have hd:0%r <= proposal_delta ab(qf0+qg0).
++  + have h:=fresh_proposal_birthday StoppedKeygenContext &mem qf0 qg0 (qf0+qg0) ab cache _ age ms.
++    + smt().
++    have hp:0%r <= Pr[FreshProposalExperiment(StoppedKeygenContext).run(qf0,qg0,qf0+qg0,cache) @ &mem:FreshProposal.bad]
++      by rewrite Pr[mu_ge0].
++    smt().
+   have hb : phoare[FreshProposalExperiment(StoppedKeygenContext).run :
+     qf=qf0 /\ qg=qg0 /\ q0=qf0+qg0 /\ m0=cache ==> FreshProposal.bad]
+     <= (proposal_delta ab (qf0+qg0)).
+-  + bypr=> &m [hf [hg [hq hm]]].
++  + bypr=> &m; split; first exact hd.
++    move=> [hf [hg [hq hm]]].
+     rewrite hf hg hq hm.
+     apply (fresh_proposal_birthday StoppedKeygenContext &m qf0 qg0
+       (qf0+qg0) ab cache); smt().

@@ -72,10 +72,17 @@ lemma configured_fresh_birthday &mem qf0 qg0 ab cache event0 :
   <= proposal_delta ab (qf0+qg0).
 proof.
   move=> qfge qgge age ms.
+  have hd:0%r <= proposal_delta ab(qf0+qg0).
+  + have h:=fresh_proposal_birthday StoppedKeygenContext &mem qf0 qg0 (qf0+qg0) ab cache _ age ms.
+    + smt().
+    have hp:0%r <= Pr[FreshProposalExperiment(StoppedKeygenContext).run(qf0,qg0,qf0+qg0,cache) @ &mem:FreshProposal.bad]
+      by rewrite Pr[mu_ge0].
+    smt().
   have hb : phoare[FreshProposalExperiment(StoppedKeygenContext).run :
     qf=qf0 /\ qg=qg0 /\ q0=qf0+qg0 /\ m0=cache ==> FreshProposal.bad]
     <= (proposal_delta ab (qf0+qg0)).
-  + bypr=> &m [hf [hg [hq hm]]].
+  + bypr=> &m; split; first exact hd.
+    move=> [hf [hg [hq hm]]].
     rewrite hf hg hq hm.
     apply (fresh_proposal_birthday StoppedKeygenContext &m qf0 qg0
       (qf0+qg0) ab cache); smt().

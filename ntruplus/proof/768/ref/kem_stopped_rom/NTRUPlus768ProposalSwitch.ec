@@ -132,15 +132,24 @@ lemma fresh_proposal_birthday
   <= proposal_delta ab qb.
 proof.
   move=> qge age msize.
-  fel 1 FreshProposal.n (fun c => (ab+c)%r*seed_probability) qb
+  fel 1 FreshProposal.n (fun c => (ab+max 0 c)%r*seed_probability) qb
     FreshProposal.bad [FreshProposal.draw : (FreshProposal.n < qb)]
     (FreshProposal.q=qb /\ 0<=FreshProposal.n<=qb /\
       fsize FreshProposal.m<=ab+FreshProposal.n)=> //.
-  + rewrite (prefix_collision_sum qb ab seed_probability qge).
+  + rewrite (@Bigreal.BRA.eq_big_seq _ (fun c => (ab+c)%r*seed_probability)).
+    - move=> c hc.
+      have hc0:0<=c by move:hc; rewrite List.Range.mem_range; smt().
+      change ((ab+max 0 c)%r*seed_probability = (ab+c)%r*seed_probability).
+      by rewrite (Int.lez_maxr 0 c hc0).
+    rewrite (prefix_collision_sum qb ab seed_probability qge).
     by rewrite /proposal_delta seed_bound_format.
   + inline FreshProposal.init; auto; smt().
   + proc; rcondt 3; first by auto.
-    wp; rnd; wp; rnd (mem (fdom FreshProposal.m)); wp; skip=> />.
+    wp; rnd; wp; rnd (mem (fdom FreshProposal.m)); last first.
+    - move=> &hr; apply mulr_ge0.
+      + by rewrite le_fromint /max; smt().
+      by rewrite /seed_probability; apply expr_ge0; smt().
+    wp; skip=> />.
     move=> &hr nge nlt nbad nq nf.
     split; last by move=> h v hv; rewrite mem_fdom.
     have hit:=seed_hits_cache_bound uniform32 seed_probability FreshProposal.m{hr} _.
@@ -148,7 +157,8 @@ proof.
     apply (ler_trans _ _ _ hit).
     apply ler_wpmul2r.
     + rewrite /seed_probability; apply expr_ge0; smt().
-    + by rewrite le_fromint.
+    + rewrite le_fromint (Int.lez_maxr 0 FreshProposal.n{hr} nge).
+      exact nf.
   + move=> c; proc; rcondt 3; first by auto; smt().
     auto=> /> &hr nc nge nle hs x hx y hy.
     rewrite fsize_set /b2i.

@@ -51,7 +51,11 @@ lemma spread_encoded_actual_ph w msg0 ct0 gm0 : pke_key_relation w=>
  phoare[SpreadEncoded.run:pk=w.`kg_pk /\ msg=msg0 /\ ROG.m=gm0 ==>
  res=Some ct0]<=((fsize gm0+1)%r/(2%r^768)).
 proof.
- move=>hw;bypr=> &mem [hp [hm hg]];rewrite hp hm.
+ move=>hw; have hb:0%r <= (fsize gm0+1)%r/(2%r^768).
+ + apply StdOrder.RealOrder.divr_ge0; last by apply StdOrder.RealOrder.expr_ge0; smt().
+   rewrite le_fromint; smt(ge0_fsize).
+ bypr=> &mem; split; first exact hb.
+ move=> [hp [hm hg]];rewrite hp hm.
  have h:=spread_encoded_actual_bound w msg0 ct0 &mem hw.
  by move:h;rewrite hg.
 qed.

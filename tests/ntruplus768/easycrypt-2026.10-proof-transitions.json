@@ -1,0 +1,69 @@
+{
+  "schema": 1,
+  "release": "r2026.10",
+  "source_commit": "859766e50e936fb9e420fb6fb1ad8824ffb8d83e",
+  "baseline_commit": "6a012ada73cffd407866fed802be755ba4cf23e6",
+  "scope": "Twelve reviewed proof-body ports. No theorem, definition, assumption or exported bound change; no claim to replay imported proof bodies.",
+  "files": {
+    "ntruplus/proof/768/ref/kem_cca_setup/NTRUPlus768CCASetupBound.ec": {
+      "before_sha256": "6a7990894689fc5ea41ea67de0c180b9d0287b72c80fc4e11d699bb9628efede",
+      "after_sha256": "82a7b4695a33d448e652f3150f06e0dcf46d9482426bdd3006928da8da0f840f",
+      "declarations_sha256": "adb2377b895e598b628e8fa0e017cff9e82d6765299a1bd845e4766d2ee62057"
+    },
+    "ntruplus/proof/768/ref/kem_cca_setup/NTRUPlus768CCASetupSwitch.ec": {
+      "before_sha256": "4a75be02133debd8c414134c6b0e040560c95a92af87f682a1d68bd9abcbfef1",
+      "after_sha256": "e54b7b47d87ec47c70d4f758b8ec54e916fe62996485b12d68b7736944d69fb8",
+      "declarations_sha256": "51e19145992677a7d80e9d69d281684568b11804b81f5375e25190a3cc26bfb9"
+    },
+    "ntruplus/proof/768/ref/kem_spreadness/NTRUPlus768SpreadCache.ec": {
+      "before_sha256": "b9840d70d6464a2466019259af185b42e786ee6b1a26f2a58d20ef4261d5b050",
+      "after_sha256": "fe6bea4fb850868737b46c70af58d78ba89d4d01db00ffbbbde989ec87c7e9b2",
+      "declarations_sha256": "70a9f0ce1327c31e2aef9ab25aca3c2c031afdba9e4088ef14fec38c925112e6"
+    },
+    "ntruplus/proof/768/ref/kem_spreadness/NTRUPlus768SpreadCalls.ec": {
+      "before_sha256": "1c2a7b5e670ad0af8ea559c8a81ad261400850256b1506815016baa812294210",
+      "after_sha256": "0d3ee5a324c0a0833fe80ef55e7914665b38f90d0e8232039e44372db5981039",
+      "declarations_sha256": "5114cfb28c9a8162ceea620b011f17334a1af84a43bd04e261c8d043cb786843"
+    },
+    "ntruplus/proof/768/ref/kem_spreadness/NTRUPlus768SpreadGenerated.ec": {
+      "before_sha256": "c6792b9c6e5b4a0541771619fddd024355459310a2425953e3cd6e5017a6f557",
+      "after_sha256": "34ac42bf5223cb4b9b25bfcbe2c3254ca0419f0945b9fefd9ce9429bb9417762",
+      "declarations_sha256": "823ee244060e300aa2ef6b389cdc07cad3b8011dad781becd6ff02a74b94bf8f"
+    },
+    "ntruplus/proof/768/ref/kem_spreadness/NTRUPlus768SpreadProcedures.ec": {
+      "before_sha256": "e52d82f43b1ba066680f297c0097e3a3ef99f9dbcd4e89a5232e83c4c7d91830",
+      "after_sha256": "076f3049a50db315712137a168e1603d0ec93134249072fbb4bcb6e66d5de0ba",
+      "declarations_sha256": "b7eb2efa1a5ca23df403e65cd41b47c92915ab98aec07ae6a239e6b02b4beb4d"
+    },
+    "ntruplus/proof/768/ref/kem_stopped_rom/NTRUPlus768BoundedBufferRejection.ec": {
+      "before_sha256": "51d7931014e8631eaaf366761f2911868753f759b9545c1aadc12c387301957d",
+      "after_sha256": "1824ea0c01a6648ca1037ac4ccaef89fc64e1d6215cf86bef19e2d7e8c4dac9f",
+      "declarations_sha256": "db4d415bb75d475c011a7b16e736ceb2524ef5ac5b8b300196ffee74a77b2d2a"
+    },
+    "ntruplus/proof/768/ref/kem_stopped_rom/NTRUPlus768BufferRejection.ec": {
+      "before_sha256": "c2cdf21b23bd94aa88e7d37b720d9b8197ac5961ae6e9b15e3aa00b93cc15151",
+      "after_sha256": "09c0a8df9822fe94a4c0839c7c6c6b8d492eefbab1c92c30c25ce622a8546833",
+      "declarations_sha256": "938e2412d860e83c07d079a773a95c5ebe021e10c255df238dcef257fa2100d6"
+    },
+    "ntruplus/proof/768/ref/kem_stopped_rom/NTRUPlus768FreshBoundedLaw.ec": {
+      "before_sha256": "fdaf8389c752a99f07151812bfe9ae46d32ce80f6973b7f781aed9014bae27d7",
+      "after_sha256": "00a61d92cd1a9a76181c56bbc7ab97d14708a9c15032dd49969b4d3042bfc16a",
+      "declarations_sha256": "66756352bafda26037567566bacd8933ae27dbda6d8c957079d2ffa5042c85b2"
+    },
+    "ntruplus/proof/768/ref/kem_stopped_rom/NTRUPlus768FreshRetryLaw.ec": {
+      "before_sha256": "5e97fb4f20e4adbd6c08d5d487848bbedf5798e12e636aaad17ac72fdab03c87",
+      "after_sha256": "bc7f50ffbec6edde944948b561c27993453fe6de70de6f4b30d5663ff1a43fa8",
+      "declarations_sha256": "1e572bfb9f964151cd9aa1b0bd4754a4d12191faa73996e99fef08563eca7a38"
+    },
+    "ntruplus/proof/768/ref/kem_stopped_rom/NTRUPlus768ProposalSwitch.ec": {
+      "before_sha256": "4888dcd1af6aa313d85bc6bb8f3a497d03c4b07b6fd70a1ea093db2c88d2f3a8",
+      "after_sha256": "0a611e1ec738bf839acb50e04ffb26582050f1bb335c87e0449b125fa91504bf",
+      "declarations_sha256": "18886ad61b86b43e005aa58646db7a305e0f2df30c6a293dc56f0f159c9e17f9"
+    },
+    "ntruplus/proof/768/ref/kem_stopped_rom/NTRUPlus768StoppedROMGames.ec": {
+      "before_sha256": "9a7e65e6092706ccf11bde239848f8078536ac1d75fe6b35fafa33843317950a",
+      "after_sha256": "464c4cf73b9927f7b25a74824ec9f6a12bfc84a2d2f6adac1e968ed18d1dee6f",
+      "declarations_sha256": "f9527974cff74c5c16ee3a674a00137e5cd452b883873556426b07bc5796c1de"
+    }
+  }
+}

@@ -108,10 +108,17 @@ lemma cca_stopped_fresh_birthday &mem qf0 qg0 a cache f0 :
  <=proposal_delta a(qf0+qg0).
 proof.
  move=>hf hg ha hs.
+ have hd: 0%r <= proposal_delta a(qf0+qg0).
+ + have h:=fresh_proposal_birthday CCAStoppedContext &mem qf0 qg0 (qf0+qg0) a cache _ ha hs.
+   + smt().
+   have hp:0%r <= Pr[FreshProposalExperiment(CCAStoppedContext).run(qf0,qg0,qf0+qg0,cache) @ &mem:FreshProposal.bad]
+     by rewrite Pr[mu_ge0].
+   smt().
  have hb:phoare[FreshProposalExperiment(CCAStoppedContext).run:
    qf=qf0 /\ qg=qg0 /\ q0=qf0+qg0 /\ m0=cache ==>FreshProposal.bad]
    <=(proposal_delta a(qf0+qg0)).
- + bypr=> &m [hqf [hqg [hq hm]]].
+ + bypr=> &m; split; first exact hd.
+   move=> [hqf [hqg [hq hm]]].
    rewrite hqf hqg hq hm.
    apply(fresh_proposal_birthday CCAStoppedContext &m qf0 qg0 (qf0+qg0) a cache); smt().
  byphoare(_:qf=qf0 /\ qg=qg0 /\ m0=cache ==>_)=>//.

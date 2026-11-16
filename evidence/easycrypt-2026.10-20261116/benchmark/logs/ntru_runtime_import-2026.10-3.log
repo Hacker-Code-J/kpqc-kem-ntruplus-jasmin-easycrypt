@@ -1,0 +1,19 @@
+[-] [0002] 32.6% (-1.0B / [frag -1.0B])* In [lemmas or axioms]:
+
+(* Keccak1600_Spec.keccak1600_opE (shorten name: keccak1600_opE) *)
+lemma keccak1600_opE:
+  forall (c r8 : int) (m : W8.t list) (ds_bits : bool list) (ds_byte : W8.t)
+    (outlen outlen8 : int),
+    0 <= c < 1600 =>
+    1600 - c = 8 * r8 =>
+    outlen = 8 * outlen8 =>
+    DS_BYTE_ok ds_bits ds_byte =>
+    keccak1600_op c (bytes_to_bits m ++ ds_bits) outlen =
+    bytes_to_bits (KECCAK1600 r8 m ds_byte outlen8).
+
+* In [lemmas or axioms]:
+
+(* StdOrder.RealOrder.ler_def (shorten name: ler_def) *)
+lemma ler_def: forall (x y : real), x <= y <=> `|y - x| = y - x.
+
+[\] [0002] 75.6% (-1.0B / [frag -1.0B])[|] [0002] 83.7% (-1.0B / [frag -1.0B])[/] [0002] 94.2% (-1.0B / [frag -1.0B])[-] [0003] 100.0% (-1.0B / [frag -1.0B])[\] [0003] 100.0% (-1.0B / [frag -1.0B])                                                   

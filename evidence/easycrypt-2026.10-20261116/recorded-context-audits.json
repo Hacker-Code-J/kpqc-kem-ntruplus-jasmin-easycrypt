@@ -1,0 +1,538 @@
+[
+  {
+    "attempt": "cca-setup",
+    "original_summary_sha256": "1df5784f9940e3ff33a28d083f73a8b511bc4bfecb1b2509e51e258ac10b178c",
+    "recorded_status": "FAIL",
+    "recorded_input_count": 835,
+    "same_before_after_hashes": true,
+    "safely_aborted_presnapshot_intact": false,
+    "import_inventory_matches": true,
+    "non_proof_text_matches_final": true,
+    "easycrypt_sha256": "80cd3ea4297917052b46bf8384df6fafb1a3347f292dd31888c25a0a3e268c96",
+    "reconstructed_input_sources": [],
+    "differing_proof_variants": [
+      {
+        "source": "ntruplus/proof/768/ref/kem_cca_setup/NTRUPlus768CCASetupBound.ec",
+        "payload": "variants/6a7990894689fc5ea41ea67de0c180b9d0287b72c80fc4e11d699bb9628efede.ec"
+      },
+      {
+        "source": "ntruplus/proof/768/ref/kem_cca_setup/NTRUPlus768CCASetupSwitch.ec",
+        "payload": "variants/4a75be02133debd8c414134c6b0e040560c95a92af87f682a1d68bd9abcbfef1.ec"
+      },
+      {
+        "source": "ntruplus/proof/768/ref/kem_stopped_rom/NTRUPlus768BoundedBufferRejection.ec",
+        "payload": "variants/51d7931014e8631eaaf366761f2911868753f759b9545c1aadc12c387301957d.ec"
+      },
+      {
+        "source": "ntruplus/proof/768/ref/kem_stopped_rom/NTRUPlus768BufferRejection.ec",
+        "payload": "variants/c2cdf21b23bd94aa88e7d37b720d9b8197ac5961ae6e9b15e3aa00b93cc15151.ec"
+      },
+      {
+        "source": "ntruplus/proof/768/ref/kem_stopped_rom/NTRUPlus768FreshBoundedLaw.ec",
+        "payload": "variants/fdaf8389c752a99f07151812bfe9ae46d32ce80f6973b7f781aed9014bae27d7.ec"
+      },
+      {
+        "source": "ntruplus/proof/768/ref/kem_stopped_rom/NTRUPlus768FreshRetryLaw.ec",
+        "payload": "variants/5e97fb4f20e4adbd6c08d5d487848bbedf5798e12e636aaad17ac72fdab03c87.ec"
+      },
+      {
+        "source": "ntruplus/proof/768/ref/kem_stopped_rom/NTRUPlus768ProposalSwitch.ec",
+        "payload": "variants/4888dcd1af6aa313d85bc6bb8f3a497d03c4b07b6fd70a1ea093db2c88d2f3a8.ec"
+      },
+      {
+        "source": "ntruplus/proof/768/ref/kem_stopped_rom/NTRUPlus768StoppedROMGames.ec",
+        "payload": "variants/9a7e65e6092706ccf11bde239848f8078536ac1d75fe6b35fafa33843317950a.ec"
+      }
+    ]
+  },
+  {
+    "attempt": "final-proposal",
+    "original_summary_sha256": "0cf333619d94270e6de81999909683f0affd2b87e342eaccd23fdb8ebf179037",
+    "recorded_status": "PASS",
+    "recorded_input_count": 712,
+    "same_before_after_hashes": true,
+    "safely_aborted_presnapshot_intact": false,
+    "import_inventory_matches": true,
+    "non_proof_text_matches_final": true,
+    "easycrypt_sha256": "80cd3ea4297917052b46bf8384df6fafb1a3347f292dd31888c25a0a3e268c96",
+    "reconstructed_input_sources": [],
+    "differing_proof_variants": []
+  },
+  {
+    "attempt": "port-cca-01",
+    "original_summary_sha256": "5f436bbdd89fb1b083957879e1f07f572d6239a73b15deda1864744af5640a64",
+    "recorded_status": "ABORTED_SUPERSEDED",
+    "recorded_input_count": 823,
+    "same_before_after_hashes": false,
+    "safely_aborted_presnapshot_intact": true,
+    "import_inventory_matches": true,
+    "non_proof_text_matches_final": true,
+    "easycrypt_sha256": "80cd3ea4297917052b46bf8384df6fafb1a3347f292dd31888c25a0a3e268c96",
+    "reconstructed_input_sources": [],
+    "differing_proof_variants": [
+      {
+        "source": "ntruplus/proof/768/ref/kem_cca_setup/NTRUPlus768CCASetupBound.ec",
+        "payload": "variants/a605cc21588318c339b3b663bf36580f905f0998ce3c35490c9eaf95fd23245e.ec"
+      },
+      {
+        "source": "ntruplus/proof/768/ref/kem_cca_setup/NTRUPlus768CCASetupSwitch.ec",
+        "payload": "variants/28ae0fe9ee0c47e92678c821d2aa13c39e41c9e7445514ccf7a60701f00d503f.ec"
+      },
+      {
+        "source": "ntruplus/proof/768/ref/kem_stopped_rom/NTRUPlus768BoundedBufferRejection.ec",
+        "payload": "variants/8a0513c6de3e52c5309a81b883bbb4eaf9304642cdcc0d782b39a840837fb3c9.ec"
+      },
+      {
+        "source": "ntruplus/proof/768/ref/kem_stopped_rom/NTRUPlus768BufferRejection.ec",
+        "payload": "variants/bc40374536c026ec2e66e2865fc2554e78b575fe40f3d37b3f7102dd1e9f5530.ec"
+      },
+      {
+        "source": "ntruplus/proof/768/ref/kem_stopped_rom/NTRUPlus768FreshBoundedLaw.ec",
+        "payload": "variants/516c83d26a59b7b58de12efaec0a5f4f995885275e1b7b79bf9db23af910741c.ec"
+      },
+      {
+        "source": "ntruplus/proof/768/ref/kem_stopped_rom/NTRUPlus768ProposalSwitch.ec",
+        "payload": "variants/fb7576bd9b006bde25f06234b9ed5d660ed056d9d1f01fb3f771d9f85706ddf9.ec"
+      },
+      {
+        "source": "ntruplus/proof/768/ref/kem_stopped_rom/NTRUPlus768StoppedROMGames.ec",
+        "payload": "variants/3bb5bb88d05f11a25737f4606c7de6ce7abe442a2657d9923398afc6a71b031c.ec"
+      }
+    ]
+  },
+  {
+    "attempt": "port-spread-01",
+    "original_summary_sha256": "29bbfae030a77a2eb56a5ccddb879cec121424bbc1c56fb7837b15ee3706ce3f",
+    "recorded_status": "ABORTED_SUPERSEDED",
+    "recorded_input_count": 892,
+    "same_before_after_hashes": false,
+    "safely_aborted_presnapshot_intact": true,
+    "import_inventory_matches": true,
+    "non_proof_text_matches_final": true,
+    "easycrypt_sha256": "80cd3ea4297917052b46bf8384df6fafb1a3347f292dd31888c25a0a3e268c96",
+    "reconstructed_input_sources": [],
+    "differing_proof_variants": [
+      {
+        "source": "ntruplus/proof/768/ref/kem_cca_setup/NTRUPlus768CCASetupBound.ec",
+        "payload": "variants/a605cc21588318c339b3b663bf36580f905f0998ce3c35490c9eaf95fd23245e.ec"
+      },
+      {
+        "source": "ntruplus/proof/768/ref/kem_cca_setup/NTRUPlus768CCASetupSwitch.ec",
+        "payload": "variants/28ae0fe9ee0c47e92678c821d2aa13c39e41c9e7445514ccf7a60701f00d503f.ec"
+      },
+      {
+        "source": "ntruplus/proof/768/ref/kem_spreadness/NTRUPlus768SpreadCache.ec",
+        "payload": "variants/b335c9893d42296dac316a828dc928012a489e2d2095502ac3c45e5c916e9ebe.ec"
+      },
+      {
+        "source": "ntruplus/proof/768/ref/kem_spreadness/NTRUPlus768SpreadCalls.ec",
+        "payload": "variants/be1a04b1e1a4569b858cd8e4473a1012117fb3220f5e3bd019364c96be8305c7.ec"
+      },
+      {
+        "source": "ntruplus/proof/768/ref/kem_spreadness/NTRUPlus768SpreadGenerated.ec",
+        "payload": "variants/87b28d5ba3eb8f1800cf8fe54c9a699f7c85626c1fba9286a14de57bc75c8f82.ec"
+      },
+      {
+        "source": "ntruplus/proof/768/ref/kem_spreadness/NTRUPlus768SpreadProcedures.ec",
+        "payload": "variants/fe8ba0ae21038526e18bc98624adf27947766df3fce16e31a0572a6cb1dd3726.ec"
+      },
+      {
+        "source": "ntruplus/proof/768/ref/kem_stopped_rom/NTRUPlus768BoundedBufferRejection.ec",
+        "payload": "variants/8a0513c6de3e52c5309a81b883bbb4eaf9304642cdcc0d782b39a840837fb3c9.ec"
+      },
+      {
+        "source": "ntruplus/proof/768/ref/kem_stopped_rom/NTRUPlus768BufferRejection.ec",
+        "payload": "variants/bc40374536c026ec2e66e2865fc2554e78b575fe40f3d37b3f7102dd1e9f5530.ec"
+      },
+      {
+        "source": "ntruplus/proof/768/ref/kem_stopped_rom/NTRUPlus768FreshBoundedLaw.ec",
+        "payload": "variants/516c83d26a59b7b58de12efaec0a5f4f995885275e1b7b79bf9db23af910741c.ec"
+      },
+      {
+        "source": "ntruplus/proof/768/ref/kem_stopped_rom/NTRUPlus768ProposalSwitch.ec",
+        "payload": "variants/fb7576bd9b006bde25f06234b9ed5d660ed056d9d1f01fb3f771d9f85706ddf9.ec"
+      },
+      {
+        "source": "ntruplus/proof/768/ref/kem_stopped_rom/NTRUPlus768StoppedROMGames.ec",
+        "payload": "variants/3bb5bb88d05f11a25737f4606c7de6ce7abe442a2657d9923398afc6a71b031c.ec"
+      }
+    ]
+  },
+  {
+    "attempt": "port-stopped-02",
+    "original_summary_sha256": "98071d005d06e09f8c587181614a11a440c1ddec08c230d795e90f2dbc86639d",
+    "recorded_status": "FAIL",
+    "recorded_input_count": 712,
+    "same_before_after_hashes": true,
+    "safely_aborted_presnapshot_intact": false,
+    "import_inventory_matches": true,
+    "non_proof_text_matches_final": true,
+    "easycrypt_sha256": "80cd3ea4297917052b46bf8384df6fafb1a3347f292dd31888c25a0a3e268c96",
+    "reconstructed_input_sources": [
+      "ntruplus/proof/768/ref/kem_stopped_rom/NTRUPlus768BoundedBufferRejection.ec",
+      "ntruplus/proof/768/ref/kem_stopped_rom/NTRUPlus768BufferRejection.ec",
+      "ntruplus/proof/768/ref/kem_stopped_rom/NTRUPlus768FreshBoundedLaw.ec",
+      "ntruplus/proof/768/ref/kem_stopped_rom/NTRUPlus768FreshRetryLaw.ec",
+      "ntruplus/proof/768/ref/kem_stopped_rom/NTRUPlus768ProposalSwitch.ec",
+      "ntruplus/proof/768/ref/kem_stopped_rom/NTRUPlus768StoppedROMGames.ec"
+    ],
+    "differing_proof_variants": [
+      {
+        "source": "ntruplus/proof/768/ref/kem_stopped_rom/NTRUPlus768BoundedBufferRejection.ec",
+        "payload": "variants/995ee907cb5fd1da285ec4d4b1728a90fafe3a5795968198e7b1600a31c4a7b6.ec"
+      },
+      {
+        "source": "ntruplus/proof/768/ref/kem_stopped_rom/NTRUPlus768BufferRejection.ec",
+        "payload": "variants/9dfc00b6b3407d86e76c55b871a5f22385b70259128d417c1fc3ce37fb99c245.ec"
+      },
+      {
+        "source": "ntruplus/proof/768/ref/kem_stopped_rom/NTRUPlus768FreshBoundedLaw.ec",
+        "payload": "variants/051f567d4f29fa7ff109b08419f17cd7a3085e5a3f4a74337a84e2ba3607b5ac.ec"
+      },
+      {
+        "source": "ntruplus/proof/768/ref/kem_stopped_rom/NTRUPlus768FreshRetryLaw.ec",
+        "payload": "variants/5e97fb4f20e4adbd6c08d5d487848bbedf5798e12e636aaad17ac72fdab03c87.ec"
+      },
+      {
+        "source": "ntruplus/proof/768/ref/kem_stopped_rom/NTRUPlus768ProposalSwitch.ec",
+        "payload": "variants/4888dcd1af6aa313d85bc6bb8f3a497d03c4b07b6fd70a1ea093db2c88d2f3a8.ec"
+      },
+      {
+        "source": "ntruplus/proof/768/ref/kem_stopped_rom/NTRUPlus768StoppedROMGames.ec",
+        "payload": "variants/c74c309f49c5806963c4f461faf58dfc406918c3f228b5fd2abb977d96dd672f.ec"
+      }
+    ]
+  },
+  {
+    "attempt": "spreadness",
+    "original_summary_sha256": "a01517df9d0edf298091d58ff23c87ebbb6818f9ff252d86e579b9fcf7b09a84",
+    "recorded_status": "FAIL",
+    "recorded_input_count": 902,
+    "same_before_after_hashes": true,
+    "safely_aborted_presnapshot_intact": false,
+    "import_inventory_matches": true,
+    "non_proof_text_matches_final": true,
+    "easycrypt_sha256": "80cd3ea4297917052b46bf8384df6fafb1a3347f292dd31888c25a0a3e268c96",
+    "reconstructed_input_sources": [],
+    "differing_proof_variants": [
+      {
+        "source": "ntruplus/proof/768/ref/kem_cca_setup/NTRUPlus768CCASetupBound.ec",
+        "payload": "variants/6a7990894689fc5ea41ea67de0c180b9d0287b72c80fc4e11d699bb9628efede.ec"
+      },
+      {
+        "source": "ntruplus/proof/768/ref/kem_cca_setup/NTRUPlus768CCASetupSwitch.ec",
+        "payload": "variants/4a75be02133debd8c414134c6b0e040560c95a92af87f682a1d68bd9abcbfef1.ec"
+      },
+      {
+        "source": "ntruplus/proof/768/ref/kem_spreadness/NTRUPlus768SpreadCache.ec",
+        "payload": "variants/b9840d70d6464a2466019259af185b42e786ee6b1a26f2a58d20ef4261d5b050.ec"
+      },
+      {
+        "source": "ntruplus/proof/768/ref/kem_spreadness/NTRUPlus768SpreadCalls.ec",
+        "payload": "variants/1c2a7b5e670ad0af8ea559c8a81ad261400850256b1506815016baa812294210.ec"
+      },
+      {
+        "source": "ntruplus/proof/768/ref/kem_spreadness/NTRUPlus768SpreadGenerated.ec",
+        "payload": "variants/c6792b9c6e5b4a0541771619fddd024355459310a2425953e3cd6e5017a6f557.ec"
+      },
+      {
+        "source": "ntruplus/proof/768/ref/kem_spreadness/NTRUPlus768SpreadProcedures.ec",
+        "payload": "variants/e52d82f43b1ba066680f297c0097e3a3ef99f9dbcd4e89a5232e83c4c7d91830.ec"
+      },
+      {
+        "source": "ntruplus/proof/768/ref/kem_stopped_rom/NTRUPlus768BoundedBufferRejection.ec",
+        "payload": "variants/51d7931014e8631eaaf366761f2911868753f759b9545c1aadc12c387301957d.ec"
+      },
+      {
+        "source": "ntruplus/proof/768/ref/kem_stopped_rom/NTRUPlus768BufferRejection.ec",
+        "payload": "variants/c2cdf21b23bd94aa88e7d37b720d9b8197ac5961ae6e9b15e3aa00b93cc15151.ec"
+      },
+      {
+        "source": "ntruplus/proof/768/ref/kem_stopped_rom/NTRUPlus768FreshBoundedLaw.ec",
+        "payload": "variants/fdaf8389c752a99f07151812bfe9ae46d32ce80f6973b7f781aed9014bae27d7.ec"
+      },
+      {
+        "source": "ntruplus/proof/768/ref/kem_stopped_rom/NTRUPlus768FreshRetryLaw.ec",
+        "payload": "variants/5e97fb4f20e4adbd6c08d5d487848bbedf5798e12e636aaad17ac72fdab03c87.ec"
+      },
+      {
+        "source": "ntruplus/proof/768/ref/kem_stopped_rom/NTRUPlus768ProposalSwitch.ec",
+        "payload": "variants/4888dcd1af6aa313d85bc6bb8f3a497d03c4b07b6fd70a1ea093db2c88d2f3a8.ec"
+      },
+      {
+        "source": "ntruplus/proof/768/ref/kem_stopped_rom/NTRUPlus768StoppedROMGames.ec",
+        "payload": "variants/9a7e65e6092706ccf11bde239848f8078536ac1d75fe6b35fafa33843317950a.ec"
+      }
+    ]
+  },
+  {
+    "attempt": "stopped-rom",
+    "original_summary_sha256": "984a05bf63ef69c53a6efdc766bd9ee7d80e62f3466fbc543a9a619c4a1712ae",
+    "recorded_status": "FAIL",
+    "recorded_input_count": 722,
+    "same_before_after_hashes": true,
+    "safely_aborted_presnapshot_intact": false,
+    "import_inventory_matches": true,
+    "non_proof_text_matches_final": true,
+    "easycrypt_sha256": "80cd3ea4297917052b46bf8384df6fafb1a3347f292dd31888c25a0a3e268c96",
+    "reconstructed_input_sources": [],
+    "differing_proof_variants": [
+      {
+        "source": "ntruplus/proof/768/ref/kem_stopped_rom/NTRUPlus768BoundedBufferRejection.ec",
+        "payload": "variants/51d7931014e8631eaaf366761f2911868753f759b9545c1aadc12c387301957d.ec"
+      },
+      {
+        "source": "ntruplus/proof/768/ref/kem_stopped_rom/NTRUPlus768BufferRejection.ec",
+        "payload": "variants/c2cdf21b23bd94aa88e7d37b720d9b8197ac5961ae6e9b15e3aa00b93cc15151.ec"
+      },
+      {
+        "source": "ntruplus/proof/768/ref/kem_stopped_rom/NTRUPlus768FreshBoundedLaw.ec",
+        "payload": "variants/fdaf8389c752a99f07151812bfe9ae46d32ce80f6973b7f781aed9014bae27d7.ec"
+      },
+      {
+        "source": "ntruplus/proof/768/ref/kem_stopped_rom/NTRUPlus768FreshRetryLaw.ec",
+        "payload": "variants/5e97fb4f20e4adbd6c08d5d487848bbedf5798e12e636aaad17ac72fdab03c87.ec"
+      },
+      {
+        "source": "ntruplus/proof/768/ref/kem_stopped_rom/NTRUPlus768ProposalSwitch.ec",
+        "payload": "variants/4888dcd1af6aa313d85bc6bb8f3a497d03c4b07b6fd70a1ea093db2c88d2f3a8.ec"
+      },
+      {
+        "source": "ntruplus/proof/768/ref/kem_stopped_rom/NTRUPlus768StoppedROMGames.ec",
+        "payload": "variants/9a7e65e6092706ccf11bde239848f8078536ac1d75fe6b35fafa33843317950a.ec"
+      }
+    ]
+  },
+  {
+    "attempt": "v2-cca",
+    "original_summary_sha256": "620df08e52f1bb9dfd8de273d4c8b0f05d2476c963b846a04fee83890e99b6f7",
+    "recorded_status": "PASS",
+    "recorded_input_count": 823,
+    "same_before_after_hashes": true,
+    "safely_aborted_presnapshot_intact": false,
+    "import_inventory_matches": true,
+    "non_proof_text_matches_final": true,
+    "easycrypt_sha256": "80cd3ea4297917052b46bf8384df6fafb1a3347f292dd31888c25a0a3e268c96",
+    "reconstructed_input_sources": [],
+    "differing_proof_variants": [
+      {
+        "source": "ntruplus/proof/768/ref/kem_stopped_rom/NTRUPlus768FreshBoundedLaw.ec",
+        "payload": "variants/c228b580c5fa89dd1cae67270c1089d68119a0c3683fb1b7a35a61ac6fbdfe04.ec"
+      },
+      {
+        "source": "ntruplus/proof/768/ref/kem_stopped_rom/NTRUPlus768ProposalSwitch.ec",
+        "payload": "variants/fb7576bd9b006bde25f06234b9ed5d660ed056d9d1f01fb3f771d9f85706ddf9.ec"
+      }
+    ]
+  },
+  {
+    "attempt": "v2-remaining-cca_setup-negative",
+    "original_summary_sha256": "c404d025175599fe4837757a29dba2f18ca92b3031e5bde53a9958b1b08c84f0",
+    "recorded_status": "PASS",
+    "recorded_input_count": 823,
+    "same_before_after_hashes": true,
+    "safely_aborted_presnapshot_intact": false,
+    "import_inventory_matches": true,
+    "non_proof_text_matches_final": true,
+    "easycrypt_sha256": "80cd3ea4297917052b46bf8384df6fafb1a3347f292dd31888c25a0a3e268c96",
+    "reconstructed_input_sources": [],
+    "differing_proof_variants": [
+      {
+        "source": "ntruplus/proof/768/ref/kem_stopped_rom/NTRUPlus768FreshBoundedLaw.ec",
+        "payload": "variants/c228b580c5fa89dd1cae67270c1089d68119a0c3683fb1b7a35a61ac6fbdfe04.ec"
+      },
+      {
+        "source": "ntruplus/proof/768/ref/kem_stopped_rom/NTRUPlus768ProposalSwitch.ec",
+        "payload": "variants/fb7576bd9b006bde25f06234b9ed5d660ed056d9d1f01fb3f771d9f85706ddf9.ec"
+      }
+    ]
+  },
+  {
+    "attempt": "v2-remaining-cca_setup-positive",
+    "original_summary_sha256": "4337f2281640202d1ea0623a864fa2fc0ce6c6bd854f7bb344fa432b328e5eff",
+    "recorded_status": "PASS",
+    "recorded_input_count": 823,
+    "same_before_after_hashes": true,
+    "safely_aborted_presnapshot_intact": false,
+    "import_inventory_matches": true,
+    "non_proof_text_matches_final": true,
+    "easycrypt_sha256": "80cd3ea4297917052b46bf8384df6fafb1a3347f292dd31888c25a0a3e268c96",
+    "reconstructed_input_sources": [],
+    "differing_proof_variants": [
+      {
+        "source": "ntruplus/proof/768/ref/kem_stopped_rom/NTRUPlus768FreshBoundedLaw.ec",
+        "payload": "variants/c228b580c5fa89dd1cae67270c1089d68119a0c3683fb1b7a35a61ac6fbdfe04.ec"
+      },
+      {
+        "source": "ntruplus/proof/768/ref/kem_stopped_rom/NTRUPlus768ProposalSwitch.ec",
+        "payload": "variants/fb7576bd9b006bde25f06234b9ed5d660ed056d9d1f01fb3f771d9f85706ddf9.ec"
+      }
+    ]
+  },
+  {
+    "attempt": "v2-remaining-spreadness-negative",
+    "original_summary_sha256": "f071de7b659f17d90e0224f6dd3a30c64abc0af01f93e48f05cfc373df6f6250",
+    "recorded_status": "PASS",
+    "recorded_input_count": 892,
+    "same_before_after_hashes": true,
+    "safely_aborted_presnapshot_intact": false,
+    "import_inventory_matches": true,
+    "non_proof_text_matches_final": true,
+    "easycrypt_sha256": "80cd3ea4297917052b46bf8384df6fafb1a3347f292dd31888c25a0a3e268c96",
+    "reconstructed_input_sources": [],
+    "differing_proof_variants": [
+      {
+        "source": "ntruplus/proof/768/ref/kem_spreadness/NTRUPlus768SpreadCache.ec",
+        "payload": "variants/2d08f95264c8f6893d08ff9b1d324141a403a2ee063853ce54d4bfd10953eaf6.ec"
+      },
+      {
+        "source": "ntruplus/proof/768/ref/kem_spreadness/NTRUPlus768SpreadCalls.ec",
+        "payload": "variants/d17af288bdb2a79c204e4e06d38f6057e9499b9afb69781f7667bfa6b53c2b36.ec"
+      },
+      {
+        "source": "ntruplus/proof/768/ref/kem_stopped_rom/NTRUPlus768FreshBoundedLaw.ec",
+        "payload": "variants/c228b580c5fa89dd1cae67270c1089d68119a0c3683fb1b7a35a61ac6fbdfe04.ec"
+      },
+      {
+        "source": "ntruplus/proof/768/ref/kem_stopped_rom/NTRUPlus768ProposalSwitch.ec",
+        "payload": "variants/fb7576bd9b006bde25f06234b9ed5d660ed056d9d1f01fb3f771d9f85706ddf9.ec"
+      }
+    ]
+  },
+  {
+    "attempt": "v2-remaining-stopped_rom-negative",
+    "original_summary_sha256": "32f1aa36ec87d7326051124bad018c76fbc238f213eecee7f58577f6a9205253",
+    "recorded_status": "PASS",
+    "recorded_input_count": 712,
+    "same_before_after_hashes": true,
+    "safely_aborted_presnapshot_intact": false,
+    "import_inventory_matches": true,
+    "non_proof_text_matches_final": true,
+    "easycrypt_sha256": "80cd3ea4297917052b46bf8384df6fafb1a3347f292dd31888c25a0a3e268c96",
+    "reconstructed_input_sources": [],
+    "differing_proof_variants": [
+      {
+        "source": "ntruplus/proof/768/ref/kem_stopped_rom/NTRUPlus768FreshBoundedLaw.ec",
+        "payload": "variants/c228b580c5fa89dd1cae67270c1089d68119a0c3683fb1b7a35a61ac6fbdfe04.ec"
+      },
+      {
+        "source": "ntruplus/proof/768/ref/kem_stopped_rom/NTRUPlus768ProposalSwitch.ec",
+        "payload": "variants/fb7576bd9b006bde25f06234b9ed5d660ed056d9d1f01fb3f771d9f85706ddf9.ec"
+      }
+    ]
+  },
+  {
+    "attempt": "v2-spread",
+    "original_summary_sha256": "385bc402a698e6971cbfbfd7a1ba0f0de64fe69f663f00b1c240ce129d29d147",
+    "recorded_status": "ABORTED_SUPERSEDED",
+    "recorded_input_count": 892,
+    "same_before_after_hashes": false,
+    "safely_aborted_presnapshot_intact": true,
+    "import_inventory_matches": true,
+    "non_proof_text_matches_final": true,
+    "easycrypt_sha256": "80cd3ea4297917052b46bf8384df6fafb1a3347f292dd31888c25a0a3e268c96",
+    "reconstructed_input_sources": [],
+    "differing_proof_variants": [
+      {
+        "source": "ntruplus/proof/768/ref/kem_spreadness/NTRUPlus768SpreadCache.ec",
+        "payload": "variants/2d08f95264c8f6893d08ff9b1d324141a403a2ee063853ce54d4bfd10953eaf6.ec"
+      },
+      {
+        "source": "ntruplus/proof/768/ref/kem_spreadness/NTRUPlus768SpreadCalls.ec",
+        "payload": "variants/d17af288bdb2a79c204e4e06d38f6057e9499b9afb69781f7667bfa6b53c2b36.ec"
+      },
+      {
+        "source": "ntruplus/proof/768/ref/kem_stopped_rom/NTRUPlus768FreshBoundedLaw.ec",
+        "payload": "variants/c228b580c5fa89dd1cae67270c1089d68119a0c3683fb1b7a35a61ac6fbdfe04.ec"
+      },
+      {
+        "source": "ntruplus/proof/768/ref/kem_stopped_rom/NTRUPlus768ProposalSwitch.ec",
+        "payload": "variants/fb7576bd9b006bde25f06234b9ed5d660ed056d9d1f01fb3f771d9f85706ddf9.ec"
+      }
+    ]
+  },
+  {
+    "attempt": "v2-stopped",
+    "original_summary_sha256": "e0d502adbce0d3190182df892dbc34d026990e35db218cfdf51a2413817d6b03",
+    "recorded_status": "FAIL",
+    "recorded_input_count": 712,
+    "same_before_after_hashes": true,
+    "safely_aborted_presnapshot_intact": false,
+    "import_inventory_matches": true,
+    "non_proof_text_matches_final": true,
+    "easycrypt_sha256": "80cd3ea4297917052b46bf8384df6fafb1a3347f292dd31888c25a0a3e268c96",
+    "reconstructed_input_sources": [],
+    "differing_proof_variants": [
+      {
+        "source": "ntruplus/proof/768/ref/kem_stopped_rom/NTRUPlus768FreshBoundedLaw.ec",
+        "payload": "variants/c228b580c5fa89dd1cae67270c1089d68119a0c3683fb1b7a35a61ac6fbdfe04.ec"
+      },
+      {
+        "source": "ntruplus/proof/768/ref/kem_stopped_rom/NTRUPlus768ProposalSwitch.ec",
+        "payload": "variants/fb7576bd9b006bde25f06234b9ed5d660ed056d9d1f01fb3f771d9f85706ddf9.ec"
+      }
+    ]
+  },
+  {
+    "attempt": "v3-spread",
+    "original_summary_sha256": "5b82fdfbd8448294de297705e6f859edfb216a245631c1e52eb4a1b94a04a6ba",
+    "recorded_status": "FAIL",
+    "recorded_input_count": 892,
+    "same_before_after_hashes": true,
+    "safely_aborted_presnapshot_intact": false,
+    "import_inventory_matches": true,
+    "non_proof_text_matches_final": true,
+    "easycrypt_sha256": "80cd3ea4297917052b46bf8384df6fafb1a3347f292dd31888c25a0a3e268c96",
+    "reconstructed_input_sources": [],
+    "differing_proof_variants": [
+      {
+        "source": "ntruplus/proof/768/ref/kem_spreadness/NTRUPlus768SpreadCalls.ec",
+        "payload": "variants/5665603ca9aea4a69dc8c125258542a22b2c4a314a52bfd38dc959f89fb48035.ec"
+      },
+      {
+        "source": "ntruplus/proof/768/ref/kem_stopped_rom/NTRUPlus768FreshBoundedLaw.ec",
+        "payload": "variants/c228b580c5fa89dd1cae67270c1089d68119a0c3683fb1b7a35a61ac6fbdfe04.ec"
+      },
+      {
+        "source": "ntruplus/proof/768/ref/kem_stopped_rom/NTRUPlus768ProposalSwitch.ec",
+        "payload": "variants/fb7576bd9b006bde25f06234b9ed5d660ed056d9d1f01fb3f771d9f85706ddf9.ec"
+      }
+    ]
+  },
+  {
+    "attempt": "v5-spread",
+    "original_summary_sha256": "892aae8a9ab4c32a72fc5e3f66430df4f041aeafb1887c4ae4a607bc0186bd52",
+    "recorded_status": "PASS",
+    "recorded_input_count": 892,
+    "same_before_after_hashes": true,
+    "safely_aborted_presnapshot_intact": false,
+    "import_inventory_matches": true,
+    "non_proof_text_matches_final": true,
+    "easycrypt_sha256": "80cd3ea4297917052b46bf8384df6fafb1a3347f292dd31888c25a0a3e268c96",
+    "reconstructed_input_sources": [],
+    "differing_proof_variants": [
+      {
+        "source": "ntruplus/proof/768/ref/kem_stopped_rom/NTRUPlus768ProposalSwitch.ec",
+        "payload": "variants/df6b8544b8b184c0e6308d2e03715fd9cc5a2815213a2f36f0911a445cd7b36f.ec"
+      }
+    ]
+  },
+  {
+    "attempt": "v5-stopped",
+    "original_summary_sha256": "e95d83dcf766f95c331b4cb7d204523ee622864a11403dff8334f9d9131cbbdb",
+    "recorded_status": "FAIL",
+    "recorded_input_count": 712,
+    "same_before_after_hashes": true,
+    "safely_aborted_presnapshot_intact": false,
+    "import_inventory_matches": true,
+    "non_proof_text_matches_final": true,
+    "easycrypt_sha256": "80cd3ea4297917052b46bf8384df6fafb1a3347f292dd31888c25a0a3e268c96",
+    "reconstructed_input_sources": [],
+    "differing_proof_variants": [
+      {
+        "source": "ntruplus/proof/768/ref/kem_stopped_rom/NTRUPlus768ProposalSwitch.ec",
+        "payload": "variants/df6b8544b8b184c0e6308d2e03715fd9cc5a2815213a2f36f0911a445cd7b36f.ec"
+      }
+    ]
+  }
+]
