@@ -4,18 +4,17 @@ Research artifacts for the implementation and formal analysis of NTRU+768:
 Jasmin arithmetic, EasyCrypt correctness proofs, classical random-oracle-model
 security reductions, and a source-calibrated reduction cost model.
 
-**Publication preparation is in progress.** This checkout is not yet a frozen
-thesis release. Historical verification records are not a fresh full replay of
-the current sources. See [release status](docs/release.md) before citing a result
-as reproduced.
+The [release history](docs/release.md) identifies the published source snapshot
+and subsequent verification runs. Cite the release or commit corresponding to
+the result used.
 
-The current development sources include the reviewed **EasyCrypt 2026.10**
-proof-body port for CCA setup, stopped-ROM and spreadness. All 31 selected
-primary proofs and their 31 unfinished-proof controls passed; theorem statements,
-assumptions and exported bounds are unchanged. See the
+The **EasyCrypt 2026.10** replay checked 9 CCA setup, 14 stopped-ROM and 8
+spreadness proof files. The three verifier scripts used an appended EOF guard
+to reject an unfinished-proof variant of each file. The updates preserve
+theorem statements, assumptions and exported bounds. See the
 [migration evidence](evidence/easycrypt-2026.10-20261116/README.md) and
-[current toolchain](docs/toolchain-current.json). This scoped replay does not
-replace historical full-target records or establish a fresh whole-project PASS.
+[current toolchain](docs/toolchain-current.json). Imported proofs outside these
+31 files were not rerun; their verification records come from earlier runs.
 
 ## Research scope
 
@@ -85,9 +84,8 @@ milestones; use the guides above for the current public interface.
 
 ## Citation and reuse
 
-[CITATION.cff](CITATION.cff) provides repository citation metadata. Until a
-validated thesis release and DOI exist, include the exact Git commit in any
-citation. A DOI, thesis title and release version are deliberately not invented.
+[CITATION.cff](CITATION.cff) provides repository citation metadata. Include the
+exact release or Git commit used in the cited result.
 
 Repository-owned code is provided under [MIT](LICENSE). External materials
 retain their own terms; see [THIRD_PARTY.md](THIRD_PARTY.md), especially the

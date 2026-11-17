@@ -20,11 +20,11 @@ Current development uses EasyCrypt **r2026.10** (commit
 `spreadness`, with Why3 1.8.2, Z3 4.12.6 and Jasmin 2026.09.0. The
 [current toolchain record](toolchain-current.json) and
 [31-target replay evidence](../evidence/easycrypt-2026.10-20261116/README.md)
-describe the checked scope. `toolchain-observed.json` remains the original
-2026.09 observation; it has not been relabeled as a new execution.
+describe the checked scope. `toolchain-observed.json` records the earlier
+2026.09 environment.
 
-The three current verifiers retain their source-mutation tests, semantic EOF
-checks and prover limits. Current source pins name the reviewed proof-port bytes.
+The three verifiers run source-mutation tests and semantic EOF checks with the
+recorded prover limits. Current source pins identify the updated proof files.
 For historical imported sources, only the twelve exact before/after pairs in
 `tests/ntruplus768/easycrypt-2026.10-proof-transitions.json` are recognized. Their
 preserved original bytes and unchanged non-proof declarations are checked and
@@ -41,10 +41,9 @@ python3 scripts/reproduce.py proof cca-setup stopped-rom spreadness \
   --prior-evidence-root /absolute/path/to/evidence
 ```
 
-Other historical targets have not been migrated or reverified collectively.
-Their frozen source/tool requirements can reject this development tree; use
-the source commit and environment attached to their historical record when
-reproducing that record. Do not change their pins merely to make a new run pass.
+Other targets retain the source and tool requirements of their historical
+records. Reproduce those results with the corresponding commit and environment;
+the current development tree may not satisfy their frozen pins.
 
 The repository-local evidence integrity check is separate from proof execution:
 
@@ -107,16 +106,13 @@ Proof and Jasmin targets need the matching compiler/proof environment and the
 pinned Formosa/crypto-specs proof libraries. The documented extraction baseline is Jasmin 2026.09.0 and
 Why3 1.8.2. Some algebraic targets also use Coq 8.20.1 and MathComp 2.2.
 
-See [toolchain-observed.json](toolchain-observed.json) for the locally observed
-versions. That record is an observation, not an installer or a dependency lock.
-An independently rebuilt environment and complete clean-checkout replay remain
-release requirements. Do not substitute the latest compiler or prover and call
-older verification records a replay under the new versions.
+The [historical tool inventory](toolchain-observed.json) records observed
+versions and binary hashes; it is not an installation lock. A replay with
+different tools needs its own results and environment record.
 
-Use one consistent toolchain on `PATH`. Some historical Python harnesses default to
-the author's opam switch layout, but accept absolute executable paths through
-environment variables such as `EASYCRYPT` and `WHY3`. For those harnesses, after
-activating the intended switch, explicitly select the tools:
+Use one consistent toolchain on `PATH`. Select absolute executable paths through
+`EASYCRYPT` and `WHY3` to override historical harness defaults. After activating
+the intended switch, run:
 
 ```sh
 export EASYCRYPT="$(command -v easycrypt)"
@@ -193,10 +189,10 @@ Replace the example path with an actual evidence bundle; it is not a download
 location. The wrapper rejects a missing/non-directory evidence root before
 launching targets. Each selected verifier remains responsible for validating
 the precise historical hashes, statuses, source coverage, and toolchain inputs.
-The public entry point never silently selects the adjacent private thesis
-directory. Direct driver invocations now default to the sibling
-`research-evidence` directory. Explicit `--prior-evidence-root` selection is
-unchanged; see the [reviewed English-path migration](english-path-migration.md).
+For targets that use prior evidence, the public entry point requires an explicit
+evidence root. Direct driver invocations default to the sibling
+`research-evidence` directory; override it with `--prior-evidence-root`. The
+[path migration record](english-path-migration.md) describes that default.
 
 For all listed verification scripts except the separate C baseline:
 
@@ -208,11 +204,9 @@ python3 scripts/reproduce.py proof --all \
 ```
 
 This runs targets sequentially in name order and stops at the first nonzero exit.
-It is not a dependency scheduler: it does not generate, approve, replace, or
-re-pin historical evidence. Re-running a predecessor produces a new observation;
-it does not automatically replace the specific historical file expected by a
-successor. A successful wrapper exit means only that the requested commands
-returned zero; preserve and interpret the target-specific reports.
+Dependency evidence must already exist at the expected hashes. Re-running a
+predecessor creates a separate result; successor pins still identify their
+recorded inputs. Check each target's report for the scope of a successful run.
 
 ## Recording a replay
 
@@ -232,10 +226,9 @@ python3 scripts/reproduce.py baseline 2>&1 | tee /tmp/ntruplus-baseline.log
 log path is temporary storage; move a reviewed copy into the release's evidence
 archive. Avoid putting private paths or credentials in a public transcript.
 
-No whole-suite runtime or RAM requirement is asserted here: these must be
-measured for the release environment. Large proofs should run one at a time.
-The current public preparation does not by itself establish a fresh whole-suite
-PASS or clean-machine reproducibility.
+Measure runtime and peak memory for the selected targets and environment.
+Run large proofs one at a time. Report complete dependency replay separately
+from runs that authenticate historical imports.
 
 ## Checking the wrapper itself
 

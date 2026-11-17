@@ -6,55 +6,53 @@ That release fixes publication commit `9f4eef4`; later commits on `main` do not
 replace its tag or attachments. A release is not a claim of fresh whole-suite
 proof replay, and no DOI has been assigned.
 
-## Selected initial publication scope
-
-The development tree now also includes the
-[EasyCrypt 2026.10 proof-body migration](../evidence/easycrypt-2026.10-20261116/README.md):
-31 selected primary proofs and 31 semantic EOF controls passed for CCA setup,
-stopped-ROM and spreadness. Twelve proof files changed while their declarations,
-assumptions and exported bounds stayed identical. This is a subsequent scoped
-development result. It does not move the initial release tag, replace its
-attachments or promote its historical records to a whole-suite 2026.10 PASS.
+## Release contents
 
 The initial distribution contains implementation/proof sources, reproducibility
 scripts, pinned dependency recovery sources, license notices, and verification
 reports/logs. It does not distribute compiler/prover executables, installed opam
 switches, a VM/container image, or the preserved binary environment attachment.
-The environment inventory remains available as provenance and optional later
-distribution documentation.
+The environment inventory describes those separately captured inputs.
 
-Ubuntu source-package downloads for Bash, coreutils and Python concern that
-separate binary-redistribution work. They are **not a prerequisite for this
-source-and-evidence publication**. The raw specification text is separately
-acquired using the documented official hash-checked recipe; the selected prior
-evidence attachment contains the summaries and reviewed contract, not that text.
+Source-package acquisition for Bash, coreutils and Python concerns the optional
+binary distribution. The source-and-evidence release uses the documented tool
+installation requirements. The prior-evidence attachment contains the summaries
+and KeyGen contract; obtain the specification text with the documented
+hash-checked acquisition procedure.
 
-This scope does not promise a self-contained proof appliance. Formal replay
-still requires the matching documented tools, and historical-evidence-linked
-targets retain their strict environment checks. The successful recorded runs
-and their exact tested source identities remain distinct from later packaging.
+For the 31-file EasyCrypt 2026.10 replay, use the compiler and prover versions
+in the [current toolchain record](toolchain-current.json). The historical
+`runtime-bound` execution uses the source revision and environment inventory
+named in its [replay record](../evidence/preserved-full-replay-20261111/README.md).
+Each verification summary identifies the source hashes it checked.
+
+## Changes after the initial release
+
+The [EasyCrypt 2026.10 migration](../evidence/easycrypt-2026.10-20261116/README.md)
+checked 9 CCA setup, 14 stopped-ROM and 8 spreadness proof files, with one
+unfinished-proof rejection test per file. Twelve proof bodies changed; their
+declarations, assumptions and exported bounds stayed identical. Imported proofs
+outside these 31 files retain their earlier verification records. The initial
+release tag and attachments remain unchanged.
 
 ## What is available
 
-- A concise [README](../README.md) and preserved [development record](development-record.md).
+- A [README](../README.md) and [development history](development-record.md).
 - A [claim-to-proof map](claims.md), [reproduction guide](reproduction.md),
   and [historical evidence guide](evidence.md).
-- Repository citation metadata in [CITATION.cff](../CITATION.cff), using the
-  author from the existing license and the configured GitHub remote.
+- Citation metadata in [CITATION.cff](../CITATION.cff).
 - Separate source smoke, C/KAT and proof commands; bounded GitHub Actions CI
   does not represent full formal verification.
 - An [observed toolchain inventory](toolchain-observed.json), including the
   EasyCrypt source commit. This is not a validated installation lockfile.
 
-## Preparation validation
+## Verification records
 
-The bounded checks performed during this preparation are recorded in
-[publication-checks.json](publication-checks.json), with source hashes for the
-reviewed files. They include 24 public-tool tests, source smoke controls, the C
-functional/KAT test, historical-summary authentication, document-link checks and
-Ruff. At that preparation stage, GitHub Actions had not yet run on the hosted
-service. That record does not claim complete proof replay, a Python typechecker
-run, or clean-environment installation.
+The [2026-11-11 preparation record](publication-checks.json) contains source
+hashes and results for 24 public-tool tests, source smoke controls, the C
+functional/KAT test, historical-summary authentication, document links and Ruff.
+It predates hosted CI and excludes complete proof replay, Python typechecking
+and clean-environment installation.
 
 Subsequently, [hosted source and C baseline CI](https://github.com/Hacker-Code-J/kpqc-kem-ntruplus-jasmin-easycrypt/actions/runs/43164613909)
 passed on English-edition commit `986cacc`. It checks public tooling, source smoke
@@ -92,10 +90,9 @@ OS/runtime dependencies; it does not establish a standalone image or new-host re
 | Third-party materials | Source notices and exact dependency recovery are included; the binary environment is outside this initial publication scope | Retain notices and scope boundaries for the selected source/evidence files; handle optional binary redistribution separately |
 | Citation | Repository author/title and the initial release are available; DOI and thesis metadata remain separate | Cite the exact release or commit used; archive it and record a version DOI only after one is assigned |
 
-The runtime proof manifest's `ROOT_REVIEWED_ALPHA_RENAME_NOT_REPLAYED` state
-must not be silently converted into a new PASS. Family documentation may retain
-historical proof descriptions; only a fresh run against the release sources
-establishes release verification status.
+The [runtime proof manifest](../tests/ntruplus768/runtime_bound/proof-manifest.json)
+records the root-theory renaming separately from proof execution. Later replays
+have their own results tied to source and tool versions.
 
 See [Formosa's location and exact-file evidence](provenance/formosa.md) and the
 [preserved environment distribution inventory](../env/distribution/README.md).
@@ -104,35 +101,22 @@ the newly assembled notices. A public distribution using those archives must
 include the notice/provenance companion and current acquisition instructions
 alongside them. Adding these materials does not claim a new proof replay.
 
-## Public contents and credentials
-
-`.aws/`, `.env`, `.env.*`, agent state and Python caches are ignored. Ignore
-rules do not remove anything already committed or purge history. Keep proof
-sources, generated extraction sources required by the checkers, deterministic
-KAT fixtures, manifests and negative controls: generated does not mean disposable.
-KAT secret-key bytes are public deterministic test fixtures, not deployment keys.
-
-Before publication, inspect the exact staged snapshot and reachable history for
-credentials and private material. Do not upload the entire working directory,
-agent state, thesis directory, or unreviewed logs. A source archive of the parent
-repository does not automatically package its submodule contents; document how
-they are obtained and verify any separately distributed bundle.
-
 ## Freeze and cite
 
-1. Review and commit the intended research and preparation files using the
-   repository's Lore commit-message protocol. Avoid `git add .` on this working
-   tree; inspect staged changes and required untracked proof families.
-2. Validate a fresh checkout of that exact commit with the documented environment
-   and public evidence bundle. Record new results separately from inherited ones.
-3. Create a versioned release with an owner-approved, algorithm-specific title
-   and tag after the relevant gates above pass. Preserve existing release tags
-   and attachments. Include the source commit, submodule pins, checksums,
-   environment, commands and verification report in the release description.
-4. Archive that release, obtain its DOI, and then update `CITATION.cff` with real
-   version/date/DOI and confirmed thesis metadata. Cite the version used in the
-   thesis rather than a moving branch.
+1. Select and commit the source snapshot. Include the proof sources, required
+   extraction sources, deterministic KAT fixtures, manifests and negative
+   controls. Check the contents and history for private files or credentials;
+   ignore rules do not remove previously committed data. KAT key bytes are
+   public deterministic fixtures.
+2. In a fresh checkout of that commit, run the reproduction commands linked from
+   [claims.md](claims.md) for each result included in the release. Use the stated
+   tool versions and evidence bundle, and retain the new execution reports.
+3. Create a versioned release after those commands pass. Preserve existing
+   tags and attachments. Include the source commit, submodule pins, checksums,
+   environment, commands and verification report. Parent-repository source
+   archives omit submodule contents, so include acquisition instructions.
+4. Archive the release and update `CITATION.cff` with its version, date and DOI
+   when assigned. Cite the version used in the research.
 
 GitHub explains [CITATION.cff support](https://docs.github.com/en/repositories/managing-your-repositorys-settings-and-features/customizing-your-repository/about-citation-files)
 and [versioned archiving with Zenodo](https://docs.github.com/en/repositories/archiving-a-github-repository/referencing-and-citing-content).
-No DOI or release identity has been fabricated for this preparation.

@@ -13,9 +13,8 @@ The public `scripts/reproduce.py` wrapper and `env/replay_runtime.py` launcher
 continue to require and pass that argument explicitly; their selected evidence
 does not depend on the direct-driver default.
 
-The native Coq integration test uses English `café` path labels containing spaces.
-These remain genuinely non-ASCII paths, preserving the Unicode-path regression
-case without retaining language-specific folder labels.
+The native Coq integration test uses `café` path labels containing spaces to
+preserve Unicode-path regression coverage.
 
 [english-path-migration.json](english-path-migration.json) records the baseline
 commit, old/new hashes of all 25 Python files, literal identities, and normalized

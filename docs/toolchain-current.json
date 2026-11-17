@@ -1,6 +1,6 @@
 {
   "schema": 1,
-  "scope": "Current development checker for the reviewed31-target EasyCrypt proof migration; not a whole-project replay or a replacement for historical environment captures.",
+  "scope": "Toolchain used to check 9 CCA setup, 14 stopped-ROM and 8 spreadness proof files. Imported proofs outside these 31 files were not rerun.",
   "easycrypt": {
     "release": "r2026.10",
     "source_commit": "859766e50e936fb9e420fb6fb1ad8824ffb8d83e"

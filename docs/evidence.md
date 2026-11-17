@@ -18,9 +18,9 @@ python3 scripts/check_public_evidence.py > /tmp/ntruplus-evidence-inventory.json
 ```
 
 The inventory contains evidence-relative paths, expected SHA-256 digests and
-the pin manifests requiring each file. It deliberately contains no local
-absolute paths, download URLs or invented release identifiers. At the time of
-this preparation, 24 pin manifests reference 26 distinct summaries.
+the pin manifests requiring each file. It uses no local absolute paths or
+download locations. The preparation record lists 24 pin manifests referencing
+26 distinct summaries.
 
 After obtaining an evidence bundle, extract it to a directory outside the
 checkout. That directory must contain `handoff/verification/`, with the exact
@@ -60,11 +60,11 @@ the pin-manifest hashes. `SHA256SUMS` also covers that manifest and the bundle
 notice. Extra files referenced inside a summary are not automatically copied or
 executed. Repeated exports of the same inputs produce identical bundle files.
 
-This output is a **local release candidate**, not a public upload or a complete
-proof archive. Historical records preserve host paths, and the specification
-text retains its original rights. Review those before redistribution. Neither
-the exporter nor a matching checksum certifies current proofs or licenses the
-bundle as a whole. Export regression tests are available with:
+Before distributing the bundle, inspect the host paths in its summaries and
+the specification text's redistribution terms. `check_public_evidence.py`
+checks each summary's SHA-256, recorded `PASS` status and equality of the
+source-file hashes recorded before and after execution. It does not execute the
+proofs. Run the export regression tests with:
 
 ```sh
 python3 -B -m unittest discover -s tests -p 'test_*public_evidence.py'
@@ -119,11 +119,10 @@ The final runtime-bound runner consumes the historical adaptive-history
 summary. A bundle of its prerequisites does not by itself provide a final
 runtime-bound replay result.
 
-The 26 summaries are the minimum historical-summary input set, not a complete
-research archive. A release should also preserve relevant command logs,
-negative-control results, generated statements, toolchain provenance and the
-final results being cited. Publish an archive checksum and immutable download
-location with the release. No public evidence archive or DOI is declared here.
+The 26 summaries form the historical-summary input set. For a release, also
+preserve the cited command logs, negative-control results, generated statements,
+toolchain provenance and final results. Record archive checksums and immutable
+download locations in the [release guide](release.md).
 
 ## Additional specification inputs
 

@@ -66,7 +66,7 @@ skipped-buffer preservation, input preservation and surrounding canaries.
 The C reference's decoder counts and the mixed caller's later-operation order
 are instrumented; the Jasmin guard itself is one native trace event. Internal
 Jasmin short-circuit behavior is established by source/proof structure and
-output contracts, not a fabricated count of its inlined calls.
+output contracts. The native instrumentation does not count inlined Jasmin calls.
 
 ## Reproduce
 
